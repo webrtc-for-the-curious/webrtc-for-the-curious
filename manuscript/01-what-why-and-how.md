@@ -1,10 +1,10 @@
 # What is WebRTC.
 
-WebRTC is both an API and Protocol. The WebRTC protocol is a set of rules for two hosts to negotiate bi-directional secure communication. The WebRTC API was designed just for Javascript. This Javascript API then allows web developers to use the WebRTC protocol.
+WebRTC is both an API and Protocol. The WebRTC protocol is a set of rules for two agents to negotiate bi-directional secure communication. The WebRTC API was designed just for Javascript. This Javascript API then allows web developers to use the WebRTC protocol in the browser.
 
 A similar relationship would be HTTP and the fetch API. WebRTC the protocol would be HTTP, and WebRTC the API would be the fetch API.
 
-Many other APIs, servers and tools exist for WebRTC. All of these implementations can interact with each others.
+Many other APIs besides Javascript, servers and tools exist for WebRTC. All of these implementations can interact with each others.
 
 # Why should I learn WebRTC?
 
@@ -21,7 +21,7 @@ These are the things that WebRTC will give you. This list is not exhaustive but 
 
 # How does WebRTC (the protocol) Work
 
-This is a question that takes an entire book to explain. However, to start of we break it  into four steps.
+This is a question that takes an entire book to explain. However, to start off we break it into four steps.
 
 * Signaling
 * Connecting
@@ -29,4 +29,39 @@ This is a question that takes an entire book to explain. However, to start of we
 * Communicating 
 
 These four steps happen sequentially. The prior step must be 100% successful for the subsequent one to even begun. At a high level this is what each one of these steps is accomplishing.
+
+One pecuilar fact about WebRTC is that it actually made up of many other protocols! To make WebRTC we stitch together many existing technologies. In that sense WebRTC is more a combination and configuration of well understood tech that has been around since the early 2000s.
+
+Each of these steps have dedicated chapters, but it is helpful to understand them at a high level first. Since they are dependant on each other it will help explain each steps purpose more.
+
+## Signaling
+
+When a WebRTC Agent starts it has no idea who it is going to communicate with and what they are going to communicate about. Signaling solves this issue! Signaling is used to bootstrap the call so that the two WebRTC agents can start communicating directly.
+
+Signaling uses an existing protocol SDP. SDP is a plain text buffee made up off key/value pairs and contains a list of 'media sections'. The SDP that the two WebRTC Agents exchange contains details like.
+
+* IPs and Ports that the agent is reachable on (candidates)
+* How many audio and video tracks the agent wishes to send
+* What audio and video codecs the agent supports
+* Values used while connecting (uFrag/uPwd)
+* Values used while securing (certificate fingerprint)
+
+## Connecting
+
+The two WebRTC Agents now know enough details to attempt to connect to each other. WebRTC again uses an existing technology called ICE.
+
+ICE (Interactive Connectivity Establishment) is a protocol that pre-dates WebRTC. ICE allows the establishment of a connection between two Agents. These Agents could be in the same network, or on the other side if the world. ICE is the solution to establishing a direct connection without a central server.
+
+The real magic here is 'NAT Traversal' and TURN Servers. These two concepts all you to communicate with an IP/Port that you can't connect to because it's in another subnet. We will explore these topics in depth later.
+
+Once ICE successfully connects, WebRTC then moves on to establishing an encrypted transport. This transport is used for the audio, video and data.
+
+
+## Securing
+
+## Communicating 
+
+
+# How does WebRTC (the API) work
+
 
