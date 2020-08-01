@@ -6,6 +6,7 @@ mainmatter.txt
 04-securing.md
 05-media-communication.md
 06-data-communication.md
-07-debugging.md
-08-history-of-webrtc.md
+07-what-can-you-build.md
+08-debugging.md
+09-history-of-webrtc.md
 Book.txt
