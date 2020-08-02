@@ -59,9 +59,21 @@ Once ICE successfully connects, WebRTC then moves on to establishing an encrypte
 
 ## Securing
 
+Now that we have bi-directional communication (via ICE) we need to establish secure communication. This is done through two protocols that pre-date WebRTC. The first protocol is DTLS (Datagram Transport Layer Security) and the second is SRTP (Secure Real-time Transport Protocol).
+
+First WebRTC connects by doing a DTLS handshake over the connection established by ICE. DTLS is a superset of TLS, the technology that powers HTTPS. One big difference is 
+
+
+
+
+
 ## Communicating 
 
 
 # How does WebRTC (the API) work
+This section is not an exhaustive demo of the WebRTC API. Instead we are going to show how common usage of the API maps to the WebRTC protocol.
 
 
+* AddTrack creates SDP entry. Packets sent via RTP
+* onICEConnectionStateChange comes from ICE Agent
+* 
