@@ -1,0 +1,4 @@
+baseURL = "https://webrtcforthecurious.com"
+languageCode = "en-us"
+title = "WebRTC for the Curious"
+theme = "book"

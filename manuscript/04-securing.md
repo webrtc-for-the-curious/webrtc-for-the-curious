@@ -1,4 +1,0 @@
-# Securing
-
-## DTLS
-## SRTP

@@ -1,3 +1,10 @@
+---
+title: What, Why and How
+type: docs
+weight: 2
+---
+
+
 # What is WebRTC.
 
 WebRTC is both an API and Protocol. The WebRTC protocol is a set of rules for two agents to negotiate bi-directional secure communication. The WebRTC API was designed just for Javascript. This Javascript API then allows web developers to use the WebRTC protocol in the browser.
@@ -26,7 +33,7 @@ This is a question that takes an entire book to explain. However, to start off w
 * Signaling
 * Connecting
 * Securing
-* Communicating 
+* Communicating
 
 These four steps happen sequentially. The prior step must be 100% successful for the subsequent one to even begun. At a high level this is what each one of these steps is accomplishing.
 
@@ -67,7 +74,7 @@ WebRTC then uses a different protocol for audio/video transmission called RTP. W
 
 We are done! You now have bi-directional and secure communication. If you have a stable connection between your WebRTC Agents this is all the complexity you may need. Unfortunately the real world has packet loss and bandwidth limits, and the next section is about how we deal with them.
 
-## Communicating 
+## Communicating
 
 
 
@@ -79,4 +86,4 @@ This section is not an exhaustive demo of the WebRTC API. Instead we are going t
 
 * AddTrack creates SDP entry. Packets sent via RTP
 * onICEConnectionStateChange comes from ICE Agent
-* 
+*
