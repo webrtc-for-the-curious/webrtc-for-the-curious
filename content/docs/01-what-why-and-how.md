@@ -59,7 +59,7 @@ The two WebRTC Agents now know enough details to attempt to connect to each othe
 
 ICE (Interactive Connectivity Establishment) is a protocol that pre-dates WebRTC. ICE allows the establishment of a connection between two Agents. These Agents could be in the same network, or on the other side if the world. ICE is the solution to establishing a direct connection without a central server.
 
-The real magic here is 'NAT Traversal' and TURN Servers. These two concepts all you to communicate with an IP/Port that you can't connect to because it's in another subnet. We will explore these topics in depth later.
+The real magic here is 'NAT Traversal' and TURN Servers. These two concepts all you to communicate with an IP/Port is in another subnet. This is where STUN and TURN come i t play. We will explore these topics in depth later.
 
 Once ICE successfully connects, WebRTC then moves on to establishing an encrypted transport. This transport is used for the audio, video and data.
 
@@ -76,7 +76,9 @@ We are done! You now have bi-directional and secure communication. If you have a
 
 ## Communicating
 
+We now have two WebRTC Agents with secure bi-directional communication. Lets start communicating!Again we use two pre-existing protocol RTP  (Real-time Transport Protocol) and SCTP (Stream Control Transmission Protocol). 
 
+RTP is used to carry media, and is encrypted using SRTP. The RTP protocol is quite minimal, but gives us what we need to implement real-time streaming. The important thing is that RTP gives flexibility to the developer so they can handle latency, loss and congestion as they please. We will discuss this further in the media chapter!
 
 
 
