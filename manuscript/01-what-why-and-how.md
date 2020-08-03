@@ -59,15 +59,18 @@ Once ICE successfully connects, WebRTC then moves on to establishing an encrypte
 
 ## Securing
 
-Now that we have bi-directional communication (via ICE) we need to establish secure communication. This is done through two protocols that pre-date WebRTC. The first protocol is DTLS (Datagram Transport Layer Security) and the second is SRTP (Secure Real-time Transport Protocol).
+Now that we have bi-directional communication (via ICE) we need to establish secure communication. This is done through two protocols that pre-date WebRTC. The first protocol is DTLS (Datagram Transport Layer Security) which is just TLS over UDP. TLS is the technology that powers HTTPS. The second protocol is SRTP (Secure Real-time Transport Protocol).
 
-First WebRTC connects by doing a DTLS handshake over the connection established by ICE. DTLS is a superset of TLS, the technology that powers HTTPS. One big difference is 
+First WebRTC connects by doing a DTLS handshake over the connection established by ICE. Unlike HTTPS WebRTC doesnt use a central authority for certificates. Instead WebRTC just asserts that the certificate exchanged via DTLS matches the the fingerprint shared via signaling. This DTLS connection is then used for DataChannel messages.
 
+WebRTC then uses a different protocol for audio/video transmission called RTP. We secure our RTP packets using SRTP. We initialize our SRTP session by extracting the keys from the negotiated DTLS session. In a later chapter why media transmission has its own protocol.
 
-
-
+We are done! You now have bi-directional and secure communication. If you have a stable connection between your WebRTC Agents this is all the complexity you may need. Unfortunately the real world has packet loss and bandwidth limits, and the next section is about how we deal with them.
 
 ## Communicating 
+
+
+
 
 
 # How does WebRTC (the API) work
