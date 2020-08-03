@@ -2,3 +2,14 @@ baseURL = "https://webrtcforthecurious.com"
 languageCode = "en-us"
 title = "WebRTC for the Curious"
 theme = "book"
+
+# Enable 'Last Modified by' date and git author information
+enableGitInfo = true
+
+[params]
+  # source repository location.
+  # Used for 'Last Modified' and 'Edit this page' links.
+  BookRepo = 'https://github.com/webrtc-for-the-curious/webrtc-for-the-curious'
+  
+  # 'Edit this page' links
+  BookEditPath = 'edit/master'
