@@ -12,4 +12,4 @@ enableGitInfo = true
   BookRepo = 'https://github.com/webrtc-for-the-curious/webrtc-for-the-curious'
   
   # 'Edit this page' links
-  BookEditPath = 'edit/master'
+  BookEditPath = 'edit/master/content'
