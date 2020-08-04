@@ -5,7 +5,7 @@ weight: 2
 ---
 
 
-# What is WebRTC.
+## What is WebRTC.
 
 WebRTC is both an API and Protocol. The WebRTC protocol is a set of rules for two agents to negotiate bi-directional secure communication. The WebRTC API was designed just for Javascript. This Javascript API then allows web developers to use the WebRTC protocol in the browser.
 
@@ -13,7 +13,7 @@ A similar relationship would be HTTP and the fetch API. WebRTC the protocol woul
 
 Many other APIs besides Javascript, servers and tools exist for WebRTC. All of these implementations can interact with each others.
 
-# Why should I learn WebRTC?
+## Why should I learn WebRTC?
 
 These are the things that WebRTC will give you. This list is not exhaustive but is some of the things you may appreciate during your journey. Don't worry if you don't know some of these terms yet, this book will teach you them along tne way.
 
@@ -26,7 +26,7 @@ These are the things that WebRTC will give you. This list is not exhaustive but 
 * Congestion Control
 * Sub-Second Latency
 
-# How does WebRTC (the protocol) Work
+## How does WebRTC (the protocol) Work
 
 This is a question that takes an entire book to explain. However, to start off we break it into four steps.
 
@@ -41,7 +41,7 @@ One pecuilar fact about WebRTC is that it actually made up of many other protoco
 
 Each of these steps have dedicated chapters, but it is helpful to understand them at a high level first. Since they are dependant on each other it will help explain each steps purpose more.
 
-## Signaling
+### Signaling
 
 When a WebRTC Agent starts it has no idea who it is going to communicate with and what they are going to communicate about. Signaling solves this issue! Signaling is used to bootstrap the call so that the two WebRTC agents can start communicating directly.
 
@@ -53,7 +53,7 @@ Signaling uses an existing protocol SDP. SDP is a plain text buffee made up off 
 * Values used while connecting (uFrag/uPwd)
 * Values used while securing (certificate fingerprint)
 
-## Connecting
+### Connecting
 
 The two WebRTC Agents now know enough details to attempt to connect to each other. WebRTC again uses an existing technology called ICE.
 
@@ -64,7 +64,7 @@ The real magic here is 'NAT Traversal' and TURN Servers. These two concepts all 
 Once ICE successfully connects, WebRTC then moves on to establishing an encrypted transport. This transport is used for the audio, video and data.
 
 
-## Securing
+### Securing
 
 Now that we have bi-directional communication (via ICE) we need to establish secure communication. This is done through two protocols that pre-date WebRTC. The first protocol is DTLS (Datagram Transport Layer Security) which is just TLS over UDP. TLS is the technology that powers HTTPS. The second protocol is SRTP (Secure Real-time Transport Protocol).
 
@@ -74,18 +74,36 @@ WebRTC then uses a different protocol for audio/video transmission called RTP. W
 
 We are done! You now have bi-directional and secure communication. If you have a stable connection between your WebRTC Agents this is all the complexity you may need. Unfortunately the real world has packet loss and bandwidth limits, and the next section is about how we deal with them.
 
-## Communicating
+### Communicating
 
 We now have two WebRTC Agents with secure bi-directional communication. Lets start communicating!Again we use two pre-existing protocol RTP  (Real-time Transport Protocol) and SCTP (Stream Control Transmission Protocol). 
 
 RTP is used to carry media, and is encrypted using SRTP. The RTP protocol is quite minimal, but gives us what we need to implement real-time streaming. The important thing is that RTP gives flexibility to the developer so they can handle latency, loss and congestion as they please. We will discuss this further in the media chapter!
 
+The final protocol in the stack is SCTP. SCTP is used to send DataChannel messages and those messages are encrypted with DTLS. SCTP allows many different delivery options for messages. You can optionally choose to have unreliable, out of order delivery so you can get the latency needed for real-time systems.
 
 
-# How does WebRTC (the API) work
-This section is not an exhaustive demo of the WebRTC API. Instead we are going to show how common usage of the API maps to the WebRTC protocol.
+## WebRTC, a collection of protocols
+
+**TODO a diagram of protocols working together**
+
+WebRTC solves a lot of problems. At first this may even seem over-engineered. The genius of WebRTC is really the humility. It didn't assume it could solve everything better. Instead it embraced many existing single purpose technologies and bundled them together.
+
+This allows us to examine and learn each part individually without being overwhelmed.
+
+## How does WebRTC (the API) work
 
 
-* AddTrack creates SDP entry. Packets sent via RTP
-* onICEConnectionStateChange comes from ICE Agent
-*
+This section shows how the Javascript API maps to the protcol. If you aren't familiar with either that is ok. This is a fun section to return to as you learn more!
+
+
+### new PeerConnection()
+### addTrack
+### createDataChannel
+### createOffer()
+### setLocalDescription
+### setRemoteDescription
+### ontrack
+### oniceconnectionstatechange
+### onstatechange
+
