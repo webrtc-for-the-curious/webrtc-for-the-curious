@@ -97,10 +97,10 @@ This allows us to examine and learn each part individually without being overwhe
 This section shows how the Javascript API maps to the protcol. If you aren't familiar with either that is ok. This is a fun section to return to as you learn more!
 
 
-### new PeerConnection()
+### new PeerConnection
 ### addTrack
 ### createDataChannel
-### createOffer()
+### createOffer
 ### setLocalDescription
 ### setRemoteDescription
 ### ontrack
