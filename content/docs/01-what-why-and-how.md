@@ -76,7 +76,7 @@ We are done! You now have bi-directional and secure communication. If you have a
 
 ### Communicating
 
-We now have two WebRTC Agents with secure bi-directional communication. Lets start communicating!Again we use two pre-existing protocol RTP  (Real-time Transport Protocol) and SCTP (Stream Control Transmission Protocol). 
+We now have two WebRTC Agents with secure bi-directional communication. Lets start communicating!Again we use two pre-existing protocol RTP  (Real-time Transport Protocol) and SCTP (Stream Control Transmission Protocol).
 
 RTP is used to carry media, and is encrypted using SRTP. The RTP protocol is quite minimal, but gives us what we need to implement real-time streaming. The important thing is that RTP gives flexibility to the developer so they can handle latency, loss and congestion as they please. We will discuss this further in the media chapter!
 
@@ -106,14 +106,11 @@ addTrack creates a new RTP stream. A random SSRC will be generated for this stre
 
 Immediately after a SRTP Session is established these media packets will start being sent via ICE after encrypted using SRTP.
 
-
 ### createDataChannel
 
-createDataChannel creates a new SCTP
-stream. If this is the first Data Channel being created a SCTP association is started. The SCTP subsystem is not actually started until the first DataChannel is requested.
+createDataChannel creates a new SCTP stream. If no SCTP assocation existed before one is created. By default SCTP is not enabled, but is only started when one side requests a data channel.
 
-Immediately after a DTLS Session is established these media packets will start being sent via ICE after encrypted using DTLS.
-
+Immediately after a DTLS Session is established the SCTP assocation will start sending packets via ICE and encrypted with DTLS.
 ### createOffer
 
 createOffer generates a Session Description of the local state to be shared with the remote peer.
