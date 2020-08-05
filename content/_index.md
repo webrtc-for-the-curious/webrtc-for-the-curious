@@ -7,12 +7,33 @@ type: docs
 
 This book is available under the CC0 license. The authors have waived all their copyright and related rights in their works to the fullest extent allowed by law. You May use this work however you want and no attribution is required.
 
-The only intention of this book is to make the world a better place. WebRTC is a wonderful technology but is difficult to use. Politics and commercial interests have made it more difficult then it needs to be.
+The only intention of this book is to make the world a better place. WebRTC is a wonderful technology but is difficult to use. This book is vendor agnostic, and we have tried to remove any conflicts of interests.
 
 # What is this book.
 
-WebRTC for the curious is an Open Source book written for those that are always looking for more. This book was created by WebRTC implementors to share their hard earned knowledge with the world.
+This book was created by WebRTC implementors to share their hard earned knowledge with the world. WebRTC for the curious is an Open Source book written for those that are always looking for more. This book doesn't settle for abstraction.
 
-This is book is not a tutorial, and will not contain code. We will not be talking about any particular software, but all about protocols and APIs.
+This book is all about protocols and APIs, and will not be talking about any software in particular. We attempt to summarize RFCs and get all undocumented knowledge into one place. This is book is not a tutorial, and will not contain much code.
 
-This book is for when that thorny production issue hits. This book is for when you are building your one of a kind idea.
+# Who is this book for.
+
+* Web Developers who don’t even know what WebRTC solves, and want to learn more.
+* Someone who is already building with WebRTC but wants to know more beyond the APIs.
+* Established Developer who needs help debugging.
+* WebRTC implementor who needs clarification on a specific part.
+
+# Designed for multiple readings
+
+This book is designed to be read multiple times. Each chapter is self contained, so you can jump to any part of the book and not be lost.
+
+Each chapter aim to answer a single question, with three levels of information.
+
+* What needs to be solved?
+* How do we solve it?
+* Technical details about the solution.
+
+This means you can skip the second two points and start the next chapter and not be lost!
+
+# Get Involved!
+
+We need your help! This book is entirely developed on [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious)! We encourage readers to open issues with questions on things we didn't do a good job of covering yet.
