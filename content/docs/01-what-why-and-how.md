@@ -37,7 +37,7 @@ This is a question that takes an entire book to explain. However, to start off w
 
 These four steps happen sequentially. The prior step must be 100% successful for the subsequent one to even begin. At a high level this is what each one of these steps is accomplishing.
 
-One pecuilar fact about WebRTC is that it actually made up of many other protocols! To make WebRTC we stitch together many existing technologies. In that sense WebRTC is more a combination and configuration of well understood tech that has been around since the early 2000s.
+One peculiar fact about WebRTC is that it actually made up of many other protocols! To make WebRTC we stitch together many existing technologies. In that sense WebRTC is more a combination and configuration of well understood tech that has been around since the early 2000s.
 
 Each of these steps have dedicated chapters, but it is helpful to understand them at a high level first. Since they are dependant on each other it will help explain each steps purpose more.
 
@@ -68,7 +68,7 @@ Once ICE successfully connects, WebRTC then moves on to establishing an encrypte
 
 Now that we have bi-directional communication (via ICE) we need to establish secure communication. This is done through two protocols that pre-date WebRTC. The first protocol is DTLS (Datagram Transport Layer Security) which is just TLS over UDP. TLS is the technology that powers HTTPS. The second protocol is SRTP (Secure Real-time Transport Protocol).
 
-First WebRTC connects by doing a DTLS handshake over the connection established by ICE. Unlike HTTPS WebRTC doesnt use a central authority for certificates. Instead WebRTC just asserts that the certificate exchanged via DTLS matches the the fingerprint shared via signaling. This DTLS connection is then used for DataChannel messages.
+First WebRTC connects by doing a DTLS handshake over the connection established by ICE. Unlike HTTPS WebRTC doesn't use a central authority for certificates. Instead WebRTC just asserts that the certificate exchanged via DTLS matches the the fingerprint shared via signaling. This DTLS connection is then used for DataChannel messages.
 
 WebRTC then uses a different protocol for audio/video transmission called RTP. We secure our RTP packets using SRTP. We initialize our SRTP session by extracting the keys from the negotiated DTLS session. In a later chapter we discuss why media transmission has its own protocol.
 
@@ -93,7 +93,7 @@ This allows us to examine and learn each part individually without being overwhe
 
 ## How does WebRTC (the API) work
 
-This section shows how the Javascript API maps to the protcol. If you aren't familiar with either that is ok. This is a fun section to return to as you learn more!
+This section shows how the Javascript API maps to the protocol. This isn't meant as an extensive demo of the WebRTC API, but more to create a mental model of how it all ties together. If you aren't familiar with either that is ok. This is a fun section to return to as you learn more!
 
 #### `new PeerConnection`
 The PeerConnection is the top level 'WebRTC Session'. It contains all the protocols mentioned above. The subsystems are all allocated but nothing happens yet.
@@ -124,14 +124,24 @@ Usually after this call you will send the offer to the remote peer, and they wil
 
 #### `setRemoteDescription`
 
-`setRemoteDescription` is how we inform the local agent about the remote candidates state. This is where 'Signaling' is done.
+`setRemoteDescription` is how we inform the local agent about the remote candidates state. This is how the act of 'Signaling' is done with the Javascript API.
 
-When setRemoteDesc
+When `setRemoteDescription` has been called on both sides the WebRTC Agents now have enough info to start communicating P2P!
 
 #### `addicecandidate`
 
+`addIceCandidate` allows a WebRTC agent to add more remote ICE Candidates whenever they want. This API sends the ICE Candidate right into the ICE subsystem and has no other effect on the greater WebRTC connection.
+
 #### `ontrack`
+
+`ontrack` is a callback that is fired when a RTP packet is received from the remote peer. The incoming packets would have been declared in the Session Description that was passed to `setRemoteDescription`
+
+WebRTC uses the SSRC and looks up the associated MediaStream and MediaStreamTrack and fires this callback with these details populated.
 
 #### `oniceconnectionstatechange`
 
+`oniceconnectionstatechange` is a callback that is fired that reflects the state of the ICE Agent. When you have network connectivity or when you become disconnected this is how you are notified.
+
 #### `onstatechange`
+
+`onstatechange` is a combination of ICE and DTLS state. You can watch this to be notified when ICE and DTLS has completed successfully.
