@@ -1,4 +1,3 @@
-introduction.md
 mainmatter.txt
 01-what-and-why.md
 02-signaling.md
@@ -9,4 +8,5 @@ mainmatter.txt
 07-what-can-you-build.md
 08-debugging.md
 09-history-of-webrtc.md
+10-faq.md
 Book.txt
