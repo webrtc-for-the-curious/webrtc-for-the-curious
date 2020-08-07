@@ -17,16 +17,17 @@ populates it with.
 This protocol is not specific to WebRTC, so we can learn the Session Description Protocol first without even talking about WebRTC. WebRTC only really takes advantage of a subset of the protcol so we are only going to cover that.  After we understand the protocol we will move on to its applied usage in WebRTC.
 
 ## Session Description Protocol
-The Session Description Protocol is defined in [RFC 4566](https://tools.ietf.org/html/rfc4566). It is a key/value protocol with a newline after each value. It will feel similar to an ini file.
+The Session Description Protocol is defined in [RFC 4566](https://tools.ietf.org/html/rfc4566). It is a key/value protocol with a newline after each value. It will feel similar to an ini file. A Session Description then contains an unlimited amount of Media Descriptions.
+Mentally you can model it as a Session Description contains an array of Media Descriptions.
 
-The protocol is used to communicate a list of Media Descriptions. A Media Description usually maps to a single stream of media. So if you wanted to describe a call with three video streams and two audio tracks you would beed five Media Descriptions.
+A Media Description usually maps to a single stream of media. So if you wanted to describe a call with three video streams and two audio tracks you would have five Media Descriptions.
 
 ### What does Key/Value mean
 Every line in a Session Description will start with a single character, this is your key. It will then be followed by an equal sign. Everything after that equal sign is the value. After the value is complete you will have a newline.
 
-The Session Description Protocol defines all the keys that are valid. You can only use letters for keys as defined bt the protocol. These keys all have significant meaning, which will be explained later. 
+The Session Description Protocol defines all the keys that are valid. You can only use letters for keys as defined bt the protocol. These keys all have significant meaning, which will be explained later.
 
-Take this example Session Description. 
+Take this Session Description excerpt.
 
 ```
 a=my-sdp-value
@@ -42,17 +43,35 @@ Not all key values defined by the Session Description Protocol are used by WebRT
 * `o` - Origin, contains a unique ID useful for renegotiations
 * `s` - Session Name, should be equal to '-'
 * `t` - Timing, should be equal to '0 0'
-* `m` - Meda Description, described in detail below
+* `m` - Media Description, described in detail below
 * `a` - Attribute, free text field this is the most common line in WebRTC
-* `c` - Connection Data, should be equal to 'IN IP4 0.0.0.0' 
+* `c` - Connection Data, should be equal to 'IN IP4 0.0.0.0'
 
 ### Media Descriptions
 
-The Media Description key is unlike any other. It is not just a value, but is the start if a block. 
+A Session Description can contain an unlimited amount of Media Descriptions.
 
+A Media Description definition contains a list of formats. These formats map to RTP Payload Types. The actual codec is then defined by a Attribute with the value `rtpmap` in the Media Description.
+The importance of RTP and RTP Payload Types is discussed later in the Media chapter. Each Media Description then can contain an unlimited amount of attributes.
 
+Take this Session Description excerpt.
+
+```
+v=0
+m=audio 4000 RTP/AVP 111
+a=rtpmap:111 OPUS/48000/2
+m=video 4000 RTP/AVP 96
+a=rtpmap:96 VP8/90000
+a=my-sdp-value
+```
+
+You have two Media Descriptions, one of type audio with fmt `111` and one of type video with fmt `96`. The first Media Description has only one attribute. This attribute maps the Payload Type `111` is Opus.
+The second Media Description has two attributes. The first attribute maps the Payload Type `96` to be VP8, and the second attribute is just `my-sdp-value`
 
 ### Full Example
+
+The following brings all the concepts we have talked about together. These are all the features of the Session Description Protocol that WebRTC uses. If you can read
+this you can read any WebRTC Session Description!
 
 ```
 v=0
@@ -66,13 +85,49 @@ m=video 4002 RTP/AVP 96
 a=rtpmap:96 VP8/90000
 ```
 
+* `v`, `o`, `s`, `c`, `t` are defined but all have no effect on the WebRTC session.
+* You have two Media Descriptions. One of type `audio` and one of type `video`.
+* Each of those have one attribute. This attribute configures details of the RTP pipeline, which is discussed in the 'Media Communication' chapter.
+
 ## Session Description Protocol and WebRTC
 
+The next piece of the puzzle is understanding how WebRTC uses the Session Description Protocol.
+
 ### Offers and Answers
+
+WebRTC uses an offer/answer model. All this means is that one WebRTC Agent makes an 'Offer' to start the call, and the other WebRTC Agents 'Answers' if it is willing to accept what has been offered.
+
+This gives the answerer a chance to reject codecs, Media Descriptions etc... that it is not willing to accept.
+
 ### Transceivers
-### Renegotiation
+
+Transceivers is a WebRTC specific concept that you will see in the API. What it is doing is exposing the 'Media Description' to the Javascript API. Each Media Description becomes a Transceiver. Every time you create a Transceiver a new Media Description is added to the local Session Description.
+
+Each Media Description in WebRTC will have a direction attribute. This allows a WebRTC Agent to declare 'I am going to send you this codec, but I am not willing to accept anything back'. There are four valid values
+
+* `send`
+* `recv`
+* `sendrecv`
+* `inactive`
+
 ### Values used by WebRTC
-### Simulcast
+
+This list is not extensive, but this is a list of common attributes that you will see in a Session Description from a WebRTC Agent. Many of these values control the subsystems that we haven't discussed yet.
+
+* `group:BUNDLE`
+* `fingerprint:sha-256`
+* `setup:`
+* `mid`
+* `ice-ufrag`
+* `ice-pwd`
+* `rtcp-mux`
+* `rtcp-rsize`
+* `rtpmap`
+* `fmtp`
+* `candidate`
+* `end-of-candidates`
+* `ssrc`
+
 ### Examples
 
 ```
@@ -124,3 +179,9 @@ a=candidate:foundation 1 udp 1694498815 1.2.3.4 57336 typ srflx raddr 0.0.0.0 rp
 a=candidate:foundation 2 udp 1694498815 1.2.3.4 57336 typ srflx raddr 0.0.0.0 rport 57336 generation 0
 a=end-of-candidates
 ```
+
+### Further Topics
+In later versions of this book the following topics will also be addressed. If you have more questions please submit a Pull Request!
+
+* Renegotation
+* Simulcast
