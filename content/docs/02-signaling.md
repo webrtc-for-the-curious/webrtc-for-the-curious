@@ -19,6 +19,8 @@ This protocol is not specific to WebRTC, so we can learn the Session Description
 ## Session Description Protocol
 The Session Description Protocol is defined in [RFC 4566](https://tools.ietf.org/html/rfc4566). It is a key/value protocol with a newline after each value. It will feel similar to an ini file.
 
+The protocol is used to communicate a list of Media Descriptions. A Media Description usually maps to a single stream of media. So if you wanted to describe a call with three video streams and two audio tracks you would beed five Media Descriptions.
+
 ### What does Key/Value mean
 Every line in a Session Description will start with a single character, this is your key. It will then be followed by an equal sign. Everything after that equal sign is the value. After the value is complete you will have a newline.
 
@@ -41,12 +43,16 @@ Not all key values defined by the Session Description Protocol are used by WebRT
 * `s` - Session Name, should be equal to '-'
 * `t` - Timing, should be equal to '0 0'
 * `m` - Meda Description, described in detail below
-* `a` - Attribute, free text field, most common line in WebRTC
-* `c`
+* `a` - Attribute, free text field this is the most common line in WebRTC
+* `c` - Connection Data, should be equal to 'IN IP4 0.0.0.0' 
 
 ### Media Descriptions
 
-### Example
+The Media Description key is unlike any other. It is not just a value, but is the start if a block. 
+
+
+
+### Full Example
 
 ```
 v=0
