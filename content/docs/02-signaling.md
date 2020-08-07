@@ -20,9 +20,29 @@ This protocol is not specific to WebRTC, so we can learn the Session Description
 The Session Description Protocol is defined in [RFC 4566](https://tools.ietf.org/html/rfc4566). It is a key/value protocol with a newline after each value. It will feel similar to an ini file.
 
 ### What does Key/Value mean
+Every line in a Session Description will start with a single character, this is your key. It will then be followed by an equal sign. Everything after that equal sign is the value. After the value is complete you will have a newline.
+
+The Session Description Protocol defines all the keys that are valid. You can only use letters for keys as defined bt the protocol. These keys all have significant meaning, which will be explained later. 
+
+Take this example Session Description. 
+
+```
+a=my-sdp-value
+a=second-value
+```
+
+You have two lines. Each with the key `a`. The first line has the value `my-sdp-value`, the second line has the value `second-value`.
 
 ### WebRTC only uses some keys
-`v`, `o`, `s`, `t`, `m`, `a`, `c`
+Not all key values defined by the Session Description Protocol are used by WebRTC. The following are the only keys you need to understand. Don't worry about fully understanding yet, but this will be a handy reference in the future.
+
+* `v` - Version, should be equal to '0'
+* `o` - Origin, contains a unique ID useful for renegotiations
+* `s` - Session Name, should be equal to '-'
+* `t` - Timing, should be equal to '0 0'
+* `m` - Meda Description, described in detail below
+* `a` - Attribute, free text field, most common line in WebRTC
+* `c`
 
 ### Media Descriptions
 
@@ -31,7 +51,7 @@ The Session Description Protocol is defined in [RFC 4566](https://tools.ietf.org
 ```
 v=0
 o=- 0 0 IN IP4 127.0.0.1
-s=My Simple Session Description
+s=-
 c=IN IP4 127.0.0.1
 t=0 0
 m=audio 4000 RTP/AVP 111
