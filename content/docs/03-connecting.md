@@ -27,8 +27,11 @@ Direct Communication is also more secure. Since users aren't routing your data t
 
 ## How does it work?
 
-Everything described above is done by [ICE](https://tools.ietf.org/html/rfc8445). Another protocol that pre-dates WebRTC.
+The process described above is [ICE](https://tools.ietf.org/html/rfc8445). Another protocol that pre-dates WebRTC.
 
+ICE is a protocol that tries to find the best way to communicate between two ICE Agents. Each ICE Agenta publishes the ways it is reachable, these are known as candidatea. ICE then determines the best candidate pair.
+
+The actual ICE Process is described in greater detail later in this chapter. To understand why ICE exists it is useful to understand what network behaviors it is taking advantage of.
 
 ## Networking real world constraints
 ### Not in the same network
@@ -36,7 +39,6 @@ Everything described above is done by [ICE](https://tools.ietf.org/html/rfc8445)
 ### Firewall Rules
 
 ## Network Address Translation
-
 ### Port Mapping
 ### Filtering
 
@@ -47,5 +49,3 @@ Everything described above is done by [ICE](https://tools.ietf.org/html/rfc8445)
 ### Candidate Gathering
 ### Connectivity Checks
 ### Candidate Selection
-
-
