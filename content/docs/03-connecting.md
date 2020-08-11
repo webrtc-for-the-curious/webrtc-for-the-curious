@@ -38,12 +38,23 @@ ICE is all about overcoming the constraints of real world networks. Before we ev
 
 
 ### Not in the same network
-Most of the time the other WebRTC Agent will not even be in the same network! A typical call will usually have two WebRTC Agents in different networks with no direct connectivity.
+Most of the time the other WebRTC Agent will not even be in the same network! A typical call is usually between two WebRTC Agents in different networks with no direct connectivity.
 
-Visually it looks something like.
+Consider the following network topology.
 
-*TODO Two peers inside different NATs*
+{{<mermaid>}}
+graph TD
+  A{Public Internet}
+  A --> B["Router A (IP Address 5.0.0.1)"]
+		B --> E["WebRTC Agent 1 (IP 192.168.0.1)"]
+		B --> F["WebRTC Agent 2 (IP 192.168.0.2)"]
 
+  A --> C["Router B (IP Address 5.0.0.2)"]
+		C --> G["WebRTC Agent 3 (IP 192.168.1.1)"]
+		C --> H["WebRTC Agent 4 (IP 192.168.1.2)"]
+{{< /mermaid >}}
+
+In the above graph you have two distinct networks. Then in each network you have two WebRTC Agents. It is easy for us to make a call between WebRTC Agents in the same network, but how do you connect to something in a completely different network?
 
 ### Protocol Restrictions
 
