@@ -6,69 +6,99 @@ weight: 4
 
 ## Why do I need a dedicated subsystem for connecting?
 
-WwbRTC will go to great lengths to acheive bi-directional communication between two agents. These agents can be in different networks with no direct communication. But by using NAT traversal WebRTC makes it happen. The packets aren't even routed through a relay, it is a direct connection.
+WwbRTC will go to great lengths to achieve direct bi-directional communication between two WebRTC Agents. These agents may even be in different networks with no direct communication between agents, by using NAT Traversal WebRTC can make communication happen. NAT Traversal is a networking technique that enables communication between two peers that can't directly connect.
 
-In situations where direct connectivity isn't possible WebRTC has other techniques all well. You can use a TURN server to communicate across protocols (UDP <-> TCP) and versions (IPv4 <-> IPv6) and in places where NAT Traversal can't do the job.
+In situations where direct connectivity doesn't exist and NAT Traversal fails WebRTC has other techniques. You can then use a TURN server to communicate across protocols (UDP <-> TCP) and versions (IPv4 <-> IPv6).
 
-Because WebRTC does this you get
+Because WebRTC has these attributes you get these advantages over traditional Client/Server technology.
 
-* No Bandwidth Costs from running servers
+### Reduced Bandwidth Costs
 
-Since all the communication happens directly during peers you don't have to pay for transporting that data!
+Since media communication happens directly during peers you don't have to pay for transporting it.
 
-* Lower Latency
+###  Lower Latency
 
-Communication is much faster when it is direct! If a user has to run everything through you server it makes things a lot slower.
+Communication is faster when it is direct! When a user had to run everything through you server it makes things slower.
 
-* Secure E2E Communication
+###  Secure E2E Communication
 
-Direct Communication is also more secure. Since users aren't routing your data through your server they don't even need to trust you won't decrypt it.
-
+Direct Communication is more secure. Since users aren't routing your data through your server they don't even need to trust you won't decrypt it.
 
 ## How does it work?
 
 The process described above is [ICE](https://tools.ietf.org/html/rfc8445). Another protocol that pre-dates WebRTC.
 
-ICE is a protocol that tries to find the best way to communicate between two ICE Agents. Each ICE Agenta publishes the ways it is reachable, these are known as candidatea. ICE then determines the best candidate pair.
+ICE is a protocol that tries to find the best way to communicate between two ICE Agents. Each ICE Agents publishes the ways it is reachable, these are known as candidates. ICE then determines the best candidate pairing of candidates.
 
-The actual ICE Process is described in greater detail later in this chapter. To understand why ICE exists it is useful to understand what network behaviors it is taking advantage of.
+The actual ICE Process is described in greater detail later in this chapter. To understand why ICE exists it is useful to understand what network behaviors were are overcoming.
 
 ## Networking real world constraints
 ICE is all about overcoming the constraints of real world networks. Before we even explore the solution lets talk about the actual problems.
 
-
 ### Not in the same network
-Most of the time the other WebRTC Agent will not even be in the same network! A typical call is usually between two WebRTC Agents in different networks with no direct connectivity.
+Most of the time the other WebRTC Agent will not even be in the same network. A typical call is usually between two WebRTC Agents in different networks with no direct connectivity.
 
-Consider the following network topology.
+Below is a graph of two distinct networks, connected by the public internet. Then in each network you have two hosts.
 
 {{<mermaid>}}
-graph TD
-  A{Public Internet}
-  A --> B["Router A (IP Address 5.0.0.1)"]
-		B --> E["WebRTC Agent 1 (IP 192.168.0.1)"]
-		B --> F["WebRTC Agent 2 (IP 192.168.0.2)"]
+graph TB
+subgraph netb ["Network B (IP Address 5.0.0.2)"]
+  b3["Agent 3 (IP 192.168.0.1)"]
+  b4["Agent 4 (IP 192.168.0.1)"]
+  routerb["Router B"]
+  end
 
-  A --> C["Router B (IP Address 5.0.0.2)"]
-		C --> G["WebRTC Agent 3 (IP 192.168.1.1)"]
-		C --> H["WebRTC Agent 4 (IP 192.168.1.2)"]
+subgraph neta ["Network A (IP Address 5.0.0.1)"]
+  routera["Router A"]
+  a1["Agent 1 (IP 192.168.0.1)"]
+  a2["Agent 2 (IP 192.168.0.1)"]
+  end
+
+pub{Public Internet}
+routera-->pub
+routerb-->pub
+
 {{< /mermaid >}}
 
-In the above graph you have two distinct networks. Then in each network you have two WebRTC Agents. It is easy for us to make a call between WebRTC Agents in the same network, but how do you connect to something in a completely different network?
+For the hosts in the same network it is very easy to connect. `192.168.0.1 -> 192.168.0.2` is easy to do! However a host using `Router B` has no way to directly access anything using `Router A`. A host using `Router B` could send traffic directly to `Router A`, but the request would end there.
 
 ### Protocol Restrictions
 
+Some networks don't allow UDP traffic at all, or maybe they don't allow TCP. Some networks have a very low MTU. There are lots of variables that network administrators can change that can make communication difficult.
+
 ### Firewall/IDS Rules
 
+Another is 'Deep Packet Inspection' and other intelligent filtering. Some network administrators will run software that tries to process every packet. Many times this software doesn't understand WebRTC, so blocks because it doesn't know what to do
 
-## Network Address Translation Address and Port Mapping
-NAT Mapping is the magic that makes the direct connectivity of WebRTC possible. With this you can have two peers in completely different networks communicating directly. This behavior allows traffic to an external address be forwarded to an internal host.
+## Network Address Translation and Address/Port Mapping
+NAT Mapping is the magic that makes the connectivity of WebRTC possible, even when the peers can't access each other on their own. With this you can have two peers in completely different networks communicating directly.
 
-*TODO port forwarding diagram*
+Again we have a `Agent 1` and `Agent 2` and they are in different networks. However traffic is flowing completely through. Visualized that looks like.
 
-NAR mapping essentially is a automated/config-less version of doing port forwarding in your router.
+{{<mermaid>}}
+graph TB
+subgraph netb ["Network B (IP Address 5.0.0.2)"]
+  b2["Agent 2 (IP 192.168.0.1)"]
+  routerb["Router B"]
+  end
 
-The downside to NAT Mapping is that it has been implemented in many different ways. In some cases network administrators may even disable it entirely.
+subgraph neta ["Network A (IP Address 5.0.0.1)"]
+  routera["Router A"]
+  a1["Agent 1 (IP 192.168.0.1)"]
+  end
+
+pub{Public Internet}
+
+a1-.->routera;
+routera-.->pub;
+pub-.->routerb;
+routerb-.->b2;
+{{< /mermaid >}}
+
+To makes this possible you need to establish a NAT Mapping first. NAT mapping will feel like an automated/config-less version of doing port forwarding in your router.
+
+The downside to NAT Mapping is that that network behavior is inconsistent between networks. ISPs and hardware manufacturers do it in different ways for their own reasons. In some cases network administrators may even disable it.
+The full range of behaviors is understood and observable, so a ICE Agent is able to confirm it created a NAT Mapping, and the attributes of the mapping.
 
 ### Creating a Mapping
 ### Mapping Creation Behaviors
