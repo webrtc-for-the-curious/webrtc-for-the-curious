@@ -100,12 +100,47 @@ To makes this possible you need to establish a NAT Mapping first. NAT mapping wi
 The downside to NAT Mapping is that that network behavior is inconsistent between networks. ISPs and hardware manufacturers do it in different ways for their own reasons. In some cases network administrators may even disable it.
 The full range of behaviors is understood and observable, so a ICE Agent is able to confirm it created a NAT Mapping, and the attributes of the mapping.
 
-### Creating a Mapping
-### Mapping Creation Behaviors
-### Mapping Filtering Behaviors
-### Mapping Lifetimes
+The document that describes these behaviors is [RFC 4787](https://tools.ietf.org/html/rfc4787)
 
-## STUN ()
+### Creating a Mapping
+Creating a mapping is the easiest part. When you send a packet to an address outside your network, a mapping is created! If the server then responds to your request the response will be delivered back to the host that sent it.
+The server can respond with multiple packets back to your single message.
+
+The details around mappings is where it gets complicated.
+
+### Mapping Creation Behaviors
+These are the rules for when a new mapping is created. They fall into three different categories.
+
+#### Endpoint Independent Mapping
+One mapping is created for each sender inside the NAT. If you send two packets to different remote addresses the NAT Mapping will be re-used. Both remote hosts could then respond and it would be sent back to the same local listener.
+
+This is the best case scenario. For a call to work at least one side MUST be of this type.
+
+#### Address Dependent Mapping
+A new mapping is created every time you send to a new address. If you send two packets to different hosts two mappings will be created. If you send two packets to the same remote host, but different destination ports a new mapping will NOT be created.
+
+#### Address and Port Dependent Mapping
+A new mapping is created if the remote IP or Port is different. If you send two packets to the same remote host, but different destination ports a new mapping will be created.
+
+### Mapping Filtering Behaviors
+Mapping filtering are the rules around who is allowed to use the mapping. They fall into three similar classifications.
+
+#### Endpoint Independent Filtering
+Anyone can use the mapping. After you create the mapping by sending a packet that mapping can be used by anyone on the internet.
+
+#### Address Dependent Filtering
+Only the host the mapping was created for can use the mapping. If you send a packet to host `A` it can respond back with as many packets as it wants. If host `B` attempts to send a packet to that mapping it will be ignored.
+
+#### Address and Port Dependent Filtering
+Only the host and port the mapping was created for can use the mapping. If you send a packet to host `A:5000` it can respond back with as many packets as it wants. If host `A:5001` attempts to send a packet to that mapping it will be ignored.
+
+### Mapping Refresh
+It is recommended that if a mapping is unused for 5 minutes it should be destroyed. This is entirely up to the ISP or hardware manufacturer.
+
+## STUN (Session Traversal Utilities for NAT)
+STUN is a protocol designed for dealing with NATs, it is a tool that is used by ICE but existed before ICE as well. It is defined by [RFC 5389](https://tools.ietf.org/html/rfc5389)
+
+
 ## TURN ()
 
 ## ICE ()
