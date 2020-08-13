@@ -138,13 +138,80 @@ Only the host and port the mapping was created for can use the mapping. If you s
 It is recommended that if a mapping is unused for 5 minutes it should be destroyed. This is entirely up to the ISP or hardware manufacturer.
 
 ## STUN (Session Traversal Utilities for NAT)
-STUN is a protocol designed for dealing with NATs, it is a tool that is used by ICE but existed before ICE as well. It is defined by [RFC 5389](https://tools.ietf.org/html/rfc5389)
+STUN is a protocol that was created just for working with NATs. This is another technology pre-dates WebRTC (and ICE!). It is defined by [RFC 5389](https://tools.ietf.org/html/rfc5389) STUN defines the structure of packets we send over UDP. The STUN protocol is also used by ICE/TURN.
+
+STUN is useful because it gives us all the details about our NAT Mappings. We are able to create them, but we have no idea what the address is! STUN not only gives you the ability to create a mapping, but then you get the details so you can share it with others so they can send traffic to you via the mapping you created.
+
+Lets start with a basic description of STUN. Later it will be extended later for TURN and ICE usage. For now we are just going to describe the Request/Response flow to create a mapping and then how we get the details of it to share with others. This is what actually happens when you have a `stun:` server in your ICE urls.
+
+### Protocol Structure
+Every STUN packets begins with a STUN header, with the following structure
+
+```
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0 0|     STUN Message Type     |         Message Length        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         Magic Cookie                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                               |
+|                     Transaction ID (96 bits)                  |
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                             Data                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+```
+
+#### STUN Message Type
+Each STUN packet has a type. For now we only care about the following. We make a request to a STUN server, and it responds with a different type.
+
+* Binding Request - `0x0001`
+* Binding Response - `0x0101`
+
+#### Message Length
+This is how long the `Data` section is. This section contains arbitrary data that is defined by the `Message Type`
+
+#### Magic Cookie
+The fixed value `0x2112A442`, it helps distinguish STUN traffic from other protocols.
+
+#### Translation ID
+96-bit identifier that uniquely identifies a request/response. You use this to make sure the STUN server is respond to your request.
+
+#### Data
+Data will contain a list of STUN attributes. A STUN Attribute has the following structure.
+
+```
+0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Type                  |            Length             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         Value (variable)                ....
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ ```
+
+The `STUN Binding Request` uses no attributes.
+
+The `STUN Binding Response` uses a `XOR-MAPPED-ADDRESS (0x0020)`. This attribute contains an IP/Port. This is the IP/Port of the NAT Mapping that is created! Many people will call this your `Public IP` or `Server Reflexive Candidate`
+
+### Create a NAT Mapping
+### Figuring out NAT Type
+
+## TURN (Traversal Using Relays around NAT)
+### TURN Lifecycle
+#### Allocations
+#### Permissions
+#### Send Indication/ChannelData
+
+### TURN Protocol
+
+### TURN Usage
+#### One TURN Allocations for Communication
+#### Two TURN Allocations for Communication
 
 
-## TURN ()
-
-## ICE ()
-
+## ICE (Interactive Connectivity Establishment)
 ### Candidate Gathering
 #### Host
 #### Host (mDNS)
