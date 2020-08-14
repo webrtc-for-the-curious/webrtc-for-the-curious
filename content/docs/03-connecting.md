@@ -6,7 +6,7 @@ weight: 4
 
 ## Why do I need a dedicated subsystem for connecting?
 
-WwbRTC will go to great lengths to achieve direct bi-directional communication between two WebRTC Agents. These agents may even be in different networks with no direct communication between agents, by using NAT Traversal WebRTC can make communication happen. NAT Traversal is a networking technique that enables communication between two peers that can't directly connect.
+WebRTC will go to great lengths to achieve direct bi-directional communication between two WebRTC Agents. These agents may even be in different networks with no direct communication between agents, by using NAT Traversal WebRTC can make communication happen. NAT Traversal is a networking technique that enables communication between two peers that can't directly connect.
 
 In situations where direct connectivity doesn't exist and NAT Traversal fails WebRTC has other techniques. You can then use a TURN server to communicate across protocols (UDP <-> TCP) and versions (IPv4 <-> IPv6).
 
@@ -70,8 +70,8 @@ Some networks don't allow UDP traffic at all, or maybe they don't allow TCP. Som
 
 Another is 'Deep Packet Inspection' and other intelligent filtering. Some network administrators will run software that tries to process every packet. Many times this software doesn't understand WebRTC, so blocks because it doesn't know what to do
 
-## Network Address Translation and Address/Port Mapping
-NAT Mapping is the magic that makes the connectivity of WebRTC possible, even when the peers can't access each other on their own. With this you can have two peers in completely different networks communicating directly.
+## NAT Mapping
+NAT(Network Address Translation) Mapping is the magic that makes the connectivity of WebRTC possible, even when the peers can't access each other on their own. With this you can have two peers in completely different networks communicating directly.
 
 Again we have a `Agent 1` and `Agent 2` and they are in different networks. However traffic is flowing completely through. Visualized that looks like.
 
@@ -137,8 +137,8 @@ Only the host and port the mapping was created for can use the mapping. If you s
 ### Mapping Refresh
 It is recommended that if a mapping is unused for 5 minutes it should be destroyed. This is entirely up to the ISP or hardware manufacturer.
 
-## STUN (Session Traversal Utilities for NAT)
-STUN is a protocol that was created just for working with NATs. This is another technology pre-dates WebRTC (and ICE!). It is defined by [RFC 5389](https://tools.ietf.org/html/rfc5389) STUN defines the structure of packets we send over UDP. The STUN protocol is also used by ICE/TURN.
+## STUN
+STUN(Session Traversal Utilities for NAT) is a protocol that was created just for working with NATs. This is another technology pre-dates WebRTC (and ICE!). It is defined by [RFC 5389](https://tools.ietf.org/html/rfc5389) STUN defines the structure of packets we send over UDP. The STUN protocol is also used by ICE/TURN.
 
 STUN is useful because it gives us all the details about our NAT Mappings. We are able to create them, but we have no idea what the address is! STUN not only gives you the ability to create a mapping, but then you get the details so you can share it with others so they can send traffic to you via the mapping you created.
 
@@ -198,7 +198,9 @@ The `STUN Binding Response` uses a `XOR-MAPPED-ADDRESS (0x0020)`. This attribute
 ### Create a NAT Mapping
 ### Figuring out NAT Type
 
-## TURN (Traversal Using Relays around NAT)
+## TURN
+TURN (Traversal Using Relays around NAT)
+
 ### TURN Lifecycle
 #### Allocations
 #### Permissions
@@ -211,7 +213,9 @@ The `STUN Binding Response` uses a `XOR-MAPPED-ADDRESS (0x0020)`. This attribute
 #### Two TURN Allocations for Communication
 
 
-## ICE (Interactive Connectivity Establishment)
+## ICE
+ICE (Interactive Connectivity Establishment)
+
 ### Candidate Gathering
 #### Host
 #### Host (mDNS)
