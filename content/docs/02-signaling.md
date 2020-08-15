@@ -117,8 +117,8 @@ This list is not extensive, but this is a list of common attributes that you wil
 ##### `group:BUNDLE`
 Bundling is the act of running multiple types of traffic over one connection. Some WebRTC implementations use a dedicated connection per media stream. Bundling should be preferred.
 
-    
-##### `fingerprint:sha-256`     
+
+##### `fingerprint:sha-256`
 This is a hash of the certificate the peer is using for DTLS. After the DTLS handshake is completed you compare this to the actual certificate to confirm you are communicating with whom you expect.
 
 ##### `setup:`
@@ -126,7 +126,7 @@ This controls the DTLS Agent behavior. This determines if it runs as a client or
 
 * `setup:active` - Run as DTLS Client
 * `setup:passive` - Run as DTLS Server
-* `setup:actpass` - Ask other WebRTC Agent to choose  
+* `setup:actpass` - Ask other WebRTC Agent to choose
 
 ##### `ice-ufrag`
 This is the user fragment value for the ICE Agent. Used for the authentication of ICE Traffic.
@@ -135,7 +135,7 @@ This is the user fragment value for the ICE Agent. Used for the authentication o
 This is the password for the ICE Agent. Used for authentication of ICE Traffic.
 
 ##### `rtpmap`
-This value is used to map a specific codec to a RTP Payload Type. Payload types are not static so every call the Offerer decides the Payload types for each codec. 
+This value is used to map a specific codec to a RTP Payload Type. Payload types are not static so every call the Offerer decides the Payload types for each codec.
 
 ##### `fmtp`
 Defines additional values for one Payload Type. This is useful to communicate a specific video profile or encoder setting.
@@ -146,7 +146,7 @@ This is an ICE Candidate that comes from the ICE Agent. This is one possible add
 
 ##### `ssrc`
 
-A SSRC defines a single media stream track. 
+A SSRC defines a single media stream track.
 
 `label` is the id for this individual stream. `mslabel` is the id for a container that can multiple streams inside of it.
 
