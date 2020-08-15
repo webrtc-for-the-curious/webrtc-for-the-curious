@@ -209,26 +209,95 @@ Unfortunately the `Mapped Address` might not be useful in all cases. If it is `A
 ## TURN
 TURN (Traversal Using Relays around NAT) is defined in [RFC5766](https://tools.ietf.org/html/rfc5766) is the solution when direct connectivity isn't possible. It could be because you have two NAT Types that are incompatible, or maybe can't speak the same protocol! TURN is also important for privacy purposes. By running all your communication through TURN you obscure the clients actual address.
 
-TURN uses a dedicated server. This server acts as a proxy for a client. The client connects to a TURN Server and creates an `Allocation`. By creating a `Allocation` a client gets a temporary IP/Port/Protocol that can send into to get traffic back to the client. This new listener is known as the `Relayed Transport Address`.
-Think of it like a forwarding address! Anything you send into this is forwarded to the client. Also the client then sends packets via the `Relayed Transport Address`.
+TURN uses a dedicated server. This server acts as a proxy for a client. The client connects to a TURN Server and creates an `Allocation`. By creating a `Allocation` a client gets a temporary IP/Port/Protocol that can send into to get traffic back to the client.
+This new listener is known as the `Relayed Transport Address`.  Think of it like a forwarding address, you give this out so others can send you traffic via TURN! For each user you give the `Relay Transport Address` you must create a 'Permission' for.
+
+When you send outbound traffic via TURN it is sent via the `Relayed Transport Address`. When a remote peer gets traffic they see it coming from the TURN Server.
 
 ### TURN Lifecycle
 The following is everything that a client who wishes to create a TURN allocation has to do. Communicating with someone who is using TURN requires no changes though, you get a IP/Port and communicate with it like any other host.
 
 #### Allocations
-Allocations are at the core of TURN. A Allocation is basically a 'TURN Session'. To create a TURN allocation you communicate with the TURN control port (usually 3478)
+Allocations are at the core of TURN. A Allocation is basically a 'TURN Session'. To create a TURN allocation you communicate with the TURN `Server Transport Address` (usually 3478)
 
-When creating an allocation you need to provide/decide a few things
+When creating an allocation you need to provide/decide the following
 * Username/Password - Creating TURN allocations require authentication
 * Allocation Transport - The `Relayed Transport Address` can be UDP or TCP
+* Even-Port - You can request sequential ports for multiple allocations, not relevant for WebRTC
+
+If the request succeeded you get a response with the TURN Server with the follow STUN Attributes in the Data section.
+* `XOR-MAPPED-ADDRESS` - `Mapped Address` of the `TURN Client`. When someone sends data to the `Relayed Transport Address` this is where it is forwarded too.
+* `RELAYED-ADDRESS` - This is the address that you give out to other clients. If someone sends a packet to this address it is relayed to the TURN Client.
+* `LIFETIME` - How long until this TURN Allocation is destroyed. You can extend the lifetime by sending a `Refresh` request.
 
 #### Permissions
+A remote host can't send into your `Relayed Transport Address` until you create a permission for them. When you create a permission you are telling the TURN server that this IP/Port is allowed to send inbound traffic.
 
-#### Send Indication/ChannelData
+The remote host needs to give you the IP/Port as it appears to the TURN server. This means it should send a `STUN Binding Request` to the TURN Server. A common error case is that a remote host will send a `STUN Binding Request` to a different Server. They will then ask you to create a permission for this IP.
+
+If they are behind a `Address Dependent Mapping` using a different server for getting the 'Mapping Address' and communicating with TURN will fail! The 'Mapping Address' will be different for the two servers, so it is important to do both on the same server.
+
+#### SendIndication/ChannelData
+These two messages are for the TURN Client to send messages to a remote peer.
+
+SendIndication is a self contained message. Inside it is the data you wish to send, and who you wish to send it too. This is wasteful if you are sending a lot of messages to a remote peer. If you send 1,000 messages you will repeat their IP Address 1,000 times!
+
+ChannelData allows you to send data, but not repeat an IP Address. You create a Channel with a IP/Port. You then send with the ChannelId, and the IP/Port is populated. This is the better choice if you are sending lots of messages.
+
+#### Refreshing
+Allocations will destroy themselves automatically. The TURN Client must refresh them sooner then the `LIFETIME` given when creating the allocation.
 
 ### TURN Usage
+TURN Usage exists in two forms. Usually you have one peer acting as a 'TURN Client' and the other side communicating directly. In bad cases you might have TURN Usage on both sides because of improper setup.
+
+These diagrams help illustrate what that would look like.
+
 #### One TURN Allocations for Communication
+{{<mermaid>}}
+graph TB
+
+subgraph turn ["TURN Allocation"]
+  serverport["Server Transport Address"]
+  relayport["Relayed Transport Address" ]
+  end
+
+turnclient{TURN Client}
+peer{UDP Client}
+
+turnclient-->|"ChannelData (To UDP Client)"|serverport
+serverport-->|"ChannelData (From UDP Client)"|turnclient
+
+peer-->|"Raw Network Traffic (To TURN Client)"|relayport
+relayport-->|"Raw Network Traffic (To UDP Client)"|peer
+{{< /mermaid >}}
+
 #### Two TURN Allocations for Communication
+{{<mermaid>}}
+graph TB
+
+subgraph turna["TURN Allocation A"]
+  serverportA["Server Transport Address"]
+  relayportA["Relayed Transport Address" ]
+  end
+
+subgraph turnb["TURN Allocation B"]
+  serverportB["Server Transport Address"]
+  relayportB["Relayed Transport Address" ]
+  end
+
+
+turnclientA{TURN Client A}
+turnclientB{TURN Client B}
+
+turnclientA-->|"ChannelData"|serverportA
+serverportA-->|"ChannelData"|turnclientA
+
+turnclientB-->|"ChannelData"|serverportB
+serverportB-->|"ChannelData"|turnclientB
+
+relayportA-->|"Raw Network Traffic"|relayportB
+relayportB-->|"Raw Network Traffic"|relayportA
+{{< /mermaid >}}
 
 ## ICE
 ICE (Interactive Connectivity Establishment)
