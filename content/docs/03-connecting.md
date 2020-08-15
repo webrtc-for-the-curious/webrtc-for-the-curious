@@ -175,8 +175,8 @@ This is how long the `Data` section is. This section contains arbitrary data tha
 #### Magic Cookie
 The fixed value `0x2112A442`, it helps distinguish STUN traffic from other protocols.
 
-#### Translation ID
-96-bit identifier that uniquely identifies a request/response. You use this to make sure the STUN server is respond to your request.
+#### Transaction ID
+96-bit identifier that uniquely identifies a request/response. This helps you pair up your requests and responses.
 
 #### Data
 Data will contain a list of STUN attributes. A STUN Attribute has the following structure.
@@ -193,25 +193,42 @@ Data will contain a list of STUN attributes. A STUN Attribute has the following 
 
 The `STUN Binding Request` uses no attributes.
 
-The `STUN Binding Response` uses a `XOR-MAPPED-ADDRESS (0x0020)`. This attribute contains an IP/Port. This is the IP/Port of the NAT Mapping that is created! Many people will call this your `Public IP` or `Server Reflexive Candidate`
+The `STUN Binding Response` uses a `XOR-MAPPED-ADDRESS (0x0020)`. This attribute contains an IP/Port. This is the IP/Port of the NAT Mapping that is created!
 
 ### Create a NAT Mapping
-### Figuring out NAT Type
+Creating a NAT Mapping using STUN just takes sending one request! You send a `STUN Binding Request` to the STUN Server. The STUN Server then responds with a `STUN Binding Response`.
+This `STUN Binding Response` will contain the `Mapped Address`. This `Mapped Address` is what you would share if someone wanted to send packets to you.
+
+This how a `Server Reflexive Candidate` is generated also known as your `Public IP`.
+
+### Determining NAT Type
+Unfortunately the `Mapped Address` might not be useful in all cases. If it is `Address Dependent` only the STUN server can send traffic back to you, making it useless for communicating with others.
+
+[RFC5780](https://tools.ietf.org/html/rfc5780) defines a method for running a test to determine your NAT Type. This would be useful because you would know ahead of time if direct connectivity was possible, or if you need to use a TURN Server.
 
 ## TURN
-TURN (Traversal Using Relays around NAT)
+TURN (Traversal Using Relays around NAT) is defined in [RFC5766](https://tools.ietf.org/html/rfc5766) is the solution when direct connectivity isn't possible. It could be because you have two NAT Types that are incompatible, or maybe can't speak the same protocol! TURN is also important for privacy purposes. By running all your communication through TURN you obscure the clients actual address.
+
+TURN uses a dedicated server. This server acts as a proxy for a client. The client connects to a TURN Server and creates an `Allocation`. By creating a `Allocation` a client gets a temporary IP/Port/Protocol that can send into to get traffic back to the client. This new listener is known as the `Relayed Transport Address`.
+Think of it like a forwarding address! Anything you send into this is forwarded to the client. Also the client then sends packets via the `Relayed Transport Address`.
 
 ### TURN Lifecycle
-#### Allocations
-#### Permissions
-#### Send Indication/ChannelData
+The following is everything that a client who wishes to create a TURN allocation has to do. Communicating with someone who is using TURN requires no changes though, you get a IP/Port and communicate with it like any other host.
 
-### TURN Protocol
+#### Allocations
+Allocations are at the core of TURN. A Allocation is basically a 'TURN Session'. To create a TURN allocation you communicate with the TURN control port (usually 3478)
+
+When creating an allocation you need to provide/decide a few things
+* Username/Password - Creating TURN allocations require authentication
+* Allocation Transport - The `Relayed Transport Address` can be UDP or TCP
+
+#### Permissions
+
+#### Send Indication/ChannelData
 
 ### TURN Usage
 #### One TURN Allocations for Communication
 #### Two TURN Allocations for Communication
-
 
 ## ICE
 ICE (Interactive Connectivity Establishment)
