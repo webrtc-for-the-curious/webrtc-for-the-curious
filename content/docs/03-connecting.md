@@ -386,8 +386,8 @@ linkStyle 6,7,8 stroke-width:2px,fill:none,stroke:blue;
 ### Candidate Selection
 The Controlling and Controlled Agent both start sending traffic on each pair. This is needed if one Agent is behind a `Address Dependent Mapping`, this will cause a `Peer Reflexive Candidate` to be created.
 
-Every `Candidate Pair` that saw network traffic is then promoted to a `Valid Candidate` pair.
-
-The Controlling Agent then nominates a `Valid Candidate` pair. If bi-directional communication is happen for that `Candidate Pair` it becomes the `Selected Candidate Pair`! This is used for the rest of the session.
+Each `Candidate Pair` that saw network traffic is then promoted to a `Valid Candidate` pair. The Controlling Agent then takes one `Valid Candidate` pair and nominates it. This becomes the `Nominated Pair`. The Controlling
+and Controlled Agent then attempt one more round of bi-directional communication. If that succeeds the `Nominated Pair` becomes the `Selected Candidate Pair`! This is used for the rest of the session.
 
 ### Restarts
+If the `Selected Candidate Pair` stops working for any reason (NAT Mapping Expires, TURN Server crashes) the ICE Agent will go to `Failed`. Both Agents can be restarted and do the whole process over again.
