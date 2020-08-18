@@ -7,11 +7,11 @@ weight: 2
 
 ## What is WebRTC.
 
-WebRTC is both an API and Protocol. The WebRTC protocol is a set of rules for two agents to negotiate bi-directional secure communication. The WebRTC API was designed just for Javascript. This Javascript API then allows web developers to use the WebRTC protocol in the browser.
+WebRTC is both an API and Protocol. The WebRTC protocol is a set of rules for two WebRTC agents to negotiate bi-directional secure communication. The WebRTC API was designed just for Javascript. This Javascript API then allows web developers to use the WebRTC protocol in the browser.
 
 A similar relationship would be HTTP and the fetch API. WebRTC the protocol would be HTTP, and WebRTC the API would be the fetch API.
 
-Many other APIs besides Javascript, servers and tools exist for WebRTC. All of these implementations can interact with each others.
+WebRTC is available in other APIs/languages besides Javascript. You can find servers and domain specific tools as well for WebRTC. All of these implementations use the WebRTC protocol so they can interact with each others.
 
 ## Why should I learn WebRTC?
 
@@ -35,17 +35,17 @@ This is a question that takes an entire book to explain. However, to start off w
 * Securing
 * Communicating
 
-These four steps happen sequentially. The prior step must be 100% successful for the subsequent one to even begin. At a high level this is what each one of these steps is accomplishing.
+These four steps happen sequentially. The prior step must be 100% successful for the subsequent one to even begin.
 
-One peculiar fact about WebRTC is that it actually made up of many other protocols! To make WebRTC we stitch together many existing technologies. In that sense WebRTC is more a combination and configuration of well understood tech that has been around since the early 2000s.
+One peculiar fact about WebRTC is that each step is actually made up of many other protocols! To make WebRTC we stitch together many existing technologies. In that sense WebRTC is more a combination and configuration of well understood tech that has been around since the early 2000s.
 
 Each of these steps have dedicated chapters, but it is helpful to understand them at a high level first. Since they are dependant on each other it will help explain each steps purpose more.
 
 ### Signaling
 
-When a WebRTC Agent starts it has no idea who it is going to communicate with and what they are going to communicate about. Signaling solves this issue! Signaling is used to bootstrap the call so that the two WebRTC agents can start communicating directly.
+When a WebRTC Agent starts it has no idea who it is going to communicate with and what they are going to communicate about. Signaling solves this issue! Signaling is used to bootstrap the call so that two WebRTC agents can start communicating.
 
-Signaling uses an existing protocol SDP. SDP is a plain text buffer made up off key/value pairs and contains a list of 'media sections'. The SDP that the two WebRTC Agents exchange contains details like.
+Signaling uses an existing protocol SDP. SDP is a plain text protocol. Each SDP message is made up off key/value pairs and contains a list of 'media sections'. The SDP that the two WebRTC Agents exchange contains details like.
 
 * IPs and Ports that the agent is reachable on (candidates)
 * How many audio and video tracks the agent wishes to send
@@ -55,11 +55,11 @@ Signaling uses an existing protocol SDP. SDP is a plain text buffer made up off 
 
 ### Connecting
 
-The two WebRTC Agents now know enough details to attempt to connect to each other. WebRTC again uses an existing technology called ICE.
+The two WebRTC Agents now know enough details to attempt to connect to each other. WebRTC then uses another established technology called ICE.
 
 ICE (Interactive Connectivity Establishment) is a protocol that pre-dates WebRTC. ICE allows the establishment of a connection between two Agents. These Agents could be in the same network, or on the other side of the world. ICE is the solution to establishing a direct connection without a central server.
 
-The real magic here is 'NAT Traversal' and TURN Servers. These two concepts are all you need to communicate with an IP/Port in another subnet. This is where STUN and TURN come into play. We will explore these topics in depth later.
+The real magic here is 'NAT Traversal' and STUN/TURN Servers. These two concepts are all you need to communicate with an ICE Agent in another subnet. We will explore these topics in depth later.
 
 Once ICE successfully connects, WebRTC then moves on to establishing an encrypted transport. This transport is used for the audio, video and data.
 
@@ -84,16 +84,42 @@ The final protocol in the stack is SCTP. SCTP is used to send DataChannel messag
 
 
 ## WebRTC, a collection of protocols
-
-**TODO a diagram of protocols working together**
-
 WebRTC solves a lot of problems. At first this may even seem over-engineered. The genius of WebRTC is really the humility. It didn't assume it could solve everything better. Instead it embraced many existing single purpose technologies and bundled them together.
 
-This allows us to examine and learn each part individually without being overwhelmed.
+This allows us to examine and learn each part individually without being overwhelmed. A good way to visualize it is a 'WebRTC Agent' is really just an orchestrator of many other protocols.
+
+{{<mermaid>}}
+graph TB
+
+webrtc{WebRTC Agent}
+
+sctp{SCTP Agent}
+dtls{DTLS Agent}
+ice{ICE Agent}
+stun{STUN Protocol}
+turn{TURN Agent}
+srtp{SRTP Agent}
+sctp{SDP}
+rtp{RTP}
+rtcp{RTCP}
+
+webrtc --> ice
+webrtc --> dtls
+webrtc --> sctp
+webrtc --> srtp
+
+ice --> turn
+ice --> stun
+
+srtp --> rtcp
+srtp --> rtp
+{{< /mermaid >}}
+
 
 ## How does WebRTC (the API) work
 
-This section shows how the Javascript API maps to the protocol. This isn't meant as an extensive demo of the WebRTC API, but more to create a mental model of how it all ties together. If you aren't familiar with either that is ok. This is a fun section to return to as you learn more!
+This section shows how the Javascript API maps to the protocol. This isn't meant as an extensive demo of the WebRTC API, but more to create a mental model of how it all ties together.
+If you aren't familiar with either that is ok. This could be a fun section to return to as you learn more!
 
 #### `new PeerConnection`
 The PeerConnection is the top level 'WebRTC Session'. It contains all the protocols mentioned above. The subsystems are all allocated but nothing happens yet.
@@ -106,9 +132,9 @@ Immediately after a SRTP Session is established these media packets will start b
 
 #### `createDataChannel`
 
-`createDataChannel` creates a new SCTP stream. If no SCTP assocation existed before one is created. By default SCTP is not enabled, but is only started when one side requests a data channel.
+`createDataChannel` creates a new SCTP stream. If no SCTP association existed before one is created. By default SCTP is not enabled, but is only started when one side requests a data channel.
 
-Immediately after a DTLS Session is established the SCTP assocation will start sending packets via ICE and encrypted with DTLS.
+Immediately after a DTLS Session is established the SCTP association will start sending packets via ICE and encrypted with DTLS.
 
 #### `createOffer`
 
@@ -118,7 +144,7 @@ The act of calling `createOffer` doesn't change anything for the local peer.
 
 #### `setLocalDescription`
 
-`setLocalDescription` commits any requsted changes. `addTrack`, `createDataChannel` and similar calls are all temporary until this call. `setLocalDescription` is called with the value generated by `createOffer`.
+`setLocalDescription` commits any requested changes. `addTrack`, `createDataChannel` and similar calls are all temporary until this call. `setLocalDescription` is called with the value generated by `createOffer`.
 
 Usually after this call you will send the offer to the remote peer, and they will call `setRemoteDescription` with it.
 
@@ -144,4 +170,4 @@ WebRTC uses the SSRC and looks up the associated MediaStream and MediaStreamTrac
 
 #### `onstatechange`
 
-`onstatechange` is a combination of ICE and DTLS state. You can watch this to be notified when ICE and DTLS has completed successfully.
+`onstatechange` is a combination of ICE Agent and DTLS Agent state. You can watch this to be notified when ICE and DTLS have both completed successfully.
