@@ -208,7 +208,7 @@ a=candidate:foundation 2 udp 1694498815 1.2.3.4 57336 typ srflx raddr 0.0.0.0 rp
 a=end-of-candidates
 ```
 
-This is what we now from this message
+This is what we know from this message
 
 * We have two media sections, one audio and one video
 * Each of those are a `sendrecv` Transceiver. We are getting two streams, and we can send two back.

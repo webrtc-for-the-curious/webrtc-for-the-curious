@@ -6,7 +6,7 @@ weight: 5
 
 
 ## What security does WebRTC have?
-Every WebRTC connection is authenticated and encrypted. You can be confident that a 3rd paert can't what you are sending. They also can't insert bogus messages. You can also be sure the WebRTC Agent that generated the Session Description is the one you are communicating with.
+Every WebRTC connection is authenticated and encrypted. You can be confident that a 3rd party can't see what you are sending. They also can't insert bogus messages. You can also be sure the WebRTC Agent that generated the Session Description is the one you are communicating with.
 
 It is very important that no one tampers with those messages. It is ok if a 3rd party reads the Session Description in transit. However WebRTC has no protection against it being modified. An attacker could MITM you by changing ICE Candidates and the Certificate Fingerprint.
 
@@ -14,7 +14,7 @@ It is very important that no one tampers with those messages. It is ok if a 3rd 
 ## How does it work?
 WebRTC uses two pre-existing protocols [DTLS](https://tools.ietf.org/html/rfc6347) and [SRTP](https://tools.ietf.org/html/rfc3711)
 
-DTLS allows you negotiate a session and then exchange data securely between two peers. It is a sibling of TLS, the same technology tbat powers HTTPS. DTLS is over UDP instead of TCP, so the protocol has to handle unreliable delivery. SRTP is designed just for exchanging media. There are some optimizations we can make by using it instead of DTLS.
+DTLS allows you negotiate a session and then exchange data securely between two peers. It is a sibling of TLS, the same technology that powers HTTPS. DTLS is over UDP instead of TCP, so the protocol has to handle unreliable delivery. SRTP is designed just for exchanging media. There are some optimizations we can make by using it instead of DTLS.
 
 DTLS is used first. It does a handshake over the connection provided by ICE. DTLS is a client/server protocol, so one side needs to start the handshake. The Client/Server roles are chosen during signaling. During the DTLS handshake both sides offer a certificate.
 After the handshake is complete this certificate is compared to the certificate hash in the Session Description. This is to assert that the handshake happened with the WebRTC Agent you expected. The DTLS connection is then available to be used for DataChannel communication.
@@ -27,13 +27,13 @@ To understand the technology presented in this chapter you will need to understa
 #### Cipher
 Cipher is a series of steps that takes plaintext to ciphertext. The cipher then can be reversed so you can take your ciphertext back to plaintext. A Cipher usually has a key to change its behavior. Another term for this is encrypting and decrypting.
 
-A simple cipher is ROT13. Each letter is moved 13 characters foward. To undo the cipher you move 13 characters backwards. The plaintext `HELLO` would become the ciphertext `URYYB`. In this case the Cipher is ROT, and the key is 13.
+A simple cipher is ROT13. Each letter is moved 13 characters forward. To undo the cipher you move 13 characters backwards. The plaintext `HELLO` would become the ciphertext `URYYB`. In this case the Cipher is ROT, and the key is 13.
 
 #### Plaintext/Ciphertext
 Plaintext is the input to a cipher. Ciphertext is the output of a cipher.
 
 #### Hash
-Hash is a one way process that generates a digest. Given a input it generates the same output every time. The output is not be reversible, a hash input shouldn't be guessable from an input. Hashing is useful when you want to confirm that a message hasn't been tampered.
+Hash is a one way process that generates a digest. Given an input it generates the same output every time. The output is not reversible, a hash input shouldn't be guessable from an input. Hashing is useful when you want to confirm that a message hasn't been tampered.
 
 A simple hash would be to only take every other letter `HELLO` would become `HLO`. You can't assume `HELLO` was the input, but you can confirm that `HELLO` would be a match.
 
@@ -138,7 +138,7 @@ CertificateRequest is sent by the server notifying the client that it wants a ce
 ServerHelloDone notifies the client that the server is done with the handshake
 
 #### ClientKeyExchange
-ClientKeyExchange contains the server's public key.
+ClientKeyExchange contains the client's public key.
 
 #### CertificateVerify
 CertificateVerify is how the sender proves that it has the private key sent in the Certificate message.
