@@ -207,7 +207,7 @@ The `Mapped Address` is what you would share if you wanted someone to send packe
 People will also call the `Mapped Address` your `Public IP` or `Server Reflexive Candidate`.
 
 ### Determining NAT Type
-Unfortunately the `Mapped Address` might not be useful in all cases. If it is `Address Dependent` only the STUN server can send traffic back to you. If you shared it and another peer tried to send messsages in they will be dropped. This makes it useless for communicating with others.
+Unfortunately the `Mapped Address` might not be useful in all cases. If it is `Address Dependent` only the STUN server can send traffic back to you. If you shared it and another peer tried to send messages in they will be dropped. This makes it useless for communicating with others.
 
 [RFC5780](https://tools.ietf.org/html/rfc5780) defines a method for running a test to determine your NAT Type. This would be useful because you would know ahead of time if direct connectivity was possible.
 
