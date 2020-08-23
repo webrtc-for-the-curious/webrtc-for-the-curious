@@ -23,7 +23,7 @@ Each of these sections should be expanded with a graphical representation of the
 
 ## Common Integration Patterns
 
-These topics are a lot more "`chacun son goût`", or "to each his taste". We'll try to capture all the most common "wish list" requests from the `#pion` room, but since everyone's needs are different here, we'll emphasize listing as many "good solutions" as possible.
+These topics are a lot more "to each their taste". We'll try to capture all the most common "wish list" requests from the `#pion` room, but since everyone's needs are different here, we'll emphasize listing as many "good solutions" as possible.
 
 ### Realtime Encoding (gstreamer, ffmpeg)
 ### A/V Manipulation (OpenCV)
