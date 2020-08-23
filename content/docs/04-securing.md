@@ -47,6 +47,14 @@ You don't have to fully understand this, but it helps to understand how the DTLS
 
 Wikipedia has an example of this in action [here](https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange#Cryptographic_explanation)
 
+#### Key Deriviation Function
+
+#### Message Authentication Code
+
+#### Pseudo Random Function
+
+#### Key Rotation
+
 ## DTLS
 DTLS (Datagram Transport Layer Security) allows two peers to establish secure communication with no pre-existing configuration. Even if someone is eavesdropping on the conversation they will not be able to decrypt the messages.
 
@@ -149,6 +157,15 @@ ChangeCipherSpec informs the receiver that everything sent after this message wi
 #### Finished
 Finished is encrypted and contains a hash of all messages. This is to assert that the handshake was not tampered with.
 
+### Key Generation
+** What input generates the master secret**
+
+
 ## SRTP
+SRTP is a protocol designed just for encrypting RTP packets. Unlike DTLS it had no handshake mechanism. To start a SRTP 
+        
+### Session Creation
+### Encrypting a packet
+
 
 ## DTLS and SRTP together
