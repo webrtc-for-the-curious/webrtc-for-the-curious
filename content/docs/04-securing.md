@@ -49,11 +49,15 @@ Wikipedia has an example of this in action [here](https://en.wikipedia.org/wiki/
 
 #### Key Deriviation Function
 
-#### Message Authentication Code
-
 #### Pseudo Random Function
 
+#### Message Authentication Code
+A Message Authentication Code is a hash that is placed at the end of a message. A MAC proves that the message comes from the user you expected. 
+
+If you don't use a MAC an attacker could insert invalid messages. After decrypting you would just have garbage because they don't know the key. 
+
 #### Key Rotation
+Key Rotation is the practice of changing your key on a interval. This makes a stolen key less impactful. If a key is stolen/leaked less data can be decrypted. 
 
 ## DTLS
 DTLS (Datagram Transport Layer Security) allows two peers to establish secure communication with no pre-existing configuration. Even if someone is eavesdropping on the conversation they will not be able to decrypt the messages.
@@ -160,12 +164,16 @@ Finished is encrypted and contains a hash of all messages. This is to assert tha
 ### Key Generation
 ** What input generates the master secret**
 
+### Sending ApplicationData
+
 
 ## SRTP
-SRTP is a protocol designed just for encrypting RTP packets. Unlike DTLS it had no handshake mechanism. To start a SRTP 
+SRTP is a protocol designed just for encrypting RTP packets. Unlike DTLS it had no handshake mechanism. To start a SRTP session you specify your keys and cipher.
         
 ### Session Creation
-### Encrypting a packet
+
+
+### Sending Media
 
 
 ## DTLS and SRTP together
