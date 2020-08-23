@@ -12,14 +12,14 @@ Signaling messages are just text. The WebRTC agents don't care how they are tran
 
 ## How does it work?
 
-WebRTC uses an existing protocol called the Session Description Protocol. Via this protocol the two WebRTC Agents will share all the state required to establish a connection. The protocol itself is simple to read and understand.
+WebRTC uses an existing protocol called the Session Description Protocol. Via this protocol, the two WebRTC Agents will share all the state required to establish a connection. The protocol itself is simple to read and understand.
 The complexity comes from understanding all the values that WebRTC populates it with.
 
 This protocol is not specific to WebRTC. We will learn the Session Description Protocol first without even talking about WebRTC. WebRTC only really takes advantage of a subset of the protocol so we are only going to cover what we need.
 After we understand the protocol we will move on to its applied usage in WebRTC.
 
 ## Session Description Protocol
-The Session Description Protocol is defined in [RFC 4566](https://tools.ietf.org/html/rfc4566). It is a key/value protocol with a newline after each value. It will feel similar to an ini file.
+The Session Description Protocol is defined in [RFC 4566](https://tools.ietf.org/html/rfc4566). It is a key/value protocol with a newline after each value. It will feel similar to an INI file.
 A Session Description then contains an unlimited amount of Media Descriptions.  Mentally you can model it as a Session Description contains an array of Media Descriptions.
 
 A Media Description usually maps to a single stream of media. So if you wanted to describe a call with three video streams and two audio tracks you would have five Media Descriptions.
@@ -53,7 +53,7 @@ Not all key values defined by the Session Description Protocol are used by WebRT
 
 A Session Description can contain an unlimited amount of Media Descriptions.
 
-A Media Description definition contains a list of formats. These formats map to RTP Payload Types. The actual codec is then defined by a Attribute with the value `rtpmap` in the Media Description.
+A Media Description definition contains a list of formats. These formats map to RTP Payload Types. The actual codec is then defined by an Attribute with the value `rtpmap` in the Media Description.
 The importance of RTP and RTP Payload Types is discussed later in the Media chapter. Each Media Description then can contain an unlimited amount of attributes.
 
 Take this Session Description excerpt.
@@ -87,9 +87,9 @@ m=video 4002 RTP/AVP 96
 a=rtpmap:96 VP8/90000
 ```
 
-* `v`, `o`, `s`, `c`, `t` are defined but all have no effect on the WebRTC session.
+* `v`, `o`, `s`, `c`, `t` are defined but they do not affect the WebRTC session.
 * You have two Media Descriptions. One of type `audio` and one of type `video`.
-* Each of those have one attribute. This attribute configures details of the RTP pipeline, which is discussed in the 'Media Communication' chapter.
+* Each of those has one attribute. This attribute configures details of the RTP pipeline, which is discussed in the 'Media Communication' chapter.
 
 ## Session Description Protocol and WebRTC
 
@@ -210,14 +210,14 @@ a=end-of-candidates
 
 This is what we know from this message
 
-* We have two media sections, one audio and one video
-* Each of those are a `sendrecv` Transceiver. We are getting two streams, and we can send two back.
+* We have two media sections, one audio, and one video
+* Each of those is a `sendrecv` Transceiver. We are getting two streams, and we can send two back.
 * We have ICE Candidates and Authentication details so we can attempt to connect
 * We have a certificate fingerprint, so we can have a secure call
 
 
 ### Further Topics
-In later versions of this book the following topics will also be addressed. If you have more questions please submit a Pull Request!
+In later versions of this book, the following topics will also be addressed. If you have more questions please submit a Pull Request!
 
-* Renegotation
+* Renegotiation
 * Simulcast
