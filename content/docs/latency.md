@@ -80,6 +80,8 @@ If/when you can trade off some imprecision of latency measurements for automatio
 ### Latency measurement with WebRTC built-in stats
 [TODO: chrome does not implement all necessary WebRTC stats yet, refer to next chapter for the workaround method, Talk about sender reports, NTP and RTP timestamps, how they are supposed to be exposed in WebRTC apis being discussed]
 
+[End-to-end delay metrics disussion](https://github.com/w3c/webrtc-stats/issues/537)
+
 ### Latency measurement with NTP inspired time synchronization
 ```
       tSV      tS                       tR
@@ -94,6 +96,8 @@ If/when you can trade off some imprecision of latency measurements for automatio
 RTT = tR2 - tR1
 sender_local_clock_at_tR2 = tS1 + RTT / 2
 ```
+
+Roundtrip TLDR: I send you my time `tR1`, when i receive back my `tR1` at time `tR2` i know round trip time is `tR2 - tR1`
 
 Given a communication channel between sender and receiver (eg [DataChannel](https://webrtc.org/getting-started/data-channels)) receiver may create a model of the sender’ monotonic clock by following the below protocol.
 1. At time `tR1` receiver sends a message its local monotonic clock timestamp. 
