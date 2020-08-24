@@ -60,7 +60,7 @@ Conclusion: Adding encode and transmission steps jumps latency to about 300 msec
 
 ### Experiment 3 - WebRTC over LTE
 [TODO]
-I am going to call myself on Zoom, but my laptop is going through an LTE hotspot on my phone.
+I am going to call myself, but my laptop is going through an LTE hotspot on my phone.
 
 Adding encode and transmission over LTE increases latency to 400-700 msec. Changing network conditions are captured by the measurement. 
 
