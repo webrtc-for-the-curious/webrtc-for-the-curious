@@ -78,8 +78,7 @@ While one could theoretically measure latency of each component of a live video 
 If/when you can trade off some imprecision of latency measurements for automation you may use a method inspired by networking protocol for clock synchronization between computer systems over packet-switched, variable-latency data networks - the Network Time Protocol (NTP).
 
 ### Latency measurement with WebRTC built-in stats
-[TODO: chrome does not implement all necessary WebRTC stats yet, refer to next chapter for the workaround method]
-TODO: Talk about sender reports, NTP and RTP timestamps, how they are supposed to be exposed in WebRTC apis being discussed.
+[TODO: chrome does not implement all necessary WebRTC stats yet, refer to next chapter for the workaround method, Talk about sender reports, NTP and RTP timestamps, how they are supposed to be exposed in WebRTC apis being discussed]
 
 ### Latency measurement with NTP inspired time synchronization
 ```
@@ -104,3 +103,22 @@ Given a communication channel between sender and receiver (eg [DataChannel](http
 4. Round trip time `RTT` together with sender local timestamp `tS1` is enough to create an estimation of sender's monotonic clock. Current time on sender at time `tR2` would be equal to `tS1` plus half of round trip time.  
 5. Sender's local clock timestamp `tS1` paired with video track timestamp `tSV1` together with round trip time `RTT` is therefore enough to sync receiver video track time to sender video track. 
 
+Now that we know how much time has passed since last known sender video frame time `tSV1` we can approximate latency by comparing currently displayed video frame's time less time elapsed since `tSV1`.
+
+```
+expected_video_time = tSV1 + time_since(tSV1)
+latency = expected_video_time - actual_video_time
+```
+
+#### Actual video time in browser
+
+> `<video>.requestVideoFrameCallback()` allows web authors to be notified when a frame has been presented for composition.
+
+Until very recently (May 2020) it was next to impossible to reliably get a timestamp of currently displayed video frame in browsers, workaround methods based on `video.currentTime` existed but were not particularly precise. Browser developers both Chrome and Mozilla [supported](https://github.com/mozilla/standards-positions/issues/250) introduction of a new w3c standard [`HTMLVideoElement.requestVideoFrameCallback()`](https://wicg.github.io/video-rvfc/) which enables API for current video frame time access. 
+While the addition sounds trivial it has enabled multiple advanced media applications on the web, which require audio/video synchronization.
+
+[TODO: more on time in browser]
+
+#### Example latency estimation
+
+Chrome browser on receiving end
