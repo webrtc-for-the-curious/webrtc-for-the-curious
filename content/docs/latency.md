@@ -116,6 +116,7 @@ latency = expected_video_time - actual_video_time
 
 Until very recently (May 2020) it was next to impossible to reliably get a timestamp of currently displayed video frame in browsers, workaround methods based on `video.currentTime` existed but were not particularly precise. Browser developers both Chrome and Mozilla [supported](https://github.com/mozilla/standards-positions/issues/250) introduction of a new w3c standard [`HTMLVideoElement.requestVideoFrameCallback()`](https://wicg.github.io/video-rvfc/) which enables API for current video frame time access. 
 While the addition sounds trivial it has enabled multiple advanced media applications on the web, which require audio/video synchronization.
+Also specifically for WebRTC the callback carries `rtpTimestamp` the RTP timestamp associated with this video frame. Which should be be present for WebRTC applications, and absent otherwise.
 
 [TODO: more on time in browser]
 
