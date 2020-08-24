@@ -157,14 +157,14 @@ Handle incoming message from sender, print estimated latency to `console`
 //   }
 // }
 let tR2 = performance.now();
-let senderReport = JSON.parse(event.data);
-let tR1 = senderReport['received_time'];
-let delay = senderReport['delay_since_received']; //how much time passed between sender receiving and sending the response
+let fromSender = JSON.parse(event.data);
+let tR1 = fromSender['received_time'];
+let delay = fromSender['delay_since_received']; //how much time passed between sender receiving and sending the response
 let rtt = tR2 - delay - tR1;
 
 VIDEO.requestVideoFrameCallback((now_, framemeta) => {
-       let senderTime = (senderReport['local_clock'] + delay + rtt / 2 + (now_ - tR2));
-       let [tSV1, tS1] = Object.entries(senderReport['track_times_msec'])[0][1]
+       let senderTime = (fromSender['local_clock'] + delay + rtt / 2 + (now_ - tR2));
+       let [tSV1, tS1] = Object.entries(fromSender['track_times_msec'])[0][1]
        let timeSinceLastKnownFrame = senderTime - tS1;
        let expectedVideoTime = tSV1 + timeSinceLastKnownFrame;
        let actualVideoTime = Math.trunc(framemeta.rtpTimestamp / 90); //90 is hardcoded video timebase of 90000
