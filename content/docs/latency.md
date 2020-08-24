@@ -48,9 +48,9 @@ Instruments:
 ![](real_time.png) - ![](webcam_time.png) == 101msec
 
 
-| 84msec        | 185msec       | 
-| ------------- |:-------------:| 
-|![](experiment1_84msec.png)|![](experiment1_185msec.png)|
+| 84msec                      |           185msec            |
+| --------------------------- | :--------------------------: |
+| ![](experiment1_84msec.png) | ![](experiment1_185msec.png) |
 
 Conclusion: changing camera intrinsic settings like auto exposure and content of image being shot affects latency in 84-185 msec range
 
@@ -121,4 +121,70 @@ While the addition sounds trivial it has enabled multiple advanced media applica
 
 #### Example latency estimation
 
-Chrome browser on receiving end
+On receiving end
+
+Open data channel
+```javascript
+send_channel = peer_connection.createDataChannel('latency', null);
+```
+
+Send receivers time `tR1` periodically, this example uses 2 seconds for no particular reason
+```javascript
+setInterval(() => {
+       let tR1 = Math.trunch(performance.now());
+       send_channel.send("" + tR1);
+}, 2000);
+```
+
+Handle incoming message from sender, print estimated latency to `console`
+```javascript
+
+//assuming event.data is a json string like: 
+// {
+//   "received_time": 64714,
+//   "delay_since_received": 46,
+//   "local_clock": 1597366470336,
+//   "track_times_msec": {
+//     "myvideo_track1": [
+//       13100,
+//       1597366470289
+//     ]
+//   }
+// }
+let tR2 = performance.now();
+let sender_report = JSON.parse(event.data);
+let tR1 = sender_report['received_time'];
+let delay = sender_report['delay_since_received']; //how much time passed between sender receiving and sending the response
+let rtt = tR2 - delay - tR1;
+
+VIDEO.requestVideoFrameCallback((now_, framemeta) => {
+       let sender_time = (sender_report['local_clock'] + delay + rtt / 2 + (now_ - tR2));
+       let [tSV1, tS1] = Object.entries(sender_report.track_times_msec)[0][1]
+       let time_since_last_known_frame = sender_time - tS1;
+       let expected_video_time = tSV1 + time_since_last_known_frame;
+       let actual_video_time = Math.trunc(framemeta.rtpTimestamp / 90); //90 is hardcoded video timebase of 90000
+       let latency = expected_video_time - actual_video_time;
+       console.log('latency', latency,'msec');
+});
+```
+
+On sender
+
+Handle incoming message from receiver
+```javascript
+//assuming event.data is a string like: "1234567"
+tR1 = event.data
+now = Math.trunc(performance.now());
+tSV1 = 42000;
+tS1 = 1597366470289;
+
+msg = {
+  "received_time": tR1,
+  "delay_since_received": 0,
+  "local_clock": now,
+  "track_times_msec": {
+    "myvideo_track1": [tSV1, tS1]
+  }
+}
+send_channel.send(JSON.stringify(msg));
+```
