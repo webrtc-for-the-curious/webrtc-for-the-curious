@@ -131,7 +131,7 @@ send_channel = peer_connection.createDataChannel('latency', null);
 Send receivers time `tR1` periodically, this example uses 2 seconds for no particular reason
 ```javascript
 setInterval(() => {
-       let tR1 = Math.trunch(performance.now());
+       let tR1 = Math.trunc(performance.now());
        send_channel.send("" + tR1);
 }, 2000);
 ```
