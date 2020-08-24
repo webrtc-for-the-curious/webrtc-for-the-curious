@@ -55,6 +55,7 @@ If/when you can trade off some imprecision of latency measurements for automatio
 
 ### Latency measurement with WebRTC built-in stats
 [TODO: chrome does not implement all necessary WebRTC stats yet, refer to next chapter for the workaround method]
+TODO: Talk about sender reports, NTP and RTP timestamps, how they are supposed to be exposed in WebRTC apis being discussed.
 
 ### Latency measurement with NTP inspired time synchronization
 ```
