@@ -49,15 +49,16 @@ Wikipedia has an example of this in action [here](https://en.wikipedia.org/wiki/
 
 #### Key Deriviation Function
 
-#### Pseudo Random Function
+#### Pseudorandom Function
+A Pseudorandom Function (PRF) is a pre-defined function to generate a value that appears random. It may take multiple inputs and generate a single output.
 
 #### Message Authentication Code
-A Message Authentication Code is a hash that is placed at the end of a message. A MAC proves that the message comes from the user you expected. 
+A Message Authentication Code is a hash that is placed at the end of a message. A MAC proves that the message comes from the user you expected.
 
-If you don't use a MAC an attacker could insert invalid messages. After decrypting you would just have garbage because they don't know the key. 
+If you don't use a MAC an attacker could insert invalid messages. After decrypting you would just have garbage because they don't know the key.
 
 #### Key Rotation
-Key Rotation is the practice of changing your key on an interval. This makes a stolen key less impactful. If a key is stolen/leaked fewer data can be decrypted. 
+Key Rotation is the practice of changing your key on an interval. This makes a stolen key less impactful. If a key is stolen/leaked fewer data can be decrypted.
 
 ## DTLS
 DTLS (Datagram Transport Layer Security) allows two peers to establish secure communication with no pre-existing configuration. Even if someone is eavesdropping on the conversation they will not be able to decrypt the messages.
@@ -129,7 +130,7 @@ sequenceDiagram
 {{< /mermaid >}}
 
 #### ClientHello
-ClientHello is the initial message sent by the client. It tells the server all the ciphers and features the client supports. It also contains random data that will be used to generate the keys for the session.
+ClientHello is the initial message sent by the client. It contains a list of attributes. These attributes tell the server the ciphers and features the client supports. For WebRTC this is how we choose the SRTP Cipher as well. It also contains random data that will be used to generate the keys for the session.
 
 #### HelloVerifyRequest
 HelloVerifyRequest is sent by the server to the client. It is to make sure that the client intended to send the request. The Client then re-sends the ClientHello, but with a token provided in the HelloVerifyRequest.
@@ -140,17 +141,14 @@ ServerHello is the response by the server for the configuration of this session.
 #### Certificate
 Certificate contains the certificate for the Client or Server. This is used to uniquely identify who we were communicating with. After the handshake is over we will make sure this certificate when hashed matches the fingerprint in the `SessionDescription`
 
-#### ServerKeyExchange
-ServerKeyExchange contains the server's public key.
+#### ServerKeyExchange/ClientKeyExchange
+These messages are used to transmit the public key. On startup the client and server both generate keypair. After the handshake these values will be used to generate the **Pre-Master Secret**
 
 #### CertificateRequest
 CertificateRequest is sent by the server notifying the client that it wants a certificate. The server can either Request or Require a certificate.
 
 #### ServerHelloDone
 ServerHelloDone notifies the client that the server is done with the handshake
-
-#### ClientKeyExchange
-ClientKeyExchange contains the client's public key.
 
 #### CertificateVerify
 CertificateVerify is how the sender proves that it has the private key sent in the Certificate message.
@@ -162,18 +160,28 @@ ChangeCipherSpec informs the receiver that everything sent after this message wi
 Finished is encrypted and contains a hash of all messages. This is to assert that the handshake was not tampered with.
 
 ### Key Generation
-** What input generates the master secret**
+After the Handshake is complete you can start sending encrypted data. The Cipher was chosen by the server and is in the ServerHello. How was the key chosen though?
 
-### Sending ApplicationData
+First we generate the `Pre-Master Secret`. To obtain this value Diffie–Hellman is used on the keys exchanged by the `ServerKeyExchange` and `ClientKeyExchange`.  The details differ depending on the chosen Cipher.
 
+Next the `Master Secret` is generated. Each version of DTLS has a defined `Pseudorandom function`. For DTLS 1.2 the PRF takes the `Pre-Master Secret` and random values in the `ClientHello` and `ServerHello`.
+The output from running the `Pseudorandom Function` is the `Master Secret`. The `Master Secret` is the value that is what is used for the Cipher.
+
+### Exchanging ApplicationData
+The workhorse of DTLS is `ApplicationData`. Now that we have a initialized Cipher we can start encrypting and sending values.
+
+`ApplicationData` messages use DTLS header as described before. The `Payload` is populated with ciphertext. You now have a working DTLS Session and can communicate securely.
+
+DTLS has many more interesting features like re-negotiation. This aren't used by WebRTC, so not covered here.
 
 ## SRTP
-SRTP is a protocol designed just for encrypting RTP packets. Unlike DTLS it had no handshake mechanism. To start a SRTP session you specify your keys and cipher.
-        
+SRTP is a protocol designed just for encrypting RTP packets. To start a SRTP session you specify your keys and cipher. Unlike DTLS it has no handshake mechanism. So all the configuration/keys were configured during the DTLS handshake.
+
+DTLS provides a dedicated API to export the keys to used by another process. This is defined in [RFC 5705](https://tools.ietf.org/html/rfc5705)
+
 ### Session Creation
 
-
-### Sending Media
+### Exchanging Media
 
 
 ## DTLS and SRTP together
