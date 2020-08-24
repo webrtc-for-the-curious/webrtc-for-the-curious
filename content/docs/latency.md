@@ -126,14 +126,14 @@ On receiving end
 
 Open data channel
 ```javascript
-send_channel = peer_connection.createDataChannel('latency', null);
+sendChannel = peerConnection.createDataChannel('latency', null);
 ```
 
 Send receivers time `tR1` periodically, this example uses 2 seconds for no particular reason
 ```javascript
 setInterval(() => {
        let tR1 = Math.trunc(performance.now());
-       send_channel.send("" + tR1);
+       sendChannel.send("" + tR1);
 }, 2000);
 ```
 
@@ -153,18 +153,18 @@ Handle incoming message from sender, print estimated latency to `console`
 //   }
 // }
 let tR2 = performance.now();
-let sender_report = JSON.parse(event.data);
-let tR1 = sender_report['received_time'];
-let delay = sender_report['delay_since_received']; //how much time passed between sender receiving and sending the response
+let senderReport = JSON.parse(event.data);
+let tR1 = senderReport['received_time'];
+let delay = senderReport['delay_since_received']; //how much time passed between sender receiving and sending the response
 let rtt = tR2 - delay - tR1;
 
 VIDEO.requestVideoFrameCallback((now_, framemeta) => {
-       let sender_time = (sender_report['local_clock'] + delay + rtt / 2 + (now_ - tR2));
-       let [tSV1, tS1] = Object.entries(sender_report.track_times_msec)[0][1]
-       let time_since_last_known_frame = sender_time - tS1;
-       let expected_video_time = tSV1 + time_since_last_known_frame;
-       let actual_video_time = Math.trunc(framemeta.rtpTimestamp / 90); //90 is hardcoded video timebase of 90000
-       let latency = expected_video_time - actual_video_time;
+       let senderTime = (senderReport['local_clock'] + delay + rtt / 2 + (now_ - tR2));
+       let [tSV1, tS1] = Object.entries(senderReport['track_times_msec'])[0][1]
+       let timeSinceLastKnownFrame = senderTime - tS1;
+       let expectedVideoTime = tSV1 + timeSinceLastKnownFrame;
+       let actualVideoTime = Math.trunc(framemeta.rtpTimestamp / 90); //90 is hardcoded video timebase of 90000
+       let latency = expectedVideoTime - actualVideoTime;
        console.log('latency', latency,'msec');
 });
 ```
@@ -187,5 +187,5 @@ msg = {
     "myvideo_track1": [tSV1, tS1]
   }
 }
-send_channel.send(JSON.stringify(msg));
+sendChannel.send(JSON.stringify(msg));
 ```
