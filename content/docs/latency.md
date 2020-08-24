@@ -27,7 +27,31 @@ True latency is supposed to be measured end-to-end. That is, not just the latenc
 One way to measure end-to-end latency is when sender and receiver are in the same frame of reference.  
 
 ### Experiment 1 - Camera and end-to-end latency
-[TODO]
+```
+    Happen      Camera      Observe
+----+-----------+-----------+---------->
+               (time)
+```
+
+Tools: 
+- ticking millisecond clock app
+- 60hz screen = 60 new clocks shown per second
+- simple usb webcam
+- camera settings app
+
+Instruments:
+- iphone 8 slomo
+- screenshot tool
+
+![](experiment1.png)
+
+![](real_time.png) - ![](webcam_time.png) == 101msec
+
+
+| 84msec        | 185msec       | 
+| ------------- |:-------------:| 
+|![](experiment1_84msec.png)|![](experiment1_185msec.png)|
+
 Conclusion: changing camera intrinsic settings like auto exposure and content of image being shot affects latency in 84-185 msec range
 
 ### Experiment 2 - WebRTC on same wifi
