@@ -6,7 +6,9 @@ Start reading the book directly from GitHub [index](content/_index.md) or at [we
 
 # Running/Deploying
 
-This book is powered by [hugo](https://github.com/gohugoio/hugo) download the extended version and run `hugo server`
+* Clone this repo and it's submodules `git clone --recursive https://github.com/webrtc-for-the-curious/webrtc-for-the-curious.git`
+* Download the extended version of [hugo](https://github.com/gohugoio/hugo)
+* Run `hugo server`
 
 # Contributing
 
