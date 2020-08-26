@@ -4,11 +4,26 @@ type: docs
 weight: 6
 ---
 
+## What do I get from WebRTC's media communication?
 
-# Audio and Video Communication
+## How do it work?
 
-## RTP/RTCP
-Protocol Basics
-Loss and Error Resilience
-Congestion Control
+## RTP
+### Packet Format
+### Mapping Payload Types
 
+## RTCP
+### Packet Format
+
+## Latency vs Quality
+### Packet Loss
+### Jitter
+### Congestion
+### Round Trip Time
+### Maximum transmission unit
+
+## How does RTP/RTCP Handle This
+### NACK
+### FEC
+### JitterBuffer
+### Post-Decode Audio/Video Improvements
