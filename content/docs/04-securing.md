@@ -12,7 +12,7 @@ It is very important that no one tampers with those messages. It is ok if a 3rd 
 
 
 ## How does it work?
-WebRTC uses two pre-existing protocols [DTLS](https://tools.ietf.org/html/rfc6347) and [SRTP](https://tools.ietf.org/html/rfc3711)
+WebRTC uses two pre-existing protocols [DTLS](https://tools.ietf.org/html/rfc6347) and [SRTP](https://tools.ietf.org/html/rfc3711).
 
 DTLS allows you to negotiate a session and then exchange data securely between two peers. It is a sibling of TLS, the same technology that powers HTTPS. DTLS is over UDP instead of TCP, so the protocol has to handle unreliable delivery. SRTP is designed just for exchanging media. There are some optimizations we can make by using it instead of DTLS.
 
