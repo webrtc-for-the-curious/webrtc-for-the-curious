@@ -47,10 +47,18 @@ You don't have to fully understand this, but it helps to understand how the DTLS
 
 Wikipedia has an example of this in action [here](https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange#Cryptographic_explanation)
 
-#### Key Deriviation Function
-
 #### Pseudorandom Function
 A Pseudorandom Function (PRF) is a pre-defined function to generate a value that appears random. It may take multiple inputs and generate a single output.
+
+#### Key Deriviation Function
+Key Deriviation is a type of Pseudorandom Function. Key Deriviation is a function that is used to make a key stronger. One common pattern is key stretching.
+
+Lets say you are given a key that is 8 bytes. You could use a KDF to make it stronger.
+
+#### Nonce
+A nonce is additional input to a cipher. This is so you can get different output from the cipher, even if you are encrypting the same message multiple times.
+
+If you encrypt the same message 10 times, the cipher will give you the same ciphertext 10 times. By using a nonce you can get different input, while still using the same key. It is important you use a different nonce for each message! Otherwise it negates much of the value.
 
 #### Message Authentication Code
 A Message Authentication Code is a hash that is placed at the end of a message. A MAC proves that the message comes from the user you expected.
@@ -180,8 +188,9 @@ SRTP is a protocol designed just for encrypting RTP packets. To start a SRTP ses
 DTLS provides a dedicated API to export the keys to used by another process. This is defined in [RFC 5705](https://tools.ietf.org/html/rfc5705)
 
 ### Session Creation
+SRTP defines a Key Deriviation Function that is used on the inputs. When creating a SRTP Session the inputs are run through this to generate our keys for our SRTP Cipher. After this you can move on to processing media.
 
 ### Exchanging Media
+Each RTP packet has a 16 bit SequenceNumber. These Sequence Numbers are used to keep packets in order, like a Primary Key. During a call these will rollover. SRTP keeps track of it and calls this the rollover counter.
 
-
-## DTLS and SRTP together
+When encrypting a packet SRTP uses the rollover counter and sequence number as a nonce. This is to ensure that even if you send the same data twice, it will ciphertext will be different. This is important so that an attacker can't identify patterns or attempt a replay attack.
