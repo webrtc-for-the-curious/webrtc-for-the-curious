@@ -44,14 +44,14 @@ Below is a graph of two distinct networks, connected by the public internet. The
 graph TB
 subgraph netb ["Network B (IP Address 5.0.0.2)"]
   b3["Agent 3 (IP 192.168.0.1)"]
-  b4["Agent 4 (IP 192.168.0.1)"]
+  b4["Agent 4 (IP 192.168.0.2)"]
   routerb["Router B"]
   end
 
 subgraph neta ["Network A (IP Address 5.0.0.1)"]
   routera["Router A"]
   a1["Agent 1 (IP 192.168.0.1)"]
-  a2["Agent 2 (IP 192.168.0.1)"]
+  a2["Agent 2 (IP 192.168.0.2)"]
   end
 
 pub{Public Internet}
