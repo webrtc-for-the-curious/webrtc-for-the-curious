@@ -230,7 +230,7 @@ When creating an allocation, you need to provide/decide the following
 * Even-Port - You can request sequential ports for multiple allocations, not relevant for WebRTC
 
 If the request succeeded, you get a response with the TURN Server with the follow STUN Attributes in the Data section.
-* `XOR-MAPPED-ADDRESS` - `Mapped Address` of the `TURN Client`. When someone sends data to the `Relayed Transport Address` this is where it is forwarded too.
+* `XOR-MAPPED-ADDRESS` - `Mapped Address` of the `TURN Client`. When someone sends data to the `Relayed Transport Address` this is where it is forwarded to.
 * `RELAYED-ADDRESS` - This is the address that you give out to other clients. If someone sends a packet to this address it is relayed to the TURN client.
 * `LIFETIME` - How long until this TURN Allocation is destroyed. You can extend the lifetime by sending a `Refresh` request.
 
