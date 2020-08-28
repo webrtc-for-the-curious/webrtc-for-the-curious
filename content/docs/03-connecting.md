@@ -147,7 +147,7 @@ STUN is useful because it allows the programmatic creation of NAT Mappings. Befo
 Let's start with a basic description of STUN. Later, we will expand on TURN and ICE usage. For now, we are just going to describe the Request/Response flow to create a mapping. Then we talk about how we get the details of it to share with others. This is the process that happens when you have a `stun:` server in your ICE urls for a WebRTC PeerConnection.
 
 ### Protocol Structure
-Every STUN packet begins with a STUN header with the following structure:
+Every STUN packet has the following structure:
 
 ```
  0                   1                   2                   3

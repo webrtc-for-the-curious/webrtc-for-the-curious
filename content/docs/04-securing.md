@@ -10,7 +10,6 @@ Every WebRTC connection is authenticated and encrypted. You can be confident tha
 
 It is very important that no one tampers with those messages. It is ok if a 3rd party reads the Session Description in transit. However, WebRTC has no protection against it being modified. An attacker could MITM you by changing ICE Candidates and the Certificate Fingerprint.
 
-
 ## How does it work?
 WebRTC uses two pre-existing protocols [DTLS](https://tools.ietf.org/html/rfc6347) and [SRTP](https://tools.ietf.org/html/rfc3711).
 
