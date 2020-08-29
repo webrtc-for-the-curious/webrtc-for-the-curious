@@ -18,6 +18,36 @@ RTP is the protocol that carries the media. It was designed to allow real-time d
 
 RTCP is the protocol that communicates metadata about the call. The format is flexible enough so you can add whatever you want. This is used to communicate statistics about the call. It is also necessary to handle packet loss and to implement congestion control. It gives you the bi-directional communication necessary to respond to network conditions changing.
 
+
+## Latency vs Quality
+Real-time media is about making trade-offs between latency and quality. The more latency you are willing to tolerate, the higher quality video you can expect.
+
+### Real World Limitations
+These constraints are all caused by the limitations off the real world. These are all characteristics of your network that you will need to overcome.
+
+#### Bandwidth
+Bandwidth is the maximum rate of data that can be transferred across a given path. It is important to remember this isn't a static number either. The bandwidth will change along the route as more (or less) people use it.
+
+When you attempt to send more data then available bandwidth you will experience network congestion.
+
+#### Transmission Time
+Transmission Time is how long it takes for a packet to arrive. Like Bandwidth this isn't constant. The Transmission Time can fluctuate at anytime.
+
+#### Jitter
+Jitter is the fact that `Transmission Time` may vary. Some times you will see packets arrive in bursts. Any piece of hardware along the network path can introduce issues.
+
+#### Packet Loss
+Packet Loss is when messages are lost in transmission. The loss could be steady, or it could come in spikes. This isn't an uncommon occurrence either!
+
+#### Maximum transmission unit
+Maximum Transmission Unit is the limit on how large a single packet can be. Networks don't allow you to send one giant message. At the protocol level you need to packetize your data into small packets.
+
+The MTU will also differ depending on what network path you take. You can use a protocol like [Path MTU Discovery](https://tools.ietf.org/html/rfc1191) to figure out what the largest packet size is you can send.
+
+## Media 101
+### Codec
+### Frame Types
+
 ## RTP
 ### Packet Format
 Every RTP packet has the following structure:
@@ -35,35 +65,50 @@ Every RTP packet has the following structure:
 |            Contributing Source (CSRC) identifiers             |
 |                             ....                              |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                            payload                            |
+|                            Payload                            |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
 #### Version (V)
-Version is always 2
+`Version` is always 2
 
 #### Padding (P)
-Padding is a bool that controls if the payload has padding.
+`Padding` is a bool that controls if the payload has padding.
 
 The last byte of the payload contains a count of how many padding bytes
 were added.
 
 #### Extension (X)
-
+If set the RTP header will have extensions. This is described in greater detail below.
 
 #### CSRC count (CC)
+The amount of `CSRC` identifiers that follow after the `SSRC`, and before the payload.
 
 #### Marker (M)
+The marker bit has no pre-set meaning, and is up to the user.
+
+It some cases it is set when a user is speaking. It is also commonly used to mark a keyframe.
 
 #### Payload Type (PT)
+`Payload Type` is the unique identifier for what codec is being carried by this packet.
+
+For WebRTC the `Payload Type` is dynamic. VP8 in one call may be different then another. The Offerer in the call determines the mapping of `Payload Types` to codecs in the `Session Description`.
 
 #### Sequence Number
+`Sequence Number` is used for ordering packets in a stream. Every time a packet is sent the `Sequence Number` is incremented by one.
+
+RTP is designed to be useful over lossy networks. This gives the receiver a way to detect when packets have been lost.
 
 #### Timestamp
+`Timestamp` is the sampling instant for this packet. This is not a global clock, but how much time has passed in the media stream.
 
 #### Synchronization Source (SSRC)
+A `SSRC` is the unique identifier for this stream. This allows you to run multiple streams of media over a single stream.
 
 #### Contributing Source (CSRC)
+A list that communicates what `SSRC`es contributed to this packet.
+
+This is commonly used for talking indicators. Lets say server side you combined multiple audio feeds into a single RTP stream. You could then use this field to say 'Input stream A and C were talking at this moment'
 
 ### Extensions
 ### Mapping Payload Types to Codecs
@@ -71,14 +116,7 @@ were added.
 ## RTCP
 ### Packet Format
 
-## Latency vs Quality
-### Packet Loss
-### Jitter
-### Congestion
-### Round Trip Time
-### Maximum transmission unit
-
-## How does RTP/RTCP Handle This
+## RTP/RTCP working together
 ### NACK
 ### FEC
 ### JitterBuffer
