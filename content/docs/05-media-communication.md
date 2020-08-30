@@ -116,8 +116,18 @@ This is commonly used for talking indicators. Lets say server side you combined 
 ## RTCP
 ### Packet Format
 
-## RTP/RTCP working together
-### NACK
-### FEC
+## How RTP/RTCP solve problems
+RTP and RTCP then work together to solve all the problems caused by networks. These techniques are still constantly changing!
+
+### Negative Acknowledgment
+Also known as a NACK. This is one method of dealing with packet loss with RTP.
+
+A NACK is a RTCP message sent back to a sender to request re-transmission. The receiver crafts a RTCP message with the SSRC and Sequence Number. If the sender does not have this RTP packet available to re-send it just ignores the message.
+
+### Forward Error Correction
+Also known as FEC. Another method of dealing with packet loss.
+
+
+### Congestion Control
+
 ### JitterBuffer
-### Post-Decode Audio/Video Improvements
