@@ -9,7 +9,7 @@ This book is available under the CC0 license. The authors have waived all their 
 
 # What is this book.
 
-This book was created by WebRTC implementers to share their hard-earned knowledge with the world. WebRTC for the curious is an Open Source book written for those that are always looking for more. This book doesn't settle for abstraction.
+This book was created by WebRTC implementers to share their hard-earned knowledge with the world. _WebRTC for the Curious_ is an Open Source book written for those that are always looking for more. This book doesn't settle for abstraction.
 
 This book is all about protocols and APIs, and will not be talking about any software in particular. We attempt to summarize RFCs and get all undocumented knowledge into one place. This is book is not a tutorial, and will not contain much code.
 
