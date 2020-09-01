@@ -6,12 +6,11 @@ weight: 2
 
 
 ## What is WebRTC.
-
-WebRTC is both an API and a Protocol. The WebRTC protocol is a set of rules for two WebRTC agents to negotiate bi-directional secure communication. The WebRTC API was designed just for Javascript. This Javascript API then allows web developers to use the WebRTC protocol in the browser.
+WebRTC, short for Web Real-Time Communication, is both an API and a Protocol. The WebRTC protocol is a set of rules for two WebRTC agents to negotiate bi-directional secure real-time communication. The WebRTC API then allows developers to use the WebRTC protocol. The WebRTC API is specified only for Javascript.
 
 A similar relationship would be HTTP and the fetch API. WebRTC the protocol would be HTTP, and WebRTC the API would be the fetch API.
 
-WebRTC is available in other APIs/languages besides Javascript. You can find servers and domain-specific tools as well for WebRTC. All of these implementations use the WebRTC protocol so they can interact with each other.
+The WebRTC protocol is available in other APIs/languages besides Javascript. You can find servers and domain-specific tools as well for WebRTC. All of these implementations use the WebRTC protocol so they can interact with each other.
 
 ## Why should I learn WebRTC?
 

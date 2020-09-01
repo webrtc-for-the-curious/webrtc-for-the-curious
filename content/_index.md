@@ -9,7 +9,7 @@ This book is available under the CC0 license. The authors have waived all their 
 
 # What is this book.
 
-This book is a work in progress by WebRTC implementers to share their hard-earned knowledge with the world. WebRTC for the curious is an Open Source book written for those that are always looking for more. This book doesn't settle for abstraction.
+This book was created by WebRTC implementers to share their hard-earned knowledge with the world. _WebRTC for the Curious_ is an Open Source book written for those that are always looking for more. This book doesn't settle for abstraction.
 
 This book is all about protocols and APIs, and will not be talking about any software in particular. We attempt to summarize RFCs and get all undocumented knowledge into one place. This is book is not a tutorial, and will not contain much code.
 
@@ -24,7 +24,7 @@ WebRTC is a wonderful technology but is difficult to use. This book is vendor ag
 
 # Designed for multiple readings
 
-This book is designed to be read multiple times. Each chapter is intended to be self-contained, so you can jump to any part of the book and not be lost.
+This book is designed to be read multiple times. Each chapter is self-contained, so you can jump to any part of the book and not be lost.
 
 Each chapter aims to answer a single question, with three levels of information.
 
@@ -32,7 +32,7 @@ Each chapter aims to answer a single question, with three levels of information.
 * How do we solve it?
 * Technical details about the solution.
 
-Each chapter doesn't assume prior knowledge. You can start at any point in the book and begin learning, although some chapters are more complete than others as the book ibeing written.
+Each chapter doesn't assume prior knowledge. You can start at any point in the book and begin learning.
 
 # Non-commercial and privacy-respecting
 
@@ -44,4 +44,4 @@ The website will not use analytics or tracking.
 
 # Get Involved!
 
-We need your help! This book is entirely developed on [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious) and is still being written. We encourage readers to open issues with questions on things we didn't do a good job of covering yet.
+We need your help! This book is entirely developed on [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious) and is still being written. We encourage readers to [open issues](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/issues/new/choose) with questions on things we didn't do a good job of covering yet. If you have an idea for an applicable chapter, or believe you could contribute signifcantly to a chapter, consider weighing in on [Issue #10](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/issues/10). 
