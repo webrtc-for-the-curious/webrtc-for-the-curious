@@ -1,15 +1,25 @@
 baseURL = "https://webrtcforthecurious.com"
-languageCode = "en-us"
-title = "WebRTC for the Curious"
 theme = "book"
 
 # Enable 'Last Modified by' date and git author information
 enableGitInfo = true
 
+DefaultContentLanguage = "en"
+[languages]
+  [languages.en]
+    title = "WebRTC for the Curious"
+    languageName = "English"
+    weight = 1
+  [languages.tr]
+    title = "WebRTC for the Curious -- TODO Translate to Turkish"
+    languageName = "Turkish"
+    contentDir = "content.tr"
+    weight = 2
+
 [params]
   # source repository location.
   # Used for 'Last Modified' and 'Edit this page' links.
   BookRepo = 'https://github.com/webrtc-for-the-curious/webrtc-for-the-curious'
-  
+
   # 'Edit this page' links
   BookEditPath = 'edit/master/content'
