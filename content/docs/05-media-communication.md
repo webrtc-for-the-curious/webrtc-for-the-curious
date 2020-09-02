@@ -18,7 +18,6 @@ RTP is the protocol that carries the media. It was designed to allow real-time d
 
 RTCP is the protocol that communicates metadata about the call. The format is flexible enough so you can add whatever you want. This is used to communicate statistics about the call. It is also necessary to handle packet loss and to implement congestion control. It gives you the bi-directional communication necessary to respond to network conditions changing.
 
-
 ## Latency vs Quality
 Real-time media is about making trade-offs between latency and quality. The more latency you are willing to tolerate, the higher quality video you can expect.
 
@@ -100,7 +99,7 @@ For WebRTC the `Payload Type` is dynamic. VP8 in one call may be different then 
 RTP is designed to be useful over lossy networks. This gives the receiver a way to detect when packets have been lost.
 
 #### Timestamp
-`Timestamp` is the sampling instant for this packet. This is not a global clock, but how much time has passed in the media stream.
+The sampling instant for this packet. This is not a global clock, but how much time has passed in the media stream.
 
 #### Synchronization Source (SSRC)
 A `SSRC` is the unique identifier for this stream. This allows you to run multiple streams of media over a single stream.
@@ -111,10 +110,63 @@ A list that communicates what `SSRC`es contributed to this packet.
 This is commonly used for talking indicators. Lets say server side you combined multiple audio feeds into a single RTP stream. You could then use this field to say 'Input stream A and C were talking at this moment'
 
 ### Extensions
+
 ### Mapping Payload Types to Codecs
 
 ## RTCP
+
 ### Packet Format
+Every RTCP packet has the following structure:
+
+```
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|V=2|P|    RC   |       PT      |             length            |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                            Payload                            |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+```
+
+#### Version (V)
+`Version` is always 2
+
+#### Padding (P)
+`Padding` is a bool that controls if the payload has padding.
+
+The last byte of the payload contains a count of how many padding bytes
+were added.
+
+#### Reception Report Count (RC)
+The number of reports in this packet. A single RTCP Packet can contain multiple events.
+
+#### Packet Type (PT)
+Unique Identifier for what type of RTCP Packet this is. A WebRTC Agent doesn't need to support all these types, and support between Agents can be different. These are the ones you may commonly see though.
+
+* Full INTRA-frame Request (FIR) - `192`
+* Negative ACKnowledgements (NACK) - `193`
+* Sender Report - `200`
+* Receiver Report - `201`
+* Generic RTP Feedback - `205`
+
+The significance of these packet types will be described in greater detail below.
+
+### Full INTRA-frame Request
+This RTCP message notifies the sender that it needs to send a full image. This is for when the encoder is giving you partial frames, but you aren't able to decode them.
+
+This could happen because you had lots of packet loss, or maybe the decoder crashed.
+
+### Negative ACKnowledgements
+A NACK requests that a sender re-transmits a single RTP Packet. This is usually caused when a RTP Packet is lost, but could also happen because it is late.
+
+NACKs are much more bandwidth efficent then requesting that the whole frame get sent again. Since RTP breaks up packets into very small chunks, you are really just requesting one small missing piece.
+
+### Sender/Receiver Reports
+These reports are used to send statistics between agents. This communicates the amount of packets actually received and jitter.
+
+The reports could be used for general or diagnostics, or basic Congestion Control.
+
+### Generic RTP Feedback
 
 ## How RTP/RTCP solve problems
 RTP and RTCP then work together to solve all the problems caused by networks. These techniques are still constantly changing!
@@ -126,7 +178,6 @@ A NACK is a RTCP message sent back to a sender to request re-transmission. The r
 
 ### Forward Error Correction
 Also known as FEC. Another method of dealing with packet loss.
-
 
 ### Congestion Control
 
