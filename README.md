@@ -12,7 +12,21 @@ Start reading the book directly from GitHub [index](content/_index.md) or at [we
 
 # Contributing
 
-We would love contributions! We are open to suggestions about the content as well. This is a community-owned project, and we want to hear what is important to you.
+We would love contributions! We are open to suggestions about the content as well. This is a community-owned project, and we want to hear what is important to you. Below is a rough guide to where each chapter stands.
+
+|Chapter|Stage|Authors|Current need|
+|-------|-----|-------|------------|
+|What, Why and How|Finishing Touches|@Sean-Der|[Issues](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/issues/new) for minor tweaks|
+|Signaling|Finishing Touches|@Sean-Der|[Issues](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/issues/new) for minor tweaks, [Edits](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content//docs/02-signaling.md) for additional content|
+|Connecting|Finishing Touches|@Sean-Der|[Issues](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/issues/new) for minor tweaks|
+|Securing|Finishing Touches|@Sean-Der|[Issues](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/issues/new) for minor tweaks|
+|Media Communication|Authoring|@Sean-Der @zhuker|[Issues](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/issues/new) for minor tweaks, [Edits](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content//docs/05-media-communication.md) for additional content|
+|Data Communication|Planning|@Sean-Der @enobufs|[Edits](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content//docs/06-data-communication.md) for content|
+|Applied WebRTC|Planning|@Sean-Der @leewardbound|[Edits](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content//docs/07-applied-webrtc.md) for content|
+|Debugging|Planning|@Sean-Der|[Edits](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content//docs/08-debugging.md) for content, Chapter [Ownership](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/issues/10)|
+|History|Planning|@Sean-Der|[Edits](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content//docs/09-history-of-webrtc.md) for content, Chapter [Ownership](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/issues/10)|
+|FAQ|Unstarted||[Edits](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content//docs/10-faq.md) for content, Chapter [Ownership](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/issues/10)|
+|Contributing|Unstarted||[Edits](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content//docs/11-contributing.md) for content, Chapter [Ownership](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/issues/10)|
 
 # License
 

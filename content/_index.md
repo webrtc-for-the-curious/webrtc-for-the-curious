@@ -44,4 +44,4 @@ The website will not use analytics or tracking.
 
 # Get Involved!
 
-We need your help! This book is entirely developed on [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious). We encourage readers to open issues with questions on things we didn't do a good job of covering yet.
+We need your help! This book is entirely developed on [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious) and is still being written. We encourage readers to open issues with questions on things we didn't do a good job of covering yet.
