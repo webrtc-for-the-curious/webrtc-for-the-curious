@@ -4,6 +4,43 @@ Welcome to WebRTC for the Curious!
 
 Start reading the book directly from GitHub [index](content/_index.md) or at [webrtcforthecurious.com](https://webrtcforthecurious.com)
 
+When we announced the book to social media we used the following copy
+
+```
+Title: WebRTC for the Curious: Go beyond the APIs
+
+Subject: The WebRTC book that explains everything.
+WebRTC is a real-time communication framework that makes it easy
+to build real-time interactions for web and mobile devices.
+
+You will learn about the WebRTC specification and how all the
+protocols work in depth, not just a tour of the APIs.
+The book is completely Open Source and available at
+https://webrtcforthecurious.com and
+https://github.com/webrtc-for-the-curious/webrtc-for-the-curious
+
+Learn the full details of ICE, SCTP, DTLS, SRTP, and how they work
+together to make up the WebRTC stack.
+
+Hear how WebRTC implementers debug issues with
+the tools of the trade.
+
+Listen to interviews with the authors of foundational
+WebRTC tech! Hear the motivations and design details
+that pre-dated WebRTC by 20 years.
+
+Explore the cutting edge of what people are building with
+WebRTC. Learn about interesting use cases and how real-world
+applications get designed, tested and implemented in production.
+
+Written by developers who have written all of this
+from scratch. We learned it the hard way, now we want
+to share it with you!
+
+This book is vendor agnostic and multiple Open Source projects
+and companies are involved. We would love to have you involved!
+```
+
 # Running/Deploying
 
 * Clone this repo and it's submodules `git clone --recursive https://github.com/webrtc-for-the-curious/webrtc-for-the-curious.git`
