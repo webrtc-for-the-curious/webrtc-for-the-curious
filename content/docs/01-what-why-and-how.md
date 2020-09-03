@@ -14,7 +14,7 @@ The WebRTC protocol is available in other APIs/languages besides Javascript. You
 
 ## Why should I learn WebRTC?
 
-These are the things that WebRTC will give you. This list is not exhaustive but is some of the things you may appreciate during your journey. Don't worry if you don't know some of these terms yet, this book will teach you them along the way.
+These are the things that WebRTC will give you. This list is not exhaustive but is some of the things you may appreciate during your journey. Don't worry if you don't know some of these terms yet, this book will teach them to you along the way.
 
 * Open Standard
 * Multiple Implementations
