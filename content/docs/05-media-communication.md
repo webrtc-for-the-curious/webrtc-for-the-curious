@@ -177,8 +177,13 @@ Also known as a NACK. This is one method of dealing with packet loss with RTP.
 A NACK is a RTCP message sent back to a sender to request re-transmission. The receiver crafts a RTCP message with the SSRC and Sequence Number. If the sender does not have this RTP packet available to re-send it just ignores the message.
 
 ### Forward Error Correction
-Also known as FEC. Another method of dealing with packet loss.
+Also known as FEC. Another method of dealing with packet loss. FEC is when you send the same data multiple times, without it even being requested. This be done at the RTP level, or even lower with the codec.
+
+If the packet loss for a call is steady this is much better then NACKs. The round trip of having to request, and then re-transmit the packet can be significant for NACKs.
 
 ### Congestion Control
+Congestion Control is the act of adjusting the media depending on the attributes of the network. If you don't have a lot of bandwidth, you need to send lower quality video.
+
+Congestion Control is all about making trade offs.
 
 ### JitterBuffer
