@@ -153,7 +153,7 @@ Usually, after this call, you will send the offer to the remote peer, and they w
 
 When `setRemoteDescription` has been called on both sides, the WebRTC Agents now have enough info to start communicating P2P!
 
-#### `addIcecandidate`
+#### `addIceCandidate`
 
 `addIceCandidate` allows a WebRTC agent to add more remote ICE Candidates whenever they want. This API sends the ICE Candidate right into the ICE subsystem and has no other effect on the greater WebRTC connection.
 
