@@ -4,13 +4,13 @@ type: docs
 weight: 3
 ---
 
-## Why do I need signaling?
+## What is WebRTC Signaling?
 When you create a WebRTC agent it knows nothing about the other peer. It has no idea who it is going to connect with or what they are going to send!
 Signaling is the initial bootstrapping that makes the call possible. After these values are exchanged the WebRTC agents then can communicate directly with each other.
 
 Signaling messages are just text. The WebRTC agents don't care how they are transported. They are commonly shared via Websockets, but not a requirement.
 
-## How does it work?
+## How does WebRTC signaling work?
 
 WebRTC uses an existing protocol called the Session Description Protocol. Via this protocol, the two WebRTC Agents will share all the state required to establish a connection. The protocol itself is simple to read and understand.
 The complexity comes from understanding all the values that WebRTC populates it with.
@@ -18,13 +18,13 @@ The complexity comes from understanding all the values that WebRTC populates it 
 This protocol is not specific to WebRTC. We will learn the Session Description Protocol first without even talking about WebRTC. WebRTC only really takes advantage of a subset of the protocol so we are only going to cover what we need.
 After we understand the protocol we will move on to its applied usage in WebRTC.
 
-## Session Description Protocol
+## What is the *Session Description Protocol* (SDP)?
 The Session Description Protocol is defined in [RFC 4566](https://tools.ietf.org/html/rfc4566). It is a key/value protocol with a newline after each value. It will feel similar to an INI file.
 A Session Description then contains an unlimited amount of Media Descriptions.  Mentally you can model it as a Session Description contains an array of Media Descriptions.
 
 A Media Description usually maps to a single stream of media. So if you wanted to describe a call with three video streams and two audio tracks you would have five Media Descriptions.
 
-### What does Key/Value mean
+### How to read the SDP
 Every line in a Session Description will start with a single character, this is your key. It will then be followed by an equal sign. Everything after that equal sign is the value. After the value is complete you will have a newline.
 
 The Session Description Protocol defines all the keys that are valid. You can only use letters for keys as defined in the protocol. These keys all have significant meaning, which will be explained later.
@@ -38,7 +38,7 @@ a=second-value
 
 You have two lines. Each with the key `a`. The first line has the value `my-sdp-value`, the second line has the value `second-value`.
 
-### WebRTC only uses some keys
+### WebRTC only uses some SDP keys
 Not all key values defined by the Session Description Protocol are used by WebRTC. The following are the only keys you need to understand. Don't worry about fully understanding yet, but this will be a handy reference in the future.
 
 * `v` - Version, should be equal to '0'
@@ -49,7 +49,7 @@ Not all key values defined by the Session Description Protocol are used by WebRT
 * `a` - Attribute, free text field this is the most common line in WebRTC
 * `c` - Connection Data, should be equal to 'IN IP4 0.0.0.0'
 
-### Media Descriptions
+### Media Descriptions in a Session Description
 
 A Session Description can contain an unlimited amount of Media Descriptions.
 
@@ -91,17 +91,17 @@ a=rtpmap:96 VP8/90000
 * You have two Media Descriptions. One of type `audio` and one of type `video`.
 * Each of those has one attribute. This attribute configures details of the RTP pipeline, which is discussed in the 'Media Communication' chapter.
 
-## Session Description Protocol and WebRTC
+## How *Session Description Protocol* and WebRTC work together
 
 The next piece of the puzzle is understanding how WebRTC uses the Session Description Protocol.
 
-### Offers and Answers
+### What are Offers and Answers?
 
 WebRTC uses an offer/answer model. All this means is that one WebRTC Agent makes an 'Offer' to start the call, and the other WebRTC Agents 'Answers' if it is willing to accept what has been offered.
 
 This gives the answerer a chance to reject codecs, Media Descriptions. This is how two peers can understand what they are willing to exchange.
 
-### Transceivers
+### Transceivers are for sending and receiving
 
 Transceivers is a WebRTC specific concept that you will see in the API. What it is doing is exposing the 'Media Description' to the Javascript API. Each Media Description becomes a Transceiver.
 Every time you create a Transceiver a new Media Description is added to the local Session Description.
@@ -113,7 +113,7 @@ Each Media Description in WebRTC will have a direction attribute. This allows a 
 * `sendrecv`
 * `inactive`
 
-### Values used by WebRTC
+### SDP Values used by WebRTC
 
 This list is not extensive, but this is a list of common attributes that you will see in a Session Description from a WebRTC Agent. Many of these values control the subsystems that we haven't discussed yet.
 
@@ -153,7 +153,7 @@ A SSRC defines a single media stream track.
 
 `label` is the id for this individual stream. `mslabel` is the id for a container that can multiple streams inside of it.
 
-### Examples
+### Example of a WebRTC Session Description
 
 The following is a complete Session Description generated by a WebRTC Client.
 

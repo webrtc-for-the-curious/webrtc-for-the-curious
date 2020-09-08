@@ -4,7 +4,7 @@ type: docs
 weight: 4
 ---
 
-## Why do I need a dedicated subsystem for connecting?
+## Why does WebRTC need a dedicated subsystem for connecting?
 
 WebRTC will go to great lengths to achieve direct bi-directional communication between two WebRTC Agents. This connection style is also known as peer-to-peer. Establishing peer-to-peer connectivity can be difficult though. These agents could be in different networks with no direct connectivity!
 

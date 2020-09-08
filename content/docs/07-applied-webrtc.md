@@ -16,7 +16,13 @@ The technologies behind WebRTC aren't just for video chatting -- since WebRTC is
 __Each category will begin with a paragraph about how WebRTC solves the problem, notable benefits (or drawbacks) to solving this problem with WebRTC. Avoid just listing links to outside projects__
 
 ### Conferencing (audio/video)
+
+Audio/Video Conferencing is one of the most popular use cases for WebRTC technology. The low-latency nature of WebRTC protocol is great for calls, and it's common to see conferences arranged in p2p mesh configuration (for low latency), or peering through an SFU (Selective Forwarding Unit) to improve call quality. Since codec support varies by browser, many conferencing servers allow browsers to broadcast using proprietary or non-free codecs like h264, and then re-encode to an open standard like VP8 at the server level; when the SFU performs an encoding task beyond just forwarding packets, it is now called an MCU (Multi-point Conferencing Unit). While SFU are notoriously fast and efficient and great for conferences, MCU can be very resource intensive! Some conferencing servers even perform heavy tasks like compositing (combining together) A/V streams, customized for each caller, to minimize client bandwidth use by sending only a single stream of all the other callers.
+
 ### Broadcasting
+
+WebRTC can also be used to broadcast video streams in a one-to-many configuration. Typically, on the server side, this is accomplished very much like conferencing with an SFU (or MCU to encode additional profiles), though there are some modern attempts at using peer-to-peer mesh networks to relay video streams (see Distributed CDN below). Using WebRTC for broadcasting live video content is a great choice, and WebRTC typically has much lower latency than RTMP or HLS; however other protocols like HLS have better out-of-the-box support for streaming Video on Demand content.
+
 ### Remote Control 
 ### File-Transfer
 ### Distributed CDN
