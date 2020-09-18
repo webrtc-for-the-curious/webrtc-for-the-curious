@@ -22,7 +22,7 @@ RTCP is the protocol that communicates metadata about the call. The format is fl
 Real-time media is about making trade-offs between latency and quality. The more latency you are willing to tolerate, the higher quality video you can expect.
 
 ### Real World Limitations
-These constraints are all caused by the limitations off the real world. These are all characteristics of your network that you will need to overcome.
+These constraints are all caused by the limitations of the real world. These are all characteristics of your network that you will need to overcome.
 
 #### Bandwidth
 Bandwidth is the maximum rate of data that can be transferred across a given path. It is important to remember this isn't a static number either. The bandwidth will change along the route as more (or less) people use it.
