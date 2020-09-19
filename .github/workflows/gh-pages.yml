@@ -7,12 +7,16 @@ on:
 
 jobs:
   deploy:
+    name: Publish Website
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: true  # Fetch Hugo themes (true OR recursive)
           fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+
+      - run: |
+          echo "::set-env name=FILELIST::$(printf '"%s" ' content/docs/*.md)"
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
@@ -22,6 +26,10 @@ jobs:
 
       - name: Build
         run: hugo --minify
+          
+      - uses: docker://pandoc/latex:2.9
+        with:
+          args: --output=public/webrtc-for-the-curious.pdf ${{ env.FILELIST }}
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
