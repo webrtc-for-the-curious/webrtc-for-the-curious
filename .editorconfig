@@ -1,0 +1,30 @@
+# EditorConfig helps developers define and maintain consistent
+# coding styles between different editors and IDEs.
+
+# See https://editorconfig.org for more information.
+
+root = true
+
+[*]
+end_of_line = lf
+charset = utf-8
+insert_final_newline = true
+trim_trailing_whitespace = false
+
+[Dockerfile]
+indent_style = space
+indent_size = 4
+
+[*.json]
+indent_style = tab
+indent_size = 4
+trim_trailing_whitespace = true
+
+[*.md]
+indent_style = space
+indent_size = 4
+
+[*.toml]
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = true
