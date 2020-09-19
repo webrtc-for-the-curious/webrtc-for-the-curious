@@ -115,7 +115,7 @@ ice --> stun
 
 srtp --> rtcp
 srtp --> rtp
-{{< /mermaid >}}
+{{</mermaid>}}
 
 
 ## How does WebRTC (the API) work
