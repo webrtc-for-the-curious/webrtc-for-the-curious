@@ -65,6 +65,12 @@ We would love contributions! We are open to suggestions about the content as wel
 |FAQ|Unstarted||[Edits](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content//docs/10-faq.md) for content, Chapter [Ownership](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/issues/10)|
 |Contributing|Unstarted||[Edits](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content//docs/11-contributing.md) for content, Chapter [Ownership](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/issues/10)|
 
+## Contributing from your browser (via Codespaces!)
+
+We support [*Github Codespaces*](https://github.com/features/codespaces) so helping out is as easy as starting up a Codespace from this repo.
+
+Once started, click "Run Live Docs Server" in the statusbar to start the Hugo server. Note that Hugo's autoreload doesn't trigger a browser refresh from Codespaces yet due to missing proxying of Websockets traffic. Reload a page manually to rerender it.
+
 # License
 
 This book is available under the CC0 license. The authors have waived all their copyright and related rights in their works to the fullest extent allowed by law. You May use this work however you want and no attribution is required.
