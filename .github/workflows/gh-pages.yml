@@ -26,10 +26,10 @@ jobs:
 
       - name: Build
         run: hugo --minify
-          
+
       - uses: docker://pandoc/latex:2.9
         with:
-          args: --output=public/webrtc-for-the-curious.pdf ${{ env.FILELIST }}
+          args: --output=public/docs/webrtc-for-the-curious.pdf ${{ env.FILELIST }}
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
