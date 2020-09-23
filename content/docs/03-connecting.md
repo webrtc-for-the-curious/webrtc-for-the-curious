@@ -58,7 +58,7 @@ pub{Public Internet}
 routera-->pub
 routerb-->pub
 
-{{< /mermaid >}}
+{{</mermaid>}}
 
 For the hosts in the same network, it is very easy to connect. Communication between `192.168.0.1 -> 192.168.0.2` is easy to do! These two hosts can connect to each other without any outside help.
 
@@ -95,7 +95,7 @@ a1-.->routera;
 routera-.->pub;
 pub-.->routerb;
 routerb-.->b2;
-{{< /mermaid >}}
+{{</mermaid>}}
 
 To make this communication happen you establish a NAT Mapping. Creating a NAT mapping will feel like an automated/config-less version of doing port forwarding in your router.
 
@@ -274,7 +274,7 @@ serverport-->|"ChannelData (From UDP Client)"|turnclient
 
 peer-->|"Raw Network Traffic (To TURN Client)"|relayport
 relayport-->|"Raw Network Traffic (To UDP Client)"|peer
-{{< /mermaid >}}
+{{</mermaid>}}
 
 #### Two TURN Allocations for Communication
 {{<mermaid>}}
@@ -302,7 +302,7 @@ serverportB-->|"ChannelData"|turnclientB
 
 relayportA-->|"Raw Network Traffic"|relayportB
 relayportB-->|"Raw Network Traffic"|relayportA
-{{< /mermaid >}}
+{{</mermaid>}}
 
 ## ICE
 ICE (Interactive Connectivity Establishment) is how WebRTC connects two Agents. Defined in [RFC8445](https://tools.ietf.org/html/rfc8445), this is another technology that pre-dates WebRTC! ICE is a protocol for establishing connectivity. It determines all the possible routes between the two peers and then ensures you stay connected.
@@ -385,7 +385,7 @@ relayA --- hostB
 relayA --- serverreflexiveB
 relayA --- relayB
 linkStyle 6,7,8 stroke-width:2px,fill:none,stroke:blue;
-{{< /mermaid >}}
+{{</mermaid>}}
 
 ### Candidate Selection
 The Controlling and Controlled Agent both start sending traffic on each pair. This is needed if one Agent is behind a `Address Dependent Mapping`, this will cause a `Peer Reflexive Candidate` to be created.

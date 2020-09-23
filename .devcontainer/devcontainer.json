@@ -1,0 +1,56 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.140.1/containers/hugo
+{
+	"name": "WebRTCForTheCurious",
+
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": {
+			// Update VERSION to pick a specific hugo version.
+			// Example versions: latest, 0.73.0, 0,71.1
+			// (Rebuild the container if it already exists to update.)
+			"VERSION": "latest",
+		}
+	},
+
+	// Set *default* container specific settings.json values on container create.
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/zsh",
+		"markdownlint.config": {
+			// For what you can disable/enable here, see https://github.com/DavidAnson/markdownlint#rules--aliases
+			"default": true,
+			"no-trailing-punctuation": false,
+			"no-inline-html": false,
+			"first-line-h1": false,
+			"single-title": false
+		}
+	},
+
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"bungcip.better-toml",
+		"davidanson.vscode-markdownlint",
+		"editorconfig.editorconfig",
+		"usernamehw.errorlens",
+		"vstirbu.vscode-mermaid-preview",
+		"actboy168.tasks",
+		"github.vscode-pull-request-github",
+		"mhutchie.git-graph"
+	],
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [
+		1313
+	],
+	// (If you change port 1313 here, don't forget to edit the Dockerfile EXPOSE line.)
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// For example, to make sure our submodules are updated:
+	"postCreateCommand": "git submodule update --recursive --init",
+
+	// Connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root
+	"remoteUser": "vscode",
+
+	// Match UID and GID of above user to running host's user:
+	"updateRemoteUserUID": true
+}

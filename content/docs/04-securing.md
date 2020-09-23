@@ -134,7 +134,7 @@ sequenceDiagram
     S->>C: ChangeCipherSpec
     S->>C: Finished
     Note over C,S: Flight 6
-{{< /mermaid >}}
+{{</mermaid>}}
 
 #### ClientHello
 ClientHello is the initial message sent by the client. It contains a list of attributes. These attributes tell the server the ciphers and features the client supports. For WebRTC this is how we choose the SRTP Cipher as well. It also contains random data that will be used to generate the keys for the session.
