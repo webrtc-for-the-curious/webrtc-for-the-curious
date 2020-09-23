@@ -31,6 +31,10 @@ jobs:
         with:
           args: --output=public/docs/webrtc-for-the-curious.pdf ${{ env.FILELIST }}
 
+      - uses: docker://pandoc/latex:2.9
+        with:
+          args: --output=public/docs/webrtc-for-the-curious.epub ${{ env.FILELIST }}
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
