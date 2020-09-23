@@ -32,7 +32,7 @@ Each chapter doesn't assume prior knowledge. You can start at any point in the b
 
 ## Non-commercial and privacy-respecting
 
-This book is available on [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious) and [WebRTCforTheCurious.com](https://webrtcforthecurious.com). It is licensed in a way that you can use it however you think is best. If you prefer to download a PDF to read later, that can be found [here](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.pdf).
+This book is available on [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious) and [WebRTCforTheCurious.com](https://webrtcforthecurious.com). It is licensed in a way that you can use it however you think is best. You can also choose to download the current version as a [PDF](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.pdf) or [ePub](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.epub).
 
 This book is written by individuals, for individuals. It is vendor agnostic so we will not make recommendations that could be a conflict of interest.
 
