@@ -7,7 +7,7 @@ type: docs
 
 This book was created by WebRTC implementers to share their hard-earned knowledge with the world. *WebRTC For The Curious* is an Open Source book written for those that are always looking for more. This book doesn't settle for abstraction.
 
-This book is all about protocols and APIs, and will not be talking about any software in particular. We attempt to summarize RFCs and get all undocumented knowledge into one place. This is book is not a tutorial, and will not contain much code.
+This book is all about protocols and APIs, and will not be talking about any software in particular. We attempt to summarize RFCs and get all undocumented knowledge into one place. This book is not a tutorial, and will not contain much code.
 
 WebRTC is a wonderful technology but is difficult to use. This book is vendor agnostic, and we have tried to remove any conflicts of interest.
 
