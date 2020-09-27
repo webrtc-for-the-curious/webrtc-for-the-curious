@@ -6,15 +6,15 @@ weight: 4
 
 ## Why does WebRTC need a dedicated subsystem for connecting?
 
-WebRTC will go to great lengths to achieve direct bi-directional communication between two WebRTC Agents. This connection style is also known as peer-to-peer. Establishing peer-to-peer connectivity can be difficult though. These agents could be in different networks with no direct connectivity!
+WebRTC will go to great lengths to achieve direct bi-directional communication between two WebRTC Agents. In constrast to endpoints in the traditional Client/Server technology, particularly the role of server, an WebRTC Agent is not assumed or guarantees a stable well-known transport address (IP and port) or hostname, and the task of creating a connection is almost equally distributed to both agents. This connection style is also known as peer-to-peer (p2p).
 
-In situations where direct connectivity does exist you can have other issues.  In some cases, your clients don't speak the same network protocols (UDP <-> TCP) or maybe IP Versions (IPv4 <-> IPv6).
+Establishing peer-to-peer connectivity can be difficult though. These agents could be in different networks with no direct connectivity! In situations where direct connectivity does exist you can have other issues. In some cases, your clients don't speak the same network protocols (UDP <-> TCP) or maybe IP Versions (IPv4 <-> IPv6).
 
-Because WebRTC has these attributes you get these advantages over traditional Client/Server technology.
+Despite these diffculties in setting up a p2p connection, you get advantages over traditional Client/Server technology because of the following attributes that WebRTC offers.
 
 ### Reduced Bandwidth Costs
 
-Since media communication happens directly between peers you don't have to pay for transporting it.
+Since media communication happens directly between peers you don't have to pay for transporting it (no third-party server charging for it).
 
 ###  Lower Latency
 
@@ -28,12 +28,12 @@ Direct Communication is more secure. Since users aren't routing data through you
 
 The process described above is [ICE](https://tools.ietf.org/html/rfc8445). Another protocol that pre-dates WebRTC.
 
-ICE is a protocol that tries to find the best way to communicate between two ICE Agents. Each ICE Agent publishes the ways it is reachable, these are known as candidates. ICE then determines the best pairing of candidates.
+ICE is a protocol that tries to find the best way to communicate between two ICE Agents. Each ICE Agent publishes the ways it is reachable, these are known as candidates. A candidate is essentially a transport address of the agent that it believes the peer can reach. ICE then determines the best pairing of candidates.
 
 The actual ICE process is described in greater detail later in this chapter. To understand why ICE exists, it is useful to understand what network behaviors we are overcoming.
 
 ## Networking real-world constraints
-ICE is all about overcoming the constraints of real-world networks. Before we even explore the solution lets talk about the actual problems.
+ICE is all about overcoming the constraints of real-world networks. Before we even explore the solution let's talk about the actual problems.
 
 ### Not in the same network
 Most of the time the other WebRTC Agent will not even be in the same network. A typical call is usually between two WebRTC Agents in different networks with no direct connectivity.
@@ -62,7 +62,7 @@ routerb-->pub
 
 For the hosts in the same network, it is very easy to connect. Communication between `192.168.0.1 -> 192.168.0.2` is easy to do! These two hosts can connect to each other without any outside help.
 
-However, a host using `Router B` has no way to directly access anything behind `Router A`. A host using `Router B` could send traffic directly to `Router A`, but the request would end there. How does `Router A` know which host it should deliver the message too?
+However, a host using `Router B` has no way to directly access anything behind `Router A`. How would you tell the difference between 191.168.0.1 behind Router A and the same IP behind Router B? They are private IPs! A host using `Router B` could send traffic directly to `Router A`, but the request would end there. How does `Router A` know which host it should deliver the message too?
 
 ### Protocol Restrictions
 
@@ -70,12 +70,12 @@ Some networks don't allow UDP traffic at all, or maybe they don't allow TCP. Som
 
 ### Firewall/IDS Rules
 
-Another is 'Deep Packet Inspection' and other intelligent filterings. Some network administrators will run software that tries to process every packet. Many times this software doesn't understand WebRTC, so it blocks because it doesn't know what to do
+Another is 'Deep Packet Inspection' and other intelligent filterings. Some network administrators will run software that tries to process every packet. Many times this software doesn't understand WebRTC, so it blocks because it doesn't know what to do, e.g. treating WebRTC packets as suspicious UDP packets on a arbitrary port that is not whitelisted. 
 
 ## NAT Mapping
-NAT(Network Address Translation) Mapping is the magic that makes the connectivity of WebRTC possible. This is how WebRTC allows two peers in completely different subnets to communicate. It doesn't use a relay, proxy, or server.
+NAT (Network Address Translation) Mapping is the magic that makes the connectivity of WebRTC possible. This is how WebRTC allows two peers in completely different subnets to communicate, addresing the "not in the same network" problem above, while it creates new challenges. Let's explain how NAT Mapping in the first place.
 
-Again we have  `Agent 1` and `Agent 2` and they are in different networks. However, traffic is flowing completely through. Visualized that looks like.
+It doesn't use a relay, proxy, or server. Again we have `Agent 1` and `Agent 2` and they are in different networks. However, traffic is flowing completely through. Visualized that looks like.
 
 {{<mermaid>}}
 graph TB
@@ -97,16 +97,16 @@ pub-.->routerb;
 routerb-.->b2;
 {{</mermaid>}}
 
-To make this communication happen you establish a NAT Mapping. Creating a NAT mapping will feel like an automated/config-less version of doing port forwarding in your router.
+To make this communication happen you establish a NAT Mapping. For example, Agent 1 uses the port 7000 to established a WebRTC connection with Agent 2, and create a binding of 192.168.0.1:7000 to 5.0.0.1:7000. This then allows Agent 2 to reach Agent 1 by destining packets to 5.0.0.1:7000. In other words, creating a NAT mapping in this example will feel like an automated/config-less version of doing port forwarding in your router.
 
-The downside to NAT Mapping is that that network behavior is inconsistent between networks. ISPs and hardware manufacturers may do it in different ways. In some cases, network administrators may even disable it.
-The full range of behaviors is understood and observable, so an ICE Agent is able to confirm it created a NAT Mapping, and the attributes of the mapping.
+The downside to NAT Mapping is that there isn't a single form of mapping (e.g. static port forwarding) and the behavior is inconsistent between networks. ISPs and hardware manufacturers may do it in different ways. In some cases, network administrators may even disable it.
+
+The good news is the full range of behaviors is understood and observable, so an ICE Agent is able to confirm it created a NAT Mapping, and the attributes of the mapping.
 
 The document that describes these behaviors is [RFC 4787](https://tools.ietf.org/html/rfc4787)
 
 ### Creating a Mapping
-Creating a mapping is the easiest part. When you send a packet to an address outside your network, a mapping is created! A NAT Mapping is just a temporary public IP/Port that is allocated by your NAT. The outbound message will be rewritten to have
-its source address be the newly created mapping.  If a message isn't sent, it will be automatically routed back to the host inside the NAT.
+Creating a mapping is the easiest part. When you send a packet to an address outside your network, a mapping is created! A NAT Mapping is just a temporary public IP/Port that is allocated by your NAT. The outbound message will be rewritten to have its source address given by the newly mapping address. If a message isn't sent, it will be automatically routed back to the host inside the NAT.
 
 The details around mappings are where it gets complicated.
 
@@ -119,7 +119,7 @@ One mapping is created for each sender inside the NAT. If you send two packets t
 This is the best-case scenario. For a call to work, at least one side MUST be of this type.
 
 #### Address Dependent Mapping
-A new mapping is created every time you send a packet to a new address. If you send two packets to different hosts two mappings will be created. If you send two packets to the same remote host, but different destination ports a new mapping will NOT be created.
+A new mapping is created every time you send a packet to a new address. If you send two packets to different hosts two mappings will be created. If you send two packets to the same remote host but different destination ports, a new mapping will NOT be created.
 
 #### Address and Port Dependent Mapping
 A new mapping is created if the remote IP or port is different. If you send two packets to the same remote host, but different destination ports, a new mapping will be created.
@@ -144,7 +144,7 @@ STUN(Session Traversal Utilities for NAT) is a protocol that was created just fo
 
 STUN is useful because it allows the programmatic creation of NAT Mappings. Before STUN, we were able to create NAT Mappings, but we had no idea what the IP/Port of it was! STUN not only gives you the ability to create a mapping, but you also get the details so you can share it with others so they can send traffic to you via the mapping you created.
 
-Let's start with a basic description of STUN. Later, we will expand on TURN and ICE usage. For now, we are just going to describe the Request/Response flow to create a mapping. Then we talk about how we get the details of it to share with others. This is the process that happens when you have a `stun:` server in your ICE urls for a WebRTC PeerConnection.
+Let's start with a basic description of STUN. Later, we will expand on TURN and ICE usage. For now, we are just going to describe the Request/Response flow to create a mapping. Then we talk about how we get the details of it to share with others. This is the process that happens when you have a `stun:` server in your ICE urls for a WebRTC PeerConnection. In a nutshell, STUN helps an endpoint behind NAT figure out what mapping is created by asking a STUN server outside NAT to report what it observes.
 
 ### Protocol Structure
 Every STUN packet has the following structure:
@@ -207,7 +207,7 @@ The `Mapped Address` is what you would share if you wanted someone to send packe
 People will also call the `Mapped Address` your `Public IP` or `Server Reflexive Candidate`.
 
 ### Determining NAT Type
-Unfortunately, the `Mapped Address` might not be useful in all cases. If it is `Address Dependent` only the STUN server can send traffic back to you. If you shared it and another peer tried to send messages in they will be dropped. This makes it useless for communicating with others.
+Unfortunately, the `Mapped Address` might not be useful in all cases. If it is `Address Dependent` only the STUN server can send traffic back to you. If you shared it and another peer tried to send messages in they will be dropped. This makes it useless for communicating with others. You may find the `Address Dependent` case is in fact solvable, if the STUN server can also forward packets for you to the peer! This leads us to the solution using TURN below.
 
 [RFC5780](https://tools.ietf.org/html/rfc5780) defines a method for running a test to determine your NAT Type. This would be useful because you would know ahead of time if direct connectivity was possible.
 
@@ -307,9 +307,9 @@ relayportB-->|"Raw Network Traffic"|relayportA
 ## ICE
 ICE (Interactive Connectivity Establishment) is how WebRTC connects two Agents. Defined in [RFC8445](https://tools.ietf.org/html/rfc8445), this is another technology that pre-dates WebRTC! ICE is a protocol for establishing connectivity. It determines all the possible routes between the two peers and then ensures you stay connected.
 
-These routes are known as `Candidate Pairs`, which is a pairing of a local and remote address. This where STUN and TURN come into play with ICE. These addresses can be your local IP Address, `NAT Mapping`, or `Relayed Transport Address`. Each side gathers all the addresses they want to use, exchange them, and then attempt to connect!
+These routes are known as `Candidate Pairs`, which is a pairing of a local and remote transport address. This is where STUN and TURN come into play with ICE. These addresses can be your local IP Address plus a port, `NAT Mapping`, or `Relayed Transport Address`. Each side gathers all the addresses they want to use, exchange them, and then attempt to connect!
 
-Two ICE Agents communicate using the STUN Protocol. They send STUN packets to each other to establish connectivity. After connectivity is established they can send whatever they want. It will feel like using a normal socket.
+Two ICE Agents communicate using ICE ping packets (or formally called the connectivity checks), and establish connectivity. After connectivity is established (more on this later) they can send whatever they want. It will feel like using a normal socket. These checks are defined based on STUN, and as we will see soon, using STUN packets to check the connectivity also helps us discovery new Candidate.
 
 ### Creating an ICE Agent
 An ICE Agent is either `Controlling` or `Controlled`. The `Controlling` Agent is the one that decides the selected `Candidate Pair`. Usually, the peer sending the offer is the controlling side.
@@ -326,11 +326,11 @@ We now need to gather all the possible addresses we are reachable at. These addr
 A Host candidate is listening directly on a local interface. This can either be UDP or TCP.
 
 #### mDNS
-A mDNS candidate is similar to a host candidate, but the IP address is obscured. Instead of informing the other side about your IP address, you give them a UUID. You then set-up a multicast listener, and respond if anyone requests the UUID you published.
+An mDNS candidate is similar to a host candidate, but the IP address is obscured. Instead of informing the other side about your IP address, you give them a UUID as the hostname. You then set-up a multicast listener, and respond if anyone requests the UUID you published.
 
-If you are in the same network as the agent, you can find each other via Multicast. If you aren't in the same network you will be unable to connect.
+If you are in the same network as the agent, you can find each other via Multicast. If you aren't in the same network you will be unable to connect (unless the network administrator configured otherwise to allow Multicast packets to traverse).
 
-This is useful for privacy purposes. Before, a user could find out your local IP address via WebRTC, now they only get a random UUID.
+This is useful for privacy purposes. A user could find out your local IP address via WebRTC with a Host candidate (without even trying to connect to you), but with an mDNS candidate, now they only get a random UUID.
 
 #### Server Reflexive
 A Server Reflexive candidate is generated by doing a `STUN Binding Request` to a STUN Server.
@@ -341,7 +341,7 @@ When you get the `STUN Binding Response`, the `XOR-MAPPED-ADDRESS` is your Serve
 A Peer Reflexive candidate is when you get an inbound request from an address that isn't known to you. Since ICE is an authenticated protocol you know the traffic is valid. This just means the remote peer is
 communicating with you from an address it didn't know about.
 
-This commonly happens when a `Host Candidate` communicates with a `Server Reflexive Candidate`. A new `NAT Mapping` was created because you are communicating outside your subnet.
+This commonly happens when a `Host Candidate` communicates with a `Server Reflexive Candidate`. A new `NAT Mapping` was created because you are communicating outside your subnet. Remember we said the connectivity checks are in fact STUN packets? The format of STUN response naturally allows a peer to report back the peer-reflexive address.
 
 #### Relay
 A Relay Candidate is generated by using a TURN Server.
