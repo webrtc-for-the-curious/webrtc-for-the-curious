@@ -15,7 +15,7 @@ The technologies behind WebRTC aren't just for video chatting -- since WebRTC is
 
 ### Conferencing
 
-Conferencing was the use case that WebRTC was originally designed for. You can have two users directly connect to each other. Once they are connected they can share their webcams, or maybe their desktop. WebRTC allows users to send and receive as many streams as they want. They can also add and remove those streams at any time. 
+Conferencing was the use case that WebRTC was originally designed for. You can have two users directly connect to each other. Once they are connected they can share their webcams, or maybe their desktop. Participants can send and receive as many streams as they want. They can also add and remove those streams at any time. 
 
 Going beyond just media DataChannels are very useful for building a conferencing experience. Users can send metadata or share documents. You can create multiple streams and have multiple conversations going at once.
 
@@ -23,7 +23,7 @@ Conferencing becomes more difficult as more users join the call. How you scale i
 
 ### Broadcasting
 
-WebRTC can also be used to broadcast video streams in a one-to-many configuration. 
+WebRTC can also be used to broadcast video streams one-to-many. 
 
 ### Remote Control 
 ### File-Transfer
