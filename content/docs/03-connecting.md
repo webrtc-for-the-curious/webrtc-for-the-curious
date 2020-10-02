@@ -307,7 +307,7 @@ relayportB-->|"Raw Network Traffic"|relayportA
 ## ICE
 ICE (Interactive Connectivity Establishment) is how WebRTC connects two Agents. Defined in [RFC8445](https://tools.ietf.org/html/rfc8445), this is another technology that pre-dates WebRTC! ICE is a protocol for establishing connectivity. It determines all the possible routes between the two peers and then ensures you stay connected.
 
-These routes are known as `Candidate Pairs`, which is a pairing of a local and remote address. This where STUN and TURN come into play with ICE. These addresses can be your local IP Address, `NAT Mapping`, or `Relayed Transport Address`. Each side gathers all the addresses they want to use, exchange them, and then attempt to connect!
+These routes are known as `Candidate Pairs`, which is a pairing of a local and remote address. This where STUN and TURN come into play with ICE. These addresses can be your local IP Address, `NAT Mapping`, or `Relayed Transport Address`. Each side gathers all the addresses they want to use, exchanges them, and then attempts to connect!
 
 Two ICE Agents communicate using the STUN Protocol. They send STUN packets to each other to establish connectivity. After connectivity is established they can send whatever they want. It will feel like using a normal socket.
 
