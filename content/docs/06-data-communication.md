@@ -4,7 +4,7 @@ type: docs
 weight: 7
 ---
 
-## What is Data Channel?
+# What is Data Channel?
 
 ### Questions From The Curious 
 I know many of you have a bunch of questions similar to the ones shown below.

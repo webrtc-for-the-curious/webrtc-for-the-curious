@@ -4,4 +4,4 @@ type: docs
 weight: 12
 ---
 
-## Contributing
+# Contributing
