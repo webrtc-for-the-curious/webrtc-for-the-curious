@@ -16,7 +16,7 @@ jobs:
           fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
 
       - run: |
-          echo "::set-env name=FILELIST::$(printf '"%s" ' content/docs/*.md)"
+          echo "FILELIST=\"content/_index.md\" $(printf '"%s" ' content/docs/*.md)" >> $GITHUB_ENV
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
@@ -29,11 +29,11 @@ jobs:
 
       - uses: docker://pandoc/latex:2.9
         with:
-          args: --output=public/docs/webrtc-for-the-curious.pdf ${{ env.FILELIST }}
+          args: --output=public/docs/webrtc-for-the-curious.pdf --toc ${{ env.FILELIST }} .pandoc/metadata_en.txt
 
       - uses: docker://pandoc/latex:2.9
         with:
-          args: --output=public/docs/webrtc-for-the-curious.epub ${{ env.FILELIST }}
+          args: --output=public/docs/webrtc-for-the-curious.epub --toc ${{ env.FILELIST }} .pandoc/metadata_en.txt
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
