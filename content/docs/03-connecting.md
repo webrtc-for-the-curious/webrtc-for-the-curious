@@ -253,7 +253,7 @@ ChannelData allows you to send data, but not repeat an IP Address. You create a 
 Allocations will destroy themselves automatically. The TURN Client must refresh them sooner than the `LIFETIME` given when creating the allocation.
 
 ### TURN Usage
-TURN Usage exists in two forms. Usually, you have one peer acting as a 'TURN Client' and the other side communicating directly. In bad cases, you might have TURN Usage on both sides because of improper setup.
+TURN Usage exists in two forms. Usually, you have one peer acting as a 'TURN Client' and the other side communicating directly. In some cases you might have TURN Usage on both sides, for example because both clients are in networks that block UDP and therefore the connection to the respective TURN servers happens via TCP.
 
 These diagrams help illustrate what that would look like.
 
