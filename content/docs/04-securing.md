@@ -49,8 +49,8 @@ Wikipedia has an example of this in action [here](https://en.wikipedia.org/wiki/
 #### Pseudorandom Function
 A Pseudorandom Function (PRF) is a pre-defined function to generate a value that appears random. It may take multiple inputs and generate a single output.
 
-#### Key Deriviation Function
-Key Deriviation is a type of Pseudorandom Function. Key Deriviation is a function that is used to make a key stronger. One common pattern is key stretching.
+#### Key Derivation Function
+Key Derivation is a type of Pseudorandom Function. Key Derivation is a function that is used to make a key stronger. One common pattern is key stretching.
 
 Lets say you are given a key that is 8 bytes. You could use a KDF to make it stronger.
 
@@ -187,7 +187,7 @@ SRTP is a protocol designed just for encrypting RTP packets. To start a SRTP ses
 DTLS provides a dedicated API to export the keys to used by another process. This is defined in [RFC 5705](https://tools.ietf.org/html/rfc5705)
 
 ### Session Creation
-SRTP defines a Key Deriviation Function that is used on the inputs. When creating a SRTP Session the inputs are run through this to generate our keys for our SRTP Cipher. After this you can move on to processing media.
+SRTP defines a Key Derivation Function that is used on the inputs. When creating a SRTP Session the inputs are run through this to generate our keys for our SRTP Cipher. After this you can move on to processing media.
 
 ### Exchanging Media
 Each RTP packet has a 16 bit SequenceNumber. These Sequence Numbers are used to keep packets in order, like a Primary Key. During a call these will rollover. SRTP keeps track of it and calls this the rollover counter.
