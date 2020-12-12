@@ -84,27 +84,20 @@ controls establishment of data channels.
 {{<expand "Question: How do I know if I am sending too much?">}}
 *Short Answer:*
 
-WebRTC (primarily) uses UDP. On top of UDP, there's SCTP, then DCEP which
-controls establishment of data channels.
+Calls on the send method on a data channel always return immediately. It does not mean the data was sent on the wire.
+It will first be written to a buffer... When you call send() faster than your network can process, the buffered size will grow.
+[RTCDataChannel.bufferedAmount](https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel/bufferedAmount) is your friend.
+
 
 *Related sections for more details:*
 * [Flow Control API](#flow-control-api)
 {{</expand>}}
 
-{{<expand "Question: How can I automate the flow control?">}}
+{{<expand "Question: Do messages arrive in the order they were sent?">}}
 *Short Answer:*
 
-Yes, you can. WebRTC provides a set of methods and an event for it.
-
-*Related sections for more details:*
-* [Flow Control API](#flow-control-api)
-{{</expand>}}
-
-{{<expand "Question: Do messages arrive in the sequential order they were sent?">}}
-*Short Answer:*
-
-Yes. Optionally, you could tell the data channel to deliver message as it
-they arrive even those messages reordered over the network.
+By default, Yes. Optionally, you could disable it to receive messages as it
+arrives.
 
 *Related sections for more details:*
 * [Data Channel API](#data-channel-api)
@@ -126,30 +119,57 @@ head-of-line blocking delay.
 {{<expand "Question: Can we send audio or video via data channel?">}}
 *Short Answer:*
 
-You can send any data over data channel. In a browser case, it is your
+You could send any data over data channel. In a browser case, it is your
 responsibility to decode the data and pass it to a media player for rendering,
-while it is automatically done when you use media channels.
+where it is automatically done when you use media channels.
 
 *Related sections for more details:*
 * [Audio and Video Communication](/docs/05-media-communication)
 {{</expand>}}
 
-
 ## Functional Overview
-### What does data channels solve?
-* Application examples
+Data channel can deliver any types of data. If you wish, you send send audio or video
+data over the data channel too, but if you need to playback the media in real-time,
+using media channels (See [Media Communication]({{< ref "05-media-communication.md" >}})) that uses RTP/RTCP protocols are the better options.
+
+### What are the applications of data channel?
+Applicability of the data channel is unlimited! The data channel solves packet loss,
+congestion problems and many other stuff for you and provide you with very simple
+API to deliver you your data to your peer in real-time. You just need to focus on what
+your application wants to achieve, and be creative.
+
+Here are some example applications using the data channel:
   - Real-time network games
-  - Game player action events
-  - Asset exchange
+  - Serverless home automation from remote
   - Text chat
-  - Collaborative file transfer (distributed storage p2p file sharing)
-  - Monitoring IoT devices
+  - Animation (series of still images)
+  - P2P CDN (Content Delivery Network)
+  - Monitoring data from IoT
+  - Continuous ingestion of time-series data from sensor devices
+  - Real-time image recognition with AI from cameras
 
-### Protocol Stack
-(TODO)
+### Protocol Stack Overview
+The data channel is comprised of the following 3 layers:
+* Data Channel Layer
+* DCEP (Data channel Establishment Protocol) Layer
+* SCTP (Stream Control Transmission Protocol) Layer
 
-### Basic Features
-* Reliability
+{{< figure src="/images/06-datachan-proto-stack.png">}}
+
+#### Data Channel Layer
+This layer provides API.
+
+#### Data channel Establishment Protocol Layer
+This layer is responsible for the data channel handshake with the peer. It uses a
+SCTP stream as a control channel to negotiate capabilities such as ordered delivery,
+maxRetransmits/maxPacketLifeTime (a.k.a. "Partial-reliability"), etc.
+
+#### SCTP Protocol Layer
+This is the heart of the data channel. What it does includes:
+
+* Channel multiplexing (In SCTP, channels are called "streams")
+* Reliable delivery with TCP-like retransmission mechanism
+* Partial-reliability options
 * Congestion Avoidance
 * Flow Control
 
