@@ -15,6 +15,13 @@ DefaultContentLanguage = "en"
     languageName = "Turkish"
     contentDir = "content.tr"
     weight = 2
+  [languages.fa]
+    title = "WebRTC برای کنجکاوها"
+    languageName = "Persian"
+    languagedirection = "rtl"
+    contentDir = "content.fa"
+    weight = 3
+
 
 [params]
   # source repository location.
