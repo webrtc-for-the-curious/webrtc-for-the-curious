@@ -96,15 +96,14 @@ It will first be written to a buffer... When you call send() faster than your ne
 {{<expand "Question: Do messages arrive in the order they were sent?">}}
 *Short Answer:*
 
-By default, Yes. Optionally, you could disable it to receive messages as it
-arrives.
+By default, Yes. Optionally, you can disable ordered transmission to receive messages as they arrive.
 
 *Related sections for more details:*
 * [Data Channel API](#data-channel-api)
 * [SCTP](#sctp)
 {{</expand>}}
 
-{{<expand "Question: When do you use unordered delivery option?">}}
+{{<expand "Question: When should you use unordered delivery?">}}
 *Short Answer:*
 
 When newer information obsoletes the old such as positional information of an
