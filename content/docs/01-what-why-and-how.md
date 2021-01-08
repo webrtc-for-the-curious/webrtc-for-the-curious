@@ -41,7 +41,7 @@ One peculiar fact about WebRTC is that each step is actually made up of many oth
 
 Each of these steps has dedicated chapters, but it is helpful to understand them at a high level first. Since they depend on each other, it will help when explaining further the purpose of each of these steps.
 
-### Signaling: How clients find each other in WebRTC
+### Signaling: How peers find each other in WebRTC
 
 When a WebRTC Agent starts it has no idea who it is going to communicate with and what they are going to communicate about. Signaling solves this issue! Signaling is used to bootstrap the call so that two WebRTC agents can start communicating.
 
