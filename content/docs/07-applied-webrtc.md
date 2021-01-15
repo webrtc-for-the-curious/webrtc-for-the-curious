@@ -29,6 +29,9 @@ WebRTC can also be used to broadcast video streams one-to-many.
 ### File-Transfer
 ### Distributed CDN
 ### IoT
+
+When a video doorbell detects movement, it could supply the cameras RTP stream and initiated a new `PeerConnection` with a central server for recording or send a push notification to a mobile device to ask it to connect as a peer. This would establish a real-time communication between the front door and the mobile app. The mobile app could send real time audio back to the doorbell or it could initiate secure remote controls over WebRTC.
+
 ### Protocol Bridging
 
 
