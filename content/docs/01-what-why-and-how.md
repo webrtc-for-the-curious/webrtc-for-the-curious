@@ -17,14 +17,14 @@ The WebRTC protocol is available in other APIs/languages besides Javascript. You
 
 These are the things that WebRTC will give you. This list is not exhaustive but is some of the things you may appreciate during your journey. Don't worry if you don't know some of these terms yet, this book will teach them to you along the way.
 
-* [Open Standard](https://www.w3.org/TR/webrtc/)
-* Multiple Implementations
-* Available in Modern Browsers
-* Mandatory Encryption
+* [Open standard](https://www.w3.org/TR/webrtc/)
+* Multiple implementations
+* Available in modern browsers
+* Mandatory encryption
 * [NAT Traversal](https://en.wikipedia.org/wiki/NAT_traversal)
 * Repurposed existing technology 
-* Customizable Congestion Control
-* Sub-second Latency
+* Advanced streaming congestion control
+* Sub-second latency
 
 ## WebRTC Protocol is a collection of other technologies
 
