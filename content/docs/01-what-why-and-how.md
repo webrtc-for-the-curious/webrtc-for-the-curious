@@ -13,18 +13,20 @@ A similar relationship would be HTTP and the fetch API. WebRTC the protocol woul
 
 The WebRTC protocol is available in other APIs/languages besides Javascript. You can find servers and domain-specific tools as well for WebRTC. All of these implementations use the WebRTC protocol so they can interact with each other.
 
+The WebRTC protocol is maintained in the IETF in the [rtcweb](https://datatracker.ietf.org/wg/rtcweb/documents/) working group. The WebRTC API is documented in the W3C as [webrtc-pc](https://w3c.github.io/webrtc-pc/).
+
 ## Why should I learn WebRTC?
 
 These are the things that WebRTC will give you. This list is not exhaustive but is some of the things you may appreciate during your journey. Don't worry if you don't know some of these terms yet, this book will teach them to you along the way.
 
-* Open Standard
-* Multiple Implementations
-* Available in Browsers
-* Mandatory Encryption
+* Open standard
+* Multiple implementations
+* Available in browsers
+* Mandatory encryption
 * NAT Traversal
 * Repurposed existing technology
-* Congestion Control
-* Sub-second Latency
+* Congestion control
+* Sub-second latency
 
 ## WebRTC Protocol is a collection of other technologies
 
