@@ -27,6 +27,9 @@ WebRTC can also be used to broadcast video streams one-to-many.
 
 ### Remote Control 
 ### File-Transfer
+
+A desktop application could be created to capture a screenshot. Once the screenshot is captured on the clipboard of Device A, it could generate a temporary link for another device to access. Once Device B opens the link, a PeerConnection could be created back to Device A, the data could be streamed using the `DataChannel` part of WebRTC and once the transmission is successful the connection could tear down. This would effectively create a peer-to-peer secure way to transfer files over the internet. 
+
 ### Distributed CDN
 ### IoT
 ### Protocol Bridging
