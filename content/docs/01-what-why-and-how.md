@@ -45,7 +45,7 @@ Each of these steps has dedicated chapters, but it is helpful to understand them
 
 When a WebRTC Agent starts it has no idea who it is going to communicate with and what they are going to communicate about. Signaling solves this issue! Signaling is used to bootstrap the call so that two WebRTC agents can start communicating.
 
-Signaling uses an existing protocol SDP. SDP is a plain-text protocol. Each SDP message is made up of key/value pairs and contains a list of 'media sections'. The SDP that the two WebRTC Agents exchange contains details like.
+An important part of signaling is to announce the types of media that may be exchanged between endpoints during a session.  This uses an existing protocol known as SDP -- the Session Description Protocol. SDP is a plain-text protocol. Each SDP message is made up of key/value pairs and contains a list of 'media sections'. The SDP that the two WebRTC Agents exchange contains details like.
 
 * IPs and Ports that the agent is reachable on (candidates)
 * How many audio and video tracks the agent wishes to send
