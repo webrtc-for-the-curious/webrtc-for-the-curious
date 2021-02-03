@@ -181,6 +181,27 @@ Also known as FEC. Another method of dealing with packet loss. FEC is when you s
 
 If the packet loss for a call is steady this is much better then NACKs. The round trip of having to request, and then re-transmit the packet can be significant for NACKs.
 
+### Adaptive bitrate and Bandwidth Estimation
+
+A common problem of modern IP networks both wireless and wired is unpredictable and unreliable available bandwidth. Network conditions are changing dynamically multiple times throughout a session, it is not uncommon to see available bandwidth change drammatically (orders of magnitude) within a second.
+
+Wired networks' intrinsics unpredictability is caused by changing demand for bandwidth shared across multiple users of the network, routing changes, limitations of transfer medium (fiber channel vs ethernet vs dsl) etc.
+In addition to wired networks' issues the nature of radio signal transmission itself, interference from multiple sources, distance to cell tower or wifi access point and amount of physical obstacles (read walls) are among the reasons for unpredictable wireless network characteristics.
+
+WebRTC has several mechanisms to help deliver video/audio signal to receiver despite changing network conditions.
+The main idea is to adjust encoding bitrate based on predicted current and future available network bandwidth.
+This ensures that video/audio signal of the best possible quality is transmitted and connection does not get dropped because of network congestion.
+Heuristics that model the network behavior and try to predict it are known as Bandwidth estimation.
+
+#### REMB
+
+A widely supported albeit never fully standardized and now considered deprecated method is called [REMB](https://tools.ietf.org/html/draft-alvestrand-rmcat-remb-03) (Receiver Estimated Maximum Bitrate).
+REMB is a special RTCP packet receiver sends to sender notifying the sender of available bandwidth. There's no(?) standard on the method used to estimate bandwidth associated with REMB, so the actual values are implementation dependent. Good starting point for research into details or REMB is [Chrome's source code](https://source.chromium.org/chromium/chromium/src/+/master:third_party/webrtc/modules/rtp_rtcp/source/rtcp_packet/remb.cc)
+
+The only useful payload in the packet is the bitrate measured in bits per second.
+Notable abiguity and source of confusion is that REMB is defined as _total_ bitrate while it is common to see webrtc libraries use it to constrain video encoding bitrate only.
+
+
 ### Congestion Control
 Congestion Control is the act of adjusting the media depending on the attributes of the network. If you don't have a lot of bandwidth, you need to send lower quality video.
 
