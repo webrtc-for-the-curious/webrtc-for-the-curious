@@ -205,8 +205,60 @@ Notable abiguity and source of confusion is that REMB is defined as _total_ bitr
 ![REMB](../images/05-remb.png)
 
 ### Congestion Control
+
+Experienced WebRTC practitioners [say](https://gstconf.ubicast.tv/videos/google-transport-wide-congestion-control/) that REMB approach leaves scars, angry looks and even laughs from Google engineers.
+
 Congestion Control is the act of adjusting the media depending on the attributes of the network. If you don't have a lot of bandwidth, you need to send lower quality video.
 
-Congestion Control is all about making trade offs.
+Congestion Control improves WebRTC experience by providing a more fine grained control and monitoring of network connection and conditions.
+
+
+#### TWCC
+
+Transport-Wide Congestion Control is an advanced congestion control specification implemented in most(?) browsers.
+
+
+TWCC principle is quite simple:
+
+- Sender forms an RTP packet with a special TWCC header extension with packet sequence numbers
+- Receiver responds with a special RTCP feedback message that notifies sender of when and if each packet was received
+
+Sender keeps track of sent packets, their sequence numbers, sizes and timestamps.
+When sender receives RTCP messages from receiver, sender compares send inter-packet delays with receive delays.
+If receive delays increase it means network congestion is happenning and sender must act on it.
+
+On the diagram below median interpacket delay increase is +20msec, a clear indicator of network congestion happening.
+
+{{< figure src="/images/05-twcc.png">}}
+![TWCC](../images/05-twcc.png)
+
+TWCC provides the raw data and an excellent view into real time network conditions:
+- almost instant packet loss statistics, not only the percent lost but exact packets that were lost
+- accurate send bitrate
+- accurate receive bitrate
+- jitter estimate
+- differences of send and receive packet delays
+
+To estimate receiver incoming bitrate on sender a trivial congestion control algrorithm may sum up packet sizes received and divide it by remote time elapsed.
+
+More sophisticated congestion control algorithms like [A Google Congestion Control Algorithm for Real-Time Communication](https://tools.ietf.org/html/draft-alvestrand-rmcat-congestion-02) or GCC for short are built on top of TWCC raw data.
+GCC was proposed by Google and implemented in Chrome.
+It predicts current and future network bandwidth by using [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter).
+
+
+There are several alternatives to GCC [NADA: A Unified Congestion Control Scheme for Real-Time Media](https://tools.ietf.org/html/draft-zhu-rmcat-nada-04) and [SCReAM - Self-Clocked Rate Adaptation for Multimedia](https://tools.ietf.org/html/draft-johansson-rmcat-scream-cc-05).
+
+
+**Q**: How can I tell that twcc is supported and enabled?
+
+**A**: Look at SDP offer/answer if you see the lines like below you have TWCC negotiated on your connection
+```
+a=extmap:5 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions
+```
+AND
+```
+a=rtcp-fb:96 transport-cc
+```
+
 
 ### JitterBuffer
