@@ -201,6 +201,8 @@ REMB is a special RTCP packet receiver sends to sender notifying the sender of a
 The only useful payload in the packet is the bitrate measured in bits per second.
 Notable abiguity and source of confusion is that REMB is defined as _total_ bitrate while it is common to see webrtc libraries use it to constrain video encoding bitrate only.
 
+{{< figure src="/images/05-remb.png">}}
+
 
 ### Congestion Control
 Congestion Control is the act of adjusting the media depending on the attributes of the network. If you don't have a lot of bandwidth, you need to send lower quality video.
