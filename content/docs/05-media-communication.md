@@ -215,10 +215,14 @@ Congestion Control improves WebRTC experience by providing a more fine grained c
 
 #### TWCC
 
-Transport-Wide Congestion Control is an advanced congestion control specification implemented in most(?) browsers.
-
+Transport-Wide Congestion Control (TWCC) is an advanced congestion control specification implemented in most(?) browsers.
 
 TWCC principle is quite simple:
+
+{{< figure src="/images/05-twcc-idea.png">}}
+![TWCC](../images/05-twcc-idea.png)
+
+Unlike REMB, TWCC receiver doesn't try to estimate it's own incoming bitrate, it lets sender know what packets where received and when. Based on the reports sender has a very up-to-date idea of what is happening on the network.
 
 - Sender forms an RTP packet with a special TWCC header extension with packet sequence numbers
 - Receiver responds with a special RTCP feedback message that notifies sender of when and if each packet was received
