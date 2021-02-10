@@ -15,7 +15,7 @@ See [Connecting]({{< ref "03-connecting" >}}) for more info.
 {{</details>}}
 
 {{<details "How many DataChannels can I have?">}}
-65536 channels as stream identifier has 16 bits. You can close and open a new one ar any time.
+65536 channels as stream identifier has 16 bits. You can close and open a new one at any time.
 {{</details>}}
 
 {{<details "Does WebRTC impose bandwidth limits?">}}
