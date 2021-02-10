@@ -69,7 +69,7 @@ Every RTP packet has the following structure:
 ```
 
 #### Version (V)
-`Version` is always 2
+`Version` is always `2`
 
 #### Padding (P)
 `Padding` is a bool that controls if the payload has padding.
@@ -77,7 +77,7 @@ Every RTP packet has the following structure:
 The last byte of the payload contains a count of how many padding bytes were added.
 
 #### Extension (X)
-If set the RTP header will have extensions. This is described in greater detail below.
+If set, the RTP header will have extensions. This is described in greater detail below.
 
 #### CSRC count (CC)
 The amount of `CSRC` identifiers that follow after the `SSRC`, and before the payload.
@@ -85,10 +85,10 @@ The amount of `CSRC` identifiers that follow after the `SSRC`, and before the pa
 #### Marker (M)
 The marker bit has no pre-set meaning, and is up to the user.
 
-It some cases it is set when a user is speaking. It is also commonly used to mark a keyframe.
+In some cases it is set when a user is speaking. It is also commonly used to mark a keyframe.
 
 #### Payload Type (PT)
-`Payload Type` is the unique identifier for what codec is being carried by this packet.
+`Payload Type` is a unique identifier for what codec is being carried by this packet.
 
 For WebRTC the `Payload Type` is dynamic. VP8 in one call may be different then another. The Offerer in the call determines the mapping of `Payload Types` to codecs in the `Session Description`.
 
@@ -131,7 +131,7 @@ Every RTCP packet has the following structure:
 ```
 
 #### Version (V)
-`Version` is always 2
+`Version` is always `2`
 
 #### Padding (P)
 `Padding` is a bool that controls if the payload has padding.
@@ -176,7 +176,7 @@ RTP and RTCP then work together to solve all the problems caused by networks. Th
 ### Negative Acknowledgment
 Also known as a NACK. This is one method of dealing with packet loss with RTP.
 
-A NACK is a RTCP message sent back to a sender to request re-transmission. The receiver crafts a RTCP message with the SSRC and Sequence Number. If the sender does not have this RTP packet available to re-send it just ignores the message.
+A NACK is a RTCP message sent back to a sender to request re-transmission. The receiver crafts a RTCP message with the SSRC and Sequence Number. If the sender does not have this RTP packet available to re-send, it just ignores the message.
 
 ### Forward Error Correction
 Also known as FEC. Another method of dealing with packet loss. FEC is when you send the same data multiple times, without it even being requested. This is done at the RTP level, or even lower with the codec.

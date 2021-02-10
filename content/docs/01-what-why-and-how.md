@@ -7,11 +7,11 @@ weight: 2
 
 
 # What is WebRTC?
-WebRTC, short for Web Real-Time Communication, is both an API and a Protocol. The WebRTC protocol is a set of rules for two WebRTC agents to negotiate bi-directional secure real-time communication. The WebRTC API then allows developers to use the WebRTC protocol. The WebRTC API is specified only for Javascript.
+WebRTC, short for Web Real-Time Communication, is both an API and a Protocol. The WebRTC protocol is a set of rules for two WebRTC agents to negotiate bi-directional secure real-time communication. The WebRTC API then allows developers to use the WebRTC protocol. The WebRTC API is specified only for JavaScript.
 
 A similar relationship would be HTTP and the fetch API. WebRTC the protocol would be HTTP, and WebRTC the API would be the fetch API.
 
-The WebRTC protocol is available in other APIs/languages besides Javascript. You can find servers and domain-specific tools as well for WebRTC. All of these implementations use the WebRTC protocol so they can interact with each other.
+The WebRTC protocol is available in other APIs/languages besides JavaScript. You can find servers and domain-specific tools as well for WebRTC. All of these implementations use the WebRTC protocol so they can interact with each other.
 
 The WebRTC protocol is maintained in the IETF in the [rtcweb](https://datatracker.ietf.org/wg/rtcweb/documents/) working group. The WebRTC API is documented in the W3C as [webrtc-pc](https://w3c.github.io/webrtc-pc/).
 
@@ -55,7 +55,7 @@ Signaling uses an existing protocol SDP (Session Description Protocol). SDP is a
 * Values used while connecting (uFrag/uPwd)
 * Values used while securing (certificate fingerprint)
 
-Note that signaling typically happens "out-of-band"; that is, applications generally don't use WebRTC itself to trade signaling messages. Any architecture suitable for sending messages can be used to relay the SDPs between the connecting peers, and many applications will use their existing infrastructure (like REST endpoints, websocket connections, or authentication proxies) to facilitate easy trading of SDPs between the proper clients.
+Note that signaling typically happens "out-of-band"; that is, applications generally don't use WebRTC itself to trade signaling messages. Any architecture suitable for sending messages can be used to relay the SDPs between the connecting peers, and many applications will use their existing infrastructure (like REST endpoints, WebSocket connections, or authentication proxies) to facilitate easy trading of SDPs between the proper clients.
 
 ### Connecting and NAT Traversal with STUN/TURN
 
@@ -122,11 +122,11 @@ srtp --> rtp
 
 ## How does WebRTC (the API) work
 
-This section shows how the Javascript API maps to the protocol. This isn't meant as an extensive demo of the WebRTC API, but more to create a mental model of how it all ties together.
+This section shows how the JavaScript API maps to the protocol. This isn't meant as an extensive demo of the WebRTC API, but more to create a mental model of how it all ties together.
 If you aren't familiar with either, it is ok. This could be a fun section to return to as you learn more!
 
-#### `new PeerConnection`
-The PeerConnection is the top-level 'WebRTC Session'. It contains all the protocols mentioned above. The subsystems are all allocated but nothing happens yet.
+#### `new RTCPeerConnection`
+The `RTCPeerConnection` is the top-level 'WebRTC Session'. It contains all the protocols mentioned above. The subsystems are all allocated but nothing happens yet.
 
 #### `addTrack`
 
@@ -154,7 +154,7 @@ Usually, after this call, you will send the offer to the remote peer, and they w
 
 #### `setRemoteDescription`
 
-`setRemoteDescription` is how we inform the local agent about the remote candidates' state. This is how the act of 'Signaling' is done with the Javascript API.
+`setRemoteDescription` is how we inform the local agent about the remote candidates' state. This is how the act of 'Signaling' is done with the JavaScript API.
 
 When `setRemoteDescription` has been called on both sides, the WebRTC Agents now have enough info to start communicating P2P!
 
@@ -166,7 +166,7 @@ When `setRemoteDescription` has been called on both sides, the WebRTC Agents now
 
 `ontrack` is a callback that is fired when a RTP packet is received from the remote peer. The incoming packets would have been declared in the Session Description that was passed to `setRemoteDescription`
 
-WebRTC uses the SSRC and looks up the associated MediaStream and MediaStreamTrack and fires this callback with these details populated.
+WebRTC uses the SSRC and looks up the associated `MediaStream` and `MediaStreamTrack` and fires this callback with these details populated.
 
 #### `oniceconnectionstatechange`
 
