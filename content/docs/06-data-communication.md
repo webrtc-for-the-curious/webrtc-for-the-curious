@@ -4,13 +4,13 @@ type: docs
 weight: 7
 ---
 
-# What is Data 
+# What is Data
 
 
 ## Functional Overview
-Data channel can deliver any types of data. If you wish, you send send audio or video
-data over the data channel too, but if you need to playback the media in real-time,
-using media channels (See [Media Communication]({{< ref "05-media-communication.md" >}})) that uses RTP/RTCP protocols are the better options.
+Data channel can deliver any types of data. If you wish, you can send audio or video
+data over the data channel too. But if you need to playback media in real-time,
+using media channels (see [Media Communication]({{< ref "05-media-communication.md" >}})) that uses RTP/RTCP protocols are the better options.
 
 ### What are the applications of data channel?
 Applicability of the data channel is unlimited! The data channel solves packet loss,
@@ -39,7 +39,7 @@ The data channel is comprised of the following 3 layers:
 #### Data Channel Layer
 This layer provides API.
 
-#### Data channel Establishment Protocol Layer
+#### Data Channel Establishment Protocol Layer
 This layer is responsible for the data channel handshake with the peer. It uses a
 SCTP stream as a control channel to negotiate capabilities such as ordered delivery,
 maxRetransmits/maxPacketLifeTime (a.k.a. "Partial-reliability"), etc.
