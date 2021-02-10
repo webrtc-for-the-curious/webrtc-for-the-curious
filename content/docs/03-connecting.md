@@ -6,7 +6,9 @@ weight: 4
 
 # Why does WebRTC need a dedicated subsystem for connecting?
 
-Most applications use client/server connections. For this setup you can expect the server to have a stable well-known transport address. The client contacts the server, and the server responds. WebRTC doesn't use client/server for connections it uses peer-to-peer (P2P). In a P2P connection the task of creating a connection is almost equally distributed to both peers. It is this way because the transport address (IP and port) can not be assumed, and may even change during the session. WebRTC will take this information and will go to great lengths to achieve bi-directional communication between two WebRTC Agents.
+Most applications use client/server connections. For this setup you can expect a server to have a stable well-known transport address. A client contacts a server, and the server responds.
+
+Instead of this model, WebRTC uses peer-to-peer (P2P) connection. In a P2P connection the task of creating a connection is almost equally distributed to both peers. This is because a transport address (IP and port) in WebRTC can not be assumed, and may even change during the session. WebRTC will take this information and will go to great lengths to achieve bi-directional communication between two WebRTC Agents.
 
 Establishing peer-to-peer connectivity can be difficult though. These agents could be in different networks with no direct connectivity. In situations where direct connectivity does exist you can have other issues. In some cases, your clients don't speak the same network protocols (UDP <-> TCP) or maybe IP Versions (IPv4 <-> IPv6).
 
@@ -28,7 +30,7 @@ Direct Communication is more secure. Since users aren't routing data through you
 
 The process described above is [ICE](https://tools.ietf.org/html/rfc8445). Another protocol that pre-dates WebRTC.
 
-ICE is a protocol that tries to find the best way to communicate between two ICE Agents. Each ICE Agent publishes the ways it is reachable, these are known as candidates. A candidate is essentially a transport address of the agent that it believes the peer can reach. ICE then determines the best pairing of candidates.
+ICE is a protocol that tries to find the best way to communicate between two ICE Agents. Each ICE Agent publishes the ways it is reachable, these are known as candidates. A candidate is essentially a transport address of the agent that it believes the other peer can reach. ICE then determines the best pairing of candidates.
 
 The actual ICE process is described in greater detail later in this chapter. To understand why ICE exists, it is useful to understand what network behaviors we are overcoming.
 
@@ -62,7 +64,7 @@ routerb-->pub
 
 For the hosts in the same network, it is very easy to connect. Communication between `192.168.0.1 -> 192.168.0.2` is easy to do! These two hosts can connect to each other without any outside help.
 
-However, a host using `Router B` has no way to directly access anything behind `Router A`. How would you tell the difference between 191.168.0.1 behind Router A and the same IP behind Router B? They are private IPs! A host using `Router B` could send traffic directly to `Router A`, but the request would end there. How does `Router A` know which host it should deliver the message too?
+However, a host using `Router B` has no way to directly access anything behind `Router A`. How would you tell the difference between `191.168.0.1` behind Router A and the same IP behind Router B? They are private IPs! A host using `Router B` could send traffic directly to `Router A`, but the request would end there. How does `Router A` know which host it should deliver the message too?
 
 ### Protocol Restrictions
 
@@ -70,12 +72,12 @@ Some networks don't allow UDP traffic at all, or maybe they don't allow TCP. Som
 
 ### Firewall/IDS Rules
 
-Another is 'Deep Packet Inspection' and other intelligent filterings. Some network administrators will run software that tries to process every packet. Many times this software doesn't understand WebRTC, so it blocks because it doesn't know what to do, e.g. treating WebRTC packets as suspicious UDP packets on a arbitrary port that is not whitelisted.
+Another is 'Deep Packet Inspection' and other intelligent filterings. Some network administrators will run software that tries to process every packet. Many times this software doesn't understand WebRTC, so it blocks because it doesn't know what to do, e.g. treating WebRTC packets as suspicious UDP packets on an arbitrary port that is not whitelisted.
 
 ## NAT Mapping
-NAT (Network Address Translation) Mapping is the magic that makes the connectivity of WebRTC possible. This is how WebRTC allows two peers in completely different subnets to communicate, addresing the "not in the same network" problem above, while it creates new challenges. Let's explain how NAT Mapping in the first place.
+NAT (Network Address Translation) Mapping is the magic that makes the connectivity of WebRTC possible. This is how WebRTC allows two peers in completely different subnets to communicate, addresing the "not in the same network" problem above, while it creates new challenges. Let's explain NAT Mapping in the first place.
 
-It doesn't use a relay, proxy, or server. Again we have `Agent 1` and `Agent 2` and they are in different networks. However, traffic is flowing completely through. Visualized that looks like.
+It doesn't use a relay, proxy, or server. Again we have `Agent 1` and `Agent 2` and they are in different networks. However, traffic is flowing completely through. Visualized that looks like:
 
 {{<mermaid>}}
 graph TB
@@ -97,7 +99,7 @@ pub-.->routerb;
 routerb-.->b2;
 {{</mermaid>}}
 
-To make this communication happen you establish a NAT Mapping. Agent 1 uses the port 7000 to established a WebRTC connection with Agent 2. This creates a binding of 192.168.0.1:7000 to 5.0.0.1:7000. This then allows Agent 2 to reach Agent 1 by sending packets to 5.0.0.1:7000. Creating a NAT mapping in this example will feel like an automated/config-less version of doing port forwarding in your router.
+To make this communication happen you establish a NAT Mapping. Agent 1 uses the port `7000` to established a WebRTC connection with Agent 2. This creates a binding of `192.168.0.1:7000` to `5.0.0.1:7000`. This then allows Agent 2 to reach Agent 1 by sending packets to `5.0.0.1:7000`. Creating a NAT mapping in this example will feel like an automated/config-less version of doing port forwarding in your router.
 
 The downside to NAT Mapping is that there isn't a single form of mapping (e.g. static port forwarding) and the behavior is inconsistent between networks. ISPs and hardware manufacturers may do it in different ways. In some cases, network administrators may even disable it.
 

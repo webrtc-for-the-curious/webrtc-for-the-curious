@@ -8,7 +8,7 @@ weight: 3
 When you create a WebRTC agent it knows nothing about the other peer. It has no idea who it is going to connect with or what they are going to send!
 Signaling is the initial bootstrapping that makes the call possible. After these values are exchanged the WebRTC agents then can communicate directly with each other.
 
-Signaling messages are just text. The WebRTC agents don't care how they are transported. They are commonly shared via Websockets, but not a requirement.
+Signaling messages are just text. The WebRTC agents don't care how they are transported. They are commonly shared via WebSockets, but not a requirement.
 
 ## How does WebRTC signaling work?
 
@@ -20,7 +20,7 @@ After we understand the protocol we will move on to its applied usage in WebRTC.
 
 ## What is the *Session Description Protocol* (SDP)?
 The Session Description Protocol is defined in [RFC 4566](https://tools.ietf.org/html/rfc4566). It is a key/value protocol with a newline after each value. It will feel similar to an INI file.
-A Session Description then contains an unlimited amount of Media Descriptions.  Mentally you can model it as a Session Description contains an array of Media Descriptions.
+A Session Description then contains an unlimited amount of Media Descriptions. Mentally you can model it as a Session Description contains an array of Media Descriptions.
 
 A Media Description usually maps to a single stream of media. So if you wanted to describe a call with three video streams and two audio tracks you would have five Media Descriptions.
 
@@ -97,13 +97,13 @@ The next piece of the puzzle is understanding how WebRTC uses the Session Descri
 
 ### What are Offers and Answers?
 
-WebRTC uses an offer/answer model. All this means is that one WebRTC Agent makes an 'Offer' to start the call, and the other WebRTC Agents 'Answers' if it is willing to accept what has been offered.
+WebRTC uses an offer/answer model. All this means is that one WebRTC Agent makes an 'Offer' to start a call, and the other WebRTC Agents 'Answers' if it is willing to accept what has been offered.
 
 This gives the answerer a chance to reject codecs, Media Descriptions. This is how two peers can understand what they are willing to exchange.
 
 ### Transceivers are for sending and receiving
 
-Transceivers is a WebRTC specific concept that you will see in the API. What it is doing is exposing the 'Media Description' to the Javascript API. Each Media Description becomes a Transceiver.
+Transceivers is a WebRTC specific concept that you will see in the API. What it is doing is exposing the 'Media Description' to the JavaScript API. Each Media Description becomes a Transceiver.
 Every time you create a Transceiver a new Media Description is added to the local Session Description.
 
 Each Media Description in WebRTC will have a direction attribute. This allows a WebRTC Agent to declare 'I am going to send you this codec, but I am not willing to accept anything back'. There are four valid values
@@ -115,14 +115,14 @@ Each Media Description in WebRTC will have a direction attribute. This allows a 
 
 ### SDP Values used by WebRTC
 
-This list is not extensive, but this is a list of common attributes that you will see in a Session Description from a WebRTC Agent. Many of these values control the subsystems that we haven't discussed yet.
+This is a list of some common attributes that you will see in a Session Description from a WebRTC Agent. Many of these values control the subsystems that we haven't discussed yet.
 
 ##### `group:BUNDLE`
-Bundling is the act of running multiple types of traffic over one connection. Some WebRTC implementations use a dedicated connection per media stream. Bundling should be preferred.
+Bundling is an act of running multiple types of traffic over one connection. Some WebRTC implementations use a dedicated connection per media stream. Bundling should be preferred.
 
 
 ##### `fingerprint:sha-256`
-This is a hash of the certificate the peer is using for DTLS. After the DTLS handshake is completed you compare this to the actual certificate to confirm you are communicating with whom you expect.
+This is a hash of the certificate a peer is using for DTLS. After the DTLS handshake is completed you compare this to the actual certificate to confirm you are communicating with whom you expect.
 
 ##### `setup:`
 This controls the DTLS Agent behavior. This determines if it runs as a client or server after ICE has connected.

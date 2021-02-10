@@ -69,7 +69,7 @@ We would love contributions! We are open to suggestions about the content as wel
 
 We support [*Github Codespaces*](https://github.com/features/codespaces) so helping out is as easy as starting up a Codespace from this repo.
 
-Once started, click "Run Live Docs Server" in the statusbar to start the Hugo server. Note that Hugo's autoreload doesn't trigger a browser refresh from Codespaces yet due to missing proxying of Websockets traffic. Reload a page manually to rerender it.
+Once started, click "Run Live Docs Server" in the statusbar to start the Hugo server. Note that Hugo's autoreload doesn't trigger a browser refresh from Codespaces yet due to missing proxying of WebSockets traffic. Reload a page manually to rerender it.
 
 # License
 
