@@ -179,7 +179,7 @@ A NACK is a RTCP message sent back to a sender to request re-transmission. The r
 ### Forward Error Correction
 Also known as FEC. Another method of dealing with packet loss. FEC is when you send the same data multiple times, without it even being requested. This is done at the RTP level, or even lower with the codec.
 
-If the packet loss for a call is steady this is a much lower latency solution than NACKs. The round trip time of having to request, and then re-transmit the packet can be significant for NACKs.
+If the packet loss for a call is steady then FEC is a much lower latency solution than NACK. The round trip time of having to request, and then re-transmit the packet can be significant for NACKs.
 
 ### Congestion Control
 Congestion Control is the act of adjusting the media depending on the attributes of the network. If you don't have a lot of bandwidth, you need to send lower quality video.
