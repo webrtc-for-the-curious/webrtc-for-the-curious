@@ -13,7 +13,7 @@ It is very important that no one tampers with those messages. It is ok if a 3rd 
 ## How does it work?
 WebRTC uses two pre-existing protocols [DTLS](https://tools.ietf.org/html/rfc6347) and [SRTP](https://tools.ietf.org/html/rfc3711).
 
-DTLS allows you to negotiate a session and then exchange data securely between two peers. It is a sibling of TLS, the same technology that powers HTTPS. DTLS is over UDP instead of TCP, so the protocol has to handle unreliable delivery. SRTP is designed just for exchanging media. There are some optimizations we can make by using it instead of DTLS.
+DTLS allows you to negotiate a session and then exchange data securely between two peers. It is a sibling of TLS, the same protocol used to secure communication over HTTPS. DTLS is over UDP instead of TCP, so the protocol has to handle unreliable delivery. SRTP is designed just for exchanging media. There are some optimizations we can make by using it instead of DTLS.
 
 DTLS is used first. It does a handshake over the connection provided by ICE. DTLS is a client/server protocol, so one side needs to start the handshake. The Client/Server roles are chosen during signaling. During the DTLS handshake, both sides offer a certificate.
 After the handshake is complete this certificate is compared to the certificate hash in the Session Description. This is to assert that the handshake happened with the WebRTC Agent you expected. The DTLS connection is then available to be used for DataChannel communication.
