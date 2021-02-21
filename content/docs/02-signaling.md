@@ -6,9 +6,9 @@ weight: 3
 
 # What is WebRTC Signaling?
 When you create a WebRTC agent it knows nothing about the other peer. It has no idea who it is going to connect with or what they are going to send!
-Signaling is the initial bootstrapping that makes the call possible. After these values are exchanged the WebRTC agents then can communicate directly with each other.
+Signaling is the initial bootstrapping that makes a call possible. After these values are exchanged, the WebRTC agents can communicate directly with each other.
 
-Signaling messages are just text. The WebRTC agents don't care how they are transported. They are commonly shared via Websockets, but not a requirement.
+Signaling messages are just text. The WebRTC agents don't care how they are transported. They are commonly shared via Websockets, but that is not a requirement.
 
 ## How does WebRTC signaling work?
 
@@ -19,8 +19,8 @@ This protocol is not specific to WebRTC. We will learn the Session Description P
 After we understand the protocol we will move on to its applied usage in WebRTC.
 
 ## What is the *Session Description Protocol* (SDP)?
-The Session Description Protocol is defined in [RFC 4566](https://tools.ietf.org/html/rfc4566). It is a key/value protocol with a newline after each value. It will feel similar to an INI file.
-A Session Description then contains an unlimited amount of Media Descriptions.  Mentally you can model it as a Session Description contains an array of Media Descriptions.
+The Session Description Protocol is defined in [RFC 4566](https://tools.ietf.org/html/rfc4566). It is a line based key-value protocol, similar to an INI file.
+A Session Description contains zero or more Media Descriptions. Mentally you can model it as a Session Description containing an array of Media Descriptions.
 
 A Media Description usually maps to a single stream of media. So if you wanted to describe a call with three video streams and two audio tracks you would have five Media Descriptions.
 
@@ -39,24 +39,24 @@ a=second-value
 You have two lines. Each with the key `a`. The first line has the value `my-sdp-value`, the second line has the value `second-value`.
 
 ### WebRTC only uses some SDP keys
-Not all key values defined by the Session Description Protocol are used by WebRTC. The following are the only keys you need to understand. Don't worry about fully understanding yet, but this will be a handy reference in the future.
+Not all key values defined by the Session Description Protocol are used by WebRTC. The following seven keyes are the only ones you need to understand right now:
 
-* `v` - Version, should be equal to '0'
+* `v` - Version, should be equal to `0`
 * `o` - Origin, contains a unique ID useful for renegotiations
-* `s` - Session Name, should be equal to '-'
-* `t` - Timing, should be equal to '0 0'
+* `s` - Session Name, should be equal to `-`
+* `t` - Timing, should be equal to `0 0`
 * `m` - Media Description, described in detail below
-* `a` - Attribute, free text field this is the most common line in WebRTC
-* `c` - Connection Data, should be equal to 'IN IP4 0.0.0.0'
+* `a` - Attribute, a free text field. This is the most common line in WebRTC
+* `c` - Connection Data, should be equal to `IN IP4 0.0.0.0`
 
 ### Media Descriptions in a Session Description
 
-A Session Description can contain an unlimited amount of Media Descriptions.
+A Session Description can contain an unlimited number of Media Descriptions.
 
 A Media Description definition contains a list of formats. These formats map to RTP Payload Types. The actual codec is then defined by an Attribute with the value `rtpmap` in the Media Description.
-The importance of RTP and RTP Payload Types is discussed later in the Media chapter. Each Media Description then can contain an unlimited amount of attributes.
+The importance of RTP and RTP Payload Types is discussed later in the Media chapter. Each Media Description then can contain an unlimited number of attributes.
 
-Take this Session Description excerpt.
+Take this Session Description excerpt as an example.
 
 ```
 v=0
@@ -106,7 +106,7 @@ This gives the answerer a chance to reject codecs, Media Descriptions. This is h
 Transceivers is a WebRTC specific concept that you will see in the API. What it is doing is exposing the 'Media Description' to the Javascript API. Each Media Description becomes a Transceiver.
 Every time you create a Transceiver a new Media Description is added to the local Session Description.
 
-Each Media Description in WebRTC will have a direction attribute. This allows a WebRTC Agent to declare 'I am going to send you this codec, but I am not willing to accept anything back'. There are four valid values
+Each Media Description in WebRTC will have a direction attribute. This allows a WebRTC Agent to declare 'I am going to send you this codec, but I am not willing to accept anything back'. There are four valid values:
 
 * `send`
 * `recv`
@@ -120,12 +120,11 @@ This list is not extensive, but this is a list of common attributes that you wil
 ##### `group:BUNDLE`
 Bundling is the act of running multiple types of traffic over one connection. Some WebRTC implementations use a dedicated connection per media stream. Bundling should be preferred.
 
-
 ##### `fingerprint:sha-256`
 This is a hash of the certificate the peer is using for DTLS. After the DTLS handshake is completed you compare this to the actual certificate to confirm you are communicating with whom you expect.
 
 ##### `setup:`
-This controls the DTLS Agent behavior. This determines if it runs as a client or server after ICE has connected.
+This controls the DTLS Agent behavior. This determines if it runs as a client or server after ICE has connected. The possible values are:
 
 * `setup:active` - Run as DTLS Client
 * `setup:passive` - Run as DTLS Server
@@ -144,19 +143,15 @@ This value is used to map a specific codec to a RTP Payload Type. Payload types 
 Defines additional values for one Payload Type. This is useful to communicate a specific video profile or encoder setting.
 
 ##### `candidate`
-
 This is an ICE Candidate that comes from the ICE Agent. This is one possible address that the WebRTC Agent is available on. These are fully explained in the next chapter.
 
 ##### `ssrc`
+A Synchronization Source (SSRC) defines a single media stream track.
 
-A SSRC defines a single media stream track.
-
-`label` is the id for this individual stream. `mslabel` is the id for a container that can multiple streams inside of it.
+`label` is the ID for this individual stream. `mslabel` is the ID for a container that can have multiple streams inside of it.
 
 ### Example of a WebRTC Session Description
-
 The following is a complete Session Description generated by a WebRTC Client.
-
 
 ```
 v=0
@@ -208,13 +203,12 @@ a=candidate:foundation 2 udp 1694498815 1.2.3.4 57336 typ srflx raddr 0.0.0.0 rp
 a=end-of-candidates
 ```
 
-This is what we know from this message
+This is what we know from this message:
 
-* We have two media sections, one audio, and one video
-* Each of those is a `sendrecv` Transceiver. We are getting two streams, and we can send two back.
-* We have ICE Candidates and Authentication details so we can attempt to connect
-* We have a certificate fingerprint, so we can have a secure call
-
+* We have two media sections, one audio and one video.
+* Both of them are `sendrecv` transceivers. We are getting two streams and we can send two back.
+* We have ICE Candidates and Authentication details, so we can attempt to connect.
+* We have a certificate fingerprint, so we can have a secure call.
 
 ### Further Topics
 In later versions of this book, the following topics will also be addressed. If you have more questions please submit a Pull Request!
