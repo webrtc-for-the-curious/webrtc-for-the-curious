@@ -18,7 +18,7 @@ weight: 5
 
 WebRTC使用两个预先存在的协议[DTLS](https://tools.ietf.org/html/rfc6347)和[SRTP](https://tools.ietf.org/html/rfc3711)。
 
-DTLS使您可以协商会话，然后在两个peer之间安全地交换数据。它是TLS的同类产品，而TLS是HTTPS使用的技术。DTLS是通过UDP而不是TCP进行的，因此协议必须处理不可靠的数据传输。SRTP是专为交换媒体数据而设计的。相对于DTLS而言，我们可以使用SRTP对传输进行一些优化。
+DTLS使您可以协商会话，然后在两个peer之间安全地交换数据。它是TLS（HTTPS用来处理通讯安全的协议）的同类产品。DTLS是通过UDP而不是TCP进行的，因此协议必须处理不可靠的数据传输。SRTP是专为交换媒体数据而设计的。相对于DTLS而言，我们可以使用SRTP对传输进行一些优化。
 
 DTLS先被使用。它通过ICE提供的连接进行一次握手。DTLS是一种客户端/服务器协议，因此其中一侧需要开始握手。客户端/服务器的角色是在信令中被确定的。在DTLS握手期间，双方都会提供证书。
 握手完成后，需要将收到的证书与`会话描述`中的证书哈希进行比较。这是为了确定握手的目标就是您所期望的WebRTC代理。接下来，可以将DTLS连接用于DataChannel通信。

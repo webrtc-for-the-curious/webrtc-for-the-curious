@@ -132,7 +132,7 @@ PeerConnection是最顶层的“ WebRTC会话”。它包含上述所有协议�
 
 #### `addTrack`
 
-`addTrack`创建一个新的RTP流。并将为这个流生成一个随机的SSRC。然后，`createOffer`将生成会话描述符，这个流将被加入其中的媒体部分。每次调用`addTrack`都会创建一个新的SSRC和对应的媒体部分。
+`addTrack`创建一个新的RTP流。并将为这个流生成一个随机的SSRC（Synchronization Source/同步源）。然后，`createOffer`将生成会话描述符，这个流将被加入其中的媒体部分。每次调用`addTrack`都会创建一个新的SSRC和对应的媒体部分。
 
 在建立SRTP会话后，这些媒体数据包将被SRTP加密，然后立即通过ICE开始发送。
 
