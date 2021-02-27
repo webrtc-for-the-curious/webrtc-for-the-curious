@@ -1,7 +1,7 @@
 ---
 title: Applied WebRTC
 type: docs
-weight: 8
+weight: 9
 ---
 
 
@@ -15,7 +15,7 @@ The technologies behind WebRTC aren't just for video chatting -- since WebRTC is
 
 ### Conferencing
 
-Conferencing was the use case that WebRTC was originally designed for. You can have two users directly connect to each other. Once they are connected they can share their webcams, or maybe their desktop. Participants can send and receive as many streams as they want. They can also add and remove those streams at any time. 
+Conferencing was the use case that WebRTC was originally designed for. You can have two users directly connect to each other. Once they are connected they can share their webcams, or maybe their desktop. Participants can send and receive as many streams as they want. They can also add and remove those streams at any time.
 
 Going beyond just media DataChannels are very useful for building a conferencing experience. Users can send metadata or share documents. You can create multiple streams and have multiple conversations going at once.
 
@@ -23,12 +23,12 @@ Conferencing becomes more difficult as more users join the call. How you scale i
 
 ### Broadcasting
 
-WebRTC can also be used to broadcast video streams one-to-many. 
+WebRTC can also be used to broadcast video streams one-to-many.
 
-### Remote Control 
+### Remote Control
 ### File-Transfer
 
-A desktop application could be created to capture a screenshot. Once the screenshot is captured on the clipboard of Device A, it could generate a temporary link for another device to access. Once Device B opens the link, a PeerConnection could be created back to Device A, the data could be streamed using the `DataChannel` part of WebRTC and once the transmission is successful the connection could tear down. This would effectively create a peer-to-peer secure way to transfer files over the internet. 
+A desktop application could be created to capture a screenshot. Once the screenshot is captured on the clipboard of Device A, it could generate a temporary link for another device to access. Once Device B opens the link, a PeerConnection could be created back to Device A, the data could be streamed using the `DataChannel` part of WebRTC and once the transmission is successful the connection could tear down. This would effectively create a peer-to-peer secure way to transfer files over the internet.
 
 ### Distributed CDN
 ### IoT

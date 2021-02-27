@@ -1,7 +1,7 @@
 ---
 title: 调试
 type: docs
-weight: 9
+weight: 10
 ---
 
 # 调试

@@ -1,7 +1,7 @@
 ---
 title: Data Communication
 type: docs
-weight: 7
+weight: 8
 ---
 
 # What is Data
@@ -10,7 +10,7 @@ weight: 7
 ## Functional Overview
 Data channel can deliver any types of data. If you wish, you can send audio or video
 data over the data channel too. But if you need to playback media in real-time,
-using media channels (see [Media Communication]({{< ref "05-media-communication.md" >}})) that uses RTP/RTCP protocols are the better options.
+using media channels (see [Media Communication]({{< ref "06-media-communication.md" >}})) that uses RTP/RTCP protocols are the better options.
 
 ### What are the applications of data channel?
 Applicability of the data channel is unlimited! The data channel solves packet loss,
@@ -106,7 +106,7 @@ This makes establishing datachanels fast and cheap.
 Here is a list of chanel types and the associated meaning of the reliability parameter
 that will be applied when packets are lost or misordered.
 ```
-DATA_CHANNEL_OPEN 
+DATA_CHANNEL_OPEN
 Message Type: 0x03
      +================================================+=============+
      | Channel Type                                   | Reliability |
@@ -144,7 +144,7 @@ Message Type: 0x02
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      |  Message Type |
      +-+-+-+-+-+-+-+-+
-     
+
 ```
 There is no DCEP  NACK.
 DataChannel opens always succeed, because they are carried on the same SCTP stream as the data which as already suceeded!

@@ -1,5 +1,5 @@
 ---
-title: History
+title: Debugging
 type: docs
 weight: 10
 ---

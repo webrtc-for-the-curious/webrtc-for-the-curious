@@ -1,5 +1,5 @@
 ---
-title: Data Communication
+title: Media Communication
 type: docs
 weight: 7
 ---

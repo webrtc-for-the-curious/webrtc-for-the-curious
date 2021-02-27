@@ -1,7 +1,7 @@
 ---
 title: FAQ
 type: docs
-weight: 11
+weight: 12
 ---
 
 # FAQ

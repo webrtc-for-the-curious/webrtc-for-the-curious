@@ -1,7 +1,7 @@
 ---
 title: 媒体通信
 type: docs
-weight: 6
+weight: 7
 ---
 
 # 我可以从WebRTC的媒体通信中得到什么？

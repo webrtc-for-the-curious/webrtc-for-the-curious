@@ -1,5 +1,5 @@
 ---
-title: Applied WebRTC
+title: Data Communication
 type: docs
 weight: 8
 ---

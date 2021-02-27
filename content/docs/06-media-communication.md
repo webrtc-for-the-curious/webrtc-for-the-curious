@@ -1,7 +1,7 @@
 ---
 title: Media Communication
 type: docs
-weight: 6
+weight: 7
 ---
 
 # What do I get from WebRTC's media communication?
