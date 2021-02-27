@@ -21,29 +21,29 @@ ICE成功连接后，WebRTC继续建立加密的传输。此传输用于音频�
 信令消息只是文本。WebRTC代理并不关心它们的传递方式。信令通常使用Websockets分享，但这不是必需的。
 WebRTC信令如何工作？ # WebRTC使用到一种现有的协议，称为会话描述协议（Session Description Protocol，简称SDP）。两个WebRTC代理会将建立连接所需的所有状态通过此协议来分享。该协议本身亦易于阅读和理解。 但要理解WebRTC填充于协议中的所有值，将有一定复杂性。
 该协议不特定于WebRTC。我们将首先学习会话描述协议，这里甚至不用谈论WebRTC。WebRTC实际上仅利用了协议的子集，因此我们将仅介绍我们所需的内容。 理解协议后，我们将继续结合WebRTC来说明其在实际中的应用方法。
-什么是 会话描述协议（SDP）？ # 会话描述协议定义于 RFC 4566 中。它是一个key/value协议，每个值后面都有一个换行符。类似于INI文件。 一个会话描述包含无限数量的媒体描述。对此模型，可以理解为会话描述包含了一个媒体描述的数组。
+什么是 会话描述协议（SDP）？ # 会话描述协议定义于 RFC 4566 中。它是一个基于行的key-value协议，类似于INI文件。 一个会话描述包含零个或多个媒体描述。对此模型，可以理解为会话描述包含了一个媒体描述的数组。
 一个媒体描述通常映射到单个媒体流。因此，如果您想描述一个包含三个视频流和两个音轨的呼叫，需要五个媒体描述。
 如何阅读SDP信息 # 会话描述中的每一行都将以一个单字符开始，这是您的key。单字符后面将跟随一个等号。等号后的所有内容都是value。value结束的地方将有一个换行符。
 会话描述协议定义了所有有效的key。对于协议中定义的key，您只能使用字母。这些key都有重要的意义，稍后将对此进行解释。
 作为参考，下面是一个会话描述的部分内容。
 a=my-sdp-value a=second-value 这里有两行。每行的key都是a。第一行的value为my-sdp-value，第二行的value为second-value。
-WebRTC仅使用了部分SDP的key # WebRTC并未使用会话描述协议定义的所有key。以下是列出了您需要了解的SDP key。如无法完全理解，请勿担心，这将是将来的参考手册。
-v - Version，版本，版本，应等于'0&amp;rsquo; o - Origin，源，包含一个唯一ID，用于重新协商 s - Session Name，会话名称，应等于&amp;rsquo;-&amp;rsquo; t - Timing，时间，应等于'0 0&amp;rsquo; m - Media Description，媒体描述，下面有详细说明 a - Attribute，属性，自由文本字段，这是WebRTC中最常见的行 c - Connection Data，连接数据，应等于&amp;rsquo;IN IP4 0.0.0.0&amp;rsquo; 会话描述中的媒体描述 # 一个会话描述中，可以包含无限数量的媒体描述。</description></item><item><title>连接</title><link>https://webrtcforthecurious.com/zh/docs/03-connecting/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/zh/docs/03-connecting/</guid><description>为什么WebRTC需要专用的子系统进行连接？ # 大多数应用程序使用客户端/服务器连接。在此场景下设置时，可以认为服务器具有稳定且公开可用的传输地址。客户端联系服务器，服务器响应。WebRTC不使用客户端/服务器进行连接，而是使用点对点（P2P）。在P2P连接中，创建连接的任务在两个peer之间几乎是平均分配的。之所以这样，是因为我们不能假定传输地址（IP和端口），且传输地址在会话期间甚至可能会变更。WebRTC将获取传输地址，并将尽力实现两个WebRTC代理之间的双向通信。
+WebRTC仅使用了部分SDP的key # WebRTC并未使用会话描述协议定义的所有key。您当前只需要理解下面的7个key。
+v - Version，版本，版本，应等于0 o - Origin，源，包含一个唯一ID，用于重新协商 s - Session Name，会话名称，应等于- t - Timing，时间，应等于0 0 m - Media Description，媒体描述，下面有详细说明 a - Attribute，属性，一个自由文本字段，这是WebRTC中最常见的行 c - Connection Data，连接数据，应等于IN IP4 0.0.0.0 会话描述中的媒体描述 # 一个会话描述中，可以包含无限数量的媒体描述。</description></item><item><title>连接</title><link>https://webrtcforthecurious.com/zh/docs/03-connecting/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/zh/docs/03-connecting/</guid><description>为什么WebRTC需要专用的子系统进行连接？ # 大多数应用程序使用客户端/服务器连接。在此场景下设置时，可以认为服务器具有稳定且公开可用的传输地址。客户端联系服务器，服务器响应。WebRTC不使用客户端/服务器进行连接，而是使用点对点（P2P）。在P2P连接中，创建连接的任务在两个peer之间几乎是平均分配的。之所以这样，是因为我们不能假定传输地址（IP和端口），且传输地址在会话期间甚至可能会变更。WebRTC将获取传输地址，并将尽力实现两个WebRTC代理之间的双向通信。
 听起来简单，建立点对点连接实际上可能会非常困难。这些代理可能位于没有直接连接的不同网络中。即使在两个代理可以直接连接的情况下，您可能还会遇到其他问题。比如在某些情况下，两个客户端使用不同的网络协议（UDP &amp;lt;-&amp;gt; TCP）或使用不同的IP版本（IPv4 &amp;lt;-&amp;gt; IPv6）。
 尽管在建立点对点连接方面存在一些困难，在WebRTC提供的下面这些属性的帮助下，您仍然可以获得相对于传统客户端/服务器技术的一些优势。
 降低带宽成本 # 由于媒体通信直接发生在Peer之间，因此您无需为传输它而付费（无需经过第三方服务器并为此付费）。
 更低延迟 # 直接通信时速度更快！当用户必须通过您的服务器运行所有内容时，这会使事情变慢。
 安全的端到端通信 # 直接通信更安全。由于用户数据根本没有通过服务器，因此用户不需要考虑服务端会不会解密。
-它是如何工作的？ # 上面描述的连接过程是由 ICE 实现的。这是另一个在WebRTC之前就已经出现的协议。
+它是如何工作的？ # 上面描述的连接过程是通过Interactive Connectivity Establishment（交互式连接建立/ICE） 实现的。这是另一个在WebRTC之前就已经出现的协议。
 ICE是一种用来寻找两个ICE代理之间通信的最佳方式的协议。每个ICE代理都会发布如何访问自己的方式，这些路径被称为候选地址（candidates）。候选地址本质上是一个传输地址，ICE代理认为这个传输地址可能可以被对端访问到。接下来ICE将确定候选地址的最佳搭配。
 本章稍后将详细介绍实际的ICE过程。要了解ICE为什么存在，最好先了解我们要面临的网络特性。
-现实世界的网络限制 # ICE就是克服现实世界网络限制的方法。在我们开始讨论ICE如何解决问题之前，先讨论一下有哪些问题。
+现实世界的网络限制 # ICE就是克服现实世界网络限制的方法。在我们开始讨论ICE如何解决问题之前，先讨论一下有哪些实际问题。
 不在同一个网络中 # 在大多数情况下，两个WebRTC代理不在同一个网络中。典型的呼叫通常是在没有直接连接的不同网络中的两个WebRTC代理之间进行的。
 下面是通过公共互联网连接的两个不同网络的示意图。在每个网络中，您拥有两个主机。
 mermaid.initialize({ "flowchart": { "useMaxWidth":true }, "theme": "default" } ) graph TB subgraph netb ["Network B (IP Address 5.0.0.2)"] b3["Agent 3 (IP 192.168.0.1)"] b4["Agent 4 (IP 192.168.0.2)"] routerb["Router B"] end subgraph neta ["</description></item><item><title>安全性</title><link>https://webrtcforthecurious.com/zh/docs/04-securing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/zh/docs/04-securing/</guid><description>WebRTC具有哪些安全性保障？ # 每个WebRTC连接都经过身份验证和加密。您可以确信第三方看不到您发送的内容，也无法插入虚假消息。您还可以确保与您进行通信的WebRTC代理正是生成会话描述的代理。
 没有人能够篡改消息这一点非常重要。如果第三方在传输中读取了会话描述，这不会产生什么影响。然而，WebRTC无法防止会话描述被修改。攻击者可以通过更改ICE候选地址和证书指纹来对您进行MITM（Man-in-the-middle）攻击。
 译注：这里指的是，P2P连接建立之后，双方之间的通信安全是有保障的。但在连接建立的过程中，攻击者可以通过MITM方式伪装中间人同时与通信双方建立连接并通信。 它是如何做到的？ # WebRTC使用两个预先存在的协议DTLS和SRTP。
-DTLS使您可以协商会话，然后在两个peer之间安全地交换数据。它是TLS的同类产品，而TLS是HTTPS使用的技术。DTLS是通过UDP而不是TCP进行的，因此协议必须处理不可靠的数据传输。SRTP是专为交换媒体数据而设计的。相对于DTLS而言，我们可以使用SRTP对传输进行一些优化。
+DTLS使您可以协商会话，然后在两个peer之间安全地交换数据。它是TLS（HTTPS用来处理通讯安全的协议）的同类产品。DTLS是通过UDP而不是TCP进行的，因此协议必须处理不可靠的数据传输。SRTP是专为交换媒体数据而设计的。相对于DTLS而言，我们可以使用SRTP对传输进行一些优化。
 DTLS先被使用。它通过ICE提供的连接进行一次握手。DTLS是一种客户端/服务器协议，因此其中一侧需要开始握手。客户端/服务器的角色是在信令中被确定的。在DTLS握手期间，双方都会提供证书。 握手完成后，需要将收到的证书与会话描述中的证书哈希进行比较。这是为了确定握手的目标就是您所期望的WebRTC代理。接下来，可以将DTLS连接用于DataChannel通信。
 要创建SRTP会话，我们使用DTLS生成的密钥对其进行初始化。SRTP没有握手机制，因此必须使用外部密钥进行引导。完成此操作后，媒体数据即可以通过SRTP加密并进行交换！
 安全性101 # 要了解本章介绍的技术，您首先需要了解这些术语。密码学是一个棘手的主题，因此其他资源也是值得参考的！
@@ -82,8 +82,8 @@ Media 101（媒体格式基础知识） # Codec（编解码器） # Frame Types�
 数据通道有哪些应用？ # 数据通道的适用性是无限的！数据通道为您解决了数据包丢失，拥塞问题和许多其他问题，并为您提供了非常简单的API，让您将数据实时交付给对端peer。您只需要关注应用程序想要实现的目标并发挥创造力即可。
 以下是一些使用数据通道的示例应用：
 实时网络游戏 远程无服务器家庭自动化 文字聊天 动画（一系列静止图像） P2P CDN（内容交付网络） 监控物联网数据 从传感器设备持续提取时间序列数据 从相机获取实时图像并利用AI进行图像识别 协议栈概述 # 数据通道由以下3层组成：
-数据通道层 DCEP（数据通道建立协议）层 SCTP（流控制传输协议）层 数据通道层 # 该层提供了API。
-数据通道建立协议层 # 该层负责与对端peer建立数据通道握手。它使用SCTP流作为控制通道来协商诸如有序交付，maxRetransmits（最大重传）/ maxPacketLifeTime（最大包生命周期）（也就是&amp;quot;部分可靠性&amp;quot;选项）之类的功能。
+数据通道层 DCEP（数据通道建立协议）层 SCTP（流控制传输协议）层 数据通道层 # 该层提供了API。该API大体上是对WebSocket的模拟，从而使Web开发人员能相对容易的将现有的基于Websocket的客户端-服务器的代码修改为使用P2P数据通道实现。单个peerconnection可以包含peer之间的多条数据通道，从而省去了从多个数据源和接收器复用和解复用的麻烦。只需要为交换的每一类数据创建一个数据通道，其余的工作都交给peerconnection完成。与websockets不同的一点是，数据通道具有创建者分配的标签，接收者可以使用标签来确定数据通道的身份。
+数据通道建立协议层 # 该层负责与对端peer建立数据通道握手。它使用SCTP流作为控制通道来协商诸如有序交付，maxRetransmits（最大重传）/ maxPacketLifeTime（最大包生命周期）（也就是&amp;quot;部分可靠性&amp;quot;选项），发送频道的标签等等。
 SCTP协议层 # 这是数据通道的核心。它包括：
 通道复用（在SCTP中，通道称为&amp;quot;流&amp;rdquo;） 通过类似TCP的重传机制进行可靠传递 部分可靠性选项 避免拥塞 流量控制 Data Channel API # Connection / Teardown # Data Channel Options # Flow Control API # Data Channel in Depth # SCTP # Connection establishment flow # Connection teardown flow # Keep-alive mechanism # How does a user message get sent?</description></item><item><title>WebRTC应用场景</title><link>https://webrtcforthecurious.com/zh/docs/07-applied-webrtc/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/zh/docs/07-applied-webrtc/</guid><description>WebRTC应用场景 # 现在您已经知道WebRTC的工作原理，到了使用它的时候了。本章探讨人们使用WebRTC构建什么以及他们是如何实现的。您将学到基于WebRTC发生的所有有趣的事情。WebRTC的功能是有代价的。建立产品级的WebRTC服务相当有挑战性。本章将尝试解释这些挑战性的根源，这样您遇到问题时就能有所准备。
 用例 # WebRTC背后的技术并不仅用于视频聊天 &amp;ndash; 由于WebRTC是通用的实时框架，因此应用可用的用例是无限的。一些最常见的类别包括：
