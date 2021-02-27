@@ -1,0 +1,106 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="What is Data #  Functional Overview #  Data channel can deliver any types of data. If you wish, you can send audio or video data over the data channel too. But if you need to playback media in real-time, using media channels (see Media Communication) that uses RTP/RTCP protocols are the better options.
+What are the applications of data channel? #  Applicability of the data channel is unlimited!"><meta name=theme-color content="#FFFFFF"><meta property="og:title" content="Data Communication"><meta property="og:description" content="What is Data #  Functional Overview #  Data channel can deliver any types of data. If you wish, you can send audio or video data over the data channel too. But if you need to playback media in real-time, using media channels (see Media Communication) that uses RTP/RTCP protocols are the better options.
+What are the applications of data channel? #  Applicability of the data channel is unlimited!"><meta property="og:type" content="article"><meta property="og:url" content="https://webrtcforthecurious.com/docs/07-data-communication/"><meta property="article:modified_time" content="2021-02-27T13:54:30-08:00"><meta property="og:site_name" content="WebRTC for the Curious"><title>Data Communication | WebRTC for the Curious</title><link rel=manifest href=/manifest.json><link rel=icon href=/favicon.png type=image/x-icon><link rel=alternate hreflang=tr href=https://webrtcforthecurious.com/tr/docs/07-data-communication/ title="Data Communication"><link rel=alternate hreflang=zh href=https://webrtcforthecurious.com/zh/docs/07-data-communication/ title=数据通信><link rel=stylesheet href=/book.min.6cd8553a6854f4812343f0f0c8baca31271e686434f381fbe3c7226f66639176.css integrity="sha256-bNhVOmhU9IEjQ/DwyLrKMSceaGQ084H748cib2ZjkXY="><script defer src=/en.search.min.10104d38928b7021ff7adfec878093d98789e4ef89265afce2337f09dac8a69a.js integrity="sha256-EBBNOJKLcCH/et/sh4CT2YeJ5O+JJlr84jN/CdrIppo="></script></head><body><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><nav><h2 class=book-brand><a href=/><span>WebRTC for the Curious</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li><a href=/docs/01-what-why-and-how/>What, Why and How</a></li><li><a href=/docs/02-signaling/>Signaling</a></li><li><a href=/docs/03-connecting/>Connecting</a></li><li><a href=/docs/04-securing/>Securing</a></li><li><a href=/docs/05-real-time-networking/>Real-time Networking</a></li><li><a href=/docs/06-media-communication/>Media Communication</a></li><li><a href=/docs/07-data-communication/ class=active>Data Communication</a></li><li><a href=/docs/08-applied-webrtc/>Applied WebRTC</a></li><li><a href=/docs/09-debugging/>Debugging</a></li><li><a href=/docs/10-history-of-webrtc/>History</a></li><li><a href=/docs/11-faq/>FAQ</a></li></ul></nav><script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label>
+<strong>Data Communication</strong>
+<label for=toc-control><img src=/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#functional-overview>Functional Overview</a><ul><li><a href=#what-are-the-applications-of-data-channel>What are the applications of data channel?</a></li><li><a href=#protocol-stack-overview>Protocol Stack Overview</a></li></ul></li><li><a href=#data-channel-api>Data Channel API</a><ul><li><a href=#connection--teardown>Connection / Teardown</a></li><li><a href=#data-channel-options>Data Channel Options</a></li><li><a href=#flow-control-api>Flow Control API</a></li></ul></li><li><a href=#data-channel-in-depth>Data Channel in Depth</a><ul><li><a href=#sctp>SCTP</a></li><li><a href=#dcep>DCEP</a></li></ul></li><li><a href=#reference-to-rfcs>Reference to RFCs</a></li></ul></nav></aside></header><article class=markdown><h1 id=what-is-data>What is Data
+<a class=anchor href=#what-is-data>#</a></h1><h2 id=functional-overview>Functional Overview
+<a class=anchor href=#functional-overview>#</a></h2><p>Data channel can deliver any types of data. If you wish, you can send audio or video
+data over the data channel too. But if you need to playback media in real-time,
+using media channels (see <a href=https://webrtcforthecurious.com/docs/06-media-communication/>Media Communication</a>) that uses RTP/RTCP protocols are the better options.</p><h3 id=what-are-the-applications-of-data-channel>What are the applications of data channel?
+<a class=anchor href=#what-are-the-applications-of-data-channel>#</a></h3><p>Applicability of the data channel is unlimited! The data channel solves packet loss,
+congestion problems and many other stuff for you and provide you with very simple
+API to deliver you your data to your peer in real-time. You just need to focus on what
+your application wants to achieve, and be creative.</p><p>Here are some example applications using the data channel:</p><ul><li>Real-time network games</li><li>Serverless home automation from remote</li><li>Text chat</li><li>Animation (series of still images)</li><li>P2P CDN (Content Delivery Network)</li><li>Monitoring data from IoT</li><li>Continuous ingestion of time-series data from sensor devices</li><li>Real-time image recognition with AI from cameras</li></ul><h3 id=protocol-stack-overview>Protocol Stack Overview
+<a class=anchor href=#protocol-stack-overview>#</a></h3><p>The data channel is comprised of the following 3 layers:</p><ul><li>Data Channel Layer</li><li>DCEP (Data channel Establishment Protocol) Layer</li><li>SCTP (Stream Control Transmission Protocol) Layer</li></ul><figure><img src=/images/06-datachan-proto-stack.png></figure><h4 id=data-channel-layer>Data Channel Layer
+<a class=anchor href=#data-channel-layer>#</a></h4><p>This layer provides API.
+The API largely mimics that of WebSockets, masking it relatively easy for web developers
+to repurpose existing client-server websocket based code to work over the P2P datachannel.
+A single peerconnection can have many datachannels to a peer saving you the bother
+multiplexing and demultiplexing different data sources and sinks. Just create a datachannel per
+class of data you need to exchange and the peerconnection does the rest.
+Unlike websockets datachannels have lables which are assigned by the creator and can be used by
+recipient to figure out which datachannel is which.</p><h4 id=data-channel-establishment-protocol-layer>Data Channel Establishment Protocol Layer
+<a class=anchor href=#data-channel-establishment-protocol-layer>#</a></h4><p>This layer is responsible for the data channel handshake with the peer. It uses a
+SCTP stream as a control channel to negotiate capabilities such as ordered delivery,
+maxRetransmits/maxPacketLifeTime (a.k.a. &ldquo;Partial-reliability&rdquo;), send the channel&rsquo;s lable etc.</p><h4 id=sctp-protocol-layer>SCTP Protocol Layer
+<a class=anchor href=#sctp-protocol-layer>#</a></h4><p>This is the heart of the data channel. What it does includes:</p><ul><li>Channel multiplexing (In SCTP, channels are called &ldquo;streams&rdquo;)</li><li>Reliable delivery with TCP-like retransmission mechanism</li><li>Partial-reliability options</li><li>Congestion Avoidance</li><li>Flow Control</li></ul><h2 id=data-channel-api>Data Channel API
+<a class=anchor href=#data-channel-api>#</a></h2><h3 id=connection--teardown>Connection / Teardown
+<a class=anchor href=#connection--teardown>#</a></h3><h3 id=data-channel-options>Data Channel Options
+<a class=anchor href=#data-channel-options>#</a></h3><h3 id=flow-control-api>Flow Control API
+<a class=anchor href=#flow-control-api>#</a></h3><h2 id=data-channel-in-depth>Data Channel in Depth
+<a class=anchor href=#data-channel-in-depth>#</a></h2><h3 id=sctp>SCTP
+<a class=anchor href=#sctp>#</a></h3><h4 id=connection-establishment-flow>Connection establishment flow
+<a class=anchor href=#connection-establishment-flow>#</a></h4><h4 id=connection-teardown-flow>Connection teardown flow
+<a class=anchor href=#connection-teardown-flow>#</a></h4><h4 id=keep-alive-mechanism>Keep-alive mechanism
+<a class=anchor href=#keep-alive-mechanism>#</a></h4><h4 id=how-does-a-user-message-get-sent>How does a user message get sent?
+<a class=anchor href=#how-does-a-user-message-get-sent>#</a></h4><h4 id=tsn-and-retransmission>TSN and retransmission
+<a class=anchor href=#tsn-and-retransmission>#</a></h4><h4 id=congestion-avoidance>Congestion avoidance
+<a class=anchor href=#congestion-avoidance>#</a></h4><h4 id=selective-ack>Selective ACK
+<a class=anchor href=#selective-ack>#</a></h4><h4 id=fast-retransmissionrecovery>Fast retransmission/recovery
+<a class=anchor href=#fast-retransmissionrecovery>#</a></h4><h4 id=partial-reliability>Partial Reliability
+<a class=anchor href=#partial-reliability>#</a></h4><h3 id=dcep>DCEP
+<a class=anchor href=#dcep>#</a></h3><p>DCEP is a simple 2 packet protocol which describes the behaviour of a given datachannel.
+It does not require a network round trip, so subsequent data for the channel can be included in the same packet.
+This makes establishing datachanels fast and cheap.</p><h4 id=openack-handshake>Open/ACK handshake
+<a class=anchor href=#openack-handshake>#</a></h4><pre><code>0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |  Message Type |  Channel Type |            Priority           |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |                    Reliability Parameter                      |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |         Label Length          |       Protocol Length         |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     \                                                               /
+     |                             Label                             |
+     /                                                               \
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     \                                                               /
+     |                            Protocol                           |
+     /                                                               \
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>Here is a list of chanel types and the associated meaning of the reliability parameter
+that will be applied when packets are lost or misordered.</p><pre><code>DATA_CHANNEL_OPEN
+Message Type: 0x03
+     +================================================+=============+
+     | Channel Type                                   | Reliability |
+     |                                                |  Parameter  |
+     +================================================+=============+
+     | DATA_CHANNEL_RELIABLE                          |   Ignored   |
+     +------------------------------------------------+-------------+
+     | DATA_CHANNEL_RELIABLE_UNORDERED                |   Ignored   |
+     +------------------------------------------------+-------------+
+     | DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT           |  Number of  |
+     |                                                |     RTX     |
+     +------------------------------------------------+-------------+
+     | DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT_UNORDERED |  Number of  |
+     |                                                |     RTX     |
+     +------------------------------------------------+-------------+
+     | DATA_CHANNEL_PARTIAL_RELIABLE_TIMED            | Lifetime in |
+     |                                                |      ms     |
+     +------------------------------------------------+-------------+
+     | DATA_CHANNEL_PARTIAL_RELIABLE_TIMED_UNORDERED  | Lifetime in |
+     |                                                |      ms     |
+     +------------------------------------------------+-------------+
+</code></pre><p>Reliable is largely equivelent to TCP.</p><p>Reliable_Unordered requires a special mention. It means that when a packet is dropped by the network only the message that the packet is part of will be delayed until it is resent. Other messages, which were sent later may be delivered earlier. You can use this mode when the sequence that messages are received is less important than the speed of their arrival. In this mode message delivery still enforced, but the ordering is not. This mode can be thought of as a halfway house between TCP and UDP.</p><p>The remaining modes are equivelent to a UDP based protocols with differing retry/failure rules.</p><pre><code>DATA_CHANNEL_ACK
+Message Type: 0x02
+
+      0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |  Message Type |
+     +-+-+-+-+-+-+-+-+
+
+</code></pre><p>There is no DCEP NACK.
+DataChannel opens always succeed, because they are carried on the same SCTP stream as the data which as already suceeded!</p><h4 id=ppid>PPID
+<a class=anchor href=#ppid>#</a></h4><p>The SCTP PPID for WebRTC DCEP is 50. DCEP messages are processed apart from the rest of the data in the SCTP stream and not passed back up to the web application or service.</p><h4 id=parameter-exchange>Parameter exchange
+<a class=anchor href=#parameter-exchange>#</a></h4><p>In theory it is possible to create a datachannel using out-of-band non-DCEP negotiation in SDP. Don&rsquo;t.</p><h2 id=reference-to-rfcs>Reference to RFCs
+<a class=anchor href=#reference-to-rfcs>#</a></h2><p><a href="https://datatracker.ietf.org/doc/rfc8832/?include_text=1">https://datatracker.ietf.org/doc/rfc8832/?include_text=1</a></p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div class=book-languages tabindex=0 aria-haspopup=true><ul><li class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+English</li></ul><ul class=book-languages-list><li class=active><a href=https://webrtcforthecurious.com/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+English</a></li><li><a href=https://webrtcforthecurious.com/tr/docs/07-data-communication/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Turkish</a></li><li><a href=https://webrtcforthecurious.com/fa/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Persian</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/07-data-communication/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+简体中文</a></li></ul></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/commit/b54da1379c0552e164e8e97b5970cfb1b11abb8f title="Last modified by Sean DuBois | February 27, 2021" target=_blank rel=noopener><img src=/svg/calendar.svg class=book-icon alt=Calendar>
+<span>February 27, 2021</span></a></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content//docs/07-data-communication.md target=_blank rel=noopener><img src=/svg/edit.svg class=book-icon alt=Edit>
+<span>Edit this page</span></a></div></div></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><nav id=TableOfContents><ul><li><a href=#functional-overview>Functional Overview</a><ul><li><a href=#what-are-the-applications-of-data-channel>What are the applications of data channel?</a></li><li><a href=#protocol-stack-overview>Protocol Stack Overview</a></li></ul></li><li><a href=#data-channel-api>Data Channel API</a><ul><li><a href=#connection--teardown>Connection / Teardown</a></li><li><a href=#data-channel-options>Data Channel Options</a></li><li><a href=#flow-control-api>Flow Control API</a></li></ul></li><li><a href=#data-channel-in-depth>Data Channel in Depth</a><ul><li><a href=#sctp>SCTP</a></li><li><a href=#dcep>DCEP</a></li></ul></li><li><a href=#reference-to-rfcs>Reference to RFCs</a></li></ul></nav></aside></main></body></html>
