@@ -103,20 +103,22 @@ ice{ICE Agent}
 stun{STUN Protocol}
 turn{TURN Agent}
 srtp{SRTP Agent}
-sctp{SDP}
+sdp{SDP}
 rtp{RTP}
 rtcp{RTCP}
 
 webrtc --> ice
 webrtc --> dtls
-webrtc --> sctp
 webrtc --> srtp
+webrtc --> sdp
+webrtc --> sctp
 
 ice --> turn
 ice --> stun
 
 srtp --> rtcp
 srtp --> rtp
+
 {{</mermaid>}}
 
 

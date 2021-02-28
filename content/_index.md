@@ -27,8 +27,9 @@ Each chapter aims to answer a single question, with three levels of information.
 * What needs to be solved?
 * How do we solve it?
 * Technical details about the solution.
+* Where to go learn more.
 
-Each chapter doesn't assume prior knowledge. You can start at any point in the book and begin learning.
+Each chapter doesn't assume prior knowledge. You can start at any point in the book and begin learning. This book will also recommend resources to go and learn more. Other books cover individual topics in much greater depth. This book aims to teach you the entire system, at the cost of expert level details.
 
 ## Non-commercial and privacy-respecting
 
