@@ -24,25 +24,6 @@ Real-time media is about making trade-offs between latency and quality. The more
 ### Real World Limitations
 These constraints are all caused by the limitations of the real world. They are all characteristics of your network that you will need to overcome.
 
-#### Bandwidth
-Bandwidth is the maximum rate of data that can be transferred across a given path. It is important to remember this isn't a static number either. The bandwidth will change along the route as more (or less) people use it.
-
-When you attempt to send more data then available bandwidth you will experience network congestion.
-
-#### Transmission Time
-Transmission Time is how long it takes for a packet to arrive. Like Bandwidth this isn't constant. The Transmission Time can fluctuate at anytime.
-
-#### Jitter
-Jitter is the fact that `Transmission Time` may vary. Some times you will see packets arrive in bursts. Any piece of hardware along the network path can introduce issues.
-
-#### Packet Loss
-Packet Loss is when messages are lost in transmission. The loss could be steady, or it could come in spikes. This is also a common issue, especially on wireless networks!
-
-#### Maximum transmission unit
-Maximum Transmission Unit is the limit on how large a single packet can be. Networks don't allow you to send one giant message. At the protocol level, you need to split your data into multiple small packets.
-
-The MTU will also differ depending on what network path you take. You can use a protocol like [Path MTU Discovery](https://tools.ietf.org/html/rfc1191) to figure out the largest packet size you can send.
-
 ## Media 101
 ### Codec
 ### Frame Types
