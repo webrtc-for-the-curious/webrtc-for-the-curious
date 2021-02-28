@@ -213,9 +213,9 @@ Unfortunately, the `Mapped Address` might not be useful in all cases. If it is `
 [RFC 5780](https://tools.ietf.org/html/rfc5780) defines a method for running a test to determine your NAT Type. This would be useful because you would know ahead of time if direct connectivity was possible.
 
 ## TURN
-TURN (Traversal Using Relays around NAT) is defined in [RFC 5766](https://tools.ietf.org/html/rfc5766) is the solution when direct connectivity isn't possible. It could be because you have two NAT Types that are incompatible, or maybe can't speak the same protocol! TURN is also important for privacy purposes. By running all your communication through TURN you obscure the client's actual address.
+TURN (Traversal Using Relays around NAT) is defined in [RFC 5766](https://tools.ietf.org/html/rfc5766) is the solution when direct connectivity isn't possible. It could be because you have two NAT Types that are incompatible, or maybe can't speak the same protocol! TURN can also be used for privacy purposes. By running all your communication through TURN you obscure the client's actual address.
 
-TURN uses a dedicated server. This server acts as a proxy for a client. The client connects to a TURN Server and creates an Allocation. By creating an Allocation a client gets a temporary IP/Port/Protocol that can send into to get traffic back to the client. This new listener is known as the `Relayed Transport Address`. Think of it as a forwarding address, you give this out so others can send you traffic via TURN! For each peer you give the `Relay Transport Address` to, you must create a `Permission` to allow communication with you.
+TURN uses a dedicated server. This server acts as a proxy for a client. The client connects to a TURN Server and creates an `Allocation`. By creating an Allocation a client gets a temporary IP/Port/Protocol that can be used to send traffic back to the client. This new listener is known as the `Relayed Transport Address`. Think of it as a forwarding address, you give this out so that others can send you traffic via TURN! For each peer you give the `Relay Transport Address` to, you must create a new `Permission` to allow communication with you.
 
 When you send outbound traffic via TURN it is sent via the `Relayed Transport Address`. When a remote peer gets traffic they see it coming from the TURN Server.
 
@@ -238,10 +238,9 @@ If the request succeeded, you get a response with the TURN Server with the follo
 #### Permissions
 A remote host can't send into your `Relayed Transport Address` until you create a permission for them. When you create a permission you are telling the TURN server that this IP/Port is allowed to send inbound traffic.
 
-The remote host needs to give you the IP/Port as it appears to the TURN server. This means it should send a `STUN Binding Request` to the TURN Server. A common error case is that a remote host will
-send a `STUN Binding Request` to a different server. They will then ask you to create a permission for this IP.
+The remote host needs to give you the IP/Port as it appears to the TURN server. This means it should send a `STUN Binding Request` to the TURN Server. A common error case is that a remote host will send a `STUN Binding Request` to a different server. They will then ask you to create a permission for this IP.
 
-Let's say you want to create a permission for a host behind a `Address Dependent Mapping`. If you generate the `Mapped Address` from a different TURN server all inbound traffic will be dropped. Every time they communicate with a different host it generates a new mapping.
+Let's say you want to create a permission for a host behind a `Address Dependent Mapping`. If you generate the `Mapped Address` from a different TURN server all inbound traffic will be dropped. Every time they communicate with a different host it generates a new mapping. Permissions expire after 5 minutes if they are not refreshed.
 
 #### SendIndication/ChannelData
 These two messages are for the TURN Client to send messages to a remote peer.
