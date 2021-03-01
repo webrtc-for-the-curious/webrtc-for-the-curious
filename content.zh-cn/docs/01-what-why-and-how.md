@@ -8,11 +8,11 @@ weight: 2
 
 # WebRTC是什么？
 
-WebRTC是Web实时通信（Real-Time Communication）的缩写，它既是API也是协议。WebRTC协议是两个WebRTC代理协商双向安全实时通信的一组规则。开发人员可以通过WebRTC API使用WebRTC协议。目前WebRTC API仅有Javascript版本。
+WebRTC是Web实时通信（Real-Time Communication）的缩写，它既是API也是协议。WebRTC协议是两个WebRTC代理协商双向安全实时通信的一组规则。开发人员可以通过WebRTC API使用WebRTC协议。目前WebRTC API仅有JavaScript版本。
 
 可以用HTTP和fetch API来类比。WebRTC协议就是HTTP，而WebRTC API就是fetch API。
 
-除了Javascript语言，WebRTC协议也可以在其他API/语言中使用。您还可以找到WebRTC的服务器和特定领域的工具。所有这些实现都使用WebRTC协议，因此它们可以彼此交互。
+除了JavaScript语言，WebRTC协议也可以在其他API/语言中使用。您还可以找到WebRTC的服务器和特定领域的工具。所有这些实现都使用WebRTC协议，因此它们可以彼此交互。
 
 WebRTC协议由IETF工作组在[rtcweb](https://datatracker.ietf.org/wg/rtcweb/documents/)中维护。WebRTC API的W3C文档在[webrtc-pc](https://w3c.github.io/webrtc-pc/)。
 
@@ -56,7 +56,7 @@ WebRTC协议由IETF工作组在[rtcweb](https://datatracker.ietf.org/wg/rtcweb/d
 * 连接时需要使用的值（uFrag/uPwd）
 * 保护时使用的值（证书指纹）
 
-注意，信令通常发生在“out-of-band”。也就是说，应用通常不使用WebRTC本身来交换信令消息。在连接的peer中，任何适合发送消息的架构均可被用于传递SDP信息，许多应用程序都使用其现有的基础结构（例如REST端点，websocket连接或身份验证代理）来解决适当客户端之间的SDP传递问题。
+注意，信令通常发生在“out-of-band”。也就是说，应用通常不使用WebRTC本身来交换信令消息。在连接的peer中，任何适合发送消息的架构均可被用于传递SDP信息，许多应用程序都使用其现有的基础结构（例如REST端点，WebSocket连接或身份验证代理）来解决适当客户端之间的SDP传递问题。
 
 ### 使用STUN/TURN进行连接和NAT穿透
 
@@ -105,30 +105,32 @@ ice{ICE Agent}
 stun{STUN Protocol}
 turn{TURN Agent}
 srtp{SRTP Agent}
-sctp{SDP}
+sdp{SDP}
 rtp{RTP}
 rtcp{RTCP}
 
 webrtc --> ice
 webrtc --> dtls
-webrtc --> sctp
 webrtc --> srtp
+webrtc --> sdp
+webrtc --> sctp
 
 ice --> turn
 ice --> stun
 
 srtp --> rtcp
 srtp --> rtp
+
 {{</mermaid>}}
 
 
 ## WebRTC（API）如何工作
 
-本部分显示Javascript API是如何跟协议相对应的。这不只是WebRTC API的一个粗略演示，更像是创建了一个思维模型，以此将所有部分联系在一起。如果您对各部分都不熟悉，那也不要紧。当您了解更多信息时，再回头看看这一部分，可能会很有趣！
+本部分显示JavaScript API是如何跟协议相对应的。这不只是WebRTC API的一个粗略演示，更像是创建了一个思维模型，以此将所有部分联系在一起。如果您对各部分都不熟悉，那也不要紧。当您了解更多信息时，再回头看看这一部分，可能会很有趣！
 
-#### `new PeerConnection`
+#### `new RTCPeerConnection`
 
-PeerConnection是最顶层的“ WebRTC会话”。它包含上述所有协议。所有子系统都已就位，但是什么都还没有发生。
+`RTCPeerConnection`是最顶层的"WebRTC会话"。它包含上述所有协议。所有子系统都已就位，但是什么都还没有发生。
 
 #### `addTrack`
 
@@ -156,7 +158,7 @@ PeerConnection是最顶层的“ WebRTC会话”。它包含上述所有协议�
 
 #### `setRemoteDescription`
 
-收到远端Peer发来的offer之后，我们通过`setRemoteDescription`通知本地代理。这就是使用Javascript API传递“信令”的方式。
+收到远端Peer发来的offer之后，我们通过`setRemoteDescription`通知本地代理。这就是使用JavaScript API传递“信令”的方式。
 
 双方都调用过`setRemoteDescription`后，WebRTC代理现在拥有足够的信息来开始进行P2P通信！
 
@@ -168,7 +170,7 @@ PeerConnection是最顶层的“ WebRTC会话”。它包含上述所有协议�
 
 `ontrack`是从远端Peer收到RTP数据包时触发的回调。传入的RTP数据包应该已在传递给`setRemoteDescription`的会话描述中声明。
 
-WebRTC使用SSRC并查找关联的MediaStream和MediaStreamTrack，并使用填充的这些详细信息触发此回调。
+WebRTC使用SSRC并查找关联的`MediaStream`和`MediaStreamTrack`，并使用填充的这些详细信息触发此回调。
 
 #### `oniceconnectionstatechange`
 
