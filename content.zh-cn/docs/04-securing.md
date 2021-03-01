@@ -8,22 +8,22 @@ weight: 5
 
 每个WebRTC连接都经过身份验证和加密。您可以确信第三方看不到您发送的内容，也无法插入虚假消息。您还可以确保与您进行通信的WebRTC代理正是生成会话描述的代理。
 
-没有人能够篡改消息这一点非常重要。如果第三方在传输中读取了会话描述，这不会产生什么影响。然而，WebRTC无法防止会话描述被修改。攻击者可以通过更改ICE候选地址和证书指纹来对您进行MITM（Man-in-the-middle）攻击。
+没有人能够篡改消息这一点非常重要。如果第三方在传输中读取了会话描述，这不会产生什么影响。然而，WebRTC无法防止会话描述被修改。攻击者可以通过更改ICE候选地址和证书指纹来对您进行中间人攻击（man-in-the-middle）。
 
 {{< hint info >}}
-译注：这里指的是，P2P连接建立之后，双方之间的通信安全是有保障的。但在连接建立的过程中，攻击者可以通过MITM方式伪装中间人同时与通信双方建立连接并通信。
+译注：这里指的是，P2P连接建立之后，双方之间的通信安全是有保障的。但在连接建立的过程中，攻击者可以通过man-in-the-middle方式伪装中间人同时与通信双方建立连接并通信。
 {{< /hint >}}
 
 ## 它是如何做到的？
 
-WebRTC使用两个预先存在的协议[DTLS](https://tools.ietf.org/html/rfc6347)和[SRTP](https://tools.ietf.org/html/rfc3711)。
+WebRTC使用两个预先存在的协议，数据报传输层安全（Datagram Transport Layer Security / [DTLS](https://tools.ietf.org/html/rfc6347)）和 安全实时传输协议（Secure Real-time Transport Protocol / [SRTP](https://tools.ietf.org/html/rfc3711)）。
 
-DTLS使您可以协商会话，然后在两个peer之间安全地交换数据。它是TLS（HTTPS用来处理通讯安全的协议）的同类产品。DTLS是通过UDP而不是TCP进行的，因此协议必须处理不可靠的数据传输。SRTP是专为交换媒体数据而设计的。相对于DTLS而言，我们可以使用SRTP对传输进行一些优化。
+DTLS使您可以协商会话，然后在两个peer之间安全地交换数据。它是TLS的同类产品，TLS是HTTPS所使用的技术，而DTLS与TLS的区别仅在与其使用UDP而不是TCP作为其传输层。这也意味着DTLS协议必须处理不可靠的数据传输。SRTP是专为安全的交换媒体数据而设计的。相对于DTLS而言，使用SRTP对传输媒体数据有一些优化。
 
 DTLS先被使用。它通过ICE提供的连接进行一次握手。DTLS是一种客户端/服务器协议，因此其中一侧需要开始握手。客户端/服务器的角色是在信令中被确定的。在DTLS握手期间，双方都会提供证书。
 握手完成后，需要将收到的证书与`会话描述`中的证书哈希进行比较。这是为了确定握手的目标就是您所期望的WebRTC代理。接下来，可以将DTLS连接用于DataChannel通信。
 
-要创建SRTP会话，我们使用DTLS生成的密钥对其进行初始化。SRTP没有握手机制，因此必须使用外部密钥进行引导。完成此操作后，媒体数据即可以通过SRTP加密并进行交换！
+要创建SRTP会话，我们使用DTLS生成的密钥对其进行初始化。SRTP没有握手机制，因此必须使用外部密钥进行引导。一旦完成此操作，媒体数据即可以用SRTP加密并进行交换！
 
 ## 安全性101
 
@@ -48,12 +48,12 @@ Cipher是将明文转换为密文的一系列步骤。Cipher可以反过来运�
 #### 公钥/私钥加密
 
 公钥/私钥加密描述了DTLS和SRTP使用的cipher类型。在此系统中，您有两个密钥，即公钥和私钥。公钥用于加密消息，可以安全共享。
-私钥用于解密消息，不应共享。当解密那些使用对应的公钥加密的消息时，它是唯一的密钥。
+私钥用于解密消息，永远不应共享。当解密那些使用对应的公钥加密的消息时，它是唯一的密钥。
 
 #### Diffie-Hellman交换
 
-Diffie-Hellman交换允许两个以前从未见过的用户通过Internet安全的交换信息。 用户`A`可以将信息发送给用户`B`，而不必担心被窃听。破解该信息依赖于破解离散对数问题的难度。
-您不必完全理解这一点，但这可以帮助您了解DTLS握手是如何变得可行的。
+Diffie-Hellman交换允许两个以前从未见过的用户通过Internet安全的创建一个共享的秘密信息。用户`A`可以将秘密信息发送给用户`B`，而不必担心被窃听。破解该信息的难度将取决于破解离散对数问题的难度。
+您不必完全理解该算法是如何工作的，但这可以帮助您了解是什么使得DTLS握手变得可行的。
 
 Wikipedia在[此处](https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange#Cryptographic_explanation)中有一个实际的例子。
 
@@ -88,14 +88,14 @@ Nonce是cipher的附加输入。这样，即使您多次加密同一条消息，
 DTLS（数据报传输层安全协议）允许两个peer在没有预先存在的配置的情况下建立安全的通信。即使有人窃听了通信，他们也将无法解密消息。
 
 为了使DTLS客户端和服务器进行通信，他们需要就cipher和密钥达成一致。他们通过进行DTLS握手来确定这些值。在握手期间，消息为纯文本格式。
-当DTLS客户端/服务器交换了足够的详细信息以开始加密时，它会发送`Change Cipher Spec`（更改Cipher规格）。在此消息之后，后续的每个消息都将被加密！
+当DTLS客户端/服务器交换了足够的详细信息以开始加密时，它会发送`Change Cipher Spec`（更改Cipher规格）消息。在此消息之后，后续的每个消息都将会被加密！
 
 ### 数据包格式
-每个DTLS数据包开头都包含一个头部信息
+每个DTLS数据包开头都包含一个头部信息。
 
 #### 内容类型
 
-您可以看到包括以下类型
+您可以看到数据包包括以下几种类型：
 
 * Change Cipher Spec（更改Cipher规格） - `20`
 * Handshake（握手） - `22`
@@ -167,7 +167,7 @@ ServerHello是服务器响应消息，是此次会话的配置信息。它包含
 Certificate包含客户端或服务器的证书。它被用来唯一识别我们与之通信的对方。握手结束后，我们将确保这个证书的哈希与`SessionDescription`中的指纹相匹配。
 
 #### ServerKeyExchange/ClientKeyExchange
-这些消息用于传输公共密钥。在启动时，客户端和服务器都会生成密钥对。握手后，这些值将被用来生成 **Pre-Master Secret**
+这些消息用于传输公共密钥。在启动时，客户端和服务器都会生成密钥对。握手后，这些值将被用来生成`Pre-Master Secret`。
 
 #### CertificateRequest
 CertificateRequest由服务端发送，用来通知客户端需要一个证书。服务端既可以请求一个证书，也可以要求必须提供证书。
@@ -189,18 +189,18 @@ Finished消息是加密的，它包含所有消息的哈希。用来断言握手
 
 首先，我们需要生成`Pre-Master Secret`。为了获得该值，我们通过`ServerKeyExchange`和`ClientKeyExchange`消息，使用Diffie-Hellman算法来交换密钥。细节因选定的Cipher而异。
 
-接下来，生成`Master Secret`。每个版本的DTLS都有一个定义的`Pseudorandom function`（伪随机函数）。对于DTLS 1.2，PRF（伪随机函数）会在`ClientHello`和`ServerHello`中获取`Pre-Master Secret`和随机值。
-运行`Pseudorandom function`后，获得的输出是`Master Secret`。`Master Secret`是用于Cipher的密钥。
+接下来，生成`Master Secret`。每个版本的DTLS都有一个定义的`Pseudorandom function`（伪随机函数）。对于DTLS 1.2，伪随机函数会在`ClientHello`和`ServerHello`中获取`Pre-Master Secret`和随机值。
+运行`Pseudorandom function`后，获得的输出是`Master Secret`。`Master Secret`是用于Cipher的值。
 
 ### 交换ApplicationData
 DTLS的主要内容是`ApplicationData`。现在我们有了一个初始化好的Cipher，我们可以开始加密和发送数据了。
 
-如前所述，`ApplicationData`消息使用DTLS标头。`Payload`中填充了密文。您现在可以正常使用DTLS会话，并且可以安全地进行通信。
+如前所述，`ApplicationData`消息使用一个DTLS标头。`Payload`中填充了密文。您现在可以正常使用DTLS会话，并且可以安全地进行通信。
 
-DTLS具有更多有趣的功能，例如重新协商等。WebRTC中不使用此功能，因此此处不作介绍。
+DTLS具有更多有趣的功能，例如重新协商等。WebRTC中不使用这些功能，因此此处不作介绍。
 
 ## SRTP
-SRTP是仅用于加密RTP数据包的协议。要启动SRTP会话，需要指定密钥和cipher。与DTLS不同，它没有握手机制。因此，所有的配置和密钥都是在DTLS握手期间配置的。
+SRTP是针对加密RTP数据包专门涉及的协议。要启动SRTP会话，需要指定密钥和cipher。与DTLS不同，它没有握手机制。所有的配置和密钥都是在DTLS握手期间生成的。
 
 DTLS提供了专用的API，用来导出密钥以供另一个进程使用。这是在[RFC 5705](https://tools.ietf.org/html/rfc5705)中定义的
 
@@ -210,4 +210,4 @@ SRTP定义了一个密钥派生函数，用于处理输入。在创建SRTP会话
 ### 交换媒体数据
 每个RTP数据包都有一个16位的SequenceNumber（序列号）。这些序列号用于使数据包保持顺序，就像主键一样。在通话期间，这些序列号将滚动累加。SRTP会对其进行跟踪，并将其称为滚动计数器。
 
-加密数据包时，SRTP使用滚动计数器和序列号作为nonce。这是为了确保即使两次发送相同的数据，密文也会有所不同。这很重要，否则攻击者可以识别模式或尝试重播攻击。
+加密数据包时，SRTP使用滚动计数器和序列号作为nonce。这是为了确保即使两次发送相同的数据，密文也会有所不同。这样做很重要，可以阻止攻击者识别模式或尝试重播攻击。
