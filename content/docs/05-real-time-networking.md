@@ -111,17 +111,27 @@ fill the window depleted by late packets. This means we no longer have stutterin
 
 ## Detecting Congestion
 Before we can even resolve congestion we need to detect it. To detect it we use a congestion controller. This is a complicated subject, and is still rapidly changing.
-At a high level a congestion controller provides a bandwidth estimates given some inputs. These are some of the possible inputs.
+New algorithims are still be published and tested. At a high level they all operate the same. A congestion controller provides a bandwidth estimates given some inputs.
+These are some of the possible inputs.
 
 * **Packet Loss** - Packets are dropped as the network becomes congested.
 * **Jitter** - As network equipment becomes more overloaded packets queuing will cause the times to be erratic.
 * **Round Trip Time** - Packets take longer to arrive when congested. Unlike Jitter the Round Trip Time just keeps increasing.
 * **Explicit Congestion Notification** - Newer networks may tag packets as at risk for being dropped to relieve congestion.
 
+These values need to be measured continuously during the call. Utilization of the network may increase/decrease so the available bandwidth could constantly be changing.
+
 ## Resolving Congestion
-Now that we have an estimated bandwidth we need to adjust what we are sending. How we adjust depends on what we are sending though.
+Now that we have an estimated bandwidth we need to adjust what we are sending. How we adjust depends on what kind of data we want to send.
 
 ### Sending Slower
+Limiting the speed at which you send data is the first solution to preventing congestion. The Congestion Controller gives you an estimate, and it is the
+senders responsibility to rate limit.
+
+This is the method used for most data communication. With protocols like TCP this is all done by the operating system and completely transparent to users and developers.
+
 ### Sending Less
+In some cases we can send less information to satisfy our limits. We also have hard deadlines on the arrival of our data, so we can't send slower. These are the constraints
+that Real-time media falls under.
 
-
+If we don't have enough bandwidth available we can lower the quality of video we send. This requires a tight feedback loop between your video encoder and congestion controller.
