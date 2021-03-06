@@ -89,9 +89,49 @@ this is Reed–Solomon error correction.
 This reduces the latency/complexity of sending and handling Acknowledgments. It would be wasteful if the network you are in has zero loss.
 
 ## Solving Jitter
+Jitter is present is most networks. Even inside a LAN you have many devices send data at fluctuating rates. You can easily observe this by running the `ping` command.
+
+To solve Jitter clients use a JitterBuffer. The JitterBuffer ensures a steady delivery time of packets. The downside is that JitterBuffer adds some latency to packets that arrive early.
+The upside is that late packets don't cause jitter.  Imagine during a call you see packet arrival times like the following.
+
+```
+* time=1.46 ms
+* time=1.93 ms
+* time=1.57 ms
+* time=1.55 ms
+* time=1.54 ms
+* time=1.72 ms
+* time=1.45 ms
+* time=1.73 ms
+* time=1.80 ms
+```
+
+In this case ~1.8 ms is a good choice. Packets that arrive late will use our window of latency. Packets that arrive early will be delayed and can
+fill the window depleted by late packets. This means we no longer have stuttering and provide a smooth delivery rate for the client.
 
 ## Detecting Congestion
+Before we can even resolve congestion we need to detect it. To detect it we use a congestion controller. This is a complicated subject, and is still rapidly changing.
+New algorithims are still be published and tested. At a high level they all operate the same. A congestion controller provides a bandwidth estimates given some inputs.
+These are some of the possible inputs.
+
+* **Packet Loss** - Packets are dropped as the network becomes congested.
+* **Jitter** - As network equipment becomes more overloaded packets queuing will cause the times to be erratic.
+* **Round Trip Time** - Packets take longer to arrive when congested. Unlike Jitter the Round Trip Time just keeps increasing.
+* **Explicit Congestion Notification** - Newer networks may tag packets as at risk for being dropped to relieve congestion.
+
+These values need to be measured continuously during the call. Utilization of the network may increase/decrease so the available bandwidth could constantly be changing.
 
 ## Resolving Congestion
+Now that we have an estimated bandwidth we need to adjust what we are sending. How we adjust depends on what kind of data we want to send.
+
 ### Sending Slower
+Limiting the speed at which you send data is the first solution to preventing congestion. The Congestion Controller gives you an estimate, and it is the
+senders responsibility to rate limit.
+
+This is the method used for most data communication. With protocols like TCP this is all done by the operating system and completely transparent to users and developers.
+
 ### Sending Less
+In some cases we can send less information to satisfy our limits. We also have hard deadlines on the arrival of our data, so we can't send slower. These are the constraints
+that Real-time media falls under.
+
+If we don't have enough bandwidth available we can lower the quality of video we send. This requires a tight feedback loop between your video encoder and congestion controller.
