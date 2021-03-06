@@ -89,9 +89,39 @@ this is Reed–Solomon error correction.
 This reduces the latency/complexity of sending and handling Acknowledgments. It would be wasteful if the network you are in has zero loss.
 
 ## Solving Jitter
+Jitter is present is most networks. Even inside a LAN you have many devices send data at fluctuating rates. You can easily observe this by running the `ping` command.
+
+To solve Jitter clients use a JitterBuffer. The JitterBuffer ensures a steady delivery time of packets. The downside is that JitterBuffer adds some latency to packets that arrive early.
+The upside is that late packets don't cause jitter.  Imagine during a call you see packet arrival times like the following.
+
+```
+* time=1.46 ms
+* time=1.93 ms
+* time=1.57 ms
+* time=1.55 ms
+* time=1.54 ms
+* time=1.72 ms
+* time=1.45 ms
+* time=1.73 ms
+* time=1.80 ms
+```
+
+In this case ~1.8 ms is a good choice. Packets that arrive late will use our window of latency. Packets that arrive early will be delayed and can
+fill the window depleted by late packets. This means we no longer have stuttering and provide a smooth delivery rate for the client.
 
 ## Detecting Congestion
+Before we can even resolve congestion we need to detect it. To detect it we use a congestion controller. This is a complicated subject, and is still rapidly changing.
+At a high level a congestion controller provides a bandwidth estimates given some inputs. These are some of the possible inputs.
+
+* **Packet Loss** - Packets are dropped as the network becomes congested.
+* **Jitter** - As network equipment becomes more overloaded packets queuing will cause the times to be erratic.
+* **Round Trip Time** - Packets take longer to arrive when congested. Unlike Jitter the Round Trip Time just keeps increasing.
+* **Explicit Congestion Notification** - Newer networks may tag packets as at risk for being dropped to relieve congestion.
 
 ## Resolving Congestion
+Now that we have an estimated bandwidth we need to adjust what we are sending. How we adjust depends on what we are sending though.
+
 ### Sending Slower
 ### Sending Less
+
+
