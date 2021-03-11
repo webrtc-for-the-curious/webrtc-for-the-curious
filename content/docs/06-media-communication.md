@@ -200,7 +200,7 @@ The first road block with implementing Congestion Control is that UDP and RTP do
 RTP/RTCP has 3 different solutions to this problem. They all have their pros and cons. What you use will depend on what clients you are working with. What is the topology you are working with. Or even just how many development time you have available.
 
 ### Receiver Reports
-Receiver Reports are an RTCP message, and the original way to communicate network status. You can find them in [RFC 1889](https://tools.ietf.org/html/rfc1889). They are a sent on a schedule for each SSRC and contain the following fields.
+Receiver Reports are RTCP messages, the original way to communicate network status. You can find them in [RFC 1889](https://tools.ietf.org/html/rfc1889). They are a sent on a schedule for each SSRC and contain the following fields:
 
 * **Fraction Lost** -- What percentage of packets have been lost since the last Receiver Report.
 * **Cumulative Number of Packets Lost** -- How many packets have been lost during the entire call.
@@ -214,7 +214,7 @@ The next generation of Network Status messages all involve receivers messaging s
 * **Temporary Maximum Media Stream Bit Rate Notification** - A message to notify that a TMMBR has been received.
 * **Receiver Estimated Maximum Bitrate** - A mantissa/exponent of a requested bitrate for the entire session.
 
-TMMBR and TMMBN came first and was defined in [RFC 5104](https://tools.ietf.org/html/rfc5104). REMB came later and was a draft was submitted, but never standardized in [draft-alvestrand-rmcat-remb](https://tools.ietf.org/html/draft-alvestrand-rmcat-remb-03).
+TMMBR and TMMBN came first and are defined in [RFC 5104](https://tools.ietf.org/html/rfc5104). REMB came later, there was a draft submitted in [draft-alvestrand-rmcat-remb](https://tools.ietf.org/html/draft-alvestrand-rmcat-remb-03), but it was never standardized.
 
 A session that uses REMB would look like the following {{< figure src="/images/05-remb.png">}}
 
