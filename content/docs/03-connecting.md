@@ -145,7 +145,7 @@ STUN (Session Traversal Utilities for NAT) is a protocol that was created just f
 
 STUN is useful because it allows the programmatic creation of NAT Mappings. Before STUN, we were able to create NAT Mappings, but we had no idea what the IP/Port of it was! STUN not only gives you the ability to create a mapping, but you also get the details so you can share it with others so they can send traffic to you via the mapping you created.
 
-Let's start with a basic description of STUN. Later, we will expand on TURN and ICE usage. For now, we are just going to describe the Request/Response flow to create a mapping. Then we will talk about how to get the details of it to share with others. This is the process that happens when you have a `stun:` server in your ICE URLs for a WebRTC PeerConnection. In a nutshell, STUN helps an endpoint behind a NAT figure out what mapping was created by asking a STUN server outside NAT to report what it observes.
+Let's start with a basic description of STUN. Later, we will expand on TURN and ICE usage. For now, we are just going to describe the Request/Response flow to create a mapping. Then we will talk about how to get the details of it to share with others. This is the process that happens when you have a `stun` server in your ICE URLs for a WebRTC PeerConnection. In a nutshell, STUN helps an endpoint behind a NAT figure out what mapping was created by asking a STUN server outside NAT to report what it observes.
 
 ### Protocol Structure
 Every STUN packet has the following structure:
