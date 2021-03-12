@@ -225,7 +225,7 @@ TWCC uses a quite simple principle:
 
 {{< figure src="/images/05-twcc-idea.png">}}
 
-Unlike in REMB, a TWCC receiver doesn't try to estimate it's own incoming bitrate. It just lets the sender know which packets where received and when. Based on these reports, the sender has a very up-to-date idea of what is happening in the network.
+Unlike in REMB, a TWCC receiver doesn't try to estimate it's own incoming bitrate. It just lets the sender know which packets were received and when. Based on these reports, the sender has a very up-to-date idea of what is happening in the network.
 
 - The sender creates an RTP packet with a special TWCC header extension, containing a list of packet sequence numbers.
 - The receiver responds with a special RTCP feedback message letting the sender know if and when each packet was received.
