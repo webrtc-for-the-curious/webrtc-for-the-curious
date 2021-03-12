@@ -250,7 +250,7 @@ A trivial congestion control algrorithm to estimate the incoming bitrate on the 
 
 ## Generating a Bandwidth Estimate
 Now that we have information around the state of the network we can make estimates around the bandwidth available. In 2012 the IETF started the RMCAT (RTP Media Congestion Avoidance Techniques) working group.
-This working group contains multiple submitted standards for congestion control algorithms. Before then Congestion Controllers algorithms were proprietary.
+This working group contains multiple submitted standards for congestion control algorithms. Before that Congestion Controllers algorithms were proprietary.
 
 The most deployed implementation is 'A Google Congestion Control Algorithm for Real-Time Communication' defined in [draft-alvestrand-rmcat-congestion](https://tools.ietf.org/html/draft-alvestrand-rmcat-congestion-02).
 In can run in two passes. First a 'loss based' pass that just uses Receiver Reports. If TWCC is available it will also take that additional data into consideration.
