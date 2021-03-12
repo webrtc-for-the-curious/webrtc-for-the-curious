@@ -200,7 +200,7 @@ The first road block with implementing Congestion Control is that UDP and RTP do
 RTP/RTCP has 3 different solutions to this problem. They all have their pros and cons. What you use will depend on what clients you are working with. What is the topology you are working with. Or even just how many development time you have available.
 
 ### Receiver Reports
-Receiver Reports are RTCP messages, the original way to communicate network status. You can find them in [RFC 1889](https://tools.ietf.org/html/rfc1889). They are a sent on a schedule for each SSRC and contain the following fields:
+Receiver Reports are RTCP messages, the original way to communicate network status. You can find them in [RFC 1889](https://tools.ietf.org/html/rfc1889). They are sent on a schedule for each SSRC and contain the following fields:
 
 * **Fraction Lost** -- What percentage of packets have been lost since the last Receiver Report.
 * **Cumulative Number of Packets Lost** -- How many packets have been lost during the entire call.
