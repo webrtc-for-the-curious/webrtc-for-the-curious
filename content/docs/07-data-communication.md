@@ -19,7 +19,7 @@ are only sending as much as your network supports.
 ## How does it work
 WebRTC uses SCTP, defined in [RFC 2960](https://tools.ietf.org/html/rfc2960). SCTP (Stream Control Transmission Protocol) is a
 transport layer protocol and was intended as an alternative to TCP or UDP. For WebRTC we use it as an application layer protocol
-it runs over our DTLS connection.
+which runs over our DTLS connection.
 
 SCTP gives you streams and each stream can be configured. WebRTC data channels are just a thin abstraction around them. The settings
 around durability/ordering are just passed right into the SCTP Agent.
@@ -114,7 +114,7 @@ deep details of SCTP on your own after this chapter.
 SCTP is a feature rich protocol. This section is only going to cover the parts of SCTP that are used by WebRTC.
 SCTP has some things that aren't used by WebRTC like multi-homing and path selection.
 
-With over twenty years of development SCTP can be hard to fully graps.
+With over twenty years of development SCTP can be hard to fully grasp.
 
 ### Association
 Association is the term used of a SCTP Session. It is the state that is shared
