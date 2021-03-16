@@ -196,11 +196,6 @@ a=ssrc:2180035812 mslabel:XHbOTNRFnLtesHwJ
 a=ssrc:2180035812 label:JgtwEhBWNEiOnhuW
 a=msid:XHbOTNRFnLtesHwJ JgtwEhBWNEiOnhuW
 a=sendrecv
-a=candidate:foundation 1 udp 2130706431 192.168.1.1 53165 typ host generation 0
-a=candidate:foundation 2 udp 2130706431 192.168.1.1 53165 typ host generation 0
-a=candidate:foundation 1 udp 1694498815 1.2.3.4 57336 typ srflx raddr 0.0.0.0 rport 57336 generation 0
-a=candidate:foundation 2 udp 1694498815 1.2.3.4 57336 typ srflx raddr 0.0.0.0 rport 57336 generation 0
-a=end-of-candidates
 ```
 
 This is what we know from this message:
