@@ -159,36 +159,14 @@ SCTP has many PPIDs, but WebRTC only uses the following 5.
 * **WebRTC Binary Empty (57)** - Datachannel binary messages with 0 length
 
 ## Protocol
-### Abort Chunk
-```
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Type = 6    |Reserved     |T|           Length              |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-/                                                               /
-\               Zero or more Error Causes                       \
-/                                                               /
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-```
+The following are some of the chunks used by the SCTP protocol. This is
+not a exhausive demonstration. This provides enough structures for the
+state machine to make sense.
 
-An ABORT chunk abruptly shuts down the the assocation. Used when
-one side enters an error state. Gracefully ending the connection uses
-the SHUTDOWN chunk.
+Each Chunk starts with a `type` field. Before a list of chunks you will
+also have a header.
 
-### Cookie Echo Chunk
-```
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Type = 10   |Chunk  Flags   |         Length                |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-/                     Cookie                                    /
-\                                                               \
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-```
-
-### Data Chunk
+### DATA Chunk
 ```
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -197,61 +175,44 @@ the SHUTDOWN chunk.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                              TSN                              |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|      Stream Identifier S      |   Stream Sequence Number n    |
+|      Stream Identifier        |   Stream Sequence Number      |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                  Payload Protocol Identifier                  |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 \                                                               \
-/                 User Data (seq n of Stream S)                 /
+/                            User Data                          /
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
+The DATA chunk is how all user data is exchanged. When you send
+anything over the data channel this is how it is exchanged.
 
-### Error Chunk
-```
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Type = 9    | Chunk  Flags  |           Length              |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-\                                                               \
-/                    one or more Error Causes                   /
-\                                                               \
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-```
+`U` bit is set if this is an unordered packet. We can ignore the
+Stream Sequence Number.
 
-### Forward TSN Chunk
-```
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Type = 192  |  Flags = 0x00 |        Length = Variable      |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                      New Cumulative TSN                       |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|         Stream-1              |       Stream Sequence-1       |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-\                                                               /
-/                                                               \
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|         Stream-N              |       Stream Sequence-N       |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-```
+`B` and `E` are the begining and end bits. If you want to send a
+message that is too large for one DATA chunk it needs to be fragmented.
+With the the `B` and `E` bit and Sequence Numbers SCTP is able to express
+this.
 
-### Heartbeat Request Chunk
-```
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Type = 4    | Chunk  Flags  |      Heartbeat Length         |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-\                                                               \
-/            Heartbeat Information TLV (Variable-Length)        /
-\                                                               \
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-```
+* **B=1,E=0** - First piece of a fragmented user message
+* **B=0,E=0** - Middle piece of a fragmented user message
+* **B=0,E=1** - Last piece of a fragmented user message
+* **B=1,E=1** - Unfragmented message
 
-### Init Chunk
+`TSN` is the Transmission Sequence Number. It is the global unique
+identifier for this message. After 4,294,967,295 messages this will wrap.
+
+`Stream Identifier` is the unique identifier for the stream this data
+belongs too.
+
+`Payload Protocol Identifier` is the type of data that is flowing through
+this stream. For WebRTC it is going to be DCEP, String or Binary.
+
+`User Data` is what you are sending. All data you send via a WebRTC data channel
+is transmitted via a DATA chunk.
+
+### INIT Chunk
 ```
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -272,7 +233,24 @@ the SHUTDOWN chunk.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-### Selective Acknowledgment Chunk
+The INIT chunk starts the process of creating an assocation.
+
+`Initiate Tag` is used for cookie generation. Cookies are used for Man-In-The-Middle
+and Denial of Service protection. They are described in greater details in the state
+machine section.
+
+`Advertised Receiver Window Credit` is used for SCTP's Congestion Control. This
+communicates how large of a buffer the receiver has allocated for this association.
+
+`Number of Outbound/Inbound Streams` notifies the remote of how many streams this
+agent supports.
+
+`Initial TSN` is a random `uint32` to start the local TSN at.
+
+`Optional Parameters` allows SCTP to introduce new features to the protocol.
+
+
+### SACK Chunk
 
 ```
  0                   1                   2                   3
@@ -304,7 +282,58 @@ the SHUTDOWN chunk.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-### Shutdown Chunk
+The SACK (Selective Acknowledgment) Chunk is how a receiver notifies
+a sender it has gotten a packet. Until a sender gets a SACK for a TSN
+it will re-send the DATA chunk in question. A SACK does more then just
+update the TSN though.
+
+`Cumulative TSN ACK` the highest TSN that has been received.
+
+`Advertised Receiver Window Credit` receiver buffer size. The receiver
+may change this during the session if more memory becomes available.
+
+`Ack Blocks` TSNs that have been received after the `Cumulative TSN ACK`.
+This is used if there is a gap in packets delivered. Lets say DATA chunks with TSNs
+`100, 102, 103 and 104` are delivered. The `Cumulative TSN ACK` would be `100`, but
+`Ack Blocks` could be used to tell the sender it doesn't need to resend `102, 103  and 104`.
+
+`Duplicate TSN` informs the sender that it has received the following DATA chunks more then once.
+
+### HEARTBEAT Chunk
+```
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 4    | Chunk  Flags  |      Heartbeat Length         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/            Heartbeat Information TLV (Variable-Length)        /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+```
+
+The HEARTBEAT Chunk is used to assert the remote is still responding.
+Useful if you aren't sending any DATA chunks and need to keep a NAT
+mapping open.
+
+### ABORT Chunk
+```
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 6    |Reserved     |T|           Length              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+/                                                               /
+\               Zero or more Error Causes                       \
+/                                                               /
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+```
+
+An ABORT chunk abruptly shuts down the the assocation. Used when
+one side enters an error state. Gracefully ending the connection uses
+the SHUTDOWN chunk.
+
+### SHUTDOWN Chunk
 ```
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -315,30 +344,114 @@ the SHUTDOWN chunk.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-### Reconfig Chunk
+The SHUTDOWN Chunk starts a graceful shutdown of the SCTP assocation.
+Each agent informs the remote the last TSN it sent. This ensures
+that no packets are lost. WebRTC doesn't do a graceful shutdown of
+the SCTP assocation. You need to tear down gracefully teardown each
+data channel yourself.
+
+`Cumulative TSN ACK` is the last TSN that was sent. Each side knows
+not to terminate until they have received the DATA chunk with this TSN.
+
+### ERROR Chunk
 ```
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-| Type = 130    |  Chunk Flags  |      Chunk Length             |
+|   Type = 9    | Chunk  Flags  |           Length              |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 \                                                               \
-/                  Re-configuration Parameter                   /
-\                                                               \
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-\                                                               \
-/             Re-configuration Parameter (optional)             /
+/                    one or more Error Causes                   /
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
+An ERROR chunk is used to notify the remote SCTP Agent that a non-fatal
+error has occured.
+
+### FORWARD TSN Chunk
+```
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 192  |  Flags = 0x00 |        Length = Variable      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      New Cumulative TSN                       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Stream-1              |       Stream Sequence-1       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               /
+/                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Stream-N              |       Stream Sequence-N       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+```
+
+The FORWARD TSN Chunk moves the global TSN forward. SCTP does this
+so you can skip some packets you don't care about anymore. Lets say
+you send `10 11 12 13 14 15` and these packets are only valid if they
+all arrive. This data is also real-time sensitive, so if it arrives
+late it isn't useful.
+
+If you lose `12` and `13` there is no reason to send `14` and `15`!
+SCTP uses the FORWARD TSN Chunk to achieve that. It tells the receiver
+that `14` and `15` aren't going to be delivered anymore.
+
+`New Cumulative TSN` this is the new TSN of the connection. Any packets
+before this TSN will not be retrained.
+
+`Stream` and `Stream Sequence` are used to jump the `Stream Sequence Number`
+number ahead. Refer back to the DATA Chunk for the significance of this field.
+
+
 ## State Machine
+These are some of the interesting parts of the SCTP state machine. WebRTC doesn't use all
+the features of WebRTC so we have excluded those parts. We also have simplified some components
+to make them under stable on their own.
+
 ### Connection establishment flow
+The INIT and INIT ACK chunks are used to exchange the capabilities and configurations
+of each peer. SCTP uses a cookie during the handshake to validate the peer it is communicating with.
+This is to ensure that the handshake is not intercepted and to prevent DoS attacks.
+
+The INIT ACK Chunk contains the cookie. The cookie is then returned to its creator
+using the COOKIE ECHO COOKIE ECHO.  If cookie verification is successful the COOKIE ACK is
+sent and DATA chunks are ready to be exchanged.
+
+{{<mermaid>}}
+sequenceDiagram
+    participant A1 as Association (A1)
+    participant A2 as Association (A2)
+
+    A1->>A2: INIT
+
+    A2->>A1: INIT ACK
+
+    A1->>A2: COOKIE ECHO
+
+    A2->>A1: COOKIE ACH
+{{</mermaid>}}
+
 ### Connection teardown flow
+SCTP uses the SHUTDOWN Chunk. When a agent receives a SHUTDOWN Chunk it will wait until it
+receives the requested `Cumulative TSN Ack`. This allows a user to ensure that all data
+is delivered even if the connection is lossy.
+
 ### Keep-alive mechanism
+SCTP uses the HEARTBEAT REQUEST and HEARTBEAT ACK Chunks to keep the connection alive. These are sent
+on a configurable interval. SCTP also performs an exponential if the packet hasn't arrived.
+
+The HEARTBEAT also contains a time value. This allows two associations to compute trip time between
+two agents.
+
 ### How does a user message get sent?
+
 ### TSN and retransmission
+
 ### Congestion avoidance
+
 ### Selective ACK
+
 ### Fast retransmission/recovery
+
 ### Partial Reliability
