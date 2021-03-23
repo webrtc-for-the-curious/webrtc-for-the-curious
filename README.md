@@ -2,7 +2,7 @@ Welcome to WebRTC for the Curious!
 
 # What is this book.
 
-Start reading the book directly from GitHub [index](content/_index.md) or at [webrtcforthecurious.com](https://webrtcforthecurious.com)
+Start reading the book directly on [GitHub](content/_index.md) or at [webrtcforthecurious.com](https://webrtcforthecurious.com)
 
 When we announced the book to social media we used the following copy
 
