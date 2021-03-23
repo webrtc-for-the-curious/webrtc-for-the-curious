@@ -27,11 +27,11 @@ jobs:
       - name: Build
         run: hugo --minify
 
-      - uses: docker://pandoc/latex:2.9
+      - uses: docker://pandoc/latex:2.12
         with:
           args: --output=public/docs/webrtc-for-the-curious.pdf --toc ${{ env.FILELIST }} .pandoc/metadata_en.txt
 
-      - uses: docker://pandoc/latex:2.9
+      - uses: docker://pandoc/latex:2.12
         with:
           args: --output=public/docs/webrtc-for-the-curious.epub --toc ${{ env.FILELIST }} .pandoc/metadata_en.txt
 
