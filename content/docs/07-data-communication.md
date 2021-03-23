@@ -404,7 +404,7 @@ number ahead. Refer back to the DATA Chunk for the significance of this field.
 
 ## State Machine
 These are some of the interesting parts of the SCTP state machine. WebRTC doesn't use all
-the features of WebRTC so we have excluded those parts. We also have simplified some components
+the features of the SCTP state machine so we have excluded those parts. We also have simplified some components
 to make them understandable on their own.
 
 ### Connection Establishment Flow
