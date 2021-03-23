@@ -7,7 +7,7 @@ weight: 11
 
 # History
 
-This section is ongoing and we don’t have all the facts yet. We are conducting interviews and build a history of digital communication.
+This section is ongoing and we don’t have all the facts yet. We are conducting interviews to build a history of digital communication.
 
 ### RTP
 
