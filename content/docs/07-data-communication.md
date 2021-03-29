@@ -125,7 +125,7 @@ SCTP stream.  Each SCTP Association contains a list of streams.  Each stream can
 WebRTC only allows you to configure on stream creation, but SCTP actually allows changing the configuration at anytime.
 
 ### Datagram Based
-SCTP frames data as datagrams and not as a byte stream. Sending and receiving data feels like using UDP instead of TCP. 
+SCTP frames data as datagrams and not as a byte stream. Sending and receiving data feels like using UDP instead of TCP.
 You don't need to add any extra code to transfer multiple files over one stream.
 
 SCTP messages don't have size limits like UDP. A single SCTP message can be multiple gigabytes in size.
@@ -441,15 +441,3 @@ on a configurable interval. SCTP also performs an exponential backoff if the pac
 
 The HEARTBEAT also contains a time value. This allows two associations to compute trip time between
 two agents.
-
-### How does a user message get sent?
-
-### TSN and retransmission
-
-### Congestion avoidance
-
-### Selective ACK
-
-### Fast retransmission/recovery
-
-### Partial Reliability
