@@ -14,7 +14,8 @@ challenging. This chapter will try and explain those challenges before you hit t
 ## By Use Case
 
 Many think WebRTC is just the technology conferencing in the web browser. It is so much more then that though!
-WebRTC is used for a wide range of use cases. New use cases showing up all the time. These are some of the common ones.
+WebRTC is used for a wide range of use cases. New use cases showing up all the time. These are some of the common ones
+and how WebRTC is revolutionizing them.
 
 ### Conferencing
 
@@ -62,9 +63,18 @@ make sure that you aren't sending more data then your network supports.
 WebRTC being available in the browser has been a huge quality of life improvement. You don't have to download a proprietary client to start the
 session. More and more clients are coming with WebRTC bundled, smart TVs are getting full web browsers now.
 
-### File-Transfer and Censorship Circumvention
+### File Sharing and Censorship Circumvention
 
-### Distributed CDN
+File Sharing and Censorship Circumvention are dramatically different problems. However, WebRTC solves the same problems for them both. It makes
+them both easily available and harder to block.
+
+The first problem that WebRTC solves is getting the client. If you want to join a file sharing network you need to download the client. Even if
+the network is distributed, you still need to get the client first.  In a restricted network the download will often be blocked. Even if you
+can download it the user may not be able to install/run the client. WebRTC is available in every web browser already making it readily available.
+
+The second problem that WebRTC solves is your traffic being blocked. If you use a protocol that is just for file sharing or censorship circumvention
+it is much easier to block it.  Since WebRTC is a general purpose protocol blocking it would impact everyone. Blocking WebRTC might prevent other
+users of the network from joining conference calls.
 
 ### IoT
 
@@ -79,6 +89,7 @@ controls over WebRTC.
 
 ### Robotics
 
+### Distributed CDN
 
 ## WebRTC Topologies
 
