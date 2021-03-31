@@ -5,11 +5,16 @@ type: docs
 
 # WebRTC For The Curious
 
-This book was created by WebRTC implementers to share their hard-earned knowledge with the world. *WebRTC For The Curious* is an Open Source book written for those that are always looking for more. This book doesn't settle for abstraction.
+This book was created by WebRTC implementers to share their hard-earned knowledge with the world.
+*WebRTC For The Curious* is an Open Source book written for those that are always looking for more.
+This book doesn't settle for abstraction.
 
-This book is all about protocols and APIs, and will not be talking about any software in particular. We attempt to summarize RFCs and get all undocumented knowledge into one place. This book is not a tutorial, and will not contain much code.
+This book is all about protocols and APIs, and will not be talking about any software in particular.
+We attempt to summarize RFCs and get all undocumented knowledge into one place. This book is not a tutorial,
+and will not contain much code.
 
-WebRTC is a wonderful technology but is difficult to use. This book is vendor agnostic, and we have tried to remove any conflicts of interest.
+WebRTC is a wonderful technology but is difficult to use. This book is vendor agnostic, and we have tried to
+remove any conflicts of interest.
 
 ## Who is this book for.
 
@@ -29,20 +34,26 @@ Each chapter aims to answer a single question, with three levels of information.
 * Technical details about the solution.
 * Where to go learn more.
 
-Each chapter doesn't assume prior knowledge. You can start at any point in the book and begin learning. This book will also recommend resources to go and learn more. Other books cover individual topics in much greater depth. This book aims to teach you the entire system, at the cost of expert level details.
+Each chapter doesn't assume prior knowledge. You can start at any point in the book and begin learning. This book will also recommend resources
+to go and learn more. Other books cover individual topics in much greater depth. This book aims to teach you the entire system, at the cost of expert level details.
 
-## Non-commercial and privacy-respecting
+## Freely available and Privacy respecting
 
-This book is available on [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious) and [WebRTCforTheCurious.com](https://webrtcforthecurious.com). It is licensed in a way that you can use it however you think is best. You can also download the book in its current version as an [ePub](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.epub) or [PDF](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.pdf) file.
+This book is available on [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious) and [WebRTCforTheCurious.com](https://webrtcforthecurious.com).
+It is licensed in a way that you can use it however you think is best. You can also download the book in its current version as an [ePub](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.epub)
+or [PDF](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.pdf) file.
 
-This book is written by individuals, for individuals. It is vendor agnostic so we will not make recommendations that could be a conflict of interest.
+This book is written by individuals, for individuals. It is vendor agnostic so we will not
+make recommendations that could be a conflict of interest.
 
 The website will not use analytics or tracking.
 
 ## Get Involved!
 
-We need your help! This book is entirely developed on [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious) and is still being written. We encourage readers to open issues with questions on things we didn't do a good job of covering yet.
+We need your help! This book is entirely developed on [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious)
+and is still being written. We encourage readers to open issues with questions on things we didn't do a good job of covering yet.
 
 ## License
 
-This book is available under the CC0 license. The authors have waived all their copyright and related rights in their works to the fullest extent allowed by law. You may use this work however you want and no attribution is required.
+This book is available under the CC0 license. The authors have waived all their copyright and related rights in their works to the fullest
+extent allowed by law. You may use this work however you want and no attribution is required.
