@@ -6,9 +6,9 @@ weight: 4
 
 # Why does WebRTC need a dedicated subsystem for connecting?
 
-Most applications deployed today establish client/server connections. For a client/server connection it requires the server to have a stable well-known transport address. A client contacts a server, and the server responds.
+Most applications deployed today establish client/server connections. A client/server connection requires the server to have a stable well-known transport address. A client contacts a server, and the server responds.
 
-WebRTC doesn't use client/server, it establishes peer-to-peer (P2P) connections. In a P2P connection the task of creating a connection is equally distributed to both peers. This is because a transport address (IP and port) in WebRTC can not be assumed, and may even change during the session. WebRTC will gather all the information it can and will go to great lengths to achieve bi-directional communication between two WebRTC Agents.
+WebRTC doesn't use a client/server model, it establishes peer-to-peer (P2P) connections. In a P2P connection the task of creating a connection is equally distributed to both peers. This is because a transport address (IP and port) in WebRTC can not be assumed, and may even change during the session. WebRTC will gather all the information it can and will go to great lengths to achieve bi-directional communication between two WebRTC Agents.
 
 Establishing peer-to-peer connectivity can be difficult though. These agents could be in different networks with no direct connectivity. In situations where direct connectivity does exist you can still have other issues. In some cases, your clients don't speak the same network protocols (UDP <-> TCP) or maybe IP Versions (IPv4 <-> IPv6).
 
@@ -16,11 +16,11 @@ Despite these diffculties in setting up a P2P connection, you get advantages ove
 
 ### Reduced Bandwidth Costs
 
-Since media communication happens directly between peers you don't have to pay for transporting it (no third-party server charging for it).
+Since media communication happens directly between peers you don't have to pay for or host a seperate server to relay media.
 
 ### Lower Latency
 
-Communication is faster when it is direct! When a user has to run everything through your server it makes things slower.
+Communication is faster when it is direct! When a user has to run everything through your server it makes transmissions slower.
 
 ### Secure E2E Communication
 
