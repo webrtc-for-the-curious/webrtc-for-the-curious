@@ -78,16 +78,31 @@ users of the network from joining conference calls.
 
 ### IoT
 
-When a video doorbell detects movement, it could supply the cameras RTP stream and initiated a new `PeerConnection` with a central server
-for recording or send a push notification to a mobile device to ask it to connect as a peer. This would establish a real-time communication
-between the front door and the mobile app. The mobile app could send real time audio back to the doorbell or it could initiate secure remote
-controls over WebRTC.
+IoT covers a few different use cases. For many this means network connected security cameras. Using WebRTC you can stream the video to another WebRTC
+peer like your a phone or browser. Another use case is having devices connect and exchange sensor data. You can have two devices in your LAN
+exchange climate, noise or light readings.
+
+WebRTC has a huge privacy advantage here over legacy video stream protocols. Since WebRTC supports P2P connectivity the camera can send the video
+directly to your browser. There is no reason for your video to be sent to a 3rd party server. Even when video is encrypted an attacker can make
+assumptions from the metadata of the call.
+
+Interoperability is another advantage for the IoT space. WebRTC is available in lots of different languages C#, C++, C, Go, Java, Python, Rust
+and Typescript. This means you can use the language that works best for you. You also don't have to turn to proprietary protocols or formats
+to be able to connect your two different clients.
 
 ### Media Protocol Bridging
 
+You have existing hardware and software that is producing video, but you can't upgrade it yet. Expecting users to download a proprietary
+client to watch videos is frustrating. The answer is run a WebRTC bridge. The bridge translates between the two protocols so users can use the
+browser with your legacy setup.
+
+Many of the formats that developers bridge with use the protocols as WebRTC. SIP is commonly exposed via WebRTC and allows users to make phone calls
+from their browser. RTSP is used in lots of legacy security cameras. They both use the same underlying protocols (RTP and SDP) so it is computationally cheap
+to run. The bridge is just required to add or remove things that are WebRTC specific.
+
 ### Data Protocol Bridging
 
-### Robotics
+### Teleoperation
 
 ### Distributed CDN
 
