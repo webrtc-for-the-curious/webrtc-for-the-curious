@@ -79,17 +79,17 @@ Selective Acknowledgments is an improvement upon Acknowledgments. A Receiver can
 Now the sender will get a `SACK` for 4 and 7. It the knows it needs to re-send 5 and 6.
 
 ### Negative Acknowledgments
-Negative Acknowledgments solve the problem the opposite way. Instead of notify the sender what it has received, it notifies what has been lost. In our case a `NACK`
+Negative Acknowledgments solve the problem the opposite way. Instead of notifying the sender what it has received, the receiver notifies the sender what has been lost. In our case a `NACK`
 will be sent for packets 5 and 6. The sender only knows packets the receiver wishes to have sent again.
 
 ### Forward Error Correction
 Forward Error Correction fixes packet loss pre-emptively. The sender sends redundant data, meaning a lost packet doesn't effect the final stream. One popular algorithm for
 this is Reed–Solomon error correction.
 
-This reduces the latency/complexity of sending and handling Acknowledgments. It would be wasteful if the network you are in has zero loss.
+This reduces the latency/complexity of sending and handling Acknowledgments. Forward Error Correction is a waste of bandwidth if the network you are in has zero loss.
 
 ## Solving Jitter
-Jitter is present is most networks. Even inside a LAN you have many devices send data at fluctuating rates. You can easily observe this by running the `ping` command.
+Jitter is present in most networks. Even inside a LAN you have many devices sending data at fluctuating rates. You can easily observe Jitter by pinging another device with the `ping` command and noticing the fluctuations in round-trip latency.
 
 To solve Jitter clients use a JitterBuffer. The JitterBuffer ensures a steady delivery time of packets. The downside is that JitterBuffer adds some latency to packets that arrive early.
 The upside is that late packets don't cause jitter.  Imagine during a call you see packet arrival times like the following.
