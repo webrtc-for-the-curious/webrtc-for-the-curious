@@ -88,7 +88,7 @@ If set, the RTP header will have extensions. This is described in greater detail
 The amount of `CSRC` identifiers that follow after the `SSRC`, and before the payload.
 
 #### Marker (M)
-The marker bit has no pre-set meaning, and is up to the user.
+The marker bit has no pre-set meaning, and can be used however the user likes.
 
 In some cases it is set when a user is speaking. It is also commonly used to mark a keyframe.
 
