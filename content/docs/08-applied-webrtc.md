@@ -102,9 +102,34 @@ to run. The bridge is just required to add or remove things that are WebRTC spec
 
 ### Data Protocol Bridging
 
+A web browser is only able to speak a constrained set of protocols. You can use HTTP, WebSockets, WebRTC and QUIC. If you want to connect
+to anything else you need to use a protocol bridge. A protocol bridge is a server that converts foreign traffic into something the browser
+can access. A popular example is using SSH from your browser to access a server. WebRTC's data channels have two advantages over the competition.
+
+WebRTC's data channels allow unreliable and unordered delivery. In cases where low latency is critical this is needed. You don't want new data to be
+blocked by old data, this is known as head-of-line blocking. Imagine you are playing a multiplayer First-person shooter. Do you really care where the
+player was two seconds ago? If that data didn't arrive in time it doesn't make sense to keep trying to send it. Unreliable and unordered delivery allows
+you to get your data as soon as it arrives.
+
+Data channels also provide feedback pressure. This tells you if you are sending data faster then your connection can support. You then have two
+choices when this happens.  The data channel can either be configured to buffer and deliver the data late, or you can drop the data that hasn't arrived
+in real-time.
+
 ### Teleoperation
 
+Teleoperation is the act of controlling a device remotely via WebRTC data channels, and sending the camera back via RTP. Developers are driving cars remotely
+via WebRTC today! This is used to control robots at construction sites and deliver packages. Using WebRTC for these problems makes sense for two reasons.
+
+The ubiquity of WebRTC makes it easy to give users control. All the user needs is a web browser and an input device. Browsers even
+support taking input from joysticks and gamepads. WebRTC completely removes the need to install an additional client on the users device.
+
 ### Distributed CDN
+
+Distributed CDNs are a subset of file sharing. The files being distributed are configured by the CDN operator instead. When users join the CDN network
+they can download and share the allowed files. Users get all the same benefits as file sharing.
+
+These CDNs work great when you are at an office with poor external connectivity, but great LAN connectivity. You can have one user download a video, and
+then share it with everyone else. Since everyone isn't attempting to fetch the same file via the external network the transfer will complete faster.
 
 ## WebRTC Topologies
 
