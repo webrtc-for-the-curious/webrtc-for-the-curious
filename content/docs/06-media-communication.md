@@ -28,10 +28,10 @@ These constraints are all caused by the limitations of the real world. They are 
 Transporting video isn't easy. To store 30 minutes of uncompressed 720 8-bit video you need ~110Gb. With those numbers a 4 person conference call isn't going to happen. We need a way to make it smaller, and the answer is video compression. That doesn't come without downsides though.
 
 ## Video 101
-We aren't going to cover video compression in depth, but just enough to understand why RTP is designed the way it is. Video compression encodes video into a new format that requires fewer bits to represent the same video, usually with a slight loss in quality.
+We aren't going to cover video compression in depth, but just enough to understand why RTP is designed the way it is. Video compression encodes video into a new format that requires fewer bits to represent the same video.
 
 ### Lossy and Lossless compression
-It can be lossless (no information is lost) or lossy (information may be lost). RTP typically uses lossy compression. It is better to have some details lost in the picture, then have it not arrive at all.
+You can encode video to be lossless (no information is lost) or lossy (information may be lost). Because lossless encoding requires more data to be sent to a peer, making for a higher latency stream and more dropped packets, RTP typically uses lossy compression even though the video quality won’t be as good.
 
 ### Intra and Inter frame compression
 Video compression comes in two types. The first is intra-frame. Intra-frame compression reduces the bits used to describe a single video frame. The same techniques are used to compress still pictures, like the JPEG compression method.
