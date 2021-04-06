@@ -185,7 +185,7 @@ Also known as FEC. Another method of dealing with packet loss. FEC is when you s
 If the packet loss for a call is steady then FEC is a much lower latency solution than NACK. The round trip time of having to request, and then re-transmit the packet can be significant for NACKs.
 
 ### Adaptive Bitrate and Bandwidth Estimation
-As discussed in [Real-time networking](05-real-time-networking.md) networks are unpredictable and unreliable. Bandwidth availability can change multiple times throughout a session.
+As discussed in [Real-time networking](../05-real-time-networking/) networks are unpredictable and unreliable. Bandwidth availability can change multiple times throughout a session.
 It is not uncommon to see available bandwidth change dramatically (orders of magnitude) within a second.
 
 The main idea is to adjust encoding bitrate based on predicted, current, and future available network bandwidth.
