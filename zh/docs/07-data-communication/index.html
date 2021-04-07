@@ -1,101 +1,210 @@
-<!doctype html><html lang=zh dir=ltr><head><meta name=generator content="Hugo 0.74.3"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="什么是数据 #  功能概述 #  数据通道可以传送任何类型的数据。您也可以通过数据通道发送音频或视频数据，但是如果需要实时播放媒体，使用基于RTP/RTCP协议的媒体通道是更好的选择（请参阅媒体通信）。
-数据通道有哪些应用？ #  数据通道的适用性是无限的！数据通道为您解决了数据包丢失，拥塞问题和许多其他问题。它提供了非常简单的API，让您将数据实时交付给对端peer。您只需要关注应用程序想要实现的目标即可。
-以下是一些使用数据通道的示例应用：
- 实时网络游戏 远程无服务器家庭自动化 文字聊天 动画（一系列静止图像） P2P CDN（内容交付网络） 监控物联网数据 从传感器设备持续提取时间序列数据 从相机获取实时图像并利用AI进行图像识别  协议栈概述 #  数据通道由以下3层组成：
- 数据通道层 DCEP（数据通道建立协议）层 SCTP（流控制传输协议）层    数据通道层 #  该层提供了API。该API大体上是对WebSocket的模拟，从而使Web开发人员能相对容易的将现有的基于WebSocket的客户端-服务器的代码修改为使用P2P数据通道实现。单一的peer连接可以包含peer之间的多条数据通道，从而省去了从多个数据源和接收器复用和解复用的麻烦。只需要为交换的每一类数据创建一个数据通道，其余的工作都交给peer连接完成。与WebSockets不同的一点是，数据通道具有创建者分配的标签，接收者可以使用标签来确定数据通道的身份。
-数据通道建立协议层 #  该层负责与对端peer建立数据通道握手。它使用SCTP流作为控制通道来协商诸如有序交付，maxRetransmits（最大重传）/ maxPacketLifeTime（最大包生命周期）（也就是&#34;部分可靠性&#34;选项），发送频道的标签等等。
-SCTP协议层 #  这是数据通道的核心。它包括：
- 通道复用（在SCTP中，通道称为&#34;流&rdquo;） 使用类似TCP的重传机制进行可靠传递 部分可靠性选项 避免拥塞 流量控制  Data Channel API #  Connection / Teardown #  Data Channel Options #  Flow Control API #  Data Channel in Depth #  SCTP #  Connection establishment flow #  Connection teardown flow #  Keep-alive mechanism #  How does a user message get sent?"><meta name=theme-color content="#FFFFFF"><meta property="og:title" content="数据通信"><meta property="og:description" content="什么是数据 #  功能概述 #  数据通道可以传送任何类型的数据。您也可以通过数据通道发送音频或视频数据，但是如果需要实时播放媒体，使用基于RTP/RTCP协议的媒体通道是更好的选择（请参阅媒体通信）。
-数据通道有哪些应用？ #  数据通道的适用性是无限的！数据通道为您解决了数据包丢失，拥塞问题和许多其他问题。它提供了非常简单的API，让您将数据实时交付给对端peer。您只需要关注应用程序想要实现的目标即可。
-以下是一些使用数据通道的示例应用：
- 实时网络游戏 远程无服务器家庭自动化 文字聊天 动画（一系列静止图像） P2P CDN（内容交付网络） 监控物联网数据 从传感器设备持续提取时间序列数据 从相机获取实时图像并利用AI进行图像识别  协议栈概述 #  数据通道由以下3层组成：
- 数据通道层 DCEP（数据通道建立协议）层 SCTP（流控制传输协议）层    数据通道层 #  该层提供了API。该API大体上是对WebSocket的模拟，从而使Web开发人员能相对容易的将现有的基于WebSocket的客户端-服务器的代码修改为使用P2P数据通道实现。单一的peer连接可以包含peer之间的多条数据通道，从而省去了从多个数据源和接收器复用和解复用的麻烦。只需要为交换的每一类数据创建一个数据通道，其余的工作都交给peer连接完成。与WebSockets不同的一点是，数据通道具有创建者分配的标签，接收者可以使用标签来确定数据通道的身份。
-数据通道建立协议层 #  该层负责与对端peer建立数据通道握手。它使用SCTP流作为控制通道来协商诸如有序交付，maxRetransmits（最大重传）/ maxPacketLifeTime（最大包生命周期）（也就是&#34;部分可靠性&#34;选项），发送频道的标签等等。
-SCTP协议层 #  这是数据通道的核心。它包括：
- 通道复用（在SCTP中，通道称为&#34;流&rdquo;） 使用类似TCP的重传机制进行可靠传递 部分可靠性选项 避免拥塞 流量控制  Data Channel API #  Connection / Teardown #  Data Channel Options #  Flow Control API #  Data Channel in Depth #  SCTP #  Connection establishment flow #  Connection teardown flow #  Keep-alive mechanism #  How does a user message get sent?"><meta property="og:type" content="article"><meta property="og:url" content="https://webrtcforthecurious.com/zh/docs/07-data-communication/"><meta property="article:modified_time" content="2021-03-01T18:10:32+08:00"><meta property="og:site_name" content="给好奇者的WebRTC"><title>数据通信 | 给好奇者的WebRTC</title><link rel=manifest href=/manifest.json><link rel=icon href=/favicon.png type=image/x-icon><link rel=alternate hreflang=en href=https://webrtcforthecurious.com/docs/07-data-communication/ title="Data Communication"><link rel=alternate hreflang=tr href=https://webrtcforthecurious.com/tr/docs/07-data-communication/ title="Data Communication"><link rel=stylesheet href=/book.min.6c7c6446dfdee7c8c933e9bbc6e80ee3ed6c913b2a59519f2092c3c6a9d63e55.css integrity="sha256-bHxkRt/e58jJM+m7xugO4+1skTsqWVGfIJLDxqnWPlU="><script defer src=/zh.search.min.9da0e0c9e811421630eb5c26f62a8bbf95b534dcd272128eefa8829004db3c3d.js integrity="sha256-naDgyegRQhYw61wm9iqLv5W1NNzSchKO76iCkATbPD0="></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a href=/zh><span>给好奇者的WebRTC</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=搜索 aria-label=搜索 maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li><a href=https://webrtcforthecurious.com/zh/docs/01-what-why-and-how/>是什么，为什么，如何使用</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/02-signaling/>信令</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/03-connecting/>连接</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/04-securing/>安全性</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/05-real-time-networking/>实时联网</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/06-media-communication/>媒体通信</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/07-data-communication/ class=active>数据通信</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/08-applied-webrtc/>WebRTC应用场景</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/09-debugging/>调试</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/10-history-of-webrtc/>历史</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/11-faq/>常见问题</a></li></ul></nav><script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label>
+<!doctype html><html lang=zh dir=ltr><head><meta name=generator content="Hugo 0.74.3"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="我可以从WebRTC的数据通信中获得什么？ #  WebRTC提供用于数据通信的数据通道。在两个peer之间，您可以打开65,534个数据通道。 数据通道基于数据报，并且每个通道都有其自己的持久性设置。默认设置下，每个数据通道都能保证有序交付。
+如果您从传递媒体数据的角度开始接触WebRTC，可能数据通道看起来是一种浪费。当我只使用HTTP或WebSocket就能传递数据的时候，为什么需要整个数据通道子系统呢？
+数据通道的真正强大之处在于，您可以将它们配置为像UDP一样进行无序/有损传递。 对于低延迟和高性能的情况，这是必需的。您可以测量背压，并确保您仅发送网络支持的最大数据量。
+它是如何工作的？ #  WebRTC使用RFC 2960中定义的流控制传输协议（SCTP）。SCTP是一种传输层协议，旨在替代TCP或UDP。对于WebRTC，我们将SCTP用作在DTLS连接上运行的应用层协议。
+SCTP为您提供流，并且每个流都可以独立配置。WebRTC数据通道只是基于流的简单抽象。有关持久性和顺序的设置会被直接传递到SCTP代理中。
+数据通道具有SCTP无法表达的某些功能，例如通道标签。为了解决该问题，WebRTC使用了RFC 8832中定义的数据通道建立协议（DCEP）。DCEP定义了一条消息，用于传递通道标签和协议。
+DCEP #  DCEP只有两个消息DATA_CHANNEL_OPEN和DATA_CHANNEL_ACK。对于打开的每个数据通道，远端必须以ack响应。
+DATA_CHANNEL_OPEN #  该消息由希望打开数据通道的WebRTC代理发送。
+封包格式 #   0 1 2 3 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ | Message Type | Channel Type | Priority | +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ | Reliability Parameter | +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ | Label Length | Protocol Length | +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ \ \ / Label / \ \ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ \ \ / Protocol / \ \ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ 消息类型（Message Type） #  消息类型是一个静态值0x03"><meta name=theme-color content="#FFFFFF"><meta property="og:title" content="数据通信"><meta property="og:description" content="我可以从WebRTC的数据通信中获得什么？ #  WebRTC提供用于数据通信的数据通道。在两个peer之间，您可以打开65,534个数据通道。 数据通道基于数据报，并且每个通道都有其自己的持久性设置。默认设置下，每个数据通道都能保证有序交付。
+如果您从传递媒体数据的角度开始接触WebRTC，可能数据通道看起来是一种浪费。当我只使用HTTP或WebSocket就能传递数据的时候，为什么需要整个数据通道子系统呢？
+数据通道的真正强大之处在于，您可以将它们配置为像UDP一样进行无序/有损传递。 对于低延迟和高性能的情况，这是必需的。您可以测量背压，并确保您仅发送网络支持的最大数据量。
+它是如何工作的？ #  WebRTC使用RFC 2960中定义的流控制传输协议（SCTP）。SCTP是一种传输层协议，旨在替代TCP或UDP。对于WebRTC，我们将SCTP用作在DTLS连接上运行的应用层协议。
+SCTP为您提供流，并且每个流都可以独立配置。WebRTC数据通道只是基于流的简单抽象。有关持久性和顺序的设置会被直接传递到SCTP代理中。
+数据通道具有SCTP无法表达的某些功能，例如通道标签。为了解决该问题，WebRTC使用了RFC 8832中定义的数据通道建立协议（DCEP）。DCEP定义了一条消息，用于传递通道标签和协议。
+DCEP #  DCEP只有两个消息DATA_CHANNEL_OPEN和DATA_CHANNEL_ACK。对于打开的每个数据通道，远端必须以ack响应。
+DATA_CHANNEL_OPEN #  该消息由希望打开数据通道的WebRTC代理发送。
+封包格式 #   0 1 2 3 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ | Message Type | Channel Type | Priority | +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ | Reliability Parameter | +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ | Label Length | Protocol Length | +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ \ \ / Label / \ \ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ \ \ / Protocol / \ \ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ 消息类型（Message Type） #  消息类型是一个静态值0x03"><meta property="og:type" content="article"><meta property="og:url" content="https://webrtcforthecurious.com/zh/docs/07-data-communication/"><meta property="article:modified_time" content="2021-04-06T13:33:52+08:00"><meta property="og:site_name" content="给好奇者的WebRTC"><title>数据通信 | 给好奇者的WebRTC</title><link rel=manifest href=/manifest.json><link rel=icon href=/favicon.png type=image/x-icon><link rel=alternate hreflang=en href=https://webrtcforthecurious.com/docs/07-data-communication/ title="Data Communication"><link rel=alternate hreflang=tr href=https://webrtcforthecurious.com/tr/docs/07-data-communication/ title="Data Communication"><link rel=stylesheet href=/book.min.6c7c6446dfdee7c8c933e9bbc6e80ee3ed6c913b2a59519f2092c3c6a9d63e55.css integrity="sha256-bHxkRt/e58jJM+m7xugO4+1skTsqWVGfIJLDxqnWPlU="><script defer src=/zh.search.min.9c7c8cbe216327c7031422af60b305da151b9d6545042abb328b0b21a755998d.js integrity="sha256-nHyMviFjJ8cDFCKvYLMF2hUbnWVFBCq7MosLIadVmY0="></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a href=/zh><span>给好奇者的WebRTC</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=搜索 aria-label=搜索 maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li><a href=https://webrtcforthecurious.com/zh/docs/01-what-why-and-how/>是什么，为什么，如何使用</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/02-signaling/>信令</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/03-connecting/>连接</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/04-securing/>安全性</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/05-real-time-networking/>搭建实时网络</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/06-media-communication/>媒体通信</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/07-data-communication/ class=active>数据通信</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/08-applied-webrtc/>WebRTC应用场景</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/09-debugging/>调试</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/10-history-of-webrtc/>历史</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/11-faq/>常见问题</a></li></ul></nav><script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label>
 <strong>数据通信</strong>
-<label for=toc-control><img src=/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#功能概述>功能概述</a><ul><li><a href=#数据通道有哪些应用>数据通道有哪些应用？</a></li><li><a href=#协议栈概述>协议栈概述</a></li></ul></li><li><a href=#data-channel-api>Data Channel API</a><ul><li><a href=#connection--teardown>Connection / Teardown</a></li><li><a href=#data-channel-options>Data Channel Options</a></li><li><a href=#flow-control-api>Flow Control API</a></li></ul></li><li><a href=#data-channel-in-depth>Data Channel in Depth</a><ul><li><a href=#sctp>SCTP</a></li><li><a href=#dcepdata-channel-establishment-protocol数据通道建立协议>DCEP（Data Channel Establishment Protocol/数据通道建立协议）</a></li></ul></li><li><a href=#rfc链接>RFC链接</a></li></ul></nav></aside></header><article class=markdown><h1 id=什么是数据>什么是数据
-<a class=anchor href=#%e4%bb%80%e4%b9%88%e6%98%af%e6%95%b0%e6%8d%ae>#</a></h1><h2 id=功能概述>功能概述
-<a class=anchor href=#%e5%8a%9f%e8%83%bd%e6%a6%82%e8%bf%b0>#</a></h2><p>数据通道可以传送任何类型的数据。您也可以通过数据通道发送音频或视频数据，但是如果需要实时播放媒体，使用基于RTP/RTCP协议的媒体通道是更好的选择（请参阅<a href=https://webrtcforthecurious.com/zh/docs/06-media-communication/>媒体通信</a>）。</p><h3 id=数据通道有哪些应用>数据通道有哪些应用？
-<a class=anchor href=#%e6%95%b0%e6%8d%ae%e9%80%9a%e9%81%93%e6%9c%89%e5%93%aa%e4%ba%9b%e5%ba%94%e7%94%a8>#</a></h3><p>数据通道的适用性是无限的！数据通道为您解决了数据包丢失，拥塞问题和许多其他问题。它提供了非常简单的API，让您将数据实时交付给对端peer。您只需要关注应用程序想要实现的目标即可。</p><p>以下是一些使用数据通道的示例应用：</p><ul><li>实时网络游戏</li><li>远程无服务器家庭自动化</li><li>文字聊天</li><li>动画（一系列静止图像）</li><li>P2P CDN（内容交付网络）</li><li>监控物联网数据</li><li>从传感器设备持续提取时间序列数据</li><li>从相机获取实时图像并利用AI进行图像识别</li></ul><h3 id=协议栈概述>协议栈概述
-<a class=anchor href=#%e5%8d%8f%e8%ae%ae%e6%a0%88%e6%a6%82%e8%bf%b0>#</a></h3><p>数据通道由以下3层组成：</p><ul><li>数据通道层</li><li>DCEP（数据通道建立协议）层</li><li>SCTP（流控制传输协议）层</li></ul><figure><img src=/images/06-datachan-proto-stack.png></figure><h4 id=数据通道层>数据通道层
-<a class=anchor href=#%e6%95%b0%e6%8d%ae%e9%80%9a%e9%81%93%e5%b1%82>#</a></h4><p>该层提供了API。该API大体上是对WebSocket的模拟，从而使Web开发人员能相对容易的将现有的基于WebSocket的客户端-服务器的代码修改为使用P2P数据通道实现。单一的peer连接可以包含peer之间的多条数据通道，从而省去了从多个数据源和接收器复用和解复用的麻烦。只需要为交换的每一类数据创建一个数据通道，其余的工作都交给peer连接完成。与WebSockets不同的一点是，数据通道具有创建者分配的标签，接收者可以使用标签来确定数据通道的身份。</p><h4 id=数据通道建立协议层>数据通道建立协议层
-<a class=anchor href=#%e6%95%b0%e6%8d%ae%e9%80%9a%e9%81%93%e5%bb%ba%e7%ab%8b%e5%8d%8f%e8%ae%ae%e5%b1%82>#</a></h4><p>该层负责与对端peer建立数据通道握手。它使用SCTP流作为控制通道来协商诸如有序交付，maxRetransmits（最大重传）/ maxPacketLifeTime（最大包生命周期）（也就是"部分可靠性"选项），发送频道的标签等等。</p><h4 id=sctp协议层>SCTP协议层
-<a class=anchor href=#sctp%e5%8d%8f%e8%ae%ae%e5%b1%82>#</a></h4><p>这是数据通道的核心。它包括：</p><ul><li>通道复用（在SCTP中，通道称为"流&rdquo;）</li><li>使用类似TCP的重传机制进行可靠传递</li><li>部分可靠性选项</li><li>避免拥塞</li><li>流量控制</li></ul><h2 id=data-channel-api>Data Channel API
-<a class=anchor href=#data-channel-api>#</a></h2><h3 id=connection--teardown>Connection / Teardown
-<a class=anchor href=#connection--teardown>#</a></h3><h3 id=data-channel-options>Data Channel Options
-<a class=anchor href=#data-channel-options>#</a></h3><h3 id=flow-control-api>Flow Control API
-<a class=anchor href=#flow-control-api>#</a></h3><h2 id=data-channel-in-depth>Data Channel in Depth
-<a class=anchor href=#data-channel-in-depth>#</a></h2><h3 id=sctp>SCTP
-<a class=anchor href=#sctp>#</a></h3><h4 id=connection-establishment-flow>Connection establishment flow
-<a class=anchor href=#connection-establishment-flow>#</a></h4><h4 id=connection-teardown-flow>Connection teardown flow
-<a class=anchor href=#connection-teardown-flow>#</a></h4><h4 id=keep-alive-mechanism>Keep-alive mechanism
-<a class=anchor href=#keep-alive-mechanism>#</a></h4><h4 id=how-does-a-user-message-get-sent>How does a user message get sent?
-<a class=anchor href=#how-does-a-user-message-get-sent>#</a></h4><h4 id=tsn-and-retransmission>TSN and retransmission
-<a class=anchor href=#tsn-and-retransmission>#</a></h4><h4 id=congestion-avoidance>Congestion avoidance
-<a class=anchor href=#congestion-avoidance>#</a></h4><h4 id=selective-ack>Selective ACK
-<a class=anchor href=#selective-ack>#</a></h4><h4 id=fast-retransmissionrecovery>Fast retransmission/recovery
-<a class=anchor href=#fast-retransmissionrecovery>#</a></h4><h4 id=partial-reliability>Partial Reliability
-<a class=anchor href=#partial-reliability>#</a></h4><h3 id=dcepdata-channel-establishment-protocol数据通道建立协议>DCEP（Data Channel Establishment Protocol/数据通道建立协议）
-<a class=anchor href=#dcepdata-channel-establishment-protocol%e6%95%b0%e6%8d%ae%e9%80%9a%e9%81%93%e5%bb%ba%e7%ab%8b%e5%8d%8f%e8%ae%ae>#</a></h3><p>DCEP是一个简单到只有两个数据包的协议，它描述了建立数据通道的行为。它不需要等待握手完成，因此该通道的后续数据可以包含在同一数据包中。这使得建立数据通道更加快速，而且成本更低。</p><h4 id=openack-handshake握手>Open/ACK handshake（握手）
-<a class=anchor href=#openack-handshake%e6%8f%a1%e6%89%8b>#</a></h4><pre><code>0                   1                   2                   3
-      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |  Message Type |  Channel Type |            Priority           |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |                    Reliability Parameter                      |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |         Label Length          |       Protocol Length         |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     \                                                               /
-     |                             Label                             |
-     /                                                               \
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     \                                                               /
-     |                            Protocol                           |
-     /                                                               \
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-</code></pre><p>这里是通道类型以及相关的可靠性参数的列表，在数据包丢失或乱序接收时，可以调整这些参数。</p><pre><code>DATA_CHANNEL_OPEN
-Message Type: 0x03
-     +================================================+=============+
-     | Channel Type                                   | Reliability |
-     |                                                |  Parameter  |
-     +================================================+=============+
-     | DATA_CHANNEL_RELIABLE                          |   Ignored   |
-     +------------------------------------------------+-------------+
-     | DATA_CHANNEL_RELIABLE_UNORDERED                |   Ignored   |
-     +------------------------------------------------+-------------+
-     | DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT           |  Number of  |
-     |                                                |     RTX     |
-     +------------------------------------------------+-------------+
-     | DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT_UNORDERED |  Number of  |
-     |                                                |     RTX     |
-     +------------------------------------------------+-------------+
-     | DATA_CHANNEL_PARTIAL_RELIABLE_TIMED            | Lifetime in |
-     |                                                |      ms     |
-     +------------------------------------------------+-------------+
-     | DATA_CHANNEL_PARTIAL_RELIABLE_TIMED_UNORDERED  | Lifetime in |
-     |                                                |      ms     |
-     +------------------------------------------------+-------------+
-</code></pre><p>数据通道的可靠性大体上等同于TCP。</p><p>需要特别提一下Reliable_Unordered。这种模式意味着，如果一个数据包因为网络原因丢失时，只有包含这个数据包的消息会被延后，直到重新发送为止。在这个消息之后发送的其他消息可能会更早到达。当接收消息的顺序不如消息到达的速度重要时，就可以使用这种模式。在这种模式下，仍然强制执行消息传递，但传递顺序不是强制的。可以将这种模式视为TCP和UDP之间的折衷方案。</p><p>其他的模式等价于基于UDP，但具有不同的重试/失败规则的协议。</p><pre><code>DATA_CHANNEL_ACK
-Message Type: 0x02
-
-      0                   1                   2                   3
-      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |  Message Type |
-     +-+-+-+-+-+-+-+-+
-
-</code></pre><p>没有DCEP NACK（译注：即数据通道建立失败）。
-数据通道的打开始终会成功，因为它们的传输是在已经成功建立的SCTP流上进行！</p><h4 id=ppidpayload-protocol-identifier有效载荷协议标识符>PPID（Payload Protocol Identifier/有效载荷协议标识符）
-<a class=anchor href=#ppidpayload-protocol-identifier%e6%9c%89%e6%95%88%e8%bd%bd%e8%8d%b7%e5%8d%8f%e8%ae%ae%e6%a0%87%e8%af%86%e7%ac%a6>#</a></h4><p>WebRTC DCEP的SCTP PPID为50。DCEP消息与SCTP流中的其余数据分开处理，并且不会传递回Web应用程序或服务。</p><h4 id=参数交换>参数交换
-<a class=anchor href=#%e5%8f%82%e6%95%b0%e4%ba%a4%e6%8d%a2>#</a></h4><p>理论上讲，可以使用out-of-band的SDP中非DCEP协商的方式来创建数据通道。不要这样。</p><h2 id=rfc链接>RFC链接
-<a class=anchor href=#rfc%e9%93%be%e6%8e%a5>#</a></h2><p><a href="https://datatracker.ietf.org/doc/rfc8832/?include_text=1">https://datatracker.ietf.org/doc/rfc8832/?include_text=1</a></p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div class=book-languages tabindex=0 aria-haspopup=true><ul><li class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+<label for=toc-control><img src=/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#它是如何工作的>它是如何工作的？</a></li><li><a href=#dcep>DCEP</a><ul><li><a href=#data_channel_open>DATA_CHANNEL_OPEN</a></li><li><a href=#data_channel_ack>DATA_CHANNEL_ACK</a></li></ul></li><li><a href=#sctp>SCTP</a></li><li><a href=#概念>概念</a><ul><li><a href=#关联association>关联（Association）</a></li><li><a href=#流>流</a></li><li><a href=#基于数据报>基于数据报</a></li><li><a href=#块chunks>块（Chunks）</a></li><li><a href=#传输序列号>传输序列号</a></li><li><a href=#流标识符>流标识符</a></li><li><a href=#有效负载协议标识符>有效负载协议标识符</a></li></ul></li><li><a href=#协议>协议</a><ul><li><a href=#data块>DATA块</a></li><li><a href=#init块>INIT块</a></li><li><a href=#sack块>SACK块</a></li><li><a href=#heartbeat块>HEARTBEAT块</a></li><li><a href=#abort块>ABORT块</a></li><li><a href=#shutdown块>SHUTDOWN块</a></li><li><a href=#error块>ERROR块</a></li><li><a href=#forward-tsn块>FORWARD TSN块</a></li></ul></li><li><a href=#状态机>状态机</a><ul><li><a href=#连接建立流程>连接建立流程</a></li><li><a href=#连接关闭流程>连接关闭流程</a></li><li><a href=#keep-alive保持活动机制>Keep-Alive（保持活动）机制</a></li></ul></li></ul></nav></aside></header><article class=markdown><h1 id=我可以从webrtc的数据通信中获得什么>我可以从WebRTC的数据通信中获得什么？
+<a class=anchor href=#%e6%88%91%e5%8f%af%e4%bb%a5%e4%bb%8ewebrtc%e7%9a%84%e6%95%b0%e6%8d%ae%e9%80%9a%e4%bf%a1%e4%b8%ad%e8%8e%b7%e5%be%97%e4%bb%80%e4%b9%88>#</a></h1><p>WebRTC提供用于数据通信的数据通道。在两个peer之间，您可以打开65,534个数据通道。
+数据通道基于数据报，并且每个通道都有其自己的持久性设置。默认设置下，每个数据通道都能保证有序交付。</p><p>如果您从传递媒体数据的角度开始接触WebRTC，可能数据通道看起来是一种浪费。当我只使用HTTP或WebSocket就能传递数据的时候，为什么需要整个数据通道子系统呢？</p><p>数据通道的真正强大之处在于，您可以将它们配置为像UDP一样进行无序/有损传递。
+对于低延迟和高性能的情况，这是必需的。您可以测量背压，并确保您仅发送网络支持的最大数据量。</p><h2 id=它是如何工作的>它是如何工作的？
+<a class=anchor href=#%e5%ae%83%e6%98%af%e5%a6%82%e4%bd%95%e5%b7%a5%e4%bd%9c%e7%9a%84>#</a></h2><p>WebRTC使用<a href=https://tools.ietf.org/html/rfc2960>RFC 2960</a>中定义的流控制传输协议（SCTP）。SCTP是一种传输层协议，旨在替代TCP或UDP。对于WebRTC，我们将SCTP用作在DTLS连接上运行的应用层协议。</p><p>SCTP为您提供流，并且每个流都可以独立配置。WebRTC数据通道只是基于流的简单抽象。有关持久性和顺序的设置会被直接传递到SCTP代理中。</p><p>数据通道具有SCTP无法表达的某些功能，例如通道标签。为了解决该问题，WebRTC使用了<a href=https://tools.ietf.org/html/rfc8832>RFC 8832</a>中定义的数据通道建立协议（DCEP）。DCEP定义了一条消息，用于传递通道标签和协议。</p><h2 id=dcep>DCEP
+<a class=anchor href=#dcep>#</a></h2><p>DCEP只有两个消息<code>DATA_CHANNEL_OPEN</code>和<code>DATA_CHANNEL_ACK</code>。对于打开的每个数据通道，远端必须以ack响应。</p><h3 id=data_channel_open>DATA_CHANNEL_OPEN
+<a class=anchor href=#data_channel_open>#</a></h3><p>该消息由希望打开数据通道的WebRTC代理发送。</p><h4 id=封包格式>封包格式
+<a class=anchor href=#%e5%b0%81%e5%8c%85%e6%a0%bc%e5%bc%8f>#</a></h4><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Message Type |  Channel Type |            Priority           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    Reliability Parameter                      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Label Length          |       Protocol Length         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/                             Label                             /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/                            Protocol                           /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><h4 id=消息类型message-type>消息类型（Message Type）
+<a class=anchor href=#%e6%b6%88%e6%81%af%e7%b1%bb%e5%9e%8bmessage-type>#</a></h4><p>消息类型是一个静态值<code>0x03</code></p><h4 id=通道类型channel-type>通道类型（Channel Type）
+<a class=anchor href=#%e9%80%9a%e9%81%93%e7%b1%bb%e5%9e%8bchannel-type>#</a></h4><p>Channel Type controls durability/ordering attributes of the channel. It may have the following values:
+通道类型控制通道的持久性/排序属性。它可能具有以下值：</p><ul><li><code>DATA_CHANNEL_RELIABLE</code> (<code>0x00</code>) - 没有消息丢失，消息依序到达</li><li><code>DATA_CHANNEL_RELIABLE_UNORDERED</code> (<code>0x80</code>) - 没有消息丢失，消息可能乱序到达</li><li><code>DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT</code> (<code>0x01</code>) - 按照请求中的次数重试发送，消息可能会丢失，消息依序到达</li><li><code>DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT_UNORDERED</code> (<code>0x81</code>) - 按照请求中的次数重试发送，消息可能会丢失，消息可能乱序到达</li><li><code>DATA_CHANNEL_PARTIAL_RELIABLE_TIMED</code> (<code>0x02</code>) - 如消息未在请求中的时间限制内收到，消息可能会丢失，消息依序到达</li><li><code>DATA_CHANNEL_PARTIAL_RELIABLE_TIMED_UNORDERED</code> (<code>0x82</code>) - 如消息未在请求中的时间限制内收到，消息可能会丢失，消息可能乱序到达</li></ul><h4 id=优先级priority>优先级（Priority）
+<a class=anchor href=#%e4%bc%98%e5%85%88%e7%ba%a7priority>#</a></h4><p>数据通道的优先级。具有较高优先级的数据通道将首先被调度。较大的低优先级用户消息不会耽误高优先级用户消息的发送。</p><h4 id=可靠性参数>可靠性参数
+<a class=anchor href=#%e5%8f%af%e9%9d%a0%e6%80%a7%e5%8f%82%e6%95%b0>#</a></h4><p>如果数据通道类型的前缀为<code>DATA_CHANNEL_PARTIAL_RELIABLE</code>，则不同的后缀对应的参数配置如下：</p><ul><li><code>REXMIT</code> - 定义发送方重试发送消息的次数，超出此次数将放弃尝试。</li><li><code>TIMED</code> - 定义发送方重试发送消息的时间（以毫秒为单位），超出此时间将放弃尝试。</li></ul><h4 id=标签label>标签（Label）
+<a class=anchor href=#%e6%a0%87%e7%ad%belabel>#</a></h4><p>数据通道的名称，是一个UTF-8编码的字符串。可以为空。</p><h4 id=协议protocol>协议（Protocol）
+<a class=anchor href=#%e5%8d%8f%e8%ae%aeprotocol>#</a></h4><p>如果这里为空，则协议未指定。如果是非空字符串，则这里定义的协议应在<a href=https://tools.ietf.org/html/rfc6455#page-61>RFC 6455</a>中定义的"WebSocket子协议名称注册表"中注册。</p><h3 id=data_channel_ack>DATA_CHANNEL_ACK
+<a class=anchor href=#data_channel_ack>#</a></h3><p>WebRTC代理发送此消息以确认此数据通道已打开。</p><h4 id=封包格式-1>封包格式
+<a class=anchor href=#%e5%b0%81%e5%8c%85%e6%a0%bc%e5%bc%8f-1>#</a></h4><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Message Type |
++-+-+-+-+-+-+-+-+
+</code></pre><h2 id=sctp>SCTP
+<a class=anchor href=#sctp>#</a></h2><p>SCTP是WebRTC数据通道背后的真正动力。它提供了数据通道的以下所有功能：</p><ul><li>多路复用</li><li>使用类似TCP的重传机制进行可靠传递</li><li>部分可靠性选项</li><li>避免拥塞</li><li>流量控制</li></ul><p>为了理解SCTP，我们将分3部分进行探讨。我们的目标是，在本章之后，您将拥有足够的知识来自行调试和学习SCTP的详细信息。</p><h2 id=概念>概念
+<a class=anchor href=#%e6%a6%82%e5%bf%b5>#</a></h2><p>SCTP协议功能很多。本节仅涵盖WebRTC使用的SCTP部分。
+SCTP中，WebRTC不使用的功能包括多宿主（multi-homing）和路径选择。</p><p>经过20多年的发展，SCTP变得难以完全掌握。</p><h3 id=关联association>关联（Association）
+<a class=anchor href=#%e5%85%b3%e8%81%94association>#</a></h3><p>关联是用于SCTP会话的术语。这是两个SCTP代理在通信时共享的状态。</p><h3 id=流>流
+<a class=anchor href=#%e6%b5%81>#</a></h3><p>一个流是用户数据的一个双向序列。创建数据通道时，实际上只是在创建一个SCTP流。每个SCTP关联都包含一个流列表。可以为每个流配置不同的可靠性类型。</p><p>WebRTC只允许您在创建流时进行配置，而SCTP实际上允许随时更改配置。</p><h3 id=基于数据报>基于数据报
+<a class=anchor href=#%e5%9f%ba%e4%ba%8e%e6%95%b0%e6%8d%ae%e6%8a%a5>#</a></h3><p>SCTP将数据构造为数据报，而不是字节流。发送和接收数据就像是使用UDP而不是TCP。
+您无需添加任何额外的代码即可通过一个流传输多个文件。</p><p>SCTP消息没有像UDP这样的大小限制。单个SCTP消息的大小可以达到几个GB。</p><h3 id=块chunks>块（Chunks）
+<a class=anchor href=#%e5%9d%97chunks>#</a></h3><p>SCTP协议由块组成。有许多不同类型的块。这些块用于所有通信。
+用户数据，连接初始化，拥塞控制等，全部通过块完成。</p><p>每个SCTP数据包都包含一个块列表。因此，在一个UDP数据包中，您可以有多个块承载来自不同流的消息。</p><h3 id=传输序列号>传输序列号
+<a class=anchor href=#%e4%bc%a0%e8%be%93%e5%ba%8f%e5%88%97%e5%8f%b7>#</a></h3><p>传输序列号（TSN）是DATA块的全局唯一标识符。DATA块承载用户希望发送的所有消息。TSN很重要，因为它可以帮助接收方确定数据包是否丢失或乱序。</p><p>如果接收方注意到缺少TSN，则在数据完整获取之前，它不应将数据提供给用户。</p><h3 id=流标识符>流标识符
+<a class=anchor href=#%e6%b5%81%e6%a0%87%e8%af%86%e7%ac%a6>#</a></h3><p>每个流都有一个唯一的标识符。当您创建带有显式ID的数据通道时，实际上是将其作为流标识符直接传递到SCTP中。如果您没有传递ID，则会为您自动选择流标识符。</p><h3 id=有效负载协议标识符>有效负载协议标识符
+<a class=anchor href=#%e6%9c%89%e6%95%88%e8%b4%9f%e8%bd%bd%e5%8d%8f%e8%ae%ae%e6%a0%87%e8%af%86%e7%ac%a6>#</a></h3><p>每个DATA块还具有一个有效负载协议标识符（PPID）。这用于唯一地标识正在交换的数据类型。
+SCTP具有许多PPID，但是WebRTC仅使用以下5种：</p><ul><li><code>WebRTC DCEP</code> (<code>50</code>) - DCEP消息</li><li><code>WebRTC String</code> (<code>51</code>) - 数据通道字符串消息</li><li><code>WebRTC Binary</code> (<code>53</code>) - 数据通道二进制消息</li><li><code>WebRTC String Empty</code> (<code>56</code>) - 长度为0的数据通道字符串消息</li><li><code>WebRTC Binary Empty</code> (<code>57</code>) - 长度为0的数据通道二进制消息</li></ul><h2 id=协议>协议
+<a class=anchor href=#%e5%8d%8f%e8%ae%ae>#</a></h2><p>以下是SCTP协议使用的一些块。这不是一个详尽的演示。只提供了足够的结构让状态机运作起来。</p><p>每个块均以<code>type</code>字段开头。在块列表之前，还有一个头字段。</p><h3 id=data块>DATA块
+<a class=anchor href=#data%e5%9d%97>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 0    | Reserved|U|B|E|    Length                     |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                              TSN                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|      Stream Identifier        |   Stream Sequence Number      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                  Payload Protocol Identifier                  |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/                            User Data                          /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>DATA块是交换所有用户数据的方式。当您通过数据通道发送数据时，下面对DATA块更详细的说明。</p><p>如果是无序数据包，则将<code>U</code>位设置为1。我们可以忽略流序列号（Stream Sequence Number）。</p><p><code>B</code>和<code>E</code>是开始位和结束位。如果要发送的消息对于单个DATA块而言太大，则需要将其分片。
+SCTP使用<code>B</code>和<code>E</code>位以及序列号（TSN）来表达这一点。</p><ul><li><code>B=1</code>, <code>E=0</code> - 用户消息的第一个分片</li><li><code>B=0</code>, <code>E=0</code> - 用户消息的中间的分片</li><li><code>B=0</code>, <code>E=1</code> - 用户消息的最后一个分片</li><li><code>B=1</code>, <code>E=1</code> - 未分片的用户消息</li></ul><p><code>TSN</code>是传输序列号。它是此消息的全局唯一标识符。在4,294,967,295（译注：32位最大值）条消息之后，该值将循环使用。</p><p><code>Stream Identifier</code>（流标识符）是该数据所属流的唯一标识符。</p><p><code>Payload Protocol Identifier</code>（有效负载协议标识符）是流过此流的数据类型。对于WebRTC，它可能是DCEP，String或Binary。</p><p><code>User Data</code>（用户数据）就是您要发送的内容。通过WebRTC数据通道发送的所有数据均通过DATA块传输。</p><h3 id=init块>INIT块
+<a class=anchor href=#init%e5%9d%97>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 1    |  Chunk Flags  |      Chunk Length             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         Initiate Tag                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|           Advertised Receiver Window Credit (a_rwnd)          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Number of Outbound Streams   |  Number of Inbound Streams    |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                          Initial TSN                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/              Optional/Variable-Length Parameters              /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>INIT块开始创建一个关联（association）的过程。</p><p><code>Initiate Tag</code>（启动标签）用于生成Cookie。Cookies技术在中间人攻击和DoS保护中可能会被用到。在状态机章节中对它们进行了更详细的描述。</p><p><code>Advertised Receiver Window Credit</code>（广播接收者窗口信用值）用于SCTP的拥塞控制。它传达了接收方已为此关联分配了多大的缓冲区。</p><p><code>Number of Outbound/Inbound Streams</code>（出站/入站流的数量）通知该代理支持多少个流。</p><p><code>Initial TSN</code>（初始TSN）是随机的<code>uint32</code>，本地TSN以这个值开始计数。</p><p><code>Optional Parameters</code>（可选参数）允许SCTP向协议引入新功能。</p><h3 id=sack块>SACK块
+<a class=anchor href=#sack%e5%9d%97>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 3    |Chunk  Flags   |      Chunk Length             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      Cumulative TSN Ack                       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|          Advertised Receiver Window Credit (a_rwnd)           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+| Number of Gap Ack Blocks = N  |  Number of Duplicate TSNs = X |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Gap Ack Block #1 Start       |   Gap Ack Block #1 End        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+/                                                               /
+\                              ...                              \
+/                                                               /
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Gap Ack Block #N Start      |  Gap Ack Block #N End         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       Duplicate TSN 1                         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+/                                                               /
+\                              ...                              \
+/                                                               /
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       Duplicate TSN X                         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>SACK（选择性确认）块是接收方通知发送方它已收到数据包信息的方式。在发送方获得针对TSN的SACK之前，它将重新发送有问题的DATA块。然而，SACK的作用不只是更新TSN信息。</p><p><code>Cumulative TSN ACK</code>（累积TSN ACK）是已收到的最高TSN。</p><p><code>Advertised Receiver Window Credit</code>（广播接收者窗口信用值）是接收方的缓冲区大小。如果可用内存增加，接收方可以在会话期间更改此设置。</p><p>在<code>Cumulative TSN ACK</code>（累积TSN ACK）后面，是<code>Ack Blocks</code>的TSN。
+这个方法用来解决传送的数据包中有缺口的问题。假设我们收到了带有TSN<code>100</code>,<code>102</code>,<code>103</code>和<code>104</code>的DATA块。<code>Cumulative TSN ACK</code>应该是<code>100</code>，但可以使用<code>Ack Blocks</code>来告诉发送方不需要重新发送<code>102</code>,<code>103</code>或<code>104</code>。</p><p><code>Duplicate TSN</code>（重复TSN）会通知发送方，它已经不止一次的接收了哪些DATA数据块。</p><h3 id=heartbeat块>HEARTBEAT块
+<a class=anchor href=#heartbeat%e5%9d%97>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 4    | Chunk  Flags  |      Heartbeat Length         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/            Heartbeat Information TLV (Variable-Length)        /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>HEARTBEAT块用于断言远端仍能响应。
+当您不发送任何DATA数据块，且需要保持NAT映射打开时，这很有用。</p><h3 id=abort块>ABORT块
+<a class=anchor href=#abort%e5%9d%97>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 6    |Reserved     |T|           Length              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+/                                                               /
+\               Zero or more Error Causes                       \
+/                                                               /
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>ABORT块用于关联的突然关闭。当一侧进入错误状态时使用。正常结束连接使用SHUTDOWN块。</p><h3 id=shutdown块>SHUTDOWN块
+<a class=anchor href=#shutdown%e5%9d%97>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 7    | Chunk  Flags  |      Length = 8               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      Cumulative TSN Ack                       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>SHUTDOWN块将正常关闭SCTP关联。
+每个代理将其发送的最后一个TSN通知给远端。这样可以确保不会丢失任何数据包。（如果有资源仍在使用中的话，）WebRTC不能正常关闭SCTP关联。您需要自行关闭所有数据通道。</p><p><code>Cumulative TSN ACK</code>（累积TSN ACK）是发送的最后一个TSN。双方都知道在接收到此TSN对应的DATA块之前不要终止。</p><h3 id=error块>ERROR块
+<a class=anchor href=#error%e5%9d%97>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 9    | Chunk  Flags  |           Length              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/                    One or more Error Causes                   /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>ERROR块用于通知远端SCTP代理发生了非致命错误。</p><h3 id=forward-tsn块>FORWARD TSN块
+<a class=anchor href=#forward-tsn%e5%9d%97>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 192  |  Flags = 0x00 |        Length = Variable      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      New Cumulative TSN                       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Stream-1              |       Stream Sequence-1       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               /
+/                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Stream-N              |       Stream Sequence-N       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>FORWARD TSN块将全局TSN向前移动。SCTP这样做是为了允许跳过一些您不再关心的数据包。假设您发送了<code>10 11 12 13 14 15</code>，这些数据包只有在它们全部到达后才有意义。而这些数据又对实时性很敏感，在这种情况下，如果数据收晚了，它们就没有用了。</p><p>如果您丢失了<code>12</code>和<code>13</code>，则不需要再发送<code>14</code>和<code>15</code>！
+SCTP使用FORWARD TSN块来实现这一点。它告诉接收方，<code>14</code>和<code>15</code>将不再传递。</p><p><code>New Cumulative TSN</code>（新的累积TSN），是连接的新TSN。此TSN之前的任何数据包都不会被保留。</p><p><code>Stream</code>（流）和<code>Stream Sequence</code>（流序列）用于将<code>Stream Sequence Number</code>的编号向前跳转。请参阅前面的<code>DATA块</code>以了解该字段的重要性。</p><h2 id=状态机>状态机
+<a class=anchor href=#%e7%8a%b6%e6%80%81%e6%9c%ba>#</a></h2><p>这里是SCTP状态机中一些有趣的部分。WebRTC并未使用SCTP状态机的所有功能，因此我们将没有用到的部分排除在外。我们还简化了一些组件，使它们更易于理解。</p><h3 id=连接建立流程>连接建立流程
+<a class=anchor href=#%e8%bf%9e%e6%8e%a5%e5%bb%ba%e7%ab%8b%e6%b5%81%e7%a8%8b>#</a></h3><p><code>INIT</code>和<code>INIT ACK</code>块用于交换peer的能力和配置。SCTP在握手期间使用cookie来验证与之通信的peer。
+这是为了确保握手不会被拦截并防止DoS攻击。</p><p><code>INIT ACK</code>块包含cookie。然后，使用<code>COOKIE ECHO</code>将cookie返回给其创建者。如果cookie验证成功，则发送<code>COOKIE ACK</code>，并且准备交换DATA块。</p><script src=/mermaid.min.js></script><script>mermaid.initialize({"flowchart":{"useMaxWidth":true},"theme":"default"})</script><p class=mermaid>sequenceDiagram
+participant A1 as Association (A1)
+participant A2 as Association (A2)
+A1->>A2: INIT
+A2->>A1: INIT ACK
+A1->>A2: COOKIE ECHO
+A2->>A1: COOKIE ACK</p><h3 id=连接关闭流程>连接关闭流程
+<a class=anchor href=#%e8%bf%9e%e6%8e%a5%e5%85%b3%e9%97%ad%e6%b5%81%e7%a8%8b>#</a></h3><p>SCTP使用<code>SHUTDOWN</code>块。当代理收到<code>SHUTDOWN</code>块时，它将等待直到收到请求的<code>Cumulative TSN ACK</code>。这样，即使连接有损，用户也可以确保传送了所有数据。</p><h3 id=keep-alive保持活动机制>Keep-Alive（保持活动）机制
+<a class=anchor href=#keep-alive%e4%bf%9d%e6%8c%81%e6%b4%bb%e5%8a%a8%e6%9c%ba%e5%88%b6>#</a></h3><p>SCTP使用<code>HEARTBEAT REQUEST</code>和<code>HEARTBEAT ACK</code>块使连接保持活动状态。它们以固定间隔发送，间隔时间可配置。如果数据包尚未到达，SCTP还会将指数回退。</p><p>HEARTBEAT还包含一个时间值。两个关联可以用此来计算两个代理之间的数据传递时间。</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div class=book-languages tabindex=0 aria-haspopup=true><ul><li class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
 简体中文</li></ul><ul class=book-languages-list><li><a href=https://webrtcforthecurious.com/docs/07-data-communication/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
 English</a></li><li><a href=https://webrtcforthecurious.com/tr/docs/07-data-communication/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
 Turkish</a></li><li><a href=https://webrtcforthecurious.com/fa/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
 Persian</a></li><li class=active><a href=https://webrtcforthecurious.com/zh/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
-简体中文</a></li></ul></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/commit/03170d9f152cbb92aae773c54563736c1623b6bd title="最后修改者 Cliff Han | March 1, 2021" target=_blank rel=noopener><img src=/svg/calendar.svg class=book-icon alt=Calendar>
-<span>March 1, 2021</span></a></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content/content.zh-cn/docs/07-data-communication.md target=_blank rel=noopener><img src=/svg/edit.svg class=book-icon alt=Edit>
-<span>编辑本页</span></a></div></div></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#功能概述>功能概述</a><ul><li><a href=#数据通道有哪些应用>数据通道有哪些应用？</a></li><li><a href=#协议栈概述>协议栈概述</a></li></ul></li><li><a href=#data-channel-api>Data Channel API</a><ul><li><a href=#connection--teardown>Connection / Teardown</a></li><li><a href=#data-channel-options>Data Channel Options</a></li><li><a href=#flow-control-api>Flow Control API</a></li></ul></li><li><a href=#data-channel-in-depth>Data Channel in Depth</a><ul><li><a href=#sctp>SCTP</a></li><li><a href=#dcepdata-channel-establishment-protocol数据通道建立协议>DCEP（Data Channel Establishment Protocol/数据通道建立协议）</a></li></ul></li><li><a href=#rfc链接>RFC链接</a></li></ul></nav></div></aside></main></body></html>
+简体中文</a></li></ul></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/commit/f61ac786c6e0fe3b07c3b4b3d23aa3ffd32f2826 title="最后修改者 Cliff Han | April 6, 2021" target=_blank rel=noopener><img src=/svg/calendar.svg class=book-icon alt=Calendar>
+<span>April 6, 2021</span></a></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content/content.zh-cn/docs/07-data-communication.md target=_blank rel=noopener><img src=/svg/edit.svg class=book-icon alt=Edit>
+<span>编辑本页</span></a></div></div></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#它是如何工作的>它是如何工作的？</a></li><li><a href=#dcep>DCEP</a><ul><li><a href=#data_channel_open>DATA_CHANNEL_OPEN</a></li><li><a href=#data_channel_ack>DATA_CHANNEL_ACK</a></li></ul></li><li><a href=#sctp>SCTP</a></li><li><a href=#概念>概念</a><ul><li><a href=#关联association>关联（Association）</a></li><li><a href=#流>流</a></li><li><a href=#基于数据报>基于数据报</a></li><li><a href=#块chunks>块（Chunks）</a></li><li><a href=#传输序列号>传输序列号</a></li><li><a href=#流标识符>流标识符</a></li><li><a href=#有效负载协议标识符>有效负载协议标识符</a></li></ul></li><li><a href=#协议>协议</a><ul><li><a href=#data块>DATA块</a></li><li><a href=#init块>INIT块</a></li><li><a href=#sack块>SACK块</a></li><li><a href=#heartbeat块>HEARTBEAT块</a></li><li><a href=#abort块>ABORT块</a></li><li><a href=#shutdown块>SHUTDOWN块</a></li><li><a href=#error块>ERROR块</a></li><li><a href=#forward-tsn块>FORWARD TSN块</a></li></ul></li><li><a href=#状态机>状态机</a><ul><li><a href=#连接建立流程>连接建立流程</a></li><li><a href=#连接关闭流程>连接关闭流程</a></li><li><a href=#keep-alive保持活动机制>Keep-Alive（保持活动）机制</a></li></ul></li></ul></nav></div></aside></main></body></html>
