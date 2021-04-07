@@ -153,22 +153,22 @@ a <--> b
 
 
 #### Mesh
-It is often desirable to connect more than two WebRTC peers together like in a group web call, or an online multiplayer game. There
-are also many different ways to achieve WebRTC communications between more than two peers. One option is to create a Peer to Peer Mesh.
-There are two forms of Peer to Peer Meshes, a "full mesh" and a "partial mesh". In a full mesh each peer makes a seperate WebRTC connection
-to every other peer that wants to communicate together. In a partial mesh, some peers are allocated more connections than others and are used
-to forward and/or route information between peers. In either case, each peer has to send copies of media to every other peer it is connected to
-making for high bandwidth cost for each peer when there are many users connected. Because of these bandwidth concerns, a Peer to Peer Mesh is best
-used for small groups connecting together.
+It is often desirable to connect more than two WebRTC peers together, like in a group web call or an online multiplayer game. There
+are many different ways to set up WebRTC communications between more than two peers. One option is to create a Peer to Peer Mesh.
+There are two forms of Peer to Peer Meshes, a "full mesh" and a "partial mesh". In a full mesh, each peer creates a seperate WebRTC connection
+to every other peer that it wants to communicate with. In a partial mesh, some peers are allocated more connections than others and are used
+to forward and route information to less connected peers. In either case, each peer has to send copies of media to every other peer it is connected
+to, using a lot of bandwidth for each peer when there are many users connected. Because of these bandwidth concerns, a Peer to Peer Mesh is best
+used for smaller groups.
 
 #### Hybrid Mesh
 
 ### Client-Server
-The low-latency nature of WebRTC protocol is great for calls, and it's common to see conferences arranged in p2p mesh configuration
+The low-latency nature of the WebRTC protocol is great for calls, and it's common to see conferences arranged in p2p mesh configuration
 (for low latency), or peering through an SFU (Selective Forwarding Unit) to improve call quality. Since codec support varies by browser,
 many conferencing servers allow browsers to broadcast using proprietary or non-free codecs like h264, and then re-encode to an open standard
-like VP8 at the server level; when the SFU performs an encoding task beyond just forwarding packets, it is now called an MCU (Multi-point Conferencing Unit).
-While SFU are notoriously fast and efficient and great for conferences, MCU can be very resource intensive! Some conferencing servers even
+like VP8 at the server level; when the SFU performs an encoding task beyond just forwarding packets, it is called an MCU (Multi-point Conferencing Unit).
+While SFUs are notoriously fast and efficient and great for conferences, MCUs can be very resource intensive! Some conferencing servers even
 perform heavy tasks like compositing (combining together) A/V streams, customized for each caller, to minimize client bandwidth use by
 sending only a single stream of all the other callers.
 
