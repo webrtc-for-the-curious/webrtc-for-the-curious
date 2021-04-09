@@ -208,7 +208,7 @@ e <--> g
 
 
 ### Selective Forwarding Unit
-A SFU (Selective Forwarding Unit) also solves the issues of Full Mesh, but in an entirely different way. It a client/server topology, instead of P2P.
+A SFU (Selective Forwarding Unit) also solves the issues of Full Mesh, but in an entirely different way. A SFU implements a client/server topology, instead of P2P.
 Each WebRTC peer connects to the SFU and uploads its media. The SFU then forwards this media out to each connected client.
 
 With an SFU each WebRTC Agent only has to encode and upload their video once. The burden of distributing it to all the viewers is on the SFU.
