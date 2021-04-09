@@ -137,8 +137,7 @@ WebRTC is a protocol for connecting two agents, so how are developers connecting
 ways you can do it and they all have pros and cons. These solutions broadly fall into two categories Peer-to-Peer or Client/Server. WebRTC's
 flexibility allows us to create both.
 
-### Peer-To-Peer
-#### One-To-One
+### One-To-One
 One-to-One is the first connection type you will use with WebRTC. You connect two WebRTC Agents directly and they can send bi-directional media and data.
 The connection looks like this.
 
@@ -148,29 +147,125 @@ a["WebRTC Agent A"]
 b["WebRTC Agent B"]
 
 a <--> b
-
 {{</mermaid>}}
 
 
-#### Mesh
-It is often desirable to connect more than two WebRTC peers together like in a group web call, or an online multiplayer game. There
-are also many different ways to achieve WebRTC communications between more than two peers. One option is to create a Peer to Peer Mesh.
-There are two forms of Peer to Peer Meshes, a "full mesh" and a "partial mesh". In a full mesh each peer makes a seperate WebRTC connection
-to every other peer that wants to communicate together. In a partial mesh, some peers are allocated more connections than others and are used
-to forward and/or route information between peers. In either case, each peer has to send copies of media to every other peer it is connected to
-making for high bandwidth cost for each peer when there are many users connected. Because of these bandwidth concerns, a Peer to Peer Mesh is best
-used for small groups connecting together.
+### Full Mesh
+Full mesh is the answer if you want to build a conference call or a multiplayer game. In this topology each user establishes a connection
+with every other user directly. This allows you to build your application, but it comes with some downsides.
 
-#### Hybrid Mesh
+In a Full Mesh topology each user is connected directly. That means you have to encode and upload video independently for each member of the call.
+The network conditions between each connection will be different, so you can't reuse the same video. The error handling is also difficult in these
+deployments. You need to carefully consider if you have lost complete connectivity, or just connectivity with one remote peer.
 
-### Client-Server
-The low-latency nature of WebRTC protocol is great for calls, and it's common to see conferences arranged in p2p mesh configuration
-(for low latency), or peering through an SFU (Selective Forwarding Unit) to improve call quality. Since codec support varies by browser,
-many conferencing servers allow browsers to broadcast using proprietary or non-free codecs like h264, and then re-encode to an open standard
-like VP8 at the server level; when the SFU performs an encoding task beyond just forwarding packets, it is now called an MCU (Multi-point Conferencing Unit).
-While SFU are notoriously fast and efficient and great for conferences, MCU can be very resource intensive! Some conferencing servers even
-perform heavy tasks like compositing (combining together) A/V streams, customized for each caller, to minimize client bandwidth use by
-sending only a single stream of all the other callers.
+Because of these concerns, a Full Mesh is best used for small groups. For anything larger a client/server topology is best.
 
-#### SFU (Selective Forwarding Unit)
-#### MCU (Multi-point Conferencing Unit)
+{{<mermaid>}}
+flowchart LR
+a["WebRTC Agent A"]
+b["WebRTC Agent B"]
+c["WebRTC Agent C"]
+d["WebRTC Agent D"]
+
+a <--> b
+a <--> c
+a <--> d
+
+b <--> c
+b <--> d
+
+c <--> d
+{{</mermaid>}}
+
+### Hybrid Mesh
+Hybrid Mesh is an alternative to Full Mesh that can alleviate some of Full Mesh's issues. In a Hybrid Mesh connections aren't established
+between every user. Instead media is relayed through peers in the network. This means that the creator of the media doesn't have to use as
+much bandwidth to distribute media.
+
+This does have some downsides however. In this setup the original creator of the media has no idea who its video is being sent too, and if
+it arrived successfully. You also will have an increase in latency with every hop in your Hybrid Mesh network.
+
+{{<mermaid>}}
+flowchart LR
+a["WebRTC Agent A"]
+b["WebRTC Agent B"]
+c["WebRTC Agent C"]
+d["WebRTC Agent D"]
+e["WebRTC Agent E"]
+f["WebRTC Agent F"]
+g["WebRTC Agent G"]
+
+a <--> b
+a <--> c
+
+b <--> d
+b <--> e
+
+c <--> f
+
+e <--> g
+{{</mermaid>}}
+
+
+### Selective Forwarding Unit
+A SFU (Selective Forwarding Unit) also solves the issues of Full Mesh, but in an entirely different way. It a client/server topology, instead of P2P.
+Each WebRTC peer connects to the SFU and uploads its media. The SFU then forwards this media out to each connected client.
+
+With an SFU each WebRTC Agent only has to encode and upload their video once. The burden of distributing it to all the viewers is on the SFU.
+Connectivity with an SFU is much easier then P2P as well. You can run an SFU on a world routable address, making it much easier for clients to connect.
+You don't need to worry about NAT Mappings. You do still need to make sure your SFU is available via TCP (either via ICE-TCP or TURN).
+
+Building a simple SFU can be done in a weekend. Building a good SFU that can handle all types of clients is never ending. Tuning the Congestion Control, Error
+Correction and Performance is a never ending task.
+
+{{<mermaid>}}
+flowchart LR
+a["WebRTC Agent A"]
+b["WebRTC Agent B"]
+c["WebRTC Agent C"]
+server["WebRTC SFU"]
+
+a --> server
+b --> server
+c --> server
+
+server --> a
+server --> a
+
+server --> b
+server --> b
+
+server --> c
+server --> c
+
+linkStyle 0,1,8 stroke-width:2px,fill:none,stroke:red;
+linkStyle 3,5,7 stroke-width:2px,fill:none,stroke:green;
+linkStyle 2,4,6 stroke-width:2px,fill:none,stroke:blue;
+
+{{</mermaid>}}
+
+### MCU
+A MCU (Multi-point Conferencing Unit) is a client/server topology like an SFU, but composites the output streams. Instead of distributing the outbound media
+unmodified it re-encodes them as one feed.
+
+
+{{<mermaid>}}
+flowchart LR
+a["WebRTC Agent A"]
+b["WebRTC Agent B"]
+c["WebRTC Agent C"]
+server["WebRTC MCU"]
+
+a --> server
+b --> server
+c --> server
+
+server --> a
+server --> b
+server --> c
+
+linkStyle 0 stroke-width:2px,fill:none,stroke:red;
+linkStyle 1 stroke-width:2px,fill:none,stroke:green;
+linkStyle 2 stroke-width:2px,fill:none,stroke:blue;
+{{</mermaid>}}
+
