@@ -13,24 +13,23 @@ challenging. This chapter will try and explain those challenges before you hit t
 
 ## By Use Case
 
-Many think WebRTC is just the technology conferencing in the web browser. It is so much more then that though!
-WebRTC is used for a wide range of use cases. New use cases showing up all the time. These are some of the common ones
-and how WebRTC is revolutionizing them.
+Many think WebRTC is just a technology for conferencing in the web browser. It is so much more than that though!
+WebRTC is used for a wide range of use cases. New use cases showing up all the time. In this chapter we will list some common ones and how WebRTC is revolutionizing them.
 
 ### Conferencing
 
 Conferencing is the original use case for WebRTC. The protocol contains a few necessary features that no other protocol offers
 in the browser. You could build a conferencing system with WebSockets and it may work in optimal conditions. If you want
-something that can be deployed in real world network conditions WebRTC is the best choice.
+something that can be deployed in real world network conditions, WebRTC is the best choice.
 
-WebRTC provides congestion control and adaptive bitrate for media. As the conditions of the network change users will still get the
+WebRTC provides congestion control and adaptive bitrate for media. As the conditions of the network change, users will still get the
 best experience possible. Developers don't have to write any additional code to measure these conditions either.
 
 Participants can send and receive multiple streams. They can also add and remove those streams at any time. Codecs are negotiated
 as well. All of this functionality is provided by the browser, no custom code is required to be written by the developer.
 
 Conferencing also benefits from data channels. Users can send metadata or share documents. You can create multiple streams
-and configure them if you need performance more then reliability.
+and configure them if you need performance more than reliability.
 
 ### Broadcasting
 
@@ -83,7 +82,7 @@ peer like your a phone or browser. Another use case is having devices connect an
 exchange climate, noise or light readings.
 
 WebRTC has a huge privacy advantage here over legacy video stream protocols. Since WebRTC supports P2P connectivity the camera can send the video
-directly to your browser. There is no reason for your video to be sent to a 3rd party server. Even when video is encrypted an attacker can make
+directly to your browser. There is no reason for your video to be sent to a 3rd party server. Even when video is encrypted, an attacker can make
 assumptions from the metadata of the call.
 
 Interoperability is another advantage for the IoT space. WebRTC is available in lots of different languages C#, C++, C, Go, Java, Python, Rust
@@ -108,10 +107,10 @@ can access. A popular example is using SSH from your browser to access a server.
 
 WebRTC's data channels allow unreliable and unordered delivery. In cases where low latency is critical this is needed. You don't want new data to be
 blocked by old data, this is known as head-of-line blocking. Imagine you are playing a multiplayer First-person shooter. Do you really care where the
-player was two seconds ago? If that data didn't arrive in time it doesn't make sense to keep trying to send it. Unreliable and unordered delivery allows
+player was two seconds ago? If that data didn't arrive in time, it doesn't make sense to keep trying to send it. Unreliable and unordered delivery allows
 you to get your data as soon as it arrives.
 
-Data channels also provide feedback pressure. This tells you if you are sending data faster then your connection can support. You then have two
+Data channels also provide feedback pressure. This tells you if you are sending data faster than your connection can support. You then have two
 choices when this happens.  The data channel can either be configured to buffer and deliver the data late, or you can drop the data that hasn't arrived
 in real-time.
 
@@ -121,7 +120,7 @@ Teleoperation is the act of controlling a device remotely via WebRTC data channe
 via WebRTC today! This is used to control robots at construction sites and deliver packages. Using WebRTC for these problems makes sense for two reasons.
 
 The ubiquity of WebRTC makes it easy to give users control. All the user needs is a web browser and an input device. Browsers even
-support taking input from joysticks and gamepads. WebRTC completely removes the need to install an additional client on the users device.
+support taking input from joysticks and gamepads. WebRTC completely removes the need to install an additional client on the user's device.
 
 ### Distributed CDN
 
@@ -129,26 +128,19 @@ Distributed CDNs are a subset of file sharing. The files being distributed are c
 they can download and share the allowed files. Users get all the same benefits as file sharing.
 
 These CDNs work great when you are at an office with poor external connectivity, but great LAN connectivity. You can have one user download a video, and
-then share it with everyone else. Since everyone isn't attempting to fetch the same file via the external network the transfer will complete faster.
+then share it with everyone else. Since everyone isn't attempting to fetch the same file via the external network, the transfer will complete faster.
 
 ## WebRTC Topologies
 
 WebRTC is a protocol for connecting two agents, so how are developers connecting hundreds of people at once? There are a few different
-ways you can do it and they all have pros and cons. These solutions broadly fall into two categories Peer-to-Peer or Client/Server. WebRTC's
+ways you can do it, and they all have pros and cons. These solutions broadly fall into two categories Peer-to-Peer or Client/Server. WebRTC's
 flexibility allows us to create both.
 
 ### One-To-One
 One-to-One is the first connection type you will use with WebRTC. You connect two WebRTC Agents directly and they can send bi-directional media and data.
 The connection looks like this.
 
-{{<mermaid>}}
-flowchart LR
-a["WebRTC Agent A"]
-b["WebRTC Agent B"]
-
-a <--> b
-{{</mermaid>}}
-
+![One-to-One](../images/08-one-to-one.png "One-to-One")
 
 ### Full Mesh
 Full mesh is the answer if you want to build a conference call or a multiplayer game. In this topology each user establishes a connection
@@ -160,112 +152,33 @@ deployments. You need to carefully consider if you have lost complete connectivi
 
 Because of these concerns, a Full Mesh is best used for small groups. For anything larger a client/server topology is best.
 
-{{<mermaid>}}
-flowchart LR
-a["WebRTC Agent A"]
-b["WebRTC Agent B"]
-c["WebRTC Agent C"]
-d["WebRTC Agent D"]
-
-a <--> b
-a <--> c
-a <--> d
-
-b <--> c
-b <--> d
-
-c <--> d
-{{</mermaid>}}
+![Full mesh](../images/08-full-mesh.png "Full mesh")
 
 ### Hybrid Mesh
-Hybrid Mesh is an alternative to Full Mesh that can alleviate some of Full Mesh's issues. In a Hybrid Mesh connections aren't established
-between every user. Instead media is relayed through peers in the network. This means that the creator of the media doesn't have to use as
+Hybrid Mesh is an alternative to Full Mesh that can alleviate some of the Full Mesh's issues. In a Hybrid Mesh connections aren't established
+between every user. Instead, media is relayed through peers in the network. This means that the creator of the media doesn't have to use as
 much bandwidth to distribute media.
 
-This does have some downsides however. In this setup the original creator of the media has no idea who its video is being sent too, and if
+This does have some downsides however. In this set up, the original creator of the media has no idea who its video is being sent too, and if
 it arrived successfully. You also will have an increase in latency with every hop in your Hybrid Mesh network.
 
-{{<mermaid>}}
-flowchart LR
-a["WebRTC Agent A"]
-b["WebRTC Agent B"]
-c["WebRTC Agent C"]
-d["WebRTC Agent D"]
-e["WebRTC Agent E"]
-f["WebRTC Agent F"]
-g["WebRTC Agent G"]
-
-a <--> b
-a <--> c
-
-b <--> d
-b <--> e
-
-c <--> f
-
-e <--> g
-{{</mermaid>}}
-
+![Hybrid mesh](../images/08-hybrid-mesh.png "Hybrid mesh")
 
 ### Selective Forwarding Unit
-A SFU (Selective Forwarding Unit) also solves the issues of Full Mesh, but in an entirely different way. A SFU implements a client/server topology, instead of P2P.
+An SFU (Selective Forwarding Unit) also solves the issues of Full Mesh, but in an entirely different way. An SFU implements a client/server topology, instead of P2P.
 Each WebRTC peer connects to the SFU and uploads its media. The SFU then forwards this media out to each connected client.
 
 With an SFU each WebRTC Agent only has to encode and upload their video once. The burden of distributing it to all the viewers is on the SFU.
-Connectivity with an SFU is much easier then P2P as well. You can run an SFU on a world routable address, making it much easier for clients to connect.
+Connectivity with an SFU is much easier than P2P as well. You can run an SFU on a world routable address, making it much easier for clients to connect.
 You don't need to worry about NAT Mappings. You do still need to make sure your SFU is available via TCP (either via ICE-TCP or TURN).
 
 Building a simple SFU can be done in a weekend. Building a good SFU that can handle all types of clients is never ending. Tuning the Congestion Control, Error
 Correction and Performance is a never ending task.
 
-{{<mermaid>}}
-flowchart LR
-a["WebRTC Agent A"]
-b["WebRTC Agent B"]
-c["WebRTC Agent C"]
-server["WebRTC SFU"]
-
-a --> server
-b --> server
-c --> server
-
-server --> a
-server --> a
-
-server --> b
-server --> b
-
-server --> c
-server --> c
-
-linkStyle 0,1,8 stroke-width:2px,fill:none,stroke:red;
-linkStyle 3,5,7 stroke-width:2px,fill:none,stroke:green;
-linkStyle 2,4,6 stroke-width:2px,fill:none,stroke:blue;
-
-{{</mermaid>}}
+![Selective Forwarding Unit](../images/08-sfu.png "Selective Forwarding Unit")
 
 ### MCU
 A MCU (Multi-point Conferencing Unit) is a client/server topology like an SFU, but composites the output streams. Instead of distributing the outbound media
 unmodified it re-encodes them as one feed.
 
-
-{{<mermaid>}}
-flowchart LR
-a["WebRTC Agent A"]
-b["WebRTC Agent B"]
-c["WebRTC Agent C"]
-server["WebRTC MCU"]
-
-a --> server
-b --> server
-c --> server
-
-server --> a
-server --> b
-server --> c
-
-linkStyle 0 stroke-width:2px,fill:none,stroke:red;
-linkStyle 1 stroke-width:2px,fill:none,stroke:green;
-linkStyle 2 stroke-width:2px,fill:none,stroke:blue;
-{{</mermaid>}}
-
+![Multi-point Conferencing Unit](../images/08-mcu.png "Multi-point Conferencing Unit")
