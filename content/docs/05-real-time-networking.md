@@ -11,8 +11,8 @@ could change at anytime. Measuring and observing network condition is also a dif
 depending on hardware, software and the configuration of it.
 
 Real-time communication also poses a problem that doesn't exist in most other domains. For a web developer it isn't fatal
-if your website is slower on some networks. As long as all the data arrives users are happy. With WebRTC, if your data is
-late it is useless. No one cares about what was said in a conference call 5 seconds ago.  So when developing an RTC system
+if your website is slower on some networks. As long as all the data arrives, users are happy. With WebRTC, if your data is
+late it is useless. No one cares about what was said in a conference call 5 seconds ago. So when developing a realtime communication system, 
 you have to make a trade-off. What is my time limit, and how much can I send?
 
 This chapter covers the concepts that apply to both data and media communication. In later chapters we go beyond
@@ -76,14 +76,14 @@ for a packet twice that isn't final. When the sender gets an `ACK` for packet 4 
 
 ### Selective Acknowledgments
 Selective Acknowledgments is an improvement upon Acknowledgments. A Receiver can send a `SACK` that acknowledgment multiple packets and notifies the sender of gaps.
-Now the sender will get a `SACK` for 4 and 7. It the knows it needs to re-send 5 and 6.
+Now the sender will get a `SACK` for 4 and 7. It then knows it needs to re-send 5 and 6.
 
 ### Negative Acknowledgments
 Negative Acknowledgments solve the problem the opposite way. Instead of notifying the sender what it has received, the receiver notifies the sender what has been lost. In our case a `NACK`
 will be sent for packets 5 and 6. The sender only knows packets the receiver wishes to have sent again.
 
 ### Forward Error Correction
-Forward Error Correction fixes packet loss pre-emptively. The sender sends redundant data, meaning a lost packet doesn't effect the final stream. One popular algorithm for
+Forward Error Correction fixes packet loss pre-emptively. The sender sends redundant data, meaning a lost packet doesn't affect the final stream. One popular algorithm for
 this is Reed–Solomon error correction.
 
 This reduces the latency/complexity of sending and handling Acknowledgments. Forward Error Correction is a waste of bandwidth if the network you are in has zero loss.
@@ -110,9 +110,9 @@ In this case ~1.8 ms is a good choice. Packets that arrive late will use our win
 fill the window depleted by late packets. This means we no longer have stuttering and provide a smooth delivery rate for the client.
 
 ## Detecting Congestion
-Before we can even resolve congestion we need to detect it. To detect it we use a congestion controller. This is a complicated subject, and is still rapidly changing.
-New algorithims are still be published and tested. At a high level they all operate the same. A congestion controller provides a bandwidth estimates given some inputs.
-These are some of the possible inputs.
+Before we can even resolve congestion, we need to detect it. To detect it we use a congestion controller. This is a complicated subject, and is still rapidly changing.
+New algorithms are still be published and tested. At a high level they all operate the same. A congestion controller provides a bandwidth estimates given some inputs.
+These are some possible inputs:
 
 * **Packet Loss** - Packets are dropped as the network becomes congested.
 * **Jitter** - As network equipment becomes more overloaded packets queuing will cause the times to be erratic.
@@ -126,7 +126,7 @@ Now that we have an estimated bandwidth we need to adjust what we are sending. H
 
 ### Sending Slower
 Limiting the speed at which you send data is the first solution to preventing congestion. The Congestion Controller gives you an estimate, and it is the
-senders responsibility to rate limit.
+sender's responsibility to rate limit.
 
 This is the method used for most data communication. With protocols like TCP this is all done by the operating system and completely transparent to users and developers.
 
@@ -134,4 +134,4 @@ This is the method used for most data communication. With protocols like TCP thi
 In some cases we can send less information to satisfy our limits. We also have hard deadlines on the arrival of our data, so we can't send slower. These are the constraints
 that Real-time media falls under.
 
-If we don't have enough bandwidth available we can lower the quality of video we send. This requires a tight feedback loop between your video encoder and congestion controller.
+If we don't have enough bandwidth available, we can lower the quality of video we send. This requires a tight feedback loop between your video encoder and congestion controller.

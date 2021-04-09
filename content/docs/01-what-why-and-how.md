@@ -82,9 +82,9 @@ We are done! You now have bi-directional and secure communication. If you have a
 
 We now have two WebRTC Agents with secure bi-directional communication. Let's start communicating! Again, we use two pre-existing protocols: RTP (Real-time Transport Protocol), and SCTP (Stream Control Transmission Protocol). SRTP is used to encrypt media exchanged over RTP, and SCTP is used to send DataChannel messages encrypted with DTLS.
 
-RTP is quite minimal but provides what is needed to implement real-time streaming. The important thing is that RTP gives flexibility to the developer so they can handle latency, loss, and congestion as they please. We will discuss this further in the media chapter.
+RTP is quite minimal but provides what is needed to implement real-time streaming. The important thing is that RTP gives flexibility to the developer, so they can handle latency, loss, and congestion as they please. We will discuss this further in the media chapter.
 
-The final protocol in the stack is SCTP. SCTP allows many different delivery options for messages. You can optionally choose to have unreliable, out of order delivery so you can get the latency needed for real-time systems.
+The final protocol in the stack is SCTP. SCTP allows many delivery options for messages. You can optionally choose to have unreliable, out of order delivery, so you can get the latency needed for real-time systems.
 
 
 ## WebRTC, a collection of protocols
@@ -92,35 +92,7 @@ WebRTC solves a lot of problems. At first, this may even seem over-engineered. T
 
 This allows us to examine and learn each part individually without being overwhelmed. A good way to visualize it is a 'WebRTC Agent' is really just an orchestrator of many different protocols.
 
-{{<mermaid>}}
-graph TB
-
-webrtc{WebRTC Agent}
-
-sctp{SCTP Agent}
-dtls{DTLS Agent}
-ice{ICE Agent}
-stun{STUN Protocol}
-turn{TURN Agent}
-srtp{SRTP Agent}
-sdp{SDP}
-rtp{RTP}
-rtcp{RTCP}
-
-webrtc --> ice
-webrtc --> dtls
-webrtc --> srtp
-webrtc --> sdp
-webrtc --> sctp
-
-ice --> turn
-ice --> stun
-
-srtp --> rtcp
-srtp --> rtp
-
-{{</mermaid>}}
-
+![WebRTC Agent](../images/01-webrtc-agent.png "WebRTC Agent Diagram")
 
 ## How does WebRTC (the API) work
 

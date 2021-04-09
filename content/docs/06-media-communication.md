@@ -25,7 +25,7 @@ Real-time media is about making trade-offs between latency and quality. The more
 These constraints are all caused by the limitations of the real world. They are all characteristics of your network that you will need to overcome.
 
 ### Video is Complex
-Transporting video isn't easy. To store 30 minutes of uncompressed 720 8-bit video you need ~110Gb. With those numbers a 4 person conference call isn't going to happen. We need a way to make it smaller, and the answer is video compression. That doesn't come without downsides though.
+Transporting video isn't easy. To store 30 minutes of uncompressed 720 8-bit video you need ~110Gb. With those numbers, a 4-person conference call isn't going to happen. We need a way to make it smaller, and the answer is video compression. That doesn't come without downsides though.
 
 ## Video 101
 We aren't going to cover video compression in depth, but just enough to understand why RTP is designed the way it is. Video compression encodes video into a new format that requires fewer bits to represent the same video.
@@ -47,10 +47,10 @@ You then have three frame types
 
 The following is visualization of the three frame types.
 
-{{< figure src="/images/05-frame-types.svg">}}
+![Frame types](../images/06-frame-types.png "Frame types")
 
 ### Video is delicate
-Video compression is incredibly stateful, making it difficult to transfer over the internet. What happens If you lose part of a I-Frame? How does a P-Frame know what to modify? As video compression gets more complex this is becoming even more of a problem. Luckily RTP and RTCP have the solution.
+Video compression is incredibly stateful, making it difficult to transfer over the internet. What happens If you lose part of a I-Frame? How does a P-Frame know what to modify? As video compression gets more complex, this is becoming even more of a problem. Luckily RTP and RTCP have the solution.
 
 ## RTP
 ### Packet Format
@@ -189,15 +189,15 @@ As discussed in [Real-time networking](../05-real-time-networking/) networks are
 It is not uncommon to see available bandwidth change dramatically (orders of magnitude) within a second.
 
 The main idea is to adjust encoding bitrate based on predicted, current, and future available network bandwidth.
-This ensures that video/audio signal of the best possible quality is transmitted and the connection does not get dropped because of network congestion.
+This ensures that video/audio signal of the best possible quality is transmitted, and the connection does not get dropped because of network congestion.
 Heuristics that model the network behavior and tries to predict it is known as Bandwidth estimation.
 
-There is a lot of nuance to this, so lets explore in greater detail.
+There is a lot of nuance to this, so let's explore in greater detail.
 
 ## Communicating Network Status
 The first road block with implementing Congestion Control is that UDP and RTP don't communicate network status. As a sender I have no idea when my packets are arriving or if they are arriving at all!
 
-RTP/RTCP has 3 different solutions to this problem. They all have their pros and cons. What you use will depend on what clients you are working with. What is the topology you are working with. Or even just how many development time you have available.
+RTP/RTCP has 3 different solutions to this problem. They all have their pros and cons. What you use will depend on what clients you are working with. What is the topology you are working with. Or even just how much development time you have available.
 
 ### Receiver Reports
 Receiver Reports are RTCP messages, the original way to communicate network status. You can find them in [RFC 1889](https://tools.ietf.org/html/rfc1889). They are sent on a schedule for each SSRC and contain the following fields:
@@ -216,41 +216,42 @@ The next generation of Network Status messages all involve receivers messaging s
 
 TMMBR and TMMBN came first and are defined in [RFC 5104](https://tools.ietf.org/html/rfc5104). REMB came later, there was a draft submitted in [draft-alvestrand-rmcat-remb](https://tools.ietf.org/html/draft-alvestrand-rmcat-remb-03), but it was never standardized.
 
-A session that uses REMB would look like the following {{< figure src="/images/05-remb.png">}}
+A session that uses REMB would look like the following:
+
+![REMB](../images/06-remb.png "REMB")
 
 ### Transport Wide Congestion Control
 Transport Wide Congestion Control is the latest development in RTCP network status communication.
 
 TWCC uses a quite simple principle:
 
-{{< figure src="/images/05-twcc-idea.png">}}
+![TWCC](../images/06-twcc-idea.png "TWCC")
 
-Unlike in REMB, a TWCC receiver doesn't try to estimate it's own incoming bitrate. It just lets the sender know which packets were received and when. Based on these reports, the sender has a very up-to-date idea of what is happening in the network.
+Unlike in REMB, a TWCC receiver doesn't try to estimate its own incoming bitrate. It just lets the sender know which packets were received and when. Based on these reports, the sender has a very up-to-date idea of what is happening in the network.
 
 - The sender creates an RTP packet with a special TWCC header extension, containing a list of packet sequence numbers.
 - The receiver responds with a special RTCP feedback message letting the sender know if and when each packet was received.
 
 The sender keeps track of sent packets, their sequence numbers, sizes and timestamps.
 When the sender receives RTCP messages from the receiver, it compares the send inter-packet delays with receive delays.
-If the receive delays increase, it means network congestion is happenning and the sender must act on it.
+If the receive delays increase, it means network congestion is happening, and the sender must act on it.
 
 In the diagram below, the median interpacket delay increase is +20 msec, a clear indicator of network congestion happening.
 
-{{< figure src="/images/05-twcc.png">}}
+![TWCC with delay](../images/06-twcc.png "TWCC with delay")
 
-TWCC provides the raw data and an excellent view into real time network conditions:
+TWCC provides the raw data, and an excellent view into real time network conditions:
 - Almost instant packet loss statistics, not only the percentage lost, but the exact packets that were lost.
 - Accurate send bitrate.
 - Accurate receive bitrate.
 - A jitter estimate.
 - Differences between send and receive packet delays.
 
-A trivial congestion control algrorithm to estimate the incoming bitrate on the receiver from the sender is to sum up packet sizes received, and divide it by the remote time elapsed.
-
+A trivial congestion control algorithm to estimate the incoming bitrate on the receiver from the sender is to sum up packet sizes received, and divide it by the remote time elapsed.
 
 ## Generating a Bandwidth Estimate
 Now that we have information around the state of the network we can make estimates around the bandwidth available. In 2012 the IETF started the RMCAT (RTP Media Congestion Avoidance Techniques) working group.
-This working group contains multiple submitted standards for congestion control algorithms. Before then Congestion Controllers algorithms were proprietary.
+This working group contains multiple submitted standards for congestion control algorithms. Before then, all Congestion Controllers algorithms were proprietary.
 
 The most deployed implementation is 'A Google Congestion Control Algorithm for Real-Time Communication' defined in [draft-alvestrand-rmcat-congestion](https://tools.ietf.org/html/draft-alvestrand-rmcat-congestion-02).
 In can run in two passes. First a 'loss based' pass that just uses Receiver Reports. If TWCC is available it will also take that additional data into consideration.

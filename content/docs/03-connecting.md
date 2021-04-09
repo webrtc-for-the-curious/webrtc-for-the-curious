@@ -12,15 +12,15 @@ WebRTC doesn't use a client/server model, it establishes peer-to-peer (P2P) conn
 
 Establishing peer-to-peer connectivity can be difficult though. These agents could be in different networks with no direct connectivity. In situations where direct connectivity does exist you can still have other issues. In some cases, your clients don't speak the same network protocols (UDP <-> TCP) or maybe IP Versions (IPv4 <-> IPv6).
 
-Despite these diffculties in setting up a P2P connection, you get advantages over traditional Client/Server technology because of the following attributes that WebRTC offers.
+Despite these difficulties in setting up a P2P connection, you get advantages over traditional Client/Server technology because of the following attributes that WebRTC offers.
 
 ### Reduced Bandwidth Costs
 
-Since media communication happens directly between peers you don't have to pay for or host a seperate server to relay media.
+Since media communication happens directly between peers you don't have to pay for or host a separate server to relay media.
 
 ### Lower Latency
 
-Communication is faster when it is direct! When a user has to run everything through your server it makes transmissions slower.
+Communication is faster when it is direct! When a user has to run everything through your server, it makes transmissions slower.
 
 ### Secure E2E Communication
 
@@ -42,25 +42,7 @@ Most of the time the other WebRTC Agent will not even be in the same network. A 
 
 Below is a graph of two distinct networks, connected over public internet. In each network you have two hosts.
 
-{{<mermaid>}}
-graph TB
-subgraph netb ["Network B (IP Address 5.0.0.2)"]
-  b3["Agent 3 (IP 192.168.0.1)"]
-  b4["Agent 4 (IP 192.168.0.2)"]
-  routerb["Router B"]
-  end
-
-subgraph neta ["Network A (IP Address 5.0.0.1)"]
-  routera["Router A"]
-  a1["Agent 1 (IP 192.168.0.1)"]
-  a2["Agent 2 (IP 192.168.0.2)"]
-  end
-
-pub{Public Internet}
-routera-->pub
-routerb-->pub
-
-{{</mermaid>}}
+![NAT mapping](../images/03-nat-mapping.png "NAT mapping")
 
 For the hosts in the same network it is very easy to connect. Communication between `192.168.0.1 -> 192.168.0.2` is easy to do! These two hosts can connect to each other without any outside help.
 
@@ -74,29 +56,11 @@ Some networks don't allow UDP traffic at all, or maybe they don't allow TCP. Som
 Another is 'Deep Packet Inspection' and other intelligent filterings. Some network administrators will run software that tries to process every packet. Many times this software doesn't understand WebRTC, so it blocks it because it doesn't know what to do, e.g. treating WebRTC packets as suspicious UDP packets on an arbitrary port that is not whitelisted.
 
 ## NAT Mapping
-NAT (Network Address Translation) Mapping is the magic that makes the connectivity of WebRTC possible. This is how WebRTC allows two peers in completely different subnets to communicate, addresing the "not in the same network" problem above. While it creates new challenges, let's explain how NAT Mapping works in the first place.
+NAT (Network Address Translation) Mapping is the magic that makes the connectivity of WebRTC possible. This is how WebRTC allows two peers in completely different subnets to communicate, addressing the "not in the same network" problem above. While it creates new challenges, let's explain how NAT Mapping works in the first place.
 
 It doesn't use a relay, proxy, or server. Again we have `Agent 1` and `Agent 2` and they are in different networks. However, traffic is flowing completely through. Visualized it looks like this:
 
-{{<mermaid>}}
-graph TB
-subgraph netb ["Network B (IP Address 5.0.0.2)"]
-  b2["Agent 2 (IP 192.168.0.1)"]
-  routerb["Router B"]
-  end
-
-subgraph neta ["Network A (IP Address 5.0.0.1)"]
-  routera["Router A"]
-  a1["Agent 1 (IP 192.168.0.1)"]
-  end
-
-pub{Public Internet}
-
-a1-.->routera;
-routera-.->pub;
-pub-.->routerb;
-routerb-.->b2;
-{{</mermaid>}}
+![NAT mapping](../images/03-nat-mapping.png "NAT mapping")
 
 To make this communication happen you establish a NAT Mapping. Agent 1 uses port 7000 to established a WebRTC connection with Agent 2. This creates a binding of `192.168.0.1:7000` to `5.0.0.1:7000`. This then allows Agent 2 to reach Agent 1 by sending packets to `5.0.0.1:7000`. Creating a NAT mapping like in this example is like an automated version of doing port forwardinging in your router.
 
@@ -257,52 +221,13 @@ TURN Usage exists in two forms. Usually, you have one peer acting as a 'TURN Cli
 
 These diagrams help illustrate what that would look like.
 
-#### One TURN Allocations for Communication
-{{<mermaid>}}
-graph TB
+#### One TURN Allocation for Communication
 
-subgraph turn ["TURN Allocation"]
-  serverport["Server Transport Address"]
-  relayport["Relayed Transport Address" ]
-  end
-
-turnclient{TURN Client}
-peer{UDP Client}
-
-turnclient-->|"ChannelData (To UDP Client)"|serverport
-serverport-->|"ChannelData (From UDP Client)"|turnclient
-
-peer-->|"Raw Network Traffic (To TURN Client)"|relayport
-relayport-->|"Raw Network Traffic (To UDP Client)"|peer
-{{</mermaid>}}
+![One TURN allocation](../images/03-one-turn-allocation.png "One TURN allocation")
 
 #### Two TURN Allocations for Communication
-{{<mermaid>}}
-graph TB
 
-subgraph turna["TURN Allocation A"]
-  serverportA["Server Transport Address"]
-  relayportA["Relayed Transport Address" ]
-  end
-
-subgraph turnb["TURN Allocation B"]
-  serverportB["Server Transport Address"]
-  relayportB["Relayed Transport Address" ]
-  end
-
-
-turnclientA{TURN Client A}
-turnclientB{TURN Client B}
-
-turnclientA-->|"ChannelData"|serverportA
-serverportA-->|"ChannelData"|turnclientA
-
-turnclientB-->|"ChannelData"|serverportB
-serverportB-->|"ChannelData"|turnclientB
-
-relayportA-->|"Raw Network Traffic"|relayportB
-relayportB-->|"Raw Network Traffic"|relayportA
-{{</mermaid>}}
+![Two TURN allocations](../images/03-two-turn-allocations.png "Two TURN allocations")
 
 ## ICE
 ICE (Interactive Connectivity Establishment) is how WebRTC connects two Agents. Defined in [RFC 8445](https://tools.ietf.org/html/rfc8445), this is another technology that pre-dates WebRTC! ICE is a protocol for establishing connectivity. It determines all the possible routes between the two peers and then ensures you stay connected.
@@ -351,41 +276,9 @@ After the initial handshake with the TURN Server you are given a  `RELAYED-ADDRE
 ### Connectivity Checks
 We now know the remote agent's `user fragment`, `password`, and candidates. We can now attempt to connect! Every candidate is paired with each other. So if you have 3 candidates on each side, you now have 9 candidate pairs.
 
-Visually it looks like this
-{{<mermaid>}}
-graph LR
+Visually it looks like this:
 
-subgraph agentA["ICE Agent A"]
-  hostA{Host Candidate}
-  serverreflexiveA{Server Reflexive Candidate}
-  relayA{Relay Candidate}
-  end
-
-style hostA fill:#ECECFF,stroke:red
-style serverreflexiveA fill:#ECECFF,stroke:green
-style relayA fill:#ECECFF,stroke:blue
-
-subgraph agentB["ICE Agent B"]
-  hostB{Host Candidate}
-  serverreflexiveB{Server Reflexive Candidate}
-  relayB{Relay Candidate}
-  end
-
-hostA --- hostB
-hostA --- serverreflexiveB
-hostA --- relayB
-linkStyle 0,1,2 stroke-width:2px,fill:none,stroke:red;
-
-serverreflexiveA --- hostB
-serverreflexiveA --- serverreflexiveB
-serverreflexiveA --- relayB
-linkStyle 3,4,5 stroke-width:2px,fill:none,stroke:green;
-
-relayA --- hostB
-relayA --- serverreflexiveB
-relayA --- relayB
-linkStyle 6,7,8 stroke-width:2px,fill:none,stroke:blue;
-{{</mermaid>}}
+![Connectivity checks](../images/03-connectivity-checks.png "Connectivity checks")
 
 ### Candidate Selection
 The Controlling and Controlled Agent both start sending traffic on each pair. This is needed if one Agent is behind an `Address Dependent Mapping`, this will cause a `Peer Reflexive Candidate` to be created.

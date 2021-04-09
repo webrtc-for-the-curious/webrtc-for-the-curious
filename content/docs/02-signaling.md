@@ -5,7 +5,7 @@ weight: 3
 ---
 
 # What is WebRTC Signaling?
-When you create a WebRTC agent it knows nothing about the other peer. It has no idea who it is going to connect with or what they are going to send!
+When you create a WebRTC agent, it knows nothing about the other peer. It has no idea who it is going to connect with or what they are going to send!
 Signaling is the initial bootstrapping that makes a call possible. After these values are exchanged, the WebRTC agents can communicate directly with each other.
 
 Signaling messages are just text. The WebRTC agents don't care how they are transported. They are commonly shared via Websockets, but that is not a requirement.
@@ -16,7 +16,7 @@ WebRTC uses an existing protocol called the Session Description Protocol. Via th
 The complexity comes from understanding all the values that WebRTC populates it with.
 
 This protocol is not specific to WebRTC. We will learn the Session Description Protocol first without even talking about WebRTC. WebRTC only really takes advantage of a subset of the protocol so we are only going to cover what we need.
-After we understand the protocol we will move on to its applied usage in WebRTC.
+After we understand the protocol, we will move on to its applied usage in WebRTC.
 
 ## What is the *Session Description Protocol* (SDP)?
 The Session Description Protocol is defined in [RFC 4566](https://tools.ietf.org/html/rfc4566). It is a key/value protocol with a newline after each value. It will feel similar to an INI file.

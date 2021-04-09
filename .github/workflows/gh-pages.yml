@@ -29,11 +29,11 @@ jobs:
 
       - uses: docker://pandoc/latex:2.12
         with:
-          args: --output=public/docs/webrtc-for-the-curious.pdf --toc ${{ env.FILELIST }} .pandoc/metadata_en.txt
+          args: --output=public/docs/webrtc-for-the-curious.pdf --resource-path=.:./content:./content/images --toc ${{ env.FILELIST }} .pandoc/metadata_en.txt
 
       - uses: docker://pandoc/latex:2.12
         with:
-          args: --output=public/docs/webrtc-for-the-curious.epub --toc ${{ env.FILELIST }} .pandoc/metadata_en.txt
+          args: --output=public/docs/webrtc-for-the-curious.epub --resource-path=.:./content:./content/images --toc ${{ env.FILELIST }} .pandoc/metadata_en.txt
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

@@ -6,7 +6,7 @@ weight: 8
 
 # What do I get from WebRTC's data communication?
 WebRTC provides data channels for data communication. Between two peers you can open 65,534 data channels.
-A data channel is datagram based, and each has its own durability settings. By default each data
+A data channel is datagram based, and each has its own durability settings. By default, each data
 channel has guaranteed ordered delivery.
 
 If you are approaching WebRTC from a media background data channels might seem wasteful. Why do
@@ -158,10 +158,10 @@ SCTP has many PPIDs, but WebRTC is only using the following 5:
 
 ## Protocol
 The following are some of the chunks used by the SCTP protocol. This is
-not an exhausive demonstration. This provides enough structures for the
+not an exhaustive demonstration. This provides enough structures for the
 state machine to make sense.
 
-Each Chunk starts with a `type` field. Before a list of chunks you will
+Each Chunk starts with a `type` field. Before a list of chunks, you will
 also have a header.
 
 ### DATA Chunk
@@ -183,12 +183,12 @@ also have a header.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 The DATA chunk is how all user data is exchanged. When you send
-anything over the data channel this is how it is exchanged.
+anything over the data channel, this is how it is exchanged.
 
 `U` bit is set if this is an unordered packet. We can ignore the
 Stream Sequence Number.
 
-`B` and `E` are the begining and end bits. If you want to send a
+`B` and `E` are the beginning and end bits. If you want to send a
 message that is too large for one DATA chunk it needs to be fragmented.
 With the the `B` and `E` bit and Sequence Numbers SCTP is able to express
 this.
@@ -205,7 +205,7 @@ identifier for this message. After 4,294,967,295 messages this will wrap.
 belongs too.
 
 `Payload Protocol Identifier` is the type of data that is flowing through
-this stream. For WebRTC it is going to be DCEP, String or Binary.
+this stream. For WebRTC, it is going to be DCEP, String or Binary.
 
 `User Data` is what you are sending. All data you send via a WebRTC data channel
 is transmitted via a DATA chunk.
@@ -291,7 +291,7 @@ update the TSN though.
 may change this during the session if more memory becomes available.
 
 `Ack Blocks` TSNs that have been received after the `Cumulative TSN ACK`.
-This is used if there is a gap in packets delivered. Lets say DATA chunks with TSNs
+This is used if there is a gap in packets delivered. Let's say DATA chunks with TSNs
 `100`, `102`, `103` and `104` are delivered. The `Cumulative TSN ACK` would be `100`, but
 `Ack Blocks` could be used to tell the sender it doesn't need to resend `102`, `103` or `104`.
 
@@ -327,7 +327,7 @@ mapping open.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-An ABORT chunk abruptly shuts down the the assocation. Used when
+An ABORT chunk abruptly shuts down the association. Used when
 one side enters an error state. Gracefully ending the connection uses
 the SHUTDOWN chunk.
 
@@ -342,10 +342,10 @@ the SHUTDOWN chunk.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-The SHUTDOWN Chunk starts a graceful shutdown of the SCTP assocation.
+The SHUTDOWN Chunk starts a graceful shutdown of the SCTP association.
 Each agent informs the remote the last TSN it sent. This ensures
 that no packets are lost. WebRTC doesn't do a graceful shutdown of
-the SCTP assocation. You need to tear down each data channel yourself
+the SCTP association. You need to tear down each data channel yourself
 to handle it gracefully.
 
 `Cumulative TSN ACK` is the last TSN that was sent. Each side knows
@@ -365,7 +365,7 @@ not to terminate until they have received the DATA chunk with this TSN.
 ```
 
 An ERROR chunk is used to notify the remote SCTP Agent that a non-fatal
-error has occured.
+error has occurred.
 
 ### FORWARD TSN Chunk
 ```
@@ -385,8 +385,7 @@ error has occured.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-The FORWARD TSN Chunk moves the global TSN forward. SCTP does this
-so you can skip some packets you don't care about anymore. Lets say
+The FORWARD TSN Chunk moves the global TSN forward. SCTP does this, so you can skip some packets you don't care about anymore. Let's say
 you send `10 11 12 13 14 15` and these packets are only valid if they
 all arrive. This data is also real-time sensitive, so if it arrives
 late it isn't useful.
@@ -401,10 +400,9 @@ before this TSN will not be retained.
 `Stream` and `Stream Sequence` are used to jump the `Stream Sequence Number`
 number ahead. Refer back to the DATA Chunk for the significance of this field.
 
-
 ## State Machine
-These are some of the interesting parts of the SCTP state machine. WebRTC doesn't use all
-the features of the SCTP state machine so we have excluded those parts. We also have simplified some components
+These are some interesting parts of the SCTP state machine. WebRTC doesn't use all
+the features of the SCTP state machine, so we have excluded those parts. We also have simplified some components
 to make them understandable on their own.
 
 ### Connection Establishment Flow
@@ -416,19 +414,7 @@ The `INIT ACK` Chunk contains the cookie. The cookie is then returned to its cre
 using the `COOKIE ECHO`. If cookie verification is successful the `COOKIE ACK` is
 sent and DATA chunks are ready to be exchanged.
 
-{{<mermaid>}}
-sequenceDiagram
-    participant A1 as Association (A1)
-    participant A2 as Association (A2)
-
-    A1->>A2: INIT
-
-    A2->>A1: INIT ACK
-
-    A1->>A2: COOKIE ECHO
-
-    A2->>A1: COOKIE ACK
-{{</mermaid>}}
+![Connection establishment](../images/07-connection-establishment.png "Connection establishment")
 
 ### Connection Teardown Flow
 SCTP uses the `SHUTDOWN` Chunk. When a agent receives a `SHUTDOWN` Chunk it will wait until it
