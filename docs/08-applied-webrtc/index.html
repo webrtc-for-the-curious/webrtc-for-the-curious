@@ -1,4 +1,4 @@
-<!doctype html><html lang=en dir=ltr><head><meta name=generator content="Hugo 0.74.3"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Applied WebRTC #  Now that you know how WebRTC works it is time to build with it. This chapter explores what people are building with WebRTC, and how they are building it. You will learn all the interesting things that are happening with WebRTC. The power of WebRTC comes as a cost. Building production grade WebRTC services is challenging. This chapter will try and explain those challenges before you hit them."><meta name=theme-color content="#FFFFFF"><meta property="og:title" content="Applied WebRTC"><meta property="og:description" content="Applied WebRTC #  Now that you know how WebRTC works it is time to build with it. This chapter explores what people are building with WebRTC, and how they are building it. You will learn all the interesting things that are happening with WebRTC. The power of WebRTC comes as a cost. Building production grade WebRTC services is challenging. This chapter will try and explain those challenges before you hit them."><meta property="og:type" content="article"><meta property="og:url" content="https://webrtcforthecurious.com/docs/08-applied-webrtc/"><meta property="article:modified_time" content="2021-04-09T16:00:02-04:00"><meta property="og:site_name" content="WebRTC for the Curious"><title>Applied WebRTC | WebRTC for the Curious</title><link rel=manifest href=/manifest.json><link rel=icon href=/favicon.png type=image/x-icon><link rel=alternate hreflang=tr href=https://webrtcforthecurious.com/tr/docs/08-applied-webrtc/ title="Applied WebRTC"><link rel=alternate hreflang=zh href=https://webrtcforthecurious.com/zh/docs/08-applied-webrtc/ title=WebRTC应用场景><link rel=stylesheet href=/book.min.6c7c6446dfdee7c8c933e9bbc6e80ee3ed6c913b2a59519f2092c3c6a9d63e55.css integrity="sha256-bHxkRt/e58jJM+m7xugO4+1skTsqWVGfIJLDxqnWPlU="><script defer src=/en.search.min.cd67fbc82f98fbcd44db5cda5bdaced4c4bc9a315c33184e6ef081358438ca9c.js integrity="sha256-zWf7yC+Y+81E21zaW9rO1MS8mjFcMxhObvCBNYQ4ypw="></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<!doctype html><html lang=en dir=ltr><head><meta name=generator content="Hugo 0.74.3"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Applied WebRTC #  Now that you know how WebRTC works it is time to build with it. This chapter explores what people are building with WebRTC, and how they are building it. You will learn all the interesting things that are happening with WebRTC. The power of WebRTC comes as a cost. Building production grade WebRTC services is challenging. This chapter will try and explain those challenges before you hit them."><meta name=theme-color content="#FFFFFF"><meta property="og:title" content="Applied WebRTC"><meta property="og:description" content="Applied WebRTC #  Now that you know how WebRTC works it is time to build with it. This chapter explores what people are building with WebRTC, and how they are building it. You will learn all the interesting things that are happening with WebRTC. The power of WebRTC comes as a cost. Building production grade WebRTC services is challenging. This chapter will try and explain those challenges before you hit them."><meta property="og:type" content="article"><meta property="og:url" content="https://webrtcforthecurious.com/docs/08-applied-webrtc/"><meta property="article:modified_time" content="2021-04-09T16:21:56-07:00"><meta property="og:site_name" content="WebRTC for the Curious"><title>Applied WebRTC | WebRTC for the Curious</title><link rel=manifest href=/manifest.json><link rel=icon href=/favicon.png type=image/x-icon><link rel=alternate hreflang=tr href=https://webrtcforthecurious.com/tr/docs/08-applied-webrtc/ title="Applied WebRTC"><link rel=alternate hreflang=zh href=https://webrtcforthecurious.com/zh/docs/08-applied-webrtc/ title=WebRTC应用场景><link rel=stylesheet href=/book.min.6c7c6446dfdee7c8c933e9bbc6e80ee3ed6c913b2a59519f2092c3c6a9d63e55.css integrity="sha256-bHxkRt/e58jJM+m7xugO4+1skTsqWVGfIJLDxqnWPlU="><script defer src=/en.search.min.7d68d99e9b02f30c2272eb679f3b0459aa4e7fa4abe630c719ae4d2ad9069c5f.js integrity="sha256-fWjZnpsC8wwicutnnzsEWapOf6Sr5jDHGa5NKtkGnF8="></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
 <input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a href=/><span>WebRTC for the Curious</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li><a href=https://webrtcforthecurious.com/docs/01-what-why-and-how/>What, Why and How</a></li><li><a href=https://webrtcforthecurious.com/docs/02-signaling/>Signaling</a></li><li><a href=https://webrtcforthecurious.com/docs/03-connecting/>Connecting</a></li><li><a href=https://webrtcforthecurious.com/docs/04-securing/>Securing</a></li><li><a href=https://webrtcforthecurious.com/docs/05-real-time-networking/>Real-time Networking</a></li><li><a href=https://webrtcforthecurious.com/docs/06-media-communication/>Media Communication</a></li><li><a href=https://webrtcforthecurious.com/docs/07-data-communication/>Data Communication</a></li><li><a href=https://webrtcforthecurious.com/docs/08-applied-webrtc/ class=active>Applied WebRTC</a></li><li><a href=https://webrtcforthecurious.com/docs/09-debugging/>Debugging</a></li><li><a href=https://webrtcforthecurious.com/docs/10-history-of-webrtc/>History</a></li><li><a href=https://webrtcforthecurious.com/docs/11-faq/>FAQ</a></li></ul></nav><script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label>
 <strong>Applied WebRTC</strong>
 <label for=toc-control><img src=/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#by-use-case>By Use Case</a><ul><li><a href=#conferencing>Conferencing</a></li><li><a href=#broadcasting>Broadcasting</a></li><li><a href=#remote-access>Remote Access</a></li><li><a href=#file-sharing-and-censorship-circumvention>File Sharing and Censorship Circumvention</a></li><li><a href=#iot>IoT</a></li><li><a href=#media-protocol-bridging>Media Protocol Bridging</a></li><li><a href=#data-protocol-bridging>Data Protocol Bridging</a></li><li><a href=#teleoperation>Teleoperation</a></li><li><a href=#distributed-cdn>Distributed CDN</a></li></ul></li><li><a href=#webrtc-topologies>WebRTC Topologies</a><ul><li><a href=#one-to-one>One-To-One</a></li><li><a href=#full-mesh>Full Mesh</a></li><li><a href=#hybrid-mesh>Hybrid Mesh</a></li><li><a href=#selective-forwarding-unit>Selective Forwarding Unit</a></li><li><a href=#mcu>MCU</a></li></ul></li></ul></nav></aside></header><article class=markdown><h1 id=applied-webrtc>Applied WebRTC
@@ -6,15 +6,14 @@
 building with WebRTC, and how they are building it. You will learn all the interesting things that are
 happening with WebRTC. The power of WebRTC comes as a cost. Building production grade WebRTC services is
 challenging. This chapter will try and explain those challenges before you hit them.</p><h2 id=by-use-case>By Use Case
-<a class=anchor href=#by-use-case>#</a></h2><p>Many think WebRTC is just the technology conferencing in the web browser. It is so much more then that though!
-WebRTC is used for a wide range of use cases. New use cases showing up all the time. These are some of the common ones
-and how WebRTC is revolutionizing them.</p><h3 id=conferencing>Conferencing
+<a class=anchor href=#by-use-case>#</a></h2><p>Many think WebRTC is just a technology for conferencing in the web browser. It is so much more than that though!
+WebRTC is used for a wide range of use cases. New use cases showing up all the time. In this chapter we will list some common ones and how WebRTC is revolutionizing them.</p><h3 id=conferencing>Conferencing
 <a class=anchor href=#conferencing>#</a></h3><p>Conferencing is the original use case for WebRTC. The protocol contains a few necessary features that no other protocol offers
 in the browser. You could build a conferencing system with WebSockets and it may work in optimal conditions. If you want
-something that can be deployed in real world network conditions WebRTC is the best choice.</p><p>WebRTC provides congestion control and adaptive bitrate for media. As the conditions of the network change users will still get the
+something that can be deployed in real world network conditions, WebRTC is the best choice.</p><p>WebRTC provides congestion control and adaptive bitrate for media. As the conditions of the network change, users will still get the
 best experience possible. Developers don&rsquo;t have to write any additional code to measure these conditions either.</p><p>Participants can send and receive multiple streams. They can also add and remove those streams at any time. Codecs are negotiated
 as well. All of this functionality is provided by the browser, no custom code is required to be written by the developer.</p><p>Conferencing also benefits from data channels. Users can send metadata or share documents. You can create multiple streams
-and configure them if you need performance more then reliability.</p><h3 id=broadcasting>Broadcasting
+and configure them if you need performance more than reliability.</p><h3 id=broadcasting>Broadcasting
 <a class=anchor href=#broadcasting>#</a></h3><p>Lots of new projects are starting to appear in the broadcast space that use WebRTC. The protocol has a lot to offer for both the publisher
 and consumer of media.</p><p>WebRTC being in the browser makes for it easy for users to publish video. It removes the requirement for users to download a new client.
 Any platform that has a web browser can publish video. Publishers can then send multiple tracks and modify/remove them at anytime. This is
@@ -39,7 +38,7 @@ users of the network from joining conference calls.</p><h3 id=iot>IoT
 <a class=anchor href=#iot>#</a></h3><p>IoT covers a few different use cases. For many this means network connected security cameras. Using WebRTC you can stream the video to another WebRTC
 peer like your a phone or browser. Another use case is having devices connect and exchange sensor data. You can have two devices in your LAN
 exchange climate, noise or light readings.</p><p>WebRTC has a huge privacy advantage here over legacy video stream protocols. Since WebRTC supports P2P connectivity the camera can send the video
-directly to your browser. There is no reason for your video to be sent to a 3rd party server. Even when video is encrypted an attacker can make
+directly to your browser. There is no reason for your video to be sent to a 3rd party server. Even when video is encrypted, an attacker can make
 assumptions from the metadata of the call.</p><p>Interoperability is another advantage for the IoT space. WebRTC is available in lots of different languages C#, C++, C, Go, Java, Python, Rust
 and Typescript. This means you can use the language that works best for you. You also don&rsquo;t have to turn to proprietary protocols or formats
 to be able to connect your two different clients.</p><h3 id=media-protocol-bridging>Media Protocol Bridging
@@ -52,95 +51,40 @@ to run. The bridge is just required to add or remove things that are WebRTC spec
 to anything else you need to use a protocol bridge. A protocol bridge is a server that converts foreign traffic into something the browser
 can access. A popular example is using SSH from your browser to access a server. WebRTC&rsquo;s data channels have two advantages over the competition.</p><p>WebRTC&rsquo;s data channels allow unreliable and unordered delivery. In cases where low latency is critical this is needed. You don&rsquo;t want new data to be
 blocked by old data, this is known as head-of-line blocking. Imagine you are playing a multiplayer First-person shooter. Do you really care where the
-player was two seconds ago? If that data didn&rsquo;t arrive in time it doesn&rsquo;t make sense to keep trying to send it. Unreliable and unordered delivery allows
-you to get your data as soon as it arrives.</p><p>Data channels also provide feedback pressure. This tells you if you are sending data faster then your connection can support. You then have two
+player was two seconds ago? If that data didn&rsquo;t arrive in time, it doesn&rsquo;t make sense to keep trying to send it. Unreliable and unordered delivery allows
+you to get your data as soon as it arrives.</p><p>Data channels also provide feedback pressure. This tells you if you are sending data faster than your connection can support. You then have two
 choices when this happens. The data channel can either be configured to buffer and deliver the data late, or you can drop the data that hasn&rsquo;t arrived
 in real-time.</p><h3 id=teleoperation>Teleoperation
 <a class=anchor href=#teleoperation>#</a></h3><p>Teleoperation is the act of controlling a device remotely via WebRTC data channels, and sending the camera back via RTP. Developers are driving cars remotely
 via WebRTC today! This is used to control robots at construction sites and deliver packages. Using WebRTC for these problems makes sense for two reasons.</p><p>The ubiquity of WebRTC makes it easy to give users control. All the user needs is a web browser and an input device. Browsers even
-support taking input from joysticks and gamepads. WebRTC completely removes the need to install an additional client on the users device.</p><h3 id=distributed-cdn>Distributed CDN
+support taking input from joysticks and gamepads. WebRTC completely removes the need to install an additional client on the user&rsquo;s device.</p><h3 id=distributed-cdn>Distributed CDN
 <a class=anchor href=#distributed-cdn>#</a></h3><p>Distributed CDNs are a subset of file sharing. The files being distributed are configured by the CDN operator instead. When users join the CDN network
 they can download and share the allowed files. Users get all the same benefits as file sharing.</p><p>These CDNs work great when you are at an office with poor external connectivity, but great LAN connectivity. You can have one user download a video, and
-then share it with everyone else. Since everyone isn&rsquo;t attempting to fetch the same file via the external network the transfer will complete faster.</p><h2 id=webrtc-topologies>WebRTC Topologies
+then share it with everyone else. Since everyone isn&rsquo;t attempting to fetch the same file via the external network, the transfer will complete faster.</p><h2 id=webrtc-topologies>WebRTC Topologies
 <a class=anchor href=#webrtc-topologies>#</a></h2><p>WebRTC is a protocol for connecting two agents, so how are developers connecting hundreds of people at once? There are a few different
-ways you can do it and they all have pros and cons. These solutions broadly fall into two categories Peer-to-Peer or Client/Server. WebRTC&rsquo;s
+ways you can do it, and they all have pros and cons. These solutions broadly fall into two categories Peer-to-Peer or Client/Server. WebRTC&rsquo;s
 flexibility allows us to create both.</p><h3 id=one-to-one>One-To-One
 <a class=anchor href=#one-to-one>#</a></h3><p>One-to-One is the first connection type you will use with WebRTC. You connect two WebRTC Agents directly and they can send bi-directional media and data.
-The connection looks like this.</p><script src=/mermaid.min.js></script><script>mermaid.initialize({"flowchart":{"useMaxWidth":true},"theme":"default"})</script><p class=mermaid>flowchart LR
-a["WebRTC Agent A"]
-b["WebRTC Agent B"]
-a <--> b</p><h3 id=full-mesh>Full Mesh
+The connection looks like this.</p><p><img src=../images/08-one-to-one.png alt=One-to-One title=One-to-One></p><h3 id=full-mesh>Full Mesh
 <a class=anchor href=#full-mesh>#</a></h3><p>Full mesh is the answer if you want to build a conference call or a multiplayer game. In this topology each user establishes a connection
 with every other user directly. This allows you to build your application, but it comes with some downsides.</p><p>In a Full Mesh topology each user is connected directly. That means you have to encode and upload video independently for each member of the call.
 The network conditions between each connection will be different, so you can&rsquo;t reuse the same video. The error handling is also difficult in these
-deployments. You need to carefully consider if you have lost complete connectivity, or just connectivity with one remote peer.</p><p>Because of these concerns, a Full Mesh is best used for small groups. For anything larger a client/server topology is best.</p><p class=mermaid>flowchart LR
-a["WebRTC Agent A"]
-b["WebRTC Agent B"]
-c["WebRTC Agent C"]
-d["WebRTC Agent D"]
-a <--> b
-a <--> c
-a <--> d
-b <--> c
-b <--> d
-c <--> d</p><h3 id=hybrid-mesh>Hybrid Mesh
-<a class=anchor href=#hybrid-mesh>#</a></h3><p>Hybrid Mesh is an alternative to Full Mesh that can alleviate some of Full Mesh&rsquo;s issues. In a Hybrid Mesh connections aren&rsquo;t established
-between every user. Instead media is relayed through peers in the network. This means that the creator of the media doesn&rsquo;t have to use as
-much bandwidth to distribute media.</p><p>This does have some downsides however. In this setup the original creator of the media has no idea who its video is being sent too, and if
-it arrived successfully. You also will have an increase in latency with every hop in your Hybrid Mesh network.</p><p class=mermaid>flowchart LR
-a["WebRTC Agent A"]
-b["WebRTC Agent B"]
-c["WebRTC Agent C"]
-d["WebRTC Agent D"]
-e["WebRTC Agent E"]
-f["WebRTC Agent F"]
-g["WebRTC Agent G"]
-a <--> b
-a <--> c
-b <--> d
-b <--> e
-c <--> f
-e <--> g</p><h3 id=selective-forwarding-unit>Selective Forwarding Unit
-<a class=anchor href=#selective-forwarding-unit>#</a></h3><p>A SFU (Selective Forwarding Unit) also solves the issues of Full Mesh, but in an entirely different way. A SFU implements a client/server topology, instead of P2P.
+deployments. You need to carefully consider if you have lost complete connectivity, or just connectivity with one remote peer.</p><p>Because of these concerns, a Full Mesh is best used for small groups. For anything larger a client/server topology is best.</p><p><img src=../images/08-full-mesh.png alt="Full mesh" title="Full mesh"></p><h3 id=hybrid-mesh>Hybrid Mesh
+<a class=anchor href=#hybrid-mesh>#</a></h3><p>Hybrid Mesh is an alternative to Full Mesh that can alleviate some of the Full Mesh&rsquo;s issues. In a Hybrid Mesh connections aren&rsquo;t established
+between every user. Instead, media is relayed through peers in the network. This means that the creator of the media doesn&rsquo;t have to use as
+much bandwidth to distribute media.</p><p>This does have some downsides however. In this set up, the original creator of the media has no idea who its video is being sent too, and if
+it arrived successfully. You also will have an increase in latency with every hop in your Hybrid Mesh network.</p><p><img src=../images/08-hybrid-mesh.png alt="Hybrid mesh" title="Hybrid mesh"></p><h3 id=selective-forwarding-unit>Selective Forwarding Unit
+<a class=anchor href=#selective-forwarding-unit>#</a></h3><p>An SFU (Selective Forwarding Unit) also solves the issues of Full Mesh, but in an entirely different way. An SFU implements a client/server topology, instead of P2P.
 Each WebRTC peer connects to the SFU and uploads its media. The SFU then forwards this media out to each connected client.</p><p>With an SFU each WebRTC Agent only has to encode and upload their video once. The burden of distributing it to all the viewers is on the SFU.
-Connectivity with an SFU is much easier then P2P as well. You can run an SFU on a world routable address, making it much easier for clients to connect.
+Connectivity with an SFU is much easier than P2P as well. You can run an SFU on a world routable address, making it much easier for clients to connect.
 You don&rsquo;t need to worry about NAT Mappings. You do still need to make sure your SFU is available via TCP (either via ICE-TCP or TURN).</p><p>Building a simple SFU can be done in a weekend. Building a good SFU that can handle all types of clients is never ending. Tuning the Congestion Control, Error
-Correction and Performance is a never ending task.</p><p class=mermaid>flowchart LR
-a["WebRTC Agent A"]
-b["WebRTC Agent B"]
-c["WebRTC Agent C"]
-server["WebRTC SFU"]
-a --> server
-b --> server
-c --> server
-server --> a
-server --> a
-server --> b
-server --> b
-server --> c
-server --> c
-linkStyle 0,1,8 stroke-width:2px,fill:none,stroke:red;
-linkStyle 3,5,7 stroke-width:2px,fill:none,stroke:green;
-linkStyle 2,4,6 stroke-width:2px,fill:none,stroke:blue;</p><h3 id=mcu>MCU
+Correction and Performance is a never ending task.</p><p><img src=../images/08-sfu.png alt="Selective Forwarding Unit" title="Selective Forwarding Unit"></p><h3 id=mcu>MCU
 <a class=anchor href=#mcu>#</a></h3><p>A MCU (Multi-point Conferencing Unit) is a client/server topology like an SFU, but composites the output streams. Instead of distributing the outbound media
-unmodified it re-encodes them as one feed.</p><p class=mermaid>flowchart LR
-a["WebRTC Agent A"]
-b["WebRTC Agent B"]
-c["WebRTC Agent C"]
-server["WebRTC MCU"]
-a --> server
-b --> server
-c --> server
-server --> a
-server --> b
-server --> c
-linkStyle 0 stroke-width:2px,fill:none,stroke:red;
-linkStyle 1 stroke-width:2px,fill:none,stroke:green;
-linkStyle 2 stroke-width:2px,fill:none,stroke:blue;</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div class=book-languages tabindex=0 aria-haspopup=true><ul><li class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+unmodified it re-encodes them as one feed.</p><p><img src=../images/08-mcu.png alt="Multi-point Conferencing Unit" title="Multi-point Conferencing Unit"></p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div class=book-languages tabindex=0 aria-haspopup=true><ul><li class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
 English</li></ul><ul class=book-languages-list><li class=active><a href=https://webrtcforthecurious.com/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
 English</a></li><li><a href=https://webrtcforthecurious.com/tr/docs/08-applied-webrtc/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
 Turkish</a></li><li><a href=https://webrtcforthecurious.com/fa/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
 Persian</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/08-applied-webrtc/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
-简体中文</a></li></ul></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/commit/8bff748e96507b56a2b99bdb31bbd2acdf6c6e43 title="Last modified by Will Forcey | April 9, 2021" target=_blank rel=noopener><img src=/svg/calendar.svg class=book-icon alt=Calendar>
+简体中文</a></li></ul></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/commit/57c14da72a6adb0cd6c30449bd15df5288c59ee7 title="Last modified by Claes Mogren | April 9, 2021" target=_blank rel=noopener><img src=/svg/calendar.svg class=book-icon alt=Calendar>
 <span>April 9, 2021</span></a></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content/docs/08-applied-webrtc.md target=_blank rel=noopener><img src=/svg/edit.svg class=book-icon alt=Edit>
 <span>Edit this page</span></a></div></div></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#by-use-case>By Use Case</a><ul><li><a href=#conferencing>Conferencing</a></li><li><a href=#broadcasting>Broadcasting</a></li><li><a href=#remote-access>Remote Access</a></li><li><a href=#file-sharing-and-censorship-circumvention>File Sharing and Censorship Circumvention</a></li><li><a href=#iot>IoT</a></li><li><a href=#media-protocol-bridging>Media Protocol Bridging</a></li><li><a href=#data-protocol-bridging>Data Protocol Bridging</a></li><li><a href=#teleoperation>Teleoperation</a></li><li><a href=#distributed-cdn>Distributed CDN</a></li></ul></li><li><a href=#webrtc-topologies>WebRTC Topologies</a><ul><li><a href=#one-to-one>One-To-One</a></li><li><a href=#full-mesh>Full Mesh</a></li><li><a href=#hybrid-mesh>Hybrid Mesh</a></li><li><a href=#selective-forwarding-unit>Selective Forwarding Unit</a></li><li><a href=#mcu>MCU</a></li></ul></li></ul></nav></div></aside></main></body></html>
