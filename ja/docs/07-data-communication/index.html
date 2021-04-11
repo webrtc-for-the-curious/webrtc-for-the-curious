@@ -1,0 +1,208 @@
+<!doctype html><html lang=ja dir=ltr><head><meta name=generator content="Hugo 0.74.3"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="WebRTCのデータ通信で何が得られるのか？ #  WebRTCは、データ通信のためのデータチャンネルを提供します。2つのピアの間では、65,534個のデータチャンネルを開くことができます。 データチャンネルはデータグラムをベースにしており、それぞれに耐久性の設定があります。デフォルトでは、各データチャネルには順序通りの配信が保証されています。
+メディアの観点からWebRTCにアプローチしている場合、データチャネルは無駄に思えるかもしれません。HTTP や WebSocket を使用することができるのに、なぜこのようなサブシステム全体が必要なのでしょうか？
+データチャネルの本当の強みは、UDP のように順序のない、または損失のある配信を行うように設定できることです。 これは、低レイテンシーでハイパフォーマンスの場合に必要です。バックプレッシャーを測定し、ネットワークがサポートする量だけを送信することができます。
+WebRTCはどのように動作するのですか？ #  WebRTCは、RFC 2960で定義されているSCTP(Stream Control Transmission Protocol)を使用しています。SCTPはトランスポート層のプロトコルで、TCPやUDPの代替となることを目的としています。WebRTCでは、DTLS接続上で動作するアプリケーション層のプロトコルとして使用しています。
+SCTPはストリームを提供し、各ストリームは独立して設定できます。WebRTCのデータチャネルは、それらを薄く抽象化したものに過ぎません。耐久性や順序に関する設定は、そのままSCTPエージェントに渡されます。
+データチャネルには、チャネルラベルなど、SCTPでは表現できない機能があります。この問題を解決するために、WebRTCはRFC 8832で定義されているDCEP（Data Channel Establishment Protocol）を使用します。DCEPでは、通信を行うためのメッセージを定義しています。
+DCEP #  DCEPには、DATA_CHANNEL_OPENとDATA_CHANNEL_ACKの2つのメッセージしかありません。データチャネルが開かれるたびに、リモートはackで応答する必要があります。
+DATA_CHANNEL_OPEN #  このメッセージは、チャネルを開くことを望む WebRTC エージェントによって送信されます。
+パケットフォーマット #   0 1 2 3 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ | Message Type | Channel Type | Priority | +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ | Reliability Parameter | +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ | Label Length | Protocol Length | +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ \ \ / Label / \ \ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ \ \ / Protocol / \ \ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ メッセージタイプ #  メッセージタイプは、0x03の静的な値です。"><meta name=theme-color content="#FFFFFF"><meta property="og:title" content="データ・コミュニケーション"><meta property="og:description" content="WebRTCのデータ通信で何が得られるのか？ #  WebRTCは、データ通信のためのデータチャンネルを提供します。2つのピアの間では、65,534個のデータチャンネルを開くことができます。 データチャンネルはデータグラムをベースにしており、それぞれに耐久性の設定があります。デフォルトでは、各データチャネルには順序通りの配信が保証されています。
+メディアの観点からWebRTCにアプローチしている場合、データチャネルは無駄に思えるかもしれません。HTTP や WebSocket を使用することができるのに、なぜこのようなサブシステム全体が必要なのでしょうか？
+データチャネルの本当の強みは、UDP のように順序のない、または損失のある配信を行うように設定できることです。 これは、低レイテンシーでハイパフォーマンスの場合に必要です。バックプレッシャーを測定し、ネットワークがサポートする量だけを送信することができます。
+WebRTCはどのように動作するのですか？ #  WebRTCは、RFC 2960で定義されているSCTP(Stream Control Transmission Protocol)を使用しています。SCTPはトランスポート層のプロトコルで、TCPやUDPの代替となることを目的としています。WebRTCでは、DTLS接続上で動作するアプリケーション層のプロトコルとして使用しています。
+SCTPはストリームを提供し、各ストリームは独立して設定できます。WebRTCのデータチャネルは、それらを薄く抽象化したものに過ぎません。耐久性や順序に関する設定は、そのままSCTPエージェントに渡されます。
+データチャネルには、チャネルラベルなど、SCTPでは表現できない機能があります。この問題を解決するために、WebRTCはRFC 8832で定義されているDCEP（Data Channel Establishment Protocol）を使用します。DCEPでは、通信を行うためのメッセージを定義しています。
+DCEP #  DCEPには、DATA_CHANNEL_OPENとDATA_CHANNEL_ACKの2つのメッセージしかありません。データチャネルが開かれるたびに、リモートはackで応答する必要があります。
+DATA_CHANNEL_OPEN #  このメッセージは、チャネルを開くことを望む WebRTC エージェントによって送信されます。
+パケットフォーマット #   0 1 2 3 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ | Message Type | Channel Type | Priority | +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ | Reliability Parameter | +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ | Label Length | Protocol Length | +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ \ \ / Label / \ \ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ \ \ / Protocol / \ \ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ メッセージタイプ #  メッセージタイプは、0x03の静的な値です。"><meta property="og:type" content="article"><meta property="og:url" content="https://webrtcforthecurious.com/ja/docs/07-data-communication/"><meta property="article:modified_time" content="2021-04-11T18:21:31+09:00"><meta property="og:site_name" content="好奇心旺盛な人のためのWebRTC"><title>データ・コミュニケーション | 好奇心旺盛な人のためのWebRTC</title><link rel=manifest href=/manifest.json><link rel=icon href=/favicon.png type=image/x-icon><link rel=alternate hreflang=en href=https://webrtcforthecurious.com/docs/07-data-communication/ title="Data Communication"><link rel=alternate hreflang=tr href=https://webrtcforthecurious.com/tr/docs/07-data-communication/ title="Data Communication"><link rel=alternate hreflang=zh href=https://webrtcforthecurious.com/zh/docs/07-data-communication/ title=数据通信><link rel=stylesheet href=/book.min.6c7c6446dfdee7c8c933e9bbc6e80ee3ed6c913b2a59519f2092c3c6a9d63e55.css integrity="sha256-bHxkRt/e58jJM+m7xugO4+1skTsqWVGfIJLDxqnWPlU="><script defer src=/ja.search.min.ecc4af473d0eaf97ae15f9c232df7fe4ae74ee222e14e64090f9b9c6c7013a9f.js integrity="sha256-7MSvRz0Or5euFfnCMt9/5K507iIuFOZAkPm5xscBOp8="></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a href=/ja><span>好奇心旺盛な人のためのWebRTC</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=検索 aria-label=検索 maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li><a href=https://webrtcforthecurious.com/ja/docs/01-what-why-and-how/>何を、なぜ、どのように</a></li><li><a href=https://webrtcforthecurious.com/ja/docs/02-signaling/>シグナリング</a></li><li><a href=https://webrtcforthecurious.com/ja/docs/03-connecting/>接続</a></li><li><a href=https://webrtcforthecurious.com/ja/docs/04-securing/>セキュリティ対策</a></li><li><a href=https://webrtcforthecurious.com/ja/docs/05-real-time-networking/>リアルタイム・ネットワーキング</a></li><li><a href=https://webrtcforthecurious.com/ja/docs/06-media-communication/>メディア・コミュニケーション</a></li><li><a href=https://webrtcforthecurious.com/ja/docs/07-data-communication/ class=active>データ・コミュニケーション</a></li><li><a href=https://webrtcforthecurious.com/ja/docs/08-applied-webrtc/>応用WebRTC</a></li><li><a href=https://webrtcforthecurious.com/ja/docs/09-debugging/>デバッグ</a></li><li><a href=https://webrtcforthecurious.com/ja/docs/10-history-of-webrtc/>歴史</a></li><li><a href=https://webrtcforthecurious.com/ja/docs/11-faq/>FAQ</a></li></ul></nav><script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label>
+<strong>データ・コミュニケーション</strong>
+<label for=toc-control><img src=/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#webrtcはどのように動作するのですか>WebRTCはどのように動作するのですか？</a></li><li><a href=#dcep>DCEP</a><ul><li><a href=#data_channel_open>DATA_CHANNEL_OPEN</a></li><li><a href=#data_channel_ack>DATA_CHANNEL_ACK</a></li></ul></li><li><a href=#sctp>SCTP</a></li><li><a href=#概念>概念</a><ul><li><a href=#アソシエーション>アソシエーション</a></li><li><a href=#ストリーム>ストリーム</a></li><li><a href=#データグラムベース>データグラムベース</a></li><li><a href=#チャンク>チャンク</a></li></ul></li><li><a href=#トランスミッションシーケンス番号>トランスミッションシーケンス番号</a><ul><li><a href=#ストリームの識別子>ストリームの識別子</a></li><li><a href=#ペイロードプロトコル識別子>ペイロードプロトコル識別子</a></li></ul></li><li><a href=#プロトコル-1>プロトコル</a><ul><li><a href=#data-チャンク>DATA チャンク</a></li><li><a href=#init-チャンク>INIT チャンク</a></li><li><a href=#sack-チャンク>SACK チャンク</a></li><li><a href=#heartbeat-チャンク>HEARTBEAT チャンク</a></li><li><a href=#abort-チャンク>ABORT チャンク</a></li><li><a href=#shutdown-チャンク>SHUTDOWN チャンク</a></li><li><a href=#error-チャンク>ERROR チャンク</a></li><li><a href=#forward-tsn-チャンク>FORWARD TSN チャンク</a></li></ul></li><li><a href=#ステートマシン>ステートマシン</a><ul><li><a href=#接続確立の流れ>接続確立の流れ</a></li><li><a href=#コネクションティアダウンの流れ>コネクション・ティアダウンの流れ</a></li><li><a href=#キープアライブの仕組み>キープアライブの仕組み</a></li></ul></li></ul></nav></aside></header><article class=markdown><h1 id=webrtcのデータ通信で何が得られるのか>WebRTCのデータ通信で何が得られるのか？
+<a class=anchor href=#webrtc%e3%81%ae%e3%83%87%e3%83%bc%e3%82%bf%e9%80%9a%e4%bf%a1%e3%81%a7%e4%bd%95%e3%81%8c%e5%be%97%e3%82%89%e3%82%8c%e3%82%8b%e3%81%ae%e3%81%8b>#</a></h1><p>WebRTCは、データ通信のためのデータチャンネルを提供します。2つのピアの間では、65,534個のデータチャンネルを開くことができます。
+データチャンネルはデータグラムをベースにしており、それぞれに耐久性の設定があります。デフォルトでは、各データチャネルには順序通りの配信が保証されています。</p><p>メディアの観点からWebRTCにアプローチしている場合、データチャネルは無駄に思えるかもしれません。HTTP や WebSocket を使用することができるのに、なぜこのようなサブシステム全体が必要なのでしょうか？</p><p>データチャネルの本当の強みは、UDP のように順序のない、または損失のある配信を行うように設定できることです。
+これは、低レイテンシーでハイパフォーマンスの場合に必要です。バックプレッシャーを測定し、ネットワークがサポートする量だけを送信することができます。</p><h2 id=webrtcはどのように動作するのですか>WebRTCはどのように動作するのですか？
+<a class=anchor href=#webrtc%e3%81%af%e3%81%a9%e3%81%ae%e3%82%88%e3%81%86%e3%81%ab%e5%8b%95%e4%bd%9c%e3%81%99%e3%82%8b%e3%81%ae%e3%81%a7%e3%81%99%e3%81%8b>#</a></h2><p>WebRTCは、<a href=https://tools.ietf.org/html/rfc2960>RFC 2960</a>で定義されているSCTP(Stream Control Transmission Protocol)を使用しています。SCTPはトランスポート層のプロトコルで、TCPやUDPの代替となることを目的としています。WebRTCでは、DTLS接続上で動作するアプリケーション層のプロトコルとして使用しています。</p><p>SCTPはストリームを提供し、各ストリームは独立して設定できます。WebRTCのデータチャネルは、それらを薄く抽象化したものに過ぎません。耐久性や順序に関する設定は、そのままSCTPエージェントに渡されます。</p><p>データチャネルには、チャネルラベルなど、SCTPでは表現できない機能があります。この問題を解決するために、WebRTCは<a href=https://tools.ietf.org/html/rfc8832>RFC 8832</a>で定義されているDCEP（Data Channel Establishment Protocol）を使用します。DCEPでは、通信を行うためのメッセージを定義しています。</p><h2 id=dcep>DCEP
+<a class=anchor href=#dcep>#</a></h2><p>DCEPには、<code>DATA_CHANNEL_OPEN</code>と<code>DATA_CHANNEL_ACK</code>の2つのメッセージしかありません。データチャネルが開かれるたびに、リモートはackで応答する必要があります。</p><h3 id=data_channel_open>DATA_CHANNEL_OPEN
+<a class=anchor href=#data_channel_open>#</a></h3><p>このメッセージは、チャネルを開くことを望む WebRTC エージェントによって送信されます。</p><h4 id=パケットフォーマット>パケットフォーマット
+<a class=anchor href=#%e3%83%91%e3%82%b1%e3%83%83%e3%83%88%e3%83%95%e3%82%a9%e3%83%bc%e3%83%9e%e3%83%83%e3%83%88>#</a></h4><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Message Type |  Channel Type |            Priority           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    Reliability Parameter                      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Label Length          |       Protocol Length         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/                             Label                             /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/                            Protocol                           /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><h4 id=メッセージタイプ>メッセージタイプ
+<a class=anchor href=#%e3%83%a1%e3%83%83%e3%82%bb%e3%83%bc%e3%82%b8%e3%82%bf%e3%82%a4%e3%83%97>#</a></h4><p>メッセージタイプは、<code>0x03</code>の静的な値です。</p><h4 id=チャンネルタイプ>チャンネルタイプ
+<a class=anchor href=#%e3%83%81%e3%83%a3%e3%83%b3%e3%83%8d%e3%83%ab%e3%82%bf%e3%82%a4%e3%83%97>#</a></h4><p>Channel Type は、チャネルの耐久性や順序の属性を制御します。以下のような値があります。</p><ul><li><code>DATA_CHANNEL_RELIABLE</code> (<code>0x00</code>) - メッセージが失われることはなく、順番に到着します。</li><li><code>DATA_CHANNEL_RELIABLE_UNORDERED</code> (<code>0x80</code>) - メッセージは失われず、順番に到着する可能性があります。</li><li><code>DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT</code> (<code>0x01</code>) - メッセージは要求された回数を試した後に失われ、順番に到着します。</li><li><code>DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT_UNORDERED</code> (<code>0x81</code>) - メッセージは要求された回数だけ試行した後に失われる可能性があり、順番に到着しないことがあります。</li><li><code>DATA_CHANNEL_PARTIAL_RELIABLE_TIMED</code> (<code>0x02</code>) - メッセージは、要求された時間内に到着しないと失われる可能性があり、順番に到着します。</li><li><code>DATA_CHANNEL_PARTIAL_RELIABLE_TIMED_UNORDERED</code> (<code>0x82</code>) - メッセージは、要求された時間内に到着しなかった場合に失われる可能性があり、順番に到着する可能性があります</li></ul><h4 id=優先順位>優先順位
+<a class=anchor href=#%e5%84%aa%e5%85%88%e9%a0%86%e4%bd%8d>#</a></h4><p>データチャネルの優先順位を指定します。優先度の高いデータチャネルが先にスケジュールされます。優先度の低い大きなユーザーメッセージがあっても、優先度の高いユーザーメッセージの送信を遅らせることはありません。</p><h4 id=信頼性パラメータ>信頼性パラメータ
+<a class=anchor href=#%e4%bf%a1%e9%a0%bc%e6%80%a7%e3%83%91%e3%83%a9%e3%83%a1%e3%83%bc%e3%82%bf>#</a></h4><p>データチャネルのタイプが <code>DATA_CHANNEL_PARTIAL_RELIABLE</code> の場合、サフィックスで動作を設定します。</p><ul><li><code>REXMIT</code> - 送信者がメッセージをあきらめるまでに何回再送信するかを定義します。</li><li><code>TIMED</code> - 送信者があきらめるまでに何回メッセージを再送信するかを時間（ms）で定義します。</li></ul><h4 id=ラベル>ラベル
+<a class=anchor href=#%e3%83%a9%e3%83%99%e3%83%ab>#</a></h4><p>データチャネルの名前を、UTF-8でエンコードした文字列で指定します。これは空の文字列でもよい。</p><h4 id=プロトコル>プロトコル
+<a class=anchor href=#%e3%83%97%e3%83%ad%e3%83%88%e3%82%b3%e3%83%ab>#</a></h4><p>これが空の文字列の場合、プロトコルは指定されていません。空でない文字列の場合は、「WebSocket Sub-Subject」に登録されているプロトコルを指定します。
+<a href=https://tools.ietf.org/html/rfc6455#page-61>RFC 6455</a>で定義されている &ldquo;WebSocket Subprotocol Name Registry &ldquo;に登録されているプロトコルを指定します。</p><h3 id=data_channel_ack>DATA_CHANNEL_ACK
+<a class=anchor href=#data_channel_ack>#</a></h3><p>このメッセージは、WebRTCエージェントが、このデータチャネルがオープンされたことを確認するために送信します。</p><h4 id=パケットフォーマット-1>パケットフォーマット
+<a class=anchor href=#%e3%83%91%e3%82%b1%e3%83%83%e3%83%88%e3%83%95%e3%82%a9%e3%83%bc%e3%83%9e%e3%83%83%e3%83%88-1>#</a></h4><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Message Type |
++-+-+-+-+-+-+-+-+
+</code></pre><h2 id=sctp>SCTP
+<a class=anchor href=#sctp>#</a></h2><p>SCTPは、WebRTCのデータチャネルを支える真の力です。SCTPは、データチャネルの以下の機能をすべて提供します。</p><ul><li>多重化</li><li>TCPライクな再送メカニズムによる信頼性の高い配信</li><li>パーシャル・リライアビリティ・オプション</li><li>輻輳回避</li><li>フロー制御</li></ul><p>SCTPを理解するために、3つのパートに分けて説明します。目標は、この章の後、自分でデバッグしてSCTPの深い詳細を学ぶのに十分な知識を得ることです。</p><h2 id=概念>概念
+<a class=anchor href=#%e6%a6%82%e5%bf%b5>#</a></h2><p>SCTP は機能豊富なプロトコルです。このセクションでは、WebRTC で使用されている SCTP の部分のみを取り上げます。
+WebRTC で使用されていない SCTP の機能には、マルチホーミングや経路選択があります。</p><p>20年以上も開発されてきたSCTPを完全に理解するのは難しいかもしれません。</p><h3 id=アソシエーション>アソシエーション
+<a class=anchor href=#%e3%82%a2%e3%82%bd%e3%82%b7%e3%82%a8%e3%83%bc%e3%82%b7%e3%83%a7%e3%83%b3>#</a></h3><p>SCTP セッションのことをアソシエーションと言います。2つのSCTPエージェントが通信している間、2つのSCTPエージェント間で共有される状態です。
+2つのSCTPエージェントが通信する際に共有する状態です。</p><h3 id=ストリーム>ストリーム
+<a class=anchor href=#%e3%82%b9%e3%83%88%e3%83%aa%e3%83%bc%e3%83%a0>#</a></h3><p>ストリームとは、ユーザーデータの1つの双方向シーケンスです。データチャネルを作成することは、実際には SCTP ストリームを作成することに他なりません。
+SCTPストリームを作成しているに過ぎません。 各SCTPアソシエーションには、ストリームのリストが含まれます。 各ストリームには、異なる信頼性タイプを設定できます。</p><p>WebRTCではストリーム作成時にしか設定できませんが、SCTPではいつでも設定を変更することができます。</p><h3 id=データグラムベース>データグラムベース
+<a class=anchor href=#%e3%83%87%e3%83%bc%e3%82%bf%e3%82%b0%e3%83%a9%e3%83%a0%e3%83%99%e3%83%bc%e3%82%b9>#</a></h3><p>SCTPはデータをバイトストリームではなく、データグラムとしてフレーム化します。データの送受信は、TCPではなくUDPを使っているような感覚です。
+複数のファイルを1つのストリームで転送するために、余分なコードを追加する必要はありません。</p><p>SCTPメッセージにはUDPのようなサイズ制限がありません。1つのSCTPメッセージのサイズは、複数のギガバイトになることもあります。</p><h3 id=チャンク>チャンク
+<a class=anchor href=#%e3%83%81%e3%83%a3%e3%83%b3%e3%82%af>#</a></h3><p>SCTP プロトコルはチャンクで構成されています。チャンクには様々な種類があります。これらのチャンクはすべての通信に使用されます。
+ユーザーデータ、接続の初期化、輻輳制御など、すべてチャンクを介して行われます。</p><p>SCTPの各パケットには、チャンクのリストが含まれています。そのため、1つのUDPパケットには、異なるストリームのメッセージを運ぶ複数のチャンクが含まれます。</p><h2 id=トランスミッションシーケンス番号>トランスミッションシーケンス番号
+<a class=anchor href=#%e3%83%88%e3%83%a9%e3%83%b3%e3%82%b9%e3%83%9f%e3%83%83%e3%82%b7%e3%83%a7%e3%83%b3%e3%82%b7%e3%83%bc%e3%82%b1%e3%83%b3%e3%82%b9%e7%95%aa%e5%8f%b7>#</a></h2><p>TSN（Transmission Sequence Number）は、DATAチャンクのグローバルな一意の識別子です。TSN（Transmission Sequence Number）は、DATAチャンクのグローバルな一意の識別子です。
+ユーザーが送信したいすべてのメッセージを伝えるものです。TSNは、受信者がパケットの紛失や順序の乱れを判断する上で重要な役割を果たします。</p><p>TSNの欠落に気付いた受信者は、それが満たされるまでユーザーにデータを提供しません。</p><h3 id=ストリームの識別子>ストリームの識別子
+<a class=anchor href=#%e3%82%b9%e3%83%88%e3%83%aa%e3%83%bc%e3%83%a0%e3%81%ae%e8%ad%98%e5%88%a5%e5%ad%90>#</a></h3><p>各ストリームには固有の識別子があります。明示的なIDを持つデータチャネルを作成すると、実際にはそのIDがそのままSCTP
+にストリーム識別子として渡されます。ID を指定しない場合は、ストリーム識別子が選択されます。</p><h3 id=ペイロードプロトコル識別子>ペイロードプロトコル識別子
+<a class=anchor href=#%e3%83%9a%e3%82%a4%e3%83%ad%e3%83%bc%e3%83%89%e3%83%97%e3%83%ad%e3%83%88%e3%82%b3%e3%83%ab%e8%ad%98%e5%88%a5%e5%ad%90>#</a></h3><p>各 DATA チャンクには、PPID（Payload Protocol Identifier）があります。これは、交換されるデータの種類を一意に識別するために使用されます。
+SCTPには多くのPPIDがありますが、WebRTCでは以下の5つのPPIDのみを使用しています。</p><ul><li><code>WebRTC DCEP</code> (<code>50</code>) - DCEP メッセージ</li><li><code>WebRTC String</code> (<code>51</code>) - データチャンネルの文字列メッセージ</li><li><code>WebRTC Binary</code> (<code>53</code>) - Datachannel のバイナリメッセージ</li><li><code>WebRTC String Empty</code> (<code>56</code>) - Datachannel の長さが 0 の文字列メッセージ</li><li><code>WebRTC Binary Empty</code> (<code>57</code>) - Datachannel の長さが 0 のバイナリメッセージ</li></ul><h2 id=プロトコル-1>プロトコル
+<a class=anchor href=#%e3%83%97%e3%83%ad%e3%83%88%e3%82%b3%e3%83%ab-1>#</a></h2><p>以下は、SCTPプロトコルで使用されるチャンクの一部である。これは完全なデモンストレーションではありません。ステートマシンが意味をなすのに十分な構造を提供しています。</p><p>各チャンクは、<code>type</code>フィールドで始まります。チャンクのリストの前には、ヘッダーもあります。</p><h3 id=data-チャンク>DATA チャンク
+<a class=anchor href=#data-%e3%83%81%e3%83%a3%e3%83%b3%e3%82%af>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 0    | Reserved|U|B|E|    Length                     |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                              TSN                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|      Stream Identifier        |   Stream Sequence Number      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                  Payload Protocol Identifier                  |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/                            User Data                          /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>DATAチャンクは、すべてのユーザーデータが交換される方法です。データチャンネルで何かを送信するときは、このようにして交換されます。</p><p>順不同のパケットであれば、<code>U</code>ビットが設定されます。ストリームシーケンス番号は無視できます。</p><p><code>B</code>と<code>E</code>は始まりと終わりのビットです。1つのDATAチャンクには大きすぎるメッセージを送信する場合は、フラグメント化する必要があります。
+<code>B</code>と<code>E</code>のビットとシーケンス番号を使って、SCTPはこれを表現することができます。</p><ul><li><code>B=1</code>, <code>E=0</code> - フラグメント化されたユーザメッセージの最初の部分</li><li><code>B=0</code>, <code>E=0</code> - フラグメント化されたユーザメッセージの中間部分</li><li><code>B=0</code>, <code>E=1</code> - フラグメント化されたユーザメッセージの最後の断片</li><li><code>B=1</code>, <code>E=1</code> - フラグメント化されていないメッセージ</li></ul><p><code>TSN</code> は、送信シーケンス番号(Transmission Sequence Number)です。これは、このメッセージのグローバルな一意の識別子です。4,294,967,295個のメッセージの後に、これはラップします。</p><p><code>ストリーム識別子</code> は、このデータが属するストリームの一意の識別子です。</p><p><code>ペイロードプロトコル識別子</code>は、このストリームに流れているデータの種類です。WebRTCでは、DCEP、String、Binaryのいずれかになります。</p><p><code>ユーザーデータ</code>とは、あなたが送信するデータのことです。WebRTCのデータチャンネルで送信するデータは、すべてDATAチャンクを介して送信されます。</p><h3 id=init-チャンク>INIT チャンク
+<a class=anchor href=#init-%e3%83%81%e3%83%a3%e3%83%b3%e3%82%af>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 1    |  Chunk Flags  |      Chunk Length             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         Initiate Tag                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|           Advertised Receiver Window Credit (a_rwnd)          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Number of Outbound Streams   |  Number of Inbound Streams    |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                          Initial TSN                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/              Optional/Variable-Length Parameters              /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>INITチャンクは、アソシエーションを作成するプロセスを開始します。</p><p><code>初期化タグ</code>はクッキーの生成に使われます。クッキーはMan-In-The-MiddleやDenial of Serviceの保護に使われます。これらについてはステートマシンのセクションで詳しく説明します。</p><p><code>アドバタイズドレシーバーウィンドウクレジット</code>はSCTPの輻輳制御に使用されます。これは、受信者がこのアソシエーションに割り当てたバッファの大きさを伝えるものです。</p><p><code>アウトバウンド/インバウンドストリームの数</code>は、このエージェントがサポートしているストリームの数をリモートに通知します。</p><p><code>初期TSN</code> は、ローカルのTSNを開始するためのランダムな <code>uint32</code> です。</p><p><code>オプションパラメータ</code>は、SCTPがプロトコルに新しい機能を導入することを可能にします。</p><h3 id=sack-チャンク>SACK チャンク
+<a class=anchor href=#sack-%e3%83%81%e3%83%a3%e3%83%b3%e3%82%af>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 3    |Chunk  Flags   |      Chunk Length             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      Cumulative TSN Ack                       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|          Advertised Receiver Window Credit (a_rwnd)           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+| Number of Gap Ack Blocks = N  |  Number of Duplicate TSNs = X |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Gap Ack Block #1 Start       |   Gap Ack Block #1 End        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+/                                                               /
+\                              ...                              \
+/                                                               /
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Gap Ack Block #N Start      |  Gap Ack Block #N End         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       Duplicate TSN 1                         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+/                                                               /
+\                              ...                              \
+/                                                               /
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       Duplicate TSN X                         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>SACK（Selective Acknowledgment）チャンクは、受信者が送信者にパケットを受け取ったことを通知する方法です。送信者は、あるTSNに対するSACKを受け取るまで、問題のDATAチャンクを再送信します。SACKはTSNを更新するだけではありません。</p><p><code>累積 TSN ACK</code> 受信した最も高いTSNを示します。</p><p><code>アドバタイズドレシーバーウィンドウクレジット</code> レシーバーのバッファサイズです。受信者は、より多くのメモリが利用可能になった場合、セッション中にこれを変更することができます。</p><p><code>累積 TSN ACK</code>の後に受信された<code>Ackブロック</code>TSN。
+これは、配信されたパケットにギャップがある場合に使用されます。例えば、TSNが<code>100</code>、<code>102</code>、<code>103</code>、<code>104</code>のDATAチャンクが配信されたとします。<code>累積 TSN ACK</code>は<code>100</code>となりますが、<code>102</code>、<code>103</code>、<code>104</code>を再送する必要がないことを送信者に伝えるために、<code>Ack Blocks</code>を使用することができます。</p><p><code>Duplicate TSN</code>は、送信者に以下のDATAチャンクを2回以上受信したことを通知します。</p><h3 id=heartbeat-チャンク>HEARTBEAT チャンク
+<a class=anchor href=#heartbeat-%e3%83%81%e3%83%a3%e3%83%b3%e3%82%af>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 4    | Chunk  Flags  |      Heartbeat Length         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/            Heartbeat Information TLV (Variable-Length)        /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>HEARTBEAT チャンクは、リモートがまだ応答していることを確認するために使用されます。
+DATAチャンクを送信しておらず、NATマッピングを開いておく必要がある場合に便利です。</p><h3 id=abort-チャンク>ABORT チャンク
+<a class=anchor href=#abort-%e3%83%81%e3%83%a3%e3%83%b3%e3%82%af>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 6    |Reserved     |T|           Length              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+/                                                               /
+\               Zero or more Error Causes                       \
+/                                                               /
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>ABORT チャンクは、アソシエーションを突然シャットダウンします。片側がエラー状態になったときに使用します。優雅に接続を終了させるには、SHUTDOWNチャンクを使用します。</p><h3 id=shutdown-チャンク>SHUTDOWN チャンク
+<a class=anchor href=#shutdown-%e3%83%81%e3%83%a3%e3%83%b3%e3%82%af>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 7    | Chunk  Flags  |      Length = 8               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      Cumulative TSN Ack                       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>SHUTDOWNチャンクは、SCTPアソシエーションのグレースフルシャットダウンを開始します。各エージェントは、最後に送信したTSNをリモートに通知します。これにより、パケットが失われることはありません。WebRTC は SCTP アソシエーションのグレースフルシャットダウンを行いません。潔く処理するためには、各データチャネルを自分で取り壊す必要があります。</p><p><code>Cumulative TSN ACK</code>は、最後に送信されたTSNです。各サイドは、このTSNでDATAチャンクを受信するまで終了しないことを知っています。</p><h3 id=error-チャンク>ERROR チャンク
+<a class=anchor href=#error-%e3%83%81%e3%83%a3%e3%83%b3%e3%82%af>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 9    | Chunk  Flags  |           Length              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/                    One or more Error Causes                   /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>ERROR チャンクは、致命的ではないエラーが発生したことをリモートSCTPエージェントに通知するために使用されます。</p><h3 id=forward-tsn-チャンク>FORWARD TSN チャンク
+<a class=anchor href=#forward-tsn-%e3%83%81%e3%83%a3%e3%83%b3%e3%82%af>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 192  |  Flags = 0x00 |        Length = Variable      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      New Cumulative TSN                       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Stream-1              |       Stream Sequence-1       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               /
+/                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Stream-N              |       Stream Sequence-N       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>FORWARD TSN チャンクは、グローバルTSNを前方に移動させます。SCTPがこれを行うことで、もう気にしないパケットをスキップすることができます。例えば、<code>10 11 12 13 14 15</code>と送ったとすると、これらのパケットはすべて到着した場合にのみ有効となります。また、このデータはリアルタイム性を重視しているので、到着が遅れると意味がありません。</p><p>もし、<code>12</code>と<code>13</code>を失ったら、<code>14</code>と<code>15</code>を送る理由はありません!
+SCTPはFORWARD TSN Chunkを使ってこれを実現します。SCTPはFORWARD TSN Chunkを使ってこれを実現します。これは受信者に<code>14</code>と<code>15</code>がもう配信されないことを伝えます。</p><p><code>New Cumulative TSN</code> これは接続の新しいTSNです。このTSNより前のパケットは保持されません。</p><p><code>Stream</code>および<code>Stream Sequence</code>は、<code>Stream Sequence Number</code>の番号を先に進めるために使用されます。このフィールドの意味については、DATAチャンクを参照してください。</p><h2 id=ステートマシン>ステートマシン
+<a class=anchor href=#%e3%82%b9%e3%83%86%e3%83%bc%e3%83%88%e3%83%9e%e3%82%b7%e3%83%b3>#</a></h2><p>これらはSCTPステートマシンの興味深い部分です。WebRTC は SCTP ステートマシンのすべての機能を使用していないので、これらの部分は除外しています。また、いくつかのコンポーネントは単独で理解できるように簡略化しました。</p><h3 id=接続確立の流れ>接続確立の流れ
+<a class=anchor href=#%e6%8e%a5%e7%b6%9a%e7%a2%ba%e7%ab%8b%e3%81%ae%e6%b5%81%e3%82%8c>#</a></h3><p><code>INIT</code>と<code>INIT ACK</code>のチャンクは、各ピアの能力と構成を交換するために使用されます。SCTPはハンドシェイクの際にクッキーを使用して、通信相手を検証します。
+これは、ハンドシェイクが傍受されないようにするためと、DoS攻撃を防ぐためです。</p><p><code>INIT ACK</code>チャンクには、クッキーが含まれています。その後、クッキーは <code>COOKIE ECHO</code> を使って作成者に返されます。クッキーの検証に成功すると、<code>COOKIE ACK</code>が送信され、DATAチャンクの交換が可能になります。</p><p><img src=../images/07-connection-establishment.png alt="Connection establishment" title="Connection establishment"></p><h3 id=コネクションティアダウンの流れ>コネクション・ティアダウンの流れ
+<a class=anchor href=#%e3%82%b3%e3%83%8d%e3%82%af%e3%82%b7%e3%83%a7%e3%83%b3%e3%83%86%e3%82%a3%e3%82%a2%e3%83%80%e3%82%a6%e3%83%b3%e3%81%ae%e6%b5%81%e3%82%8c>#</a></h3><p>SCTPでは、<code>SHUTDOWN</code> Chunkを使用します。エージェントは<code>SHUTDOWN</code> Chunkを受信すると、要求された<code>Cumulative TSN ACK</code>を受信するまで待ちます。これにより、接続にロスがあっても、すべてのデータを確実に配信することができます。</p><h3 id=キープアライブの仕組み>キープアライブの仕組み
+<a class=anchor href=#%e3%82%ad%e3%83%bc%e3%83%97%e3%82%a2%e3%83%a9%e3%82%a4%e3%83%96%e3%81%ae%e4%bb%95%e7%b5%84%e3%81%bf>#</a></h3><p>SCTPでは、接続を維持するために、<code>HEARTBEAT REQUEST</code>と<code>HEARTBEAT ACK</code>というチャンクを使用します。これらは設定可能な間隔で送信されます。また、SCTPはパケットが到着していない場合、指数関数的なバックオフを行います。</p><p>HEARTBEATには時間の値も含まれています。これにより、2つのアソシエーションが2つのエージェント間のトリップタイムを計算することができます。</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div class=book-languages tabindex=0 aria-haspopup=true><ul><li class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+日本語</li></ul><ul class=book-languages-list><li><a href=https://webrtcforthecurious.com/docs/07-data-communication/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+English</a></li><li><a href=https://webrtcforthecurious.com/tr/docs/07-data-communication/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Turkish</a></li><li><a href=https://webrtcforthecurious.com/fa/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Persian</a></li><li class=active><a href=https://webrtcforthecurious.com/ja/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+日本語</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/07-data-communication/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+简体中文</a></li></ul></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/commit/810e4d1794003c9e93593c6739885782856220f4 title="最終更新者 NAKAI Ryosuke | April 11, 2021" target=_blank rel=noopener><img src=/svg/calendar.svg class=book-icon alt=Calendar>
+<span>April 11, 2021</span></a></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content.ja/docs/07-data-communication.md target=_blank rel=noopener><img src=/svg/edit.svg class=book-icon alt=Edit>
+<span>このページを編集する</span></a></div></div></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#webrtcはどのように動作するのですか>WebRTCはどのように動作するのですか？</a></li><li><a href=#dcep>DCEP</a><ul><li><a href=#data_channel_open>DATA_CHANNEL_OPEN</a></li><li><a href=#data_channel_ack>DATA_CHANNEL_ACK</a></li></ul></li><li><a href=#sctp>SCTP</a></li><li><a href=#概念>概念</a><ul><li><a href=#アソシエーション>アソシエーション</a></li><li><a href=#ストリーム>ストリーム</a></li><li><a href=#データグラムベース>データグラムベース</a></li><li><a href=#チャンク>チャンク</a></li></ul></li><li><a href=#トランスミッションシーケンス番号>トランスミッションシーケンス番号</a><ul><li><a href=#ストリームの識別子>ストリームの識別子</a></li><li><a href=#ペイロードプロトコル識別子>ペイロードプロトコル識別子</a></li></ul></li><li><a href=#プロトコル-1>プロトコル</a><ul><li><a href=#data-チャンク>DATA チャンク</a></li><li><a href=#init-チャンク>INIT チャンク</a></li><li><a href=#sack-チャンク>SACK チャンク</a></li><li><a href=#heartbeat-チャンク>HEARTBEAT チャンク</a></li><li><a href=#abort-チャンク>ABORT チャンク</a></li><li><a href=#shutdown-チャンク>SHUTDOWN チャンク</a></li><li><a href=#error-チャンク>ERROR チャンク</a></li><li><a href=#forward-tsn-チャンク>FORWARD TSN チャンク</a></li></ul></li><li><a href=#ステートマシン>ステートマシン</a><ul><li><a href=#接続確立の流れ>接続確立の流れ</a></li><li><a href=#コネクションティアダウンの流れ>コネクション・ティアダウンの流れ</a></li><li><a href=#キープアライブの仕組み>キープアライブの仕組み</a></li></ul></li></ul></nav></div></aside></main></body></html>
