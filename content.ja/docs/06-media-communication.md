@@ -234,9 +234,9 @@ RTP/RTCPには、この問題に対する3つの異なるソリューション�
 受信者レポートはRTCPメッセージであり、ネットワークステータスを伝達するための元の方法です。 それらは[RFC1889](https://tools.ietf.org/html/rfc1889)で見つけることができます。 これらは各SSRCのスケジュールで送信され、次のフィールドが含まれています。
 
 * **Fraction Lost** -- 前回のReceiver Report以降、何パーセントのパケットが失われたか。
-**Cumulative Number of Packets Lost** -- 通話全体で失われたパケット数。
-**Extended Highest Sequence Number Received** -- 最後に受信したシーケンス番号と、それが何回ロールオーバーしたかを示しています。
-**Interarrival Jitter** -- 呼全体のローリングジッターです。
+* **Cumulative Number of Packets Lost** -- 通話全体で失われたパケット数。
+* **Extended Highest Sequence Number Received** -- 最後に受信したシーケンス番号と、それが何回ロールオーバーしたかを示しています。
+* **Interarrival Jitter** -- 呼全体のローリングジッターです。
 
 ### TMMBR, TMMBN, REMB
 
