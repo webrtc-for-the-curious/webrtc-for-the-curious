@@ -116,7 +116,7 @@ WebRTCの各メディア記述は、direction属性を持ちます。これに�
 
 * `send` (送信)
 * `recv` (受信)
-* `sendrecv` (送信)
+* `sendrecv` (送受信)
 * `inactive` (非アクティブ)
 
 ### WebRTC で使用される SDP の値
