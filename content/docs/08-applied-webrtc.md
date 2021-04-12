@@ -86,7 +86,7 @@ directly to your browser. There is no reason for your video to be sent to a 3rd 
 assumptions from the metadata of the call.
 
 Interoperability is another advantage for the IoT space. WebRTC is available in lots of different languages C#, C++, C, Go, Java, Python, Rust
-and Typescript. This means you can use the language that works best for you. You also don't have to turn to proprietary protocols or formats
+and TypeScript. This means you can use the language that works best for you. You also don't have to turn to proprietary protocols or formats
 to be able to connect your two different clients.
 
 ### Media Protocol Bridging
