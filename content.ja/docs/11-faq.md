@@ -9,7 +9,7 @@ weight: 12
 {{<details "なぜWebRTCはUDPを使うのですか？">}}
 NATトラバーサルにはUDPが必要です。NATトラバーサルがなければ、P2P接続の確立をすることはできません。 UDPはTCPのような「配信保証」を提供していないので、WebRTCではユーザーレベルで提供しています。
 
-詳しくは [Connecting]({{< ref "03-connecting" >}}) をご覧ください
+詳しくは [接続]({{< ref "03-connecting" >}}) をご覧ください
 {{</details>}}
 
 {{<details "データチャンネルはいくつまで持てますか？">}}
