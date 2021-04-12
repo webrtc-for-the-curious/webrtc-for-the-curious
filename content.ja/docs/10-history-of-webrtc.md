@@ -13,7 +13,7 @@ weight: 11
 
 RTPおよびRTCPは、WebRTCのすべてのメディア転送を処理するプロトコルです。1996年1月に[RFC 1889](https://tools.ietf.org/html/rfc1889)で定義されています。
 著者の一人である[Ron Frederick](https://github.com/ronf)が自ら語ってくれるというのはとてもラッキーです。Ronは最近アップロードした
-Network Video tool](https://github.com/ronf/nv)をアップロードしました。このプロジェクトはRTPに影響を与えました。
+[Network Video tool](https://github.com/ronf/nv)をアップロードしました。このプロジェクトはRTPに影響を与えました。
 
 **彼自身の言葉です。**
 
