@@ -82,7 +82,7 @@ Channel Type は、チャネルの耐久性や順序の属性を制御します�
 
 #### プロトコル
 
-これが空の文字列の場合、プロトコルは指定されていません。空でない文字列の場合は、「WebSocket Sub-Subject」に登録されているプロトコルを指定します。
+これが空の文字列の場合、プロトコルは指定されていません。空でない文字列の場合は、
 [RFC 6455](https://tools.ietf.org/html/rfc6455#page-61)で定義されている "WebSocket Subprotocol Name Registry "に登録されているプロトコルを指定します。
 
 ### DATA_CHANNEL_ACK
@@ -142,7 +142,7 @@ SCTPの各パケットには、チャンクのリストが含まれています�
 
 ## トランスミッションシーケンス番号
 
-TSN（Transmission Sequence Number）は、DATAチャンクのグローバルな一意の識別子です。TSN（Transmission Sequence Number）は、DATAチャンクのグローバルな一意の識別子です。
+TSN（Transmission Sequence Number）は、DATAチャンクのグローバルな一意の識別子です。
 ユーザーが送信したいすべてのメッセージを伝えるものです。TSNは、受信者がパケットの紛失や順序の乱れを判断する上で重要な役割を果たします。
 
 TSNの欠落に気付いた受信者は、それが満たされるまでユーザーにデータを提供しません。
