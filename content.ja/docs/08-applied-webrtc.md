@@ -94,7 +94,7 @@ WebRTCは2つのエージェントを接続するためのプロトコルです�
 1 対 1 は WebRTC で使用する最初の接続形態です。2 つの WebRTC Agent を直接接続して、双方向のメディアやデータを送信することができます。
 接続は以下のようになります。
 
-![One-to-One](../images/08-one-to-one.png "One-to-One")
+![One-to-One](/images/08-one-to-one.png "One-to-One")
 
 ### フルメッシュ
 カンファレンスコールやマルチプレイヤーゲームを構築する場合は、フルメッシュが最適です。このトポロジーでは、各ユーザーが他のすべてのユーザーと直接接続を確立します。これにより、アプリケーションを構築することができますが、いくつかのデメリットがあります。
@@ -104,7 +104,7 @@ WebRTCは2つのエージェントを接続するためのプロトコルです�
 
 このような問題があるため、フルメッシュは少人数のグループに使用するのが最適です。それ以上の規模の場合は、クライアント/サーバー型のトポロジーが最適です。
 
-![Full mesh](../images/08-full-mesh.png "Full mesh")
+![Full mesh](/images/08-full-mesh.png "Full mesh")
 
 ### ハイブリッドメッシュ
 
@@ -112,7 +112,7 @@ WebRTCは2つのエージェントを接続するためのプロトコルです�
 
 しかし、これにはいくつかのデメリットがあります。この設定では、メディアのオリジナル作成者は、自分のビデオが誰に送られているのか、そしてそれが正常に到着したのかを知ることができません。また、ハイブリッド・メッシュ・ネットワークでは、ホップごとにレイテンシーが増加してしまいます。
 
-![Hybrid mesh](../images/08-hybrid-mesh.png "Hybrid mesh")
+![Hybrid mesh](/images/08-hybrid-mesh.png "Hybrid mesh")
 
 ### 選択的フォワーディングユニット (Selective Forwarding Unit)
 
@@ -125,10 +125,10 @@ NATマッピングを気にする必要もありません。ただし、SFUがTC
 
 シンプルなSFUの構築は、週末にでもできます。すべてのタイプのクライアントを処理できる優れたSFUを構築するには、終わりがありません。輻輳制御、エラー訂正、パフォーマンスのチューニングは終わりのない作業です。
 
-![Selective Forwarding Unit](../images/08-sfu.png "Selective Forwarding Unit")
+![Selective Forwarding Unit](/images/08-sfu.png "Selective Forwarding Unit")
 
 ### MCU
 
 MCU (Multi-point Conferencing Unit) は、SFU と同様のクライアント/サーバー型のトポロジーですが、出力ストリームを合成します。MCU (Multi-point Conferencing Unit)はSFUと同様のクライアント/サーバー型トポロジーですが、出力ストリームを合成します。
 
-![Multi-point Conferencing Unit](../images/08-mcu.png "Multi-point Conferencing Unit")
+![Multi-point Conferencing Unit](/images/08-mcu.png "Multi-point Conferencing Unit")

@@ -388,7 +388,7 @@ SCTPはFORWARD TSN Chunkを使ってこれを実現します。SCTPはFORWARD TS
 
 `INIT ACK`チャンクには、クッキーが含まれています。その後、クッキーは `COOKIE ECHO` を使って作成者に返されます。クッキーの検証に成功すると、`COOKIE ACK`が送信され、DATAチャンクの交換が可能になります。
 
-![Connection establishment](../images/07-connection-establishment.png "Connection establishment")
+![Connection establishment](/images/07-connection-establishment.png "Connection establishment")
 
 ### コネクション・ティアダウンの流れ
 

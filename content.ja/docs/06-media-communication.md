@@ -56,7 +56,7 @@ RTCP（RTP Control Protocol）は、コールに関するメタデータを通�
 
 3つのフレームタイプを視覚化すると以下のようになります。
 
-![Frame types](../images/06-frame-types.png "Frame types")
+![Frame types](/images/06-frame-types.png "Frame types")
 
 ### 動画はデリケート
 動画の圧縮は非常にステートフルであり、インターネットでの転送は困難です。I-Frameの一部が失われるとどうなるのか？P-Frameはどうやって修正すべき箇所を知るのでしょうか？映像圧縮がより複雑になるにつれ、この問題はさらに深刻になっています。幸いなことに、RTPとRTCPには解決策があります。
@@ -250,7 +250,7 @@ TMMBRとTMMBNが先に登場し、[RFC 5104](https://tools.ietf.org/html/rfc5104
 
 REMBを使用したセッションは以下のようになります。
 
-![REMB](../images/06-remb.png "REMB")
+![REMB](/images/06-remb.png "REMB")
 
 ### トランスポートワイド輻輳制御 (Transport Wide Congestion Control)
 
@@ -258,7 +258,7 @@ REMBを使用したセッションは以下のようになります。
 
 TWCCは非常にシンプルな原理を使用しています。
 
-![TWCC](../images/06-twcc-idea.png "TWCC")
+![TWCC](/images/06-twcc-idea.png "TWCC")
 
 REMBとは異なり、TWCC受信機は自分の受信ビットレートを推定しようとはしません。TWCC受信機は、どのパケットがいつ受信されたかを送信者に知らせるだけです。送信者は、これらのレポートに基づいて、ネットワークで何が起こっているかを最新の状態で把握することができます。
 
@@ -271,7 +271,7 @@ REMBとは異なり、TWCC受信機は自分の受信ビットレートを推定
 
 下の図では、インターパケット遅延の増加の中央値は+20ミリ秒で、ネットワークの混雑が起きていることを明確に示しています。
 
-![TWCC with delay](../images/06-twcc.png "TWCC with delay")
+![TWCC with delay](/images/06-twcc.png "TWCC with delay")
 
 TWCCは生のデータを提供し、ネットワークの状態をリアルタイムに把握することができます:
 
