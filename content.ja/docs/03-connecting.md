@@ -47,8 +47,6 @@ ICEは、実世界のネットワークの制約を克服するためのもの�
 
 同一ネットワーク内のホストは、非常に簡単に接続できます。 `192.168.0.1` -> `192.168.0.2` の間の通信は簡単にできます。これらの2つのホストは、外部の助けを借りずにお互いに接続することができます。
 
-However, a host using `Router B` has no way to directly access anything behind `Router A`. How would you tell the difference between `191.168.0.1` behind `Router A` and the same IP behind `Router B`? They are private IPs! A host using `Router B` could send traffic directly to `Router A`, but the request would end there. How does `Router A` know which host it should forward the message too?
-
 しかし、 `ルーターB` を使っているホストは、 `ルーターA` の後ろにあるものに直接アクセスする方法がありません。 `ルーターA` の後ろにある `191.168.0.1` と `ルーターB` の後ろにある同じIPの違いをどうやって見分けるのでしょうか？これらはプライベートIPです。 `ルーターB` を使用しているホストは、 `ルーターA`  に直接トラフィックを送信することができますが、リクエストはそこで終了します。`ルーターA`はどのホストにメッセージを転送すべきか、どうやって知るのでしょうか?
 
 ### プロトコルの制限
