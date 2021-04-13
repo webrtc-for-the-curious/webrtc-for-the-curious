@@ -164,7 +164,7 @@ This could happen because you had lots of packet loss, or maybe the decoder cras
 ### Negative ACKnowledgements
 A NACK requests that a sender re-transmits a single RTP Packet. This is usually caused when a RTP Packet is lost, but could also happen because it is late.
 
-NACKs are much more bandwidth efficent than requesting that the whole frame get sent again. Since RTP breaks up packets into very small chunks, you are really just requesting one small missing piece.
+NACKs are much more bandwidth efficient than requesting that the whole frame get sent again. Since RTP breaks up packets into very small chunks, you are really just requesting one small missing piece.
 
 ### Sender/Receiver Reports
 These reports are used to send statistics between agents. This communicates the amount of packets actually received and jitter.
