@@ -42,7 +42,7 @@ Most of the time the other WebRTC Agent will not even be in the same network. A 
 
 Below is a graph of two distinct networks, connected over public internet. In each network you have two hosts.
 
-![NAT mapping](../images/03-nat-mapping.png "NAT mapping")
+![Two networks](../images/03-two-networks.png "Two networks")
 
 For the hosts in the same network it is very easy to connect. Communication between `192.168.0.1 -> 192.168.0.2` is easy to do! These two hosts can connect to each other without any outside help.
 
