@@ -107,11 +107,11 @@ Common commands:
 
 - capture UDP packets to and from port 19302, print hexdump of the packet content:
 
-    sudo tcpdump 'udp port 19302' -xx
+    `sudo tcpdump 'udp port 19302' -xx`
 
 - same but save packets in PCAP (packet capture) file for later inspection
 
-    sudo tcpdump 'udp port 19302' -w stun.pcap
+    `sudo tcpdump 'udp port 19302' -w stun.pcap`
 
   the PCAP file can be opened with the wireshark GUI: `wireshark stun.pcap`
 
