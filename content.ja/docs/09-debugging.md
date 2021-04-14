@@ -108,11 +108,11 @@ stunserver=stun1.l.google.com;stunport=19302;listenport=20000;echo -ne "\x00\x01
 
 - 19302 番ポートとの間の UDP パケットをキャプチャし、パケットの内容を 16 進数で表示します。
 
-    sudo tcpdump 'udp port 19302' -xx
+    `sudo tcpdump 'udp port 19302' -xx`
 
 - 同じくパケットをPCAP(packet capture)ファイルに保存して後で確認する。
 
-    sudo tcpdump 'udp port 19302' -w stun.pcap
+    `sudo tcpdump 'udp port 19302' -w stun.pcap`
 
   PCAPファイルは、wiresharkのGUIで開くことができます。`wireshark stun.pcap` です。
 

@@ -106,11 +106,11 @@ stunserver=stun1.l.google.com;stunport=19302;listenport=20000;echo -ne "\x00\x01
 
 - 捕获与端口19302之间的UDP数据包，并打印数据包内容的十六进制转储：
 
-    sudo tcpdump 'udp port 19302' -xx
+    `sudo tcpdump 'udp port 19302' -xx`
 
 - 与上一条相同，但将数据包保存在PCAP（数据包捕获）文件中以供以后检查
 
-    sudo tcpdump 'udp port 19302' -w stun.pcap
+    `sudo tcpdump 'udp port 19302' -w stun.pcap`
 
   可以使用wireshark GUI打开PCAP文件：`wireshark stun.pcap`
 
