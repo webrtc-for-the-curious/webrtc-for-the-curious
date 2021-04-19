@@ -80,7 +80,7 @@ WebRTC は、RTP と呼ばれるオーディオ／ビデオ伝送用の別のプ
 
 ### RTP および SCTP によるピアとの通信
 
-これで 2 つの WebRTC Agent が安全な双方向通信を行うことができました。それでは早速、通信を開始しましょう。ここでも、既存の 2 つのプロトコルを使用します。RTP（Real-time Transport Protocol）と SCTP（Stream Control Transmission Protocol）です。RTP でやり取りされるメディアの暗号化には SRTP を、DTLS で暗号化された DataChannel メッセージの送信には SCTP を使用します。
+これで 2 つの WebRTC Agent が安全な双方向通信を行うことができました。それでは早速、通信を開始しましょう。ここでも、既存の 2 つのプロトコルを使用します。RTP（Real-time Transport Protocol）と SCTP（Stream Control Transmission Protocol）です。SRTP で暗号化されたメディアのやり取りにはRTPを、DTLS で暗号化された DataChannel メッセージの送受信には SCTP を使用します。
 
 RTP は最小限の機能しか備えていませんが、リアルタイムストリーミングを実現するために必要な機能を備えています。重要なのは、RTP が開発者に柔軟性を与えていることで、開発者はレイテンシー、ロス、輻輳を思い通りに処理できます。この点については、「メディア」の章で詳しく説明します。
 
