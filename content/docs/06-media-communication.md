@@ -153,13 +153,22 @@ Unique Identifier for what type of RTCP Packet this is. A WebRTC Agent doesn't n
 * Sender Report - `200`
 * Receiver Report - `201`
 * Generic RTP Feedback - `205`
+* Payload Specific Feedback - `206`
 
 The significance of these packet types will be described in greater detail below.
 
-### Full INTRA-frame Request
-This RTCP message notifies the sender that it needs to send a full image. This is for when the encoder is giving you partial frames, but you aren't able to decode them.
-
+### Full INTRA-frame Request (FIR) and Picture Loss Indication (PLI)
+Both FIR and PLI messages serve a similar purpose. These messages request a full key frame from the sender.
+`PLI` is used when the partial frames arrived to decoder, and it is unable to decode them.
 This could happen because you had lots of packet loss, or maybe the decoder crashed.
+
+According to [RFC5104](https://tools.ietf.org/html/rfc5104#section-4.3.1.2) `FIR` shall not be used when packets or frames are lost, that's  `PLI`s job. `FIR` requests key frame for reasons other than packet loss - for example a new member entered a video conference. They need a full key frame to start decoding video stream, the decoder will be discarding frames until key frame arrives. 
+
+It is a good idea for receiver to request a full key frame right after connecting, this minimizes delay between connecting and the first image showing up on users screen.
+
+`PLI` packets are a part of Payload Specific Feedback messages.
+
+In practice software that is able to handle both `PLI` and `FIR` packets will act the same in both cases. It will send signal the encoder to produce a new full key frame.
 
 ### Negative ACKnowledgements
 A NACK requests that a sender re-transmits a single RTP Packet. This is usually caused when a RTP Packet is lost, but could also happen because it is late.
