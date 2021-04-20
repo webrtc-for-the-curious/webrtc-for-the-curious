@@ -220,6 +220,32 @@ A session that uses REMB would look like the following:
 
 ![REMB](../images/06-remb.png "REMB")
 
+Browsers use a simple rule of thumb for incoming bandwidth estimation.
+1. Request encoder to increase bitrate, if current packet loss is less than 2 percent.
+2. if packet loss is higher than 10% decrese bitrate by half of packet loss percent
+```
+if (packetLoss < 2%) video_bitrate *= 1.08
+if (packetLoss > 10%) video_bitrate *= (1 - 0.5*lossRate)
+```
+
+This method works great on paper. Sender receives estimation from receiver, sets encoder bitrate to the received value. Tada! We've adjusted to the network conditions.
+
+However in practice REMB approach has multiple drawbacks.
+
+Encoder inefficiency is one of them, when you set a bitrate to encoder, it won't necessarily output the exact bitrate you requested, it may output less or more bits depending on encoder settings and the image being encoded. 
+For example x264 encoder with `tune=zerolatency` will significantly deviate from the specified target bitrate.
+
+- Let's say we set the bitrate to 1000kbps
+- encoder outputs 700kbps (there's not too many high frequency features to encode aka "staring at a wall")
+- Let's also imagine receiver gets the 700kbps video at zero packet loss, it applies the REMB rule #1 to increase the incoming bitrate by 1.08
+- Receiver sends REMB packet with 756kbps suggestion (700kbps * 1.08) to sender
+- Sender sets encoder bitrate to 756kbps
+- Encoder outputs even less bitrate
+- Process repeats itseld lowering the bitrate to the absolute minimum 
+
+You can see how this would require heavy encoder parameter tuning and surprise users with unwatchable video on a great connection.
+
+
 ### Transport Wide Congestion Control
 Transport Wide Congestion Control is the latest development in RTCP network status communication.
 
