@@ -26,9 +26,34 @@ can all affect each other subtly. These are the most common issues that develope
 Bandwidth is the maximum rate of data that can be transferred across a given path. It is important to remember
 this isn't a static number either. The bandwidth will change along the route as more (or less) people use it.
 
-#### Transmission Time
+#### Transmission Time and Round Trip Time
 Transmission Time is how long it takes for a packet to arrive. Like Bandwidth this isn't constant.
 The Transmission Time can fluctuate at anytime.
+
+`transmission_time = receive_time - send_time`
+
+To compute transmission time, you need clocks on sender and receiver synchronized with millisecond precision.
+Even a small deviation would produce an unreliable transmission time measurement.
+Since WebRTC is operating in a highly heterogenous environments it is next to impossible to rely on perfect time sync between hosts.
+
+Round-trip time measurement is a workaround for imperfect clock synchronization.
+
+Instead of operating on distributed clocks a WebRTC peer sends a special packet with it's own timestamp `sendertime1`.
+A cooperating peer receives the packet and reflects the timestamp back to the sender.
+Once original sender gets the reflected time it subtracts the  timestamp `sendertime1` from current time `sendertime2`.
+This time delta is called "round-trip propagation delay" or more commonly round-trip time.
+
+`rtt = sendertime2 - sendertime1`
+
+Half of the round trip time is considered to be a good enough approximation of transmission time.
+This workaround is not without drawbacks. 
+It makes the assumption that it takes equal amount of time to send and receive packets.
+However on cellular networks, send and receive operations may not be time-symmetrical. 
+You may have noticed that upload speeds on your phone are almost always lower than download speeds.
+
+`transmission_time = rtt/2`
+
+The technicalities of Round-trip time measurement are described in greater detail in [RTCP Sender and Receiver Reports chapter](../06-media-communication/#senderreceiver-reports))
 
 #### Jitter
 Jitter is the fact that `Transmission Time` may vary for each packet. Your packets could be delayed, but then
