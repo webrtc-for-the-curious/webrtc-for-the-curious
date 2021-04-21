@@ -45,7 +45,7 @@ Not all key values defined by the Session Description Protocol are used by WebRT
 * `o` - Origin, contains a unique ID useful for renegotiations
 * `s` - Session Name, should be equal to `-`
 * `t` - Timing, should be equal to `0 0`
-* `m` - Media Description, described in detail below
+* `m` - Media Description(`m=<media> <port> <proto> <fmt> ...`), described in detail below
 * `a` - Attribute, a free text field. This is the most common line in WebRTC
 * `c` - Connection Data, should be equal to `IN IP4 0.0.0.0`
 

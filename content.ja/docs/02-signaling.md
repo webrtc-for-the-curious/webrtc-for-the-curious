@@ -49,7 +49,7 @@ WebRTC では、セッション記述プロトコルで定義されているす�
 * `o` - オリジン(Origin)、再交渉に便利なユニークな ID を含む。
 * `s` - セッション名(Session Name)、`-` と同じでなければなりません。
 * `t` - タイミング(Timing)、`0 0 0` と同じでなければなりません。
-* `m` - メディア記述(Media Description)、詳細は以下の通りです。
+* `m` - メディア記述(Media Description: `m=<media> <port> <proto> <fmt> ...`)、詳細は以下の通りです。
 * `a` - 属性(Attribute)、フリーテキストのフィールドです。これは WebRTC で最も一般的な行です。
 * `c` - 接続データ(Connection Data)、 `IN IP4 0.0.0.0` と等しくなければなりません。
 
