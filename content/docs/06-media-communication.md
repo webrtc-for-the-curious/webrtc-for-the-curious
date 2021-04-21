@@ -209,12 +209,36 @@ The first road block with implementing Congestion Control is that UDP and RTP do
 RTP/RTCP has 3 different solutions to this problem. They all have their pros and cons. What you use will depend on what clients you are working with. What is the topology you are working with. Or even just how much development time you have available.
 
 ### Receiver Reports
-Receiver Reports are RTCP messages, the original way to communicate network status. You can find them in [RFC 1889](https://tools.ietf.org/html/rfc1889). They are sent on a schedule for each SSRC and contain the following fields:
+Receiver Reports are RTCP messages, the original way to communicate network status. You can find them in [RFC 3550](https://tools.ietf.org/html/rfc3550#section-6.4). They are sent on a schedule for each SSRC and contain the following fields:
 
 * **Fraction Lost** -- What percentage of packets have been lost since the last Receiver Report.
 * **Cumulative Number of Packets Lost** -- How many packets have been lost during the entire call.
 * **Extended Highest Sequence Number Received** -- What was the last Sequence Number received, and how many times has it rolled over.
 * **Interarrival Jitter** -- The rolling Jitter for the entire call.
+* **Last Sender Report Timestamp** -- Last known time on sender, used for round-trip time calculation.
+
+Sender and Receiver reports (SR and RR) work together to compute round-trip time.
+
+The sender includes its local time, `sendertime1` in SR.
+When the receiver gets SR packet, it sends back RR.
+Among other things, the RR includes `sendertime1` just received from sender.
+There will be a delay between receiving the SR and sending the RR. Because of that, the RR also includes a "delay since last sender report" time - `DLSR`. 
+The `DLSR` is used to adjust the round-trip time estimate later on in the process.
+Once the sender receives the RR it subtracts `sendertime1` and `DLSR` from current time `sendertime2`.
+This time delta is called round-trip propagation delay or round-trip time.
+
+`rtt = sendertime2 - sendertime1 - DLSR`
+
+Round-trip time in plain English: 
+- I send you a message with my clock's current reading, say it is 4:20pm, 42seconds and 420 milliseconds. 
+- You send me this same timestamp back. 
+- You also include the time elapsed from reading my message to sending the message back, say 5 milliseconds.
+- Once I receive the time back, I look at the clock again.
+- Now my clock says 4:20pm, 42 seconds 690 milliseconds
+- It means that it took 265 milliseconds (690 - 420 - 5) to reach you and return back to me.
+- Therefore, the round-trip time is 265 msec.
+
+![RTT](../images/06-rtt.png "RTT")
 
 ### TMMBR, TMMBN and REMB
 The next generation of Network Status messages all involve receivers messaging senders via RTCP with explicit bitrate requests.
