@@ -49,7 +49,7 @@ WebRTC并未使用会话描述协议定义的所有key。您当前只需要理�
 * `o` - Origin，源，包含一个唯一ID，用于重新协商
 * `s` - Session Name，会话名称，应等于`-`
 * `t` - Timing，时间，应等于`0 0`
-* `m` - Media Description，媒体描述，下面有详细说明
+* `m` - Media Description(`m=<media> <port> <proto> <fmt> ...`)，媒体描述，下面有详细说明
 * `a` - Attribute，属性，一个自由文本字段，这是WebRTC中最常见的行
 * `c` - Connection Data，连接数据，应等于`IN IP4 0.0.0.0`
 
