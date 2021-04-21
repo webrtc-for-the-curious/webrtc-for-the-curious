@@ -215,14 +215,14 @@ NACK是回给发送方以请求重发的RTCP消息。接收方使用SSRC和序�
 
 TMMBR和TMMBN是先出现的，它们在[RFC 5104](https://tools.ietf.org/html/rfc5104)中定义。REMB是后来出现的，是在[draft-alvestrand-rmcat-remb](https://tools.ietf.org/html/draft-alvestrand-rmcat-remb-03)中提交的一个草案，但从未被标准化。
 
-使用REMB的会话如下图所示 {{< figure src="/images/05-remb.png">}}
+使用REMB的会话如下图所示 {{< figure src="/images/06-remb.png">}}
 
 ### 传输范围内的拥塞控制（TWCC）
 传输范围内的拥塞控制是RTCP网络状态通信技术的最新进展。
 
 TWCC使用一个非常简单的原则：
 
-{{< figure src="/images/05-twcc-idea.png">}}
+{{< figure src="/images/06-twcc-idea.png">}}
 
 与REMB不同，TWCC的接收方不会尝试估计自己的传入比特率。它只是让发送方知道哪些包被收到了，是在什么时间收到的。基于这些报告，发送方可以了解网络的最新的状况。
 
@@ -235,7 +235,7 @@ TWCC使用一个非常简单的原则：
 
 在下图中，数据包间延迟的中位数增长了+20毫秒，这清楚地表明网络正在发生拥塞。
 
-{{< figure src="/images/05-twcc.png">}}
+{{< figure src="/images/06-twcc.png">}}
 
 TWCC提供了原始数据和实时网络状况的绝佳视图：
 - 几乎是即时的丢包统计信息，不仅包括丢失的百分比，还包括丢失的确切数据包。
