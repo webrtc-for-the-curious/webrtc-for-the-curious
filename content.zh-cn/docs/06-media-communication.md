@@ -47,7 +47,7 @@ RTCP（RTP控制协议/RTP Control Protocol）是用于传达有关呼叫的元�
 
 以下是对这三种类型帧的图解。
 
-{{< figure src="/images/05-frame-types.svg">}}
+{{< figure src="/images/06-frame-types.png">}}
 
 ### 视频很脆弱
 压缩后的视频是有状态的，（视频解码）非常依赖其上下文，这使得视频很难通过Internet进行传输。想像一下，如果I帧的一部分丢失了会怎样？这样P帧如何知道要修改的内容？ 随着视频压缩变得越来越复杂，这成为一个更大的问题。幸运的是，RTP和RTCP对此都有解决方案。
