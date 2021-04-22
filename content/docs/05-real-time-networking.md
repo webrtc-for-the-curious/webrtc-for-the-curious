@@ -34,7 +34,7 @@ The Transmission Time can fluctuate at anytime.
 
 To compute transmission time, you need clocks on sender and receiver synchronized with millisecond precision.
 Even a small deviation would produce an unreliable transmission time measurement.
-Since WebRTC is operating in a highly heterogenous environments it is next to impossible to rely on perfect time sync between hosts.
+Since WebRTC is operating in highly heterogenous environments, it is next to impossible to rely on perfect time synchronization between hosts.
 
 Round-trip time measurement is a workaround for imperfect clock synchronization.
 
