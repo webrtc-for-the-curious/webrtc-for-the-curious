@@ -230,13 +230,13 @@ This time delta is called round-trip propagation delay or round-trip time.
 `rtt = sendertime2 - sendertime1 - DLSR`
 
 Round-trip time in plain English: 
-- I send you a message with my clock's current reading, say it is 4:20pm, 42seconds and 420 milliseconds. 
+- I send you a message with my clock's current reading, say it is 4:20pm, 42 seconds and 420 milliseconds. 
 - You send me this same timestamp back. 
 - You also include the time elapsed from reading my message to sending the message back, say 5 milliseconds.
 - Once I receive the time back, I look at the clock again.
-- Now my clock says 4:20pm, 42 seconds 690 milliseconds
+- Now my clock says 4:20pm, 42 seconds 690 milliseconds.
 - It means that it took 265 milliseconds (690 - 420 - 5) to reach you and return back to me.
-- Therefore, the round-trip time is 265 msec.
+- Therefore, the round-trip time is 265 milliseconds.
 
 ![RTT](../images/06-rtt.png "RTT")
 
