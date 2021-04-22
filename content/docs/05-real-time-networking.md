@@ -134,6 +134,22 @@ The upside is that late packets don't cause jitter.  Imagine during a call you s
 In this case ~1.8 ms is a good choice. Packets that arrive late will use our window of latency. Packets that arrive early will be delayed and can
 fill the window depleted by late packets. This means we no longer have stuttering and provide a smooth delivery rate for the client.
 
+### JitterBuffer operation
+
+![JitterBuffer](../images/05-jitterbuffer.png "JitterBuffer")
+
+Every packet is added to the jitter buffer as soon as it is received. 
+Once there's enough packets to reconstruct the frame, packets that make up the frame are released from the buffer and emitted for decoding.
+The decoder, in turn, decodes and draws the video frame on users screen.
+Since jitter buffer has limited capacity, packets that stay in the buffer for too long are discarded from the buffer. 
+
+Read more on how video frames are converted to RTP packets and why reconstruction is necessary [here](../06-media-communication/#rtp))
+
+`jitterBufferDelay` provides a great insight into your network performance and its influence on playback smoothness.
+It is a part of [WebRTC statistics API](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-jitterbufferdelay) relevant to the receiver's inbound stream.
+The delay defines the amount of time video frames spend in JitterBuffer before being emitted for decoding.
+A longer jitter buffer delay means your network is highly congested.
+
 ## Detecting Congestion
 Before we can even resolve congestion, we need to detect it. To detect it we use a congestion controller. This is a complicated subject, and is still rapidly changing.
 New algorithms are still be published and tested. At a high level they all operate the same. A congestion controller provides a bandwidth estimates given some inputs.
