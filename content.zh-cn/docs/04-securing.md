@@ -110,7 +110,7 @@ DTLS（数据报传输层安全协议）允许两个peer在没有预先存在的
 时段从`0`开始，但在`更改Cipher规格`之后变为`1`。在非零时段的任何消息都将被加密。
 
 #### 序列号
-序列号用于保持消息顺序。每条消息都会增加序列号。当时段增加时，序列号重新开始。
+序列号用于保持消息顺序。每条消息都会增加序列号。当Epoch（时段）增加时，序列号重新开始。
 
 #### 长度和有效载荷
 有效载荷是特定于`内容类型`的。 对于`应用程序数据`，`有效载荷`是加密的数据。 对于`握手`，它会根据消息而有所不同。
@@ -121,38 +121,7 @@ DTLS（数据报传输层安全协议）允许两个peer在没有预先存在的
 在握手期间，客户端/服务器交换一系列消息。这些消息被分为多个Flight。每个Flight中可能有多个消息（或只有一个）。
 直到收到Flight中的所有消息，该Flight才算完成。我们将在下面更详细地描述每条消息的目的，
 
-{{<mermaid>}}
-sequenceDiagram
-    participant C as Client
-    participant S as Server
-
-    C->>S: ClientHello
-    Note over C,S: Flight 1
-
-    S->>C: HelloVerifyRequest
-    Note over C,S: Flight 2
-
-    C->>S: ClientHello
-    Note over C,S: Flight 3
-
-    S->>C: ServerHello
-    S->>C: Certificate
-    S->>C: ServerKeyExchange
-    S->>C: CertificateRequest
-    S->>C: ServerHelloDone
-    Note over C,S: Flight 4
-
-    C->>S: Certificate
-    C->>S: ClientKeyExchange
-    C->>S: CertificateVerify
-    C->>S: ChangeCipherSpec
-    C->>S: Finished
-    Note over C,S: Flight 5
-
-    S->>C: ChangeCipherSpec
-    S->>C: Finished
-    Note over C,S: Flight 6
-{{</mermaid>}}
+![握手](/images/04-handshake.png "握手")
 
 #### ClientHello
 ClientHello是客户端发送的初始消息。它包含一个属性列表。这些属性告诉服务器客户端支持的cipher和功能。对于WebRTC，这也是我们选择SRTP cipher方式的原因。它还包含将用于生成会话密钥的随机数据。

@@ -166,7 +166,7 @@ SCTP具有许多PPID，但是WebRTC仅使用以下5种：
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
-DATA块是交换所有用户数据的方式。当您通过数据通道发送数据时，下面对DATA块更详细的说明。
+DATA块是交换所有用户数据的方式。下面是对DATA块更详细的说明，数据就是这样通过数据通道被发送的。
 
 如果是无序数据包，则将`U`位设置为1。我们可以忽略流序列号（Stream Sequence Number）。
 
@@ -182,7 +182,7 @@ SCTP使用`B`和`E`位以及序列号（TSN）来表达这一点。
 
 `Stream Identifier`（流标识符）是该数据所属流的唯一标识符。
 
-`Payload Protocol Identifier`（有效负载协议标识符）是流过此流的数据类型。对于WebRTC，它可能是DCEP，String或Binary。
+`Payload Protocol Identifier`（有效负载协议标识符）是流过此流的数据类型。对于WebRTC而言，它可能是DCEP，String或Binary。
 
 `User Data`（用户数据）就是您要发送的内容。通过WebRTC数据通道发送的所有数据均通过DATA块传输。
 
@@ -360,19 +360,7 @@ SCTP使用FORWARD TSN块来实现这一点。它告诉接收方，`14`和`15`将
 
 `INIT ACK`块包含cookie。然后，使用`COOKIE ECHO`将cookie返回给其创建者。如果cookie验证成功，则发送`COOKIE ACK`，并且准备交换DATA块。
 
-{{<mermaid>}}
-sequenceDiagram
-    participant A1 as Association (A1)
-    participant A2 as Association (A2)
-
-    A1->>A2: INIT
-
-    A2->>A1: INIT ACK
-
-    A1->>A2: COOKIE ECHO
-
-    A2->>A1: COOKIE ACK
-{{</mermaid>}}
+![连接的建立](/images/07-connection-establishment.png "连接的建立")
 
 ### 连接关闭流程
 SCTP使用`SHUTDOWN`块。当代理收到`SHUTDOWN`块时，它将等待直到收到请求的`Cumulative TSN ACK`。这样，即使连接有损，用户也可以确保传送了所有数据。
