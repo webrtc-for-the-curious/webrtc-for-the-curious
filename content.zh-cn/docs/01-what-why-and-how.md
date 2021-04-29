@@ -81,12 +81,11 @@ ICE成功连接后，WebRTC继续建立加密的传输。此传输用于音频�
 
 ### 通过RTP和SCTP进行点对点通信
 
-现在，我们有了两个具有安全的双向通信功能的WebRTC代理。让我们开始通信！跟前面一样，我们使用两个预先存在的协议：RTP（实时传输协议）和SCTP（流控制传输协议）。SRTP用于加密通过RTP交换的媒体，而SCTP用于发送使用DTLS加密的DataChannel消息。
+现在，我们有了两个具有安全的双向通信功能的WebRTC代理。让我们开始通信！跟前面一样，我们使用两个预先存在的协议：RTP（实时传输协议）和SCTP（流控制传输协议）。我们使用RTP来交换用SRTP加密过的媒体数据，使用SCTP发送和接收那些用DTLS加密过的DataChannel消息。
 
 RTP很小，但是提供了实现实时流式传输所需的功能。重要的是，RTP为开发人员提供了灵活性，因此他们可以根据需要处理延迟，丢失和拥塞。我们将在媒体章节中对此进行进一步讨论。
 
 堆栈中的最终协议是SCTP。SCTP支持许多不同的消息传送选项。您可以选择不可靠的无序交付，以便获得实时系统所需的延迟。
-
 
 ## WebRTC是一系列协议的集合
 
@@ -94,35 +93,7 @@ WebRTC解决了许多问题。初看起来，这似乎是过度设计的。实�
 
 这使得我们可以独立的检查和学习每个部分，而不会毫无头绪。实际上，从另一个角度去看“ WebRTC代理”，它只是许多不同协议的协调器。
 
-{{<mermaid>}}
-graph TB
-
-webrtc{WebRTC Agent}
-
-sctp{SCTP Agent}
-dtls{DTLS Agent}
-ice{ICE Agent}
-stun{STUN Protocol}
-turn{TURN Agent}
-srtp{SRTP Agent}
-sdp{SDP}
-rtp{RTP}
-rtcp{RTCP}
-
-webrtc --> ice
-webrtc --> dtls
-webrtc --> srtp
-webrtc --> sdp
-webrtc --> sctp
-
-ice --> turn
-ice --> stun
-
-srtp --> rtcp
-srtp --> rtp
-
-{{</mermaid>}}
-
+![WebRTC代理](../images/01-webrtc-agent.png "WebRTC代理图示")
 
 ## WebRTC（API）如何工作
 

@@ -44,25 +44,7 @@ ICE就是克服现实世界网络限制的方法。在我们开始讨论ICE如�
 
 下面是通过公共互联网连接的两个不同网络的示意图。在每个网络中，您拥有两个主机。
 
-{{<mermaid>}}
-graph TB
-subgraph netb ["Network B (IP Address 5.0.0.2)"]
-  b3["Agent 3 (IP 192.168.0.1)"]
-  b4["Agent 4 (IP 192.168.0.2)"]
-  routerb["Router B"]
-  end
-
-subgraph neta ["Network A (IP Address 5.0.0.1)"]
-  routera["Router A"]
-  a1["Agent 1 (IP 192.168.0.1)"]
-  a2["Agent 2 (IP 192.168.0.2)"]
-  end
-
-pub{Public Internet}
-routera-->pub
-routerb-->pub
-
-{{</mermaid>}}
+![两个网络](../images/03-two-networks.png "两个网络")
 
 对于同一网络中的主机来说，互相连接非常容易。例如在`192.168.0.1 -> 192.168.0.2`之间通讯就很容易！这两个主机无需任何外部帮助即可相互连接。
 
@@ -78,29 +60,11 @@ routerb-->pub
 
 ## NAT映射
 
-NAT（网络地址转换）映射是使得WebRTC连接成为可能的魔法。WebRTC就是使用NAT让处于完全不同的子网中的两个peer进行通信，从而解决了上述"不在同一网络中"的问题，这同时也带来了新的挑战。首先，让我们解释一下NAT映射是如何工作的。
+NAT（网络地址转换）映射是使得WebRTC连接成为可能的魔法。WebRTC就是使用NAT让处于完全不同的子网中的两个peer进行通信，从而解决了上述"不在同一网络中"的问题。尽管它带来了新的挑战，但让我们先来解释一下NAT映射是如何工作的。
 
 NAT映射不使用中继，代理或服务器。跟上一个例子一样，我们有`Agent 1`和`Agent 2`，它们位于不同的网络中。然而，流量穿透了路由器。看起来就像这样：
 
-{{<mermaid>}}
-graph TB
-subgraph netb ["Network B (IP Address 5.0.0.2)"]
-  b2["Agent 2 (IP 192.168.0.1)"]
-  routerb["Router B"]
-  end
-
-subgraph neta ["Network A (IP Address 5.0.0.1)"]
-  routera["Router A"]
-  a1["Agent 1 (IP 192.168.0.1)"]
-  end
-
-pub{Public Internet}
-
-a1-.->routera;
-routera-.->pub;
-pub-.->routerb;
-routerb-.->b2;
-{{</mermaid>}}
+![NAT映射](../images/03-nat-mapping.png "NAT映射")
 
 想要这样通信的话，您需要创建一个NAT映射。Agent 1使用端口7000与Agent 2建立WebRTC连接。这将创建一个`192.168.0.1:7000`到`5.0.0.1:7000`的绑定。然后，Agent 2将数据包发送到`5.0.0.1:7000`时，数据包会被转发给Agent 1。在这个例子中，创建一个NAT映射，就像是在路由器中做了一次自动化的端口转发。
 
@@ -300,51 +264,12 @@ TURN有两种用法。通常情况下，一个peer会作为'TURN客户端'连接
 下面这些图有助于说明TURN的用法。
 
 #### 单个 TURN Allocation 通信
-{{<mermaid>}}
-graph TB
 
-subgraph turn ["TURN Allocation"]
-  serverport["Server Transport Address"]
-  relayport["Relayed Transport Address" ]
-  end
-
-turnclient{TURN Client}
-peer{UDP Client}
-
-turnclient-->|"ChannelData (To UDP Client)"|serverport
-serverport-->|"ChannelData (From UDP Client)"|turnclient
-
-peer-->|"Raw Network Traffic (To TURN Client)"|relayport
-relayport-->|"Raw Network Traffic (To UDP Client)"|peer
-{{</mermaid>}}
+![单个 TURN Allocation](../images/03-one-turn-allocation.png "单个 TURN Allocation")
 
 #### 双重 TURN Allocation 通信
-{{<mermaid>}}
-graph TB
 
-subgraph turna["TURN Allocation A"]
-  serverportA["Server Transport Address"]
-  relayportA["Relayed Transport Address" ]
-  end
-
-subgraph turnb["TURN Allocation B"]
-  serverportB["Server Transport Address"]
-  relayportB["Relayed Transport Address" ]
-  end
-
-
-turnclientA{TURN Client A}
-turnclientB{TURN Client B}
-
-turnclientA-->|"ChannelData"|serverportA
-serverportA-->|"ChannelData"|turnclientA
-
-turnclientB-->|"ChannelData"|serverportB
-serverportB-->|"ChannelData"|turnclientB
-
-relayportA-->|"Raw Network Traffic"|relayportB
-relayportB-->|"Raw Network Traffic"|relayportA
-{{</mermaid>}}
+![双重 TURN Allocation](../images/03-two-turn-allocations.png "双重 TURN Allocation")
 
 {{< hint info >}}
 译注：单个TURN Allocation的情况，指的是一个TURN Client和另一个可访问的UDP Client的通信。双重TURN Allocation的情况，指的是两个TURN Client之间通信。
@@ -406,40 +331,8 @@ Peer自反候选地址是指，当您从您不知道的地址收到入站请求�
 现在我们知道了远程代理的`用户片段`，`密码`和候选地址。我们可以尝试连接了！ 候选地址可以相互配对。因此，如果每边有3个候选地址，那么现在就有9个候选地址对。
 
 看起来像这样
-{{<mermaid>}}
-graph LR
 
-subgraph agentA["ICE Agent A"]
-  hostA{Host Candidate}
-  serverreflexiveA{Server Reflexive Candidate}
-  relayA{Relay Candidate}
-  end
-
-style hostA fill:#ECECFF,stroke:red
-style serverreflexiveA fill:#ECECFF,stroke:green
-style relayA fill:#ECECFF,stroke:blue
-
-subgraph agentB["ICE Agent B"]
-  hostB{Host Candidate}
-  serverreflexiveB{Server Reflexive Candidate}
-  relayB{Relay Candidate}
-  end
-
-hostA --- hostB
-hostA --- serverreflexiveB
-hostA --- relayB
-linkStyle 0,1,2 stroke-width:2px,fill:none,stroke:red;
-
-serverreflexiveA --- hostB
-serverreflexiveA --- serverreflexiveB
-serverreflexiveA --- relayB
-linkStyle 3,4,5 stroke-width:2px,fill:none,stroke:green;
-
-relayA --- hostB
-relayA --- serverreflexiveB
-relayA --- relayB
-linkStyle 6,7,8 stroke-width:2px,fill:none,stroke:blue;
-{{</mermaid>}}
+![连通性检查](../images/03-connectivity-checks.png "连通性检查")
 
 ### 候选地址选择
 
