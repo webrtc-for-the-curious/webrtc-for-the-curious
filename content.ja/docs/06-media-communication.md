@@ -246,7 +246,7 @@ RTP/RTCPには、この問題に対する3つの異なるソリューション�
 * **Fraction Lost** -- 前回のReceiver Report以降、何パーセントのパケットが失われたか。
 * **Cumulative Number of Packets Lost** -- 通話全体で失われたパケット数。
 * **Extended Highest Sequence Number Received** -- 最後に受信したシーケンス番号と、それが何回ロールオーバーしたかを示しています。
-* **Interarrival Jitter** -- 呼全体のローリングジッターです。
+* **Interarrival Jitter** -- 通話全体のローリングジッターです。
 * **Last Sender Report Timestamp** -- ラウンドトリップタイムの計算に使用される、送信者の最後の既知の時間。
 
 送信者と受信者のレポート（SRとRR）は協力してラウンドトリップタイムを計算します。

@@ -259,7 +259,7 @@ TURNの使い方には2つの形態があります。通常は、片方のピア
 
 ## ICE
 
-ICE（Interactive Connectivity Establishment）は、WebRTCが2つのAgentを接続する方法です。RFC 8445](https://tools.ietf.org/html/rfc8445)で定義されていますが、これもWebRTCよりも前の技術です。ICEは、接続性を確立するためのプロトコルです。ICEは、2つのピア間で可能なすべてのルートを決定し、接続を維持します。
+ICE（Interactive Connectivity Establishment）は、WebRTCが2つのAgentを接続する方法です。[RFC 8445](https://tools.ietf.org/html/rfc8445)で定義されていますが、これもWebRTCよりも前の技術です。ICEは、接続性を確立するためのプロトコルです。ICEは、2つのピア間で可能なすべてのルートを決定し、接続を維持します。
 
 これらのルートは`候補ペア`と呼ばれ、ローカルとリモートのトランスポートアドレスのペアとなっています。ICEでは、ここでSTUNとTURNが活躍します。これらのアドレスは、ローカルIPアドレスにポートを加えたものや、`NATマッピング`、`中継トランスポートアドレス`などがあります。それぞれの側は、使用したいアドレスをすべて集めて交換し、接続を試みます。
 
