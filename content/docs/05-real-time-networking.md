@@ -116,9 +116,9 @@ fill the window depleted by late packets. This means we no longer have stutterin
 Every packet is added to the jitter buffer as soon as it is received. 
 Once there's enough packets to reconstruct the frame, packets that make up the frame are released from the buffer and emitted for decoding.
 The decoder, in turn, decodes and draws the video frame on users screen.
-Since jitter buffer has limited capacity, packets that stay in the buffer for too long are discarded from the buffer. 
+Since the jitter buffer has a limited capacity, packets that stay in the buffer for too long will be discarded.
 
-Read more on how video frames are converted to RTP packets and why reconstruction is necessary [here](../06-media-communication/#rtp))
+Read more on how video frames are converted to RTP packets, and why reconstruction is necessary [in the media communication chapter](../06-media-communication/#rtp).
 
 `jitterBufferDelay` provides a great insight into your network performance and its influence on playback smoothness.
 It is a part of [WebRTC statistics API](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-jitterbufferdelay) relevant to the receiver's inbound stream.
