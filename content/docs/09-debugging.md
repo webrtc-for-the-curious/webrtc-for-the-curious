@@ -117,3 +117,6 @@ Common commands:
 
 #### wireshark
 #### webrtc-internals
+
+Chrome comes with a built-in WebRTC statistics page available at [chrome://webrtc-internals](chrome://webrtc-internals).
+
