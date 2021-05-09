@@ -9,7 +9,7 @@ weight: 2
 
 WebRTC とは、Web Real-Time Communication の略で、API であると同時にプロトコルでもあります。WebRTC プロトコルは、2 つの WebRTC エージェントが双方向の安全なリアルタイム通信をネゴシエートするための一連のルールです。WebRTC API は、開発者が WebRTC プロトコルを使用するためのものです。WebRTC API は、JavaScript のみで規定されています。
 
-似たような関係として、HTTP と fetch API があります。プロトコルの WebRTC が HTTP で、API の WebRTC が fetch API となります。
+似たような関係として、HTTP と fetch API があります。プロトコルとしての WebRTC が HTTP で、API としての WebRTC が fetch API となります。
 
 WebRTC プロトコルは、JavaScript 以外の API/言語でも利用可能です。また、WebRTC 用のサーバーやドメイン固有のツールもあります。これらの実装はすべて WebRTC プロトコルを使用しており、相互にやりとりできます。
 
