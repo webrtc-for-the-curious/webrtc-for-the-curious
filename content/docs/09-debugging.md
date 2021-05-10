@@ -122,22 +122,24 @@ Chrome comes with a built-in WebRTC statistics page available at [chrome://webrt
 
 ## Latency
 
-How do you know you have high latency?
+How do you know you have high latency? 
 
-You may have noticed the video is lagging, but do you know by how much precisely is it lagging?
-Start taking latency down by measuring it first.
+You may have noticed that your video is lagging, but do you know precisely how much it is lagging? 
+To be able to reduce this latency, you have to start by measuring it first.
 
 True latency is supposed to be measured end-to-end. 
-That is, not just the latency of the network path between sender and receiver, but the combined latency of camera capture, frame encoding, transmission, receipt, decoding and display as well as possible queueing between any of the steps.
+
+That means not just the latency of the network path between the sender and the receiver, but the combined latency of camera capture, frame encoding, transmission, receiving, decoding and displaying, as well as possible queueing between any of these steps.
 
 End-to-end latency is not a simple sum of latencies of each component.
 
-While one could theoretically measure latency of the components of a live video transmission pipeline separately and then sum all latencies in practice at least some components are either inaccessible for instrumentation or produce significantly different results when measured outside of such pipeline. 
+While you could theoretically measure the latency of the components of a live video transmission pipeline separately and then add them together, in practice, at least some components will be either inaccessible for instrumentation, or produce significantly different results when measured outside of the pipeline.
 Variable queue depths between pipeline stages, network topology and camera exposure changes are just a few examples of components affecting end-to-end latency.
 
-Intrinsic latency of each component of your live streaming system is changing and affecting downstream components.
-Even the content of captured video affects latency eg. more bits are required for high frequency features like tree branches vs low frequency clear blue sky.
-A camera with auto exposure turned on may take _much_ longer than expected 33 milliseconds to capture a frame even if you are sure you set fps to 30.
+The intrinsic latency of each component in your live streaming system can change and affect downstream components.
+Even the content of captured video affects latency. 
+For example, many more bits are required for high frequency features such as tree branches, compared to a low frequency clear blue sky.
+A camera with auto exposure turned on may take _much_ longer than the expected 33 milliseconds to capture a frame, even if when the capture rate is set to 30 frames per second.
 Transmission over the network, especially so cellular, is also very dynamic due to changing demand. 
 More users introduce more chatter on the air. 
 Your physical location (notorious low signal zones) and multiple other factors increase packet loss and latency.
