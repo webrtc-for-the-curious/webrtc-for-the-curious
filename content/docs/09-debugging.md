@@ -147,6 +147,31 @@ What happens when you send a packet to a network interface, say wifi adapter or 
 If it can not be immediately delivered it is queued on the interface, the larger the queue the more latency such network interface introduces.
 
 ### Manual end-to-end latency measurement
+When we talk about end-to-end latency, we mean the time between an event happening and it being observed - video frames appearing on the screen.
+```
+EndToEndLatency = T(observe) - T(happen)
+```
+A naive approach is to record time at event happening and subtract it from the time at observation.
+However as precision goes down to milliseconds time synchronization becomes an issue.
+Trying to synchronize clocks across distributed systems is mostly futile, even a small error in time sync produces unreliable latency measurement.
+
+A simple workaround for clock sync issues is to use the same clock.
+Put sender and receiver in the same frame of reference.
+
+Imagine you have a ticking millisecond clock or any other event source really.
+You want to measure latency in a system that live streams the clock to a remote screen by pointing a camera at it.
+An obvious way to measure time between the millisecond timer ticking (T<sub>`happen`</sub>) and video frames of the clock appear on screen (T<sub>`observe`</sub>) is the following:
+- Point your camera at the millisecond clock.
+- Send video frames to a receiver that is in the same physical location.
+- Take a picture (use your phone) of the millisecond timer and the received video on screen.
+- Subtract two times.
+That is the most true-to-yourself end-to-end latency measurement.
+It accounts for all components latencies (camera, encoder, network, decoder) and does not rely on any clock synchronization.
+
+![DIY Latency](../images/09-diy-latency.png "DIY Latency Measurement").
+![DIY Latency Example](../images/09-diy-latency-happen-observe.png "DIY Latency Measurement Example")
+In the photo above measured end-to-end latency is 101 msec. Event happening right now is 10:16:02.862 but live streaming system observer sees 10:16:02.761. 
+
 ### Automatic end-to-end latency measurement
 #### Example latency estimation
 #### Actual video time in browser
