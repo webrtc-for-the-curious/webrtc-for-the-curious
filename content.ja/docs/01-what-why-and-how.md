@@ -105,7 +105,7 @@ WebRTC は多くの問題を解決していて、一見過剰な技術とさえ�
 
 #### `addTrack`
 
-`addTrack` は新しい RTP ストリームを作成します。このストリームには、ランダムな同期ソース (SSRC) が生成されます。このストリームは、メディアセクション内の `createOffer` で生成されたセッション記述の中に入ります。 `addTrack` を呼び出すたびに、新しい SSRC とメディアセクションが作成されます。
+`addTrack` は新しい RTP ストリームを作成します。このストリームには、ランダムな同期ソース (SSRC) が生成されます。このストリームは、メディアセクション内の `createOffer` で生成された Session Description の中に入ります。 `addTrack` を呼び出すたびに、新しい SSRC とメディアセクションが作成されます。
 
 SRTP セッションが確立されるとすぐに、これらのメディアパケットは SRTP で暗号化された後、ICE 経由で送信され始めます。
 
@@ -139,7 +139,7 @@ DTLS セッションが確立された直後に、SCTP アソシエーション�
 
 #### `ontrack`
 
-`ontrack` は、リモートピアから RTP パケットを受信したときに起動されるコールバックです。受信パケットは、`setRemoteDescription` に渡されたセッション記述で宣言されているはずです。
+`ontrack` は、リモートピアから RTP パケットを受信したときに起動されるコールバックです。受信パケットは、`setRemoteDescription` に渡された Session Description で宣言されているはずです。
 
 WebRTC は SSRC を使用して、関連する `MediaStream` と `MediaStreamTrack` を検索し、これらの詳細が入力された状態でこのコールバックを起動します。
 
