@@ -173,8 +173,117 @@ It accounts for all components latencies (camera, encoder, network, decoder) and
 In the photo above measured end-to-end latency is 101 msec. Event happening right now is 10:16:02.862 but live streaming system observer sees 10:16:02.761. 
 
 ### Automatic end-to-end latency measurement
+
+As of the time of writing (May 2021) the WebRTC standard for end-to-end delay is being actively [discussed](https://github.com/w3c/webrtc-stats/issues/537).
+Firefox implemented a set of APIs to let users create automatic latency measurement on top of standard WebRTC APIs.
+However in this paragraph we discuss the most compatible way to automatically measure latency.
+
+![NTP Style Latency Measurement](../images/09-ntp-latency.png "NTP Style Latency Measurement")
+
+Roundtrip time in a nutshell: I send you my time `tR1`, when i receive back my `tR1` at time `tR2` i know round trip time is `tR2 - tR1`
+
+Given a communication channel between sender and receiver (eg [DataChannel](https://webrtc.org/getting-started/data-channels)) receiver may model senders monotonic clock by following the below protocol.
+1. At time `tR1` receiver sends a message its local monotonic clock timestamp.
+2. When received at sender local time `tS1` the sender responds with a copy of `tR1` as well as sender’s `tS1` and
+ sender’s video track time `tSV1`.
+3. At time `tR2` on receiving end round trip time is calculated by subtracting the message’s  send and receive times. `RTT = tR2 - tR1`
+4. Round trip time `RTT` together with sender local timestamp `tS1` is enough to create an estimation of sender's monotonic clock. Current time on sender at time `tR2` would be equal to `tS1` plus half of round trip time.  
+5. Sender's local clock timestamp `tS1` paired with video track timestamp `tSV1` together with round trip time `RTT` is therefore enough to sync receiver video track time to sender video track. 
+
+Now that we know how much time has passed since last known sender video frame time `tSV1` we can approximate latency by comparing currently displayed video frame's time less time elapsed since `tSV1`.
+
+```
+expected_video_time = tSV1 + time_since(tSV1)
+latency = expected_video_time - actual_video_time
+```
+
+This method's drawback is that it does not include camera's intrinsic latency.
+Most video systems consider the frame capture timestamp to be the time when the frame from the camera is delivered to the main memory, which will be a few moments after the event being recorded actually happened.
+
 #### Example latency estimation
+
+A sample implementation opens `latency` data channel on receiver and periodically sends receivers monotonic timer timestamps to the sender.
+Sender responds back with a JSON message.
+Receiver calculates the latency based the message.
+
+```json
+{
+    "received_time": 64714,       // timestamp sent by receiver, sender reflects the timestamp 
+    "delay_since_received": 46,   // time elapsed since last `received_time` received on sender
+    "local_clock": 1597366470336, // sender current monotonic clock time
+    "track_times_msec": {
+        "myvideo_track1": [
+            13100,        // video frame rtp timestamp (in millisecond timescale)
+            1597366470289 // video frame monotonic clock timestamp
+        ]
+    }
+}
+```
+
+Open data channel on receiver
+```javascript
+dataChannel = peerConnection.createDataChannel('latency');
+```
+
+Send receivers time `tR1` periodically, this example uses 2 seconds for no particular reason
+```javascript
+setInterval(() => {
+    let tR1 = Math.trunc(performance.now());
+    dataChannel.send("" + tR1);
+}, 2000);
+```
+
+Handle incoming message from receiver on sender
+```javascript
+//assuming event.data is a string like: "1234567"
+tR1 = event.data
+now = Math.trunc(performance.now());
+tSV1 = 42000; //current frame rtp timestamp converted to millisecond timescale
+tS1 = 1597366470289; //current frame monotonic clock timestamp
+msg = {
+  "received_time": tR1,
+  "delay_since_received": 0,
+  "local_clock": now,
+  "track_times_msec": {
+    "myvideo_track1": [tSV1, tS1]
+  }
+}
+dataChannel.send(JSON.stringify(msg));
+```
+
+Handle incoming message from sender, print estimated latency to `console`
+```javascript
+let tR2 = performance.now();
+let fromSender = JSON.parse(event.data);
+let tR1 = fromSender['received_time'];
+let delay = fromSender['delay_since_received']; //how much time has passed between sender receiving and sending the response
+let senderTimeFromResponse = fromSender['local_clock'];
+let rtt = tR2 - delay - tR1;
+let networkLatency = rtt / 2;
+let senderTime = (senderTimeFromResponse + delay + networkLatency);
+VIDEO.requestVideoFrameCallback((now, framemeta) => {
+    //estimate current time on sender
+    let delaySinceVideoCallbackRequested = now - tR2;
+    senderTime += delaySinceVideoCallbackRequested;
+    let [tSV1, tS1] = Object.entries(fromSender['track_times_msec'])[0][1]
+    let timeSinceLastKnownFrame = senderTime - tS1;
+    let expectedVideoTimeMsec = tSV1 + timeSinceLastKnownFrame;
+    let actualVideoTimeMsec = Math.trunc(framemeta.rtpTimestamp / 90); //convert rtp timebase (90000) to millisecond timebase
+    let latency = expectedVideoTimeMsec - actualVideoTimeMsec;
+    console.log('latency', latency, 'msec');
+});
+```
+
 #### Actual video time in browser
+
+> `<video>.requestVideoFrameCallback()` allows web authors to be notified when a frame has been presented for composition.
+
+Until very recently (May 2020) it was next to impossible to reliably get a timestamp of currently displayed video frame in browsers. Workaround methods based on `video.currentTime` existed but were not particularly precise. 
+Both the Chrome and Mozilla browser developers [supported](https://github.com/mozilla/standards-positions/issues/250) the introduction of a new W3C standard, [`HTMLVideoElement.requestVideoFrameCallback()`](https://wicg.github.io/video-rvfc/), that adds an API callback to access the current video frame time.
+While the addition sounds trivial it has enabled multiple advanced media applications on the web, which require audio/video synchronization.
+Specifically for WebRTC, the callback will include the `rtpTimestamp` field, the RTP timestamp associated with current video frame. 
+This should be present for WebRTC applications, but absent otherwise.
+
 ### Latency Debugging Tips
 #### Camera latency
 #### Encoder latency
