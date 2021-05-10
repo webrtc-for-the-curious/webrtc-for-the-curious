@@ -285,7 +285,89 @@ Specifically for WebRTC, the callback will include the `rtpTimestamp` field, the
 This should be present for WebRTC applications, but absent otherwise.
 
 ### Latency Debugging Tips
+
+First of all, since debugging is likely to affect the measured latency, the general rule is to simplify your setup to the smallest possible one that can still reproduce the issue.
+The more components you can remove, the easier it will be to figure out which component is causing the latency issues.
+
 #### Camera latency
+
+Depending on camera settings camera latency may vary.
+Check auto exposure, auto focus and auto white balance settings.
+All the "auto" features of web cameras take some time to analyse the captured image before making it available to the WebRTC stack.
+
+If you are on Linux use `v4l2-ctl` command line tool to control camera settings
+```bash
+# disable autofocus
+v4l2-ctl -d /dev/video0 -c focus_auto=0
+# set focus to infinity
+v4l2-ctl -d /dev/video0 -c focus_absolute=0
+```
+
+We also use `guvcview` UI tool to quickly check and tweak camera settings.
+
 #### Encoder latency
+
+Most modern encoders will buffer a number of frames before outputting an encoded one.
+Their first priority is a balance between quality of produced picture and bitrate. 
+Multipass encoding is an extreme example of encoders disregard for output latency.
+During the first pass encoder ingests the entire video and only after that starts outputting frames.
+
+However with proper tuning people have achieved sub-frame latencies.
+Make sure your encoder does not use excessive reference frames or rely on B-frames.
+Every codecs latency tuning settings are different but for x264 we recommend using `tune=zerolatency` and `profile=baseline` for lowest frame output latency.
+
 #### Network latency
+
+Network latency is the one you can arguably do least about, other than upgrading to a better network connection.
+Network latency is very much like weather - you can't stop the rain, but you can check the forecast and take an umbrella.
+WebRTC is measuring network conditions with millisecond precision.
+Important metrics are:
+- Round-trip time
+- Packet loss and packet retransmissions
+
+**Round-Trip Time**
+
+WebRTC stack has built-in network round trip time (RTT) measurement [mechanism](https://www.w3.org/TR/webrtc-stats/#dom-rtcremoteinboundrtpstreamstats-roundtriptime).
+A good-enough approximation of latency is half of RTT. It assumes that it takes the same time to send and receive a packet which is not always the case.
+RTT sets the lower bound on the end-to-end latency.
+Your video frames can not reach the receiver faster than RTT/2, no matter how optimized your camera to encoder pipeline is.
+
+The built-in RTT mechanism is based on special RTCP packets called sender/receiver reports.
+Sender sends its time reading to receiver, receiver in turn reflects the same timestamp to the sender. 
+Thereby sender knows how much time it took for the packet to travel to receiver and return back.
+Refer to [Sender/Receiver Reports](06-media-communication/#senderreceiver-reports) chapter for more details of RTT measurement. 
+
+**Packet loss and packet retransmissions**
+
+Both RTP and RTCP protocols are based on UDP which does not have any guarantee of ordering, successful delivery or non-duplication.
+All of the above can and does happen in real world WebRTC applications.
+An unsophisticated decoder implementation expects all packets of a frame to be delivered for the decoder to successfully reassemble the image.
+In presence of packet loss decoding artifacts may appear if packets of a [P-frame](06-media-communication/#inter-frame-types) are lost.
+If I-frame packets are lost then all of its dependent frames will either get heavy artifacts or won't be decoded at all. 
+This looks like video is "freezing".
+
+To avoid (well at least to try avoid) video freezing and/or decoding artifacts WebRTC uses negative acknowledgement messages ([NACK](../06-media-communication/#negative-acknowledgment)).
+When the receiver does not get an expected RTP packet, it returns a NACK message to tell the sender to send the missing packet again.
+The receiver _waits_ for the retransmission of the packet.
+Such retransmissions obviously causes increased latency.
+The number of NACK packets sent and received is recorded in WebRTC built-in stats fields [outbound stream nackCount](https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-nackcount) and [inbound stream nackCount](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-nackcount).
+
+You can see nice graphs of inbound and outbound `nackCount` on the [webrtc internals page](#webrtc-internals). 
+If you see the `nackCount` increasing, it means the network is experiencing high packet loss and the WebRTC stack is doing its best to create a smooth video/audio experience despite that.
+
+When packet loss is so high that the decoder is unable to produce an image, or subsequent dependent images like in the case of a fully lost I-frame, all future P-frames will not be decoded. 
+The receiver will try to mitigate that by sending a special picture loss indication message ([PLI](../06-media-communication/#full-intra-frame-request-fir-and-picture-loss-indication-pli)).
+Once the sender receives a `PLI`, it will produce a new I-frame to help the receiver's decoder.
+I-frames are normally larger in size than P-frames. This increases number of packets that need to be transmitted.
+Like with NACK messages, the receiver will need to wait for the new I-frame, introducing additional latency.
+
+Watch for `pliCount` on [webrtc internals page](#webrtc-internals) if it increases - tweak your encoder to produce less packets or enable error resilient mode.
+
 #### Receiver side latency
+
+Latency will be affected by packets arriving out of order.
+If the bottom half of the image packet comes before the top you'd have to wait for the top before decoding.
+This is explained in the [Solving Jitter](05-real-time-networking/#solving-jitter) chapter in great detail.
+
+You can refer also to [jitterBufferDelay](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-jitterbufferdelay) built-in metric to see how long a frame was held in receive buffer waiting for all of its packets until it was released to decoder.
+
