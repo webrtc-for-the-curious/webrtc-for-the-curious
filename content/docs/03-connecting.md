@@ -62,7 +62,7 @@ It doesn't use a relay, proxy, or server. Again we have `Agent 1` and `Agent 2` 
 
 ![NAT mapping](../images/03-nat-mapping.png "NAT mapping")
 
-To make this communication happen you establish a NAT Mapping. Agent 1 uses port 7000 to established a WebRTC connection with Agent 2. This creates a binding of `192.168.0.1:7000` to `5.0.0.1:7000`. This then allows Agent 2 to reach Agent 1 by sending packets to `5.0.0.1:7000`. Creating a NAT mapping like in this example is like an automated version of doing port forwardinging in your router.
+To make this communication happen you establish a NAT Mapping. Agent 1 uses port 7000 to establish a WebRTC connection with Agent 2. This creates a binding of `192.168.0.1:7000` to `5.0.0.1:7000`. This then allows Agent 2 to reach Agent 1 by sending packets to `5.0.0.1:7000`. Creating a NAT mapping like in this example is like an automated version of doing port forwarding in your router.
 
 The downside to NAT Mapping is that there isn't a single form of mapping (e.g. static port forwarding) and the behavior is inconsistent between networks. ISPs and hardware manufacturers may do it in different ways. In some cases, network administrators may even disable it.
 
@@ -96,10 +96,10 @@ Mapping filtering is the rules around who is allowed to use the mapping. They fa
 Anyone can use the mapping. You can share the mapping with multiple other peers and they could all send traffic to it.
 
 #### Address Dependent Filtering
-Only the host the mapping was created for can use the mapping. If you send a packet to host `A` it can respond back with as many packets as it wants. If host `B` attempts to send a packet to that mapping, it will be ignored.
+Only the host the mapping was created for can use the mapping. If you send a packet to host `A` it can respond with as many packets as it wants. If host `B` attempts to send a packet to that mapping, it will be ignored.
 
 #### Address and Port Dependent Filtering
-Only the host and port for which the mapping was created for can use that mapping. If you send a packet to host `A:5000` it can respond back with as many packets as it wants. If host `A:5001` attempts to send a packet to that mapping, it will be ignored.
+Only the host and port for which the mapping was created for can use that mapping. If you send a packet to host `A:5000` it can respond with as many packets as it wants. If host `A:5001` attempts to send a packet to that mapping, it will be ignored.
 
 ### Mapping Refresh
 It is recommended that if a mapping is unused for 5 minutes it should be destroyed. This is entirely up to the ISP or hardware manufacturer.
@@ -194,7 +194,7 @@ When creating an allocation, you need to provide/decide the following
 * Allocation Transport - The `Relayed Transport Address` can be UDP or TCP
 * Even-Port - You can request sequential ports for multiple allocations, not relevant for WebRTC
 
-If the request succeeded, you get a response with the TURN Server with the follow STUN Attributes in the Data section.
+If the request succeeded, you get a response with the TURN Server with the following STUN Attributes in the Data section.
 * `XOR-MAPPED-ADDRESS` - `Mapped Address` of the `TURN Client`. When someone sends data to the `Relayed Transport Address` this is where it is forwarded to.
 * `RELAYED-ADDRESS` - This is the address that you give out to other clients. If someone sends a packet to this address it is relayed to the TURN client.
 * `LIFETIME` - How long until this TURN Allocation is destroyed. You can extend the lifetime by sending a `Refresh` request.
@@ -209,7 +209,7 @@ Let's say you want to create a permission for a host behind a `Address Dependent
 #### SendIndication/ChannelData
 These two messages are for the TURN Client to send messages to a remote peer.
 
-SendIndication is a self-contained message. Inside it is the data you wish to send, and who you wish to send it too. This is wasteful if you are sending a lot of messages to a remote peer. If you send 1,000 messages you will repeat their IP Address 1,000 times!
+SendIndication is a self-contained message. Inside it is the data you wish to send, and who you wish to send it to. This is wasteful if you are sending a lot of messages to a remote peer. If you send 1,000 messages you will repeat their IP Address 1,000 times!
 
 ChannelData allows you to send data, but not repeat an IP Address. You create a Channel with an IP/Port. You then send with the ChannelId, and the IP/Port is populated server side. This is the better choice if you are sending lots of messages.
 
@@ -232,7 +232,7 @@ These diagrams help illustrate what that would look like.
 ## ICE
 ICE (Interactive Connectivity Establishment) is how WebRTC connects two Agents. Defined in [RFC 8445](https://tools.ietf.org/html/rfc8445), this is another technology that pre-dates WebRTC! ICE is a protocol for establishing connectivity. It determines all the possible routes between the two peers and then ensures you stay connected.
 
-These routes are known as `Candidate Pairs`, which is a pairing of a local and remote transport address. This is where STUN and TURN come into play with ICE. These addresses can be your local IP Address plus a port, `NAT Mapping`, or `Relayed Transport Address`. Each side gathers all the addresses they want to use, exchange them, and then attempt to connect!
+These routes are known as `Candidate Pairs`, which is a pairing of a local and remote transport address. This is where STUN and TURN come into play with ICE. These addresses can be your local IP Address plus a port, `NAT Mapping`, or `Relayed Transport Address`. Each side gathers all the addresses they want to use, exchanges them, and then attempts to connect!
 
 Two ICE Agents communicate using ICE ping packets (or formally called the connectivity checks), and establish connectivity. After connectivity is established they can send whatever they want. It will feel like using a normal socket. These checks use the STUN protocol.
 
