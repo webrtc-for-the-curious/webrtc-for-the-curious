@@ -78,7 +78,7 @@ If the data channel type is `DATA_CHANNEL_PARTIAL_RELIABLE`, the suffixes config
 * `TIMED` - Defines for how long time (in ms) the sender will re-send the message before giving up.
 
 #### Label
-The name of the data channel is a UTF-8-encoded string. This may be an empty string.
+A UTF-8-encoded string containing the name of the data channel. This string may be empty.
 
 #### Protocol
 If this is an empty string, the protocol is unspecified. If it is a non-empty string, it specifies a protocol
