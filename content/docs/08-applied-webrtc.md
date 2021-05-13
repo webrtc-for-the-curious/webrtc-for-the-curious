@@ -8,7 +8,7 @@ weight: 9
 
 Now that you know how WebRTC works it is time to build with it. This chapter explores what people are
 building with WebRTC, and how they are building it. You will learn all the interesting things that are
-happening with WebRTC. The power of WebRTC comes as a cost. Building production grade WebRTC services is
+happening with WebRTC. The power of WebRTC comes at a cost. Building production grade WebRTC services is
 challenging. This chapter will try and explain those challenges before you hit them.
 
 ## By Use Case
@@ -36,7 +36,7 @@ and configure them if you need performance more than reliability.
 Lots of new projects are starting to appear in the broadcast space that use WebRTC. The protocol has a lot to offer for both the publisher
 and consumer of media.
 
-WebRTC being in the browser makes for it easy for users to publish video. It removes the requirement for users to download a new client.
+WebRTC being in the browser makes it easy for users to publish video. It removes the requirement for users to download a new client.
 Any platform that has a web browser can publish video. Publishers can then send multiple tracks and modify/remove them at anytime. This is
 a huge improvement over legacy protocols that only allowed one audio/one video track per connection.
 
@@ -47,7 +47,7 @@ arrives. With other protocols that run over TCP that isn't as easy. In the brows
 ### Remote Access
 
 Remote Access is when you remotely access another computer via WebRTC. You could have complete control of the remote host, or maybe just a
-single application.  This is great for running computationally tasks when the local hardware can't do it. Like running a new video game, or
+single application.  This is great for running computationally expensive tasks when the local hardware can't do it. Like running a new video game, or
 CAD software. WebRTC was able to revolutionize the space in three ways.
 
 WebRTC can be used to remotely access a host that isn't world routable. With NAT Traversal you can access a computer that is only available
@@ -55,9 +55,9 @@ via STUN. This is great for security and privacy. Your users don't have to route
 makes deployments easier. You don't have to worry about port forwarding or setting up a static IP ahead of time.
 
 Data channels are really powerful as well in this scenario. They can be configured so that only the latest data is accepted. With TCP run the
-risk of encountering Head-of-line blocking. A old mouse click or keypress could arrive late, and block the subsequent ones from being accepted.
+risk of encountering Head-of-line blocking. An old mouse click or keypress could arrive late, and block the subsequent ones from being accepted.
 WebRTC's data channels are designed to handle this and can be configured to not retry on lost packets. You can also measure the backpressure and
-make sure that you aren't sending more data then your network supports.
+make sure that you aren't sending more data than your network supports.
 
 WebRTC being available in the browser has been a huge quality of life improvement. You don't have to download a proprietary client to start the
 session. More and more clients are coming with WebRTC bundled, smart TVs are getting full web browsers now.
@@ -78,7 +78,7 @@ users of the network from joining conference calls.
 ### IoT
 
 IoT covers a few different use cases. For many this means network connected security cameras. Using WebRTC you can stream the video to another WebRTC
-peer like your a phone or browser. Another use case is having devices connect and exchange sensor data. You can have two devices in your LAN
+peer like your phone or a browser. Another use case is having devices connect and exchange sensor data. You can have two devices in your LAN
 exchange climate, noise or light readings.
 
 WebRTC has a huge privacy advantage here over legacy video stream protocols. Since WebRTC supports P2P connectivity the camera can send the video
@@ -92,7 +92,7 @@ to be able to connect your two different clients.
 ### Media Protocol Bridging
 
 You have existing hardware and software that is producing video, but you can't upgrade it yet. Expecting users to download a proprietary
-client to watch videos is frustrating. The answer is run a WebRTC bridge. The bridge translates between the two protocols so users can use the
+client to watch videos is frustrating. The answer is to run a WebRTC bridge. The bridge translates between the two protocols so users can use the
 browser with your legacy setup.
 
 Many of the formats that developers bridge with use the protocols as WebRTC. SIP is commonly exposed via WebRTC and allows users to make phone calls
@@ -147,7 +147,7 @@ Full mesh is the answer if you want to build a conference call or a multiplayer 
 with every other user directly. This allows you to build your application, but it comes with some downsides.
 
 In a Full Mesh topology each user is connected directly. That means you have to encode and upload video independently for each member of the call.
-The network conditions between each connection will be different, so you can't reuse the same video. The error handling is also difficult in these
+The network conditions between each connection will be different, so you can't reuse the same video. Error handling is also difficult in these
 deployments. You need to carefully consider if you have lost complete connectivity, or just connectivity with one remote peer.
 
 Because of these concerns, a Full Mesh is best used for small groups. For anything larger a client/server topology is best.
@@ -159,7 +159,7 @@ Hybrid Mesh is an alternative to Full Mesh that can alleviate some of the Full M
 between every user. Instead, media is relayed through peers in the network. This means that the creator of the media doesn't have to use as
 much bandwidth to distribute media.
 
-This does have some downsides however. In this set up, the original creator of the media has no idea who its video is being sent too, and if
+This does have some downsides. In this set up, the original creator of the media has no idea who its video is being sent too, and if
 it arrived successfully. You also will have an increase in latency with every hop in your Hybrid Mesh network.
 
 ![Hybrid mesh](../images/08-hybrid-mesh.png "Hybrid mesh")

@@ -7,7 +7,7 @@ weight: 6
 # Why is networking so important in Real-time communication?
 Networks are the limiting factor in Real-time communication. In an ideal world we would have unlimited bandwidth
 and packets would arrive instantaneously. This isn't the case though. Networks are limited, and the conditions
-could change at anytime. Measuring and observing network condition is also a difficult problem. You can get different behaviors
+could change at anytime. Measuring and observing network conditions is also a difficult problem. You can get different behaviors
 depending on hardware, software and the configuration of it.
 
 Real-time communication also poses a problem that doesn't exist in most other domains. For a web developer it isn't fatal
@@ -19,7 +19,7 @@ This chapter covers the concepts that apply to both data and media communication
 the theoretical and discuss how WebRTC's media and data subsystems solve these problems.
 
 ## What are the attributes of the network that make it difficult?
-Code that effectively works across all network is complicated. You have lots of different factors, and they
+Code that effectively works across all networks is complicated. You have lots of different factors, and they
 can all affect each other subtly. These are the most common issues that developers will encounter.
 
 #### Bandwidth
@@ -38,16 +38,16 @@ Since WebRTC is operating in highly heterogenous environments, it is next to imp
 
 Round-trip time measurement is a workaround for imperfect clock synchronization.
 
-Instead of operating on distributed clocks a WebRTC peer sends a special packet with it's own timestamp `sendertime1`.
+Instead of operating on distributed clocks a WebRTC peer sends a special packet with its own timestamp `sendertime1`.
 A cooperating peer receives the packet and reflects the timestamp back to the sender.
-Once original sender gets the reflected time it subtracts the  timestamp `sendertime1` from current time `sendertime2`.
+Once the original sender gets the reflected time it subtracts the timestamp `sendertime1` from the current time `sendertime2`.
 This time delta is called "round-trip propagation delay" or more commonly round-trip time.
 
 `rtt = sendertime2 - sendertime1`
 
 Half of the round trip time is considered to be a good enough approximation of transmission time.
 This workaround is not without drawbacks. 
-It makes the assumption that it takes equal amount of time to send and receive packets.
+It makes the assumption that it takes an equal amount of time to send and receive packets.
 However on cellular networks, send and receive operations may not be time-symmetrical. 
 You may have noticed that upload speeds on your phone are almost always lower than download speeds.
 
@@ -73,7 +73,7 @@ use a protocol like [Path MTU Discovery](https://tools.ietf.org/html/rfc1191) to
 
 ### Congestion
 Congestion is when the limits of the network have been reached. This is usually because you have reached the peak
-bandwidth that the current route can handle. Or it could be operator imposed lke hourly limits your ISP configures.
+bandwidth that the current route can handle. Or it could be operator imposed like hourly limits your ISP configures.
 
 Congestion exhibits itself in many different ways. There is no standardized behavior. In most cases when congestion is
 reached the network will drop excess packets. In other cases the network will buffer. This will cause the Transmission Time
@@ -93,7 +93,7 @@ Solving loss is the first problem most solve. There are multiple ways to solve i
 latency tolerant you are. It is also important to note that not all packet loss is fatal. Losing some video might not be a problem, the human eye might not
 even able to perceive it. Losing a users text messages are fatal.
 
-Lets say you send 10 packets, and packets 5 and 6 are lost. Here are the ways you can solve it.
+Let's say you send 10 packets, and packets 5 and 6 are lost. Here are the ways you can solve it.
 
 ### Acknowledgments
 Acknowledgments is when the receiver notifies the sender of every packet they have received. The sender is aware of packet loss when it gets an acknowledgment
@@ -139,7 +139,7 @@ fill the window depleted by late packets. This means we no longer have stutterin
 ![JitterBuffer](../images/05-jitterbuffer.png "JitterBuffer")
 
 Every packet is added to the jitter buffer as soon as it is received. 
-Once there's enough packets to reconstruct the frame, packets that make up the frame are released from the buffer and emitted for decoding.
+Once there are enough packets to reconstruct the frame, packets that make up the frame are released from the buffer and emitted for decoding.
 The decoder, in turn, decodes and draws the video frame on users screen.
 Since the jitter buffer has a limited capacity, packets that stay in the buffer for too long will be discarded.
 
@@ -152,7 +152,7 @@ A longer jitter buffer delay means your network is highly congested.
 
 ## Detecting Congestion
 Before we can even resolve congestion, we need to detect it. To detect it we use a congestion controller. This is a complicated subject, and is still rapidly changing.
-New algorithms are still be published and tested. At a high level they all operate the same. A congestion controller provides a bandwidth estimates given some inputs.
+New algorithms are still be published and tested. At a high level they all operate the same. A congestion controller provides bandwidth estimates given some inputs.
 These are some possible inputs:
 
 * **Packet Loss** - Packets are dropped as the network becomes congested.
