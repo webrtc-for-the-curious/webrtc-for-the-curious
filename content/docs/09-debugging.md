@@ -97,7 +97,7 @@ XOR-ing against the dummy magic cookie is idempotent, so the port and address wi
 
 #### netcat (nc)
 
-[netcat](https://en.wikipedia.org/wiki/Netcat) is command-line networking utility for reading from and writing to network connections using TCP or UDP. It is tipically available as the `nc` command.
+[netcat](https://en.wikipedia.org/wiki/Netcat) is command-line networking utility for reading from and writing to network connections using TCP or UDP. It is typically available as the `nc` command.
 
 #### tcpdump
 

@@ -152,7 +152,7 @@ A longer jitter buffer delay means your network is highly congested.
 
 ## Detecting Congestion
 Before we can even resolve congestion, we need to detect it. To detect it we use a congestion controller. This is a complicated subject, and is still rapidly changing.
-New algorithms are still be published and tested. At a high level they all operate the same. A congestion controller provides bandwidth estimates given some inputs.
+New algorithms are still being published and tested. At a high level they all operate the same. A congestion controller provides bandwidth estimates given some inputs.
 These are some possible inputs:
 
 * **Packet Loss** - Packets are dropped as the network becomes congested.
