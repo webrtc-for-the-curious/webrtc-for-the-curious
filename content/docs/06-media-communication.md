@@ -50,7 +50,7 @@ The following is visualization of the three frame types.
 ![Frame types](../images/06-frame-types.png "Frame types")
 
 ### Video is delicate
-Video compression is incredibly stateful, making it difficult to transfer over the internet. What happens If you lose part of a I-Frame? How does a P-Frame know what to modify? As video compression gets more complex, this is becoming even more of a problem. Luckily RTP and RTCP have the solution.
+Video compression is incredibly stateful, making it difficult to transfer over the internet. What happens If you lose part of an I-Frame? How does a P-Frame know what to modify? As video compression gets more complex, this is becoming even more of a problem. Luckily RTP and RTCP have the solution.
 
 ## RTP
 ### Packet Format
@@ -106,12 +106,12 @@ RTP is designed to be useful over lossy networks. This gives the receiver a way 
 The sampling instant for this packet. This is not a global clock, but how much time has passed in the media stream.
 
 #### Synchronization Source (SSRC)
-A `SSRC` is the unique identifier for this stream. This allows you to run multiple streams of media over a single stream.
+An `SSRC` is the unique identifier for this stream. This allows you to run multiple streams of media over a single stream.
 
 #### Contributing Source (CSRC)
 A list that communicates what `SSRC`es contributed to this packet.
 
-This is commonly used for talking indicators. Lets say server side you combined multiple audio feeds into a single RTP stream. You could then use this field to say 'Input stream A and C were talking at this moment'
+This is commonly used for talking indicators. Let's say server side you combined multiple audio feeds into a single RTP stream. You could then use this field to say 'Input stream A and C were talking at this moment'
 
 #### Payload
 The actual payload data. Might end with the count of how many padding bytes were added, if the padding flag is set.
@@ -159,19 +159,19 @@ The significance of these packet types will be described in greater detail below
 
 ### Full INTRA-frame Request (FIR) and Picture Loss Indication (PLI)
 Both FIR and PLI messages serve a similar purpose. These messages request a full key frame from the sender.
-`PLI` is used when the partial frames arrived to decoder, and it is unable to decode them.
+`PLI` is used when partial frames were given to the decoder but it was unable to decode them.
 This could happen because you had lots of packet loss, or maybe the decoder crashed.
 
 According to [RFC5104](https://tools.ietf.org/html/rfc5104#section-4.3.1.2) `FIR` shall not be used when packets or frames are lost, that's  `PLI`s job. `FIR` requests a key frame for reasons other than packet loss - for example when a new member enters a video conference. They need a full key frame to start decoding video stream, the decoder will be discarding frames until key frame arrives. 
 
-It is a good idea for a receiver to request a full key frame right after connecting, this minimizes the delay between connecting and an image showing up on the users screen.
+It is a good idea for a receiver to request a full key frame right after connecting, this minimizes the delay between connecting and an image showing up on the user's screen.
 
 `PLI` packets are a part of Payload Specific Feedback messages.
 
 In practice, software that is able to handle both `PLI` and `FIR` packets will act the same way in both cases. It will send a signal to the encoder to produce a new full key frame.
 
 ### Negative ACKnowledgements
-A NACK requests that a sender re-transmits a single RTP Packet. This is usually caused when a RTP Packet is lost, but could also happen because it is late.
+A NACK requests that a sender re-transmits a single RTP packet. This is usually caused when an RTP packet is lost, but could also happen because it is late.
 
 NACKs are much more bandwidth efficient than requesting that the whole frame get sent again. Since RTP breaks up packets into very small chunks, you are really just requesting one small missing piece.
 
@@ -186,7 +186,7 @@ RTP and RTCP then work together to solve all the problems caused by networks. Th
 ### Negative Acknowledgment
 Also known as a NACK. This is one method of dealing with packet loss with RTP.
 
-A NACK is a RTCP message sent back to a sender to request re-transmission. The receiver crafts a RTCP message with the SSRC and Sequence Number. If the sender does not have this RTP packet available to re-send, it just ignores the message.
+A NACK is an RTCP message sent back to a sender to request re-transmission. The receiver crafts an RTCP message with the SSRC and Sequence Number. If the sender does not have this RTP packet available to re-send, it just ignores the message.
 
 ### Forward Error Correction
 Also known as FEC. Another method of dealing with packet loss. FEC is when you send the same data multiple times, without it even being requested. This is done at the RTP level, or even lower with the codec.
@@ -204,9 +204,9 @@ Heuristics that model the network behavior and tries to predict it is known as B
 There is a lot of nuance to this, so let's explore in greater detail.
 
 ## Communicating Network Status
-The first road block with implementing Congestion Control is that UDP and RTP don't communicate network status. As a sender I have no idea when my packets are arriving or if they are arriving at all!
+The first roadblock with implementing Congestion Control is that UDP and RTP don't communicate network status. As a sender I have no idea when my packets are arriving or if they are arriving at all!
 
-RTP/RTCP has 3 different solutions to this problem. They all have their pros and cons. What you use will depend on what clients you are working with. What is the topology you are working with. Or even just how much development time you have available.
+RTP/RTCP has 3 different solutions to this problem. They all have their pros and cons. What you use will depend on what clients you are working with, the type of topology you are working with, or even just how much development time you have available.
 
 ### Receiver Reports
 Receiver Reports are RTCP messages, the original way to communicate network status. You can find them in [RFC 3550](https://tools.ietf.org/html/rfc3550#section-6.4). They are sent on a schedule for each SSRC and contain the following fields:
@@ -220,11 +220,11 @@ Receiver Reports are RTCP messages, the original way to communicate network stat
 Sender and Receiver reports (SR and RR) work together to compute round-trip time.
 
 The sender includes its local time, `sendertime1` in SR.
-When the receiver gets SR packet, it sends back RR.
-Among other things, the RR includes `sendertime1` just received from sender.
+When the receiver gets an SR packet, it sends back RR.
+Among other things, the RR includes `sendertime1` just received from the sender.
 There will be a delay between receiving the SR and sending the RR. Because of that, the RR also includes a "delay since last sender report" time - `DLSR`. 
 The `DLSR` is used to adjust the round-trip time estimate later on in the process.
-Once the sender receives the RR it subtracts `sendertime1` and `DLSR` from current time `sendertime2`.
+Once the sender receives the RR it subtracts `sendertime1` and `DLSR` from thecurrent time `sendertime2`.
 This time delta is called round-trip propagation delay or round-trip time.
 
 `rtt = sendertime2 - sendertime1 - DLSR`
@@ -254,14 +254,14 @@ A session that uses REMB would look like the following:
 ![REMB](../images/06-remb.png "REMB")
 
 Browsers use a simple rule of thumb for incoming bandwidth estimation:
-1. Tell encoder to increase bitrate if current packet loss is less than 2%.
+1. Tell the encoder to increase bitrate if the current packet loss is less than 2%.
 2. If packet loss is higher than 10%, decrease bitrate by half of the current packet loss percentage.
 ```
 if (packetLoss < 2%) video_bitrate *= 1.08
 if (packetLoss > 10%) video_bitrate *= (1 - 0.5*lossRate)
 ```
 
-This method works great on paper. Sender receives estimation from receiver, sets encoder bitrate to the received value. Tada! We've adjusted to the network conditions.
+This method works great on paper. The Sender receives estimation from the receiver, sets encoder bitrate to the received value. Tada! We've adjusted to the network conditions.
 
 However in practice, the REMB approach has multiple drawbacks.
 

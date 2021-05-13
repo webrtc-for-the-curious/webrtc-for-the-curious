@@ -13,7 +13,7 @@ If you are approaching WebRTC from a media background data channels might seem w
 I need this whole subsystem when I could just use HTTP or WebSockets?
 
 The real power with data channels is that you can configure them to behave like UDP with unordered/lossy delivery.
-This is necessary for low latency and high performance situations. You can measure the back pressure and ensure you
+This is necessary for low latency and high performance situations. You can measure the backpressure and ensure you
 are only sending as much as your network supports.
 
 ## How does it work?
@@ -25,7 +25,7 @@ SCTP gives you streams and each stream can be configured independently. WebRTC d
 around durability and ordering are just passed right into the SCTP Agent.
 
 Data channels have some features that SCTP can't express, like channel labels. To solve that WebRTC uses the Data Channel Establishment Protocol (DCEP)
-which is defined in [RFC 8832](https://tools.ietf.org/html/rfc8832). DCEP defines a messages to communicate the channel label and protocol.
+which is defined in [RFC 8832](https://tools.ietf.org/html/rfc8832). DCEP defines a message to communicate the channel label and protocol.
 
 ## DCEP
 DCEP only has two messages `DATA_CHANNEL_OPEN` and `DATA_CHANNEL_ACK`. For each data channel that is opened the remote must respond with an ack.
@@ -78,7 +78,7 @@ If the data channel type is `DATA_CHANNEL_PARTIAL_RELIABLE`, the suffixes config
 * `TIMED` - Defines for how long time (in ms) the sender will re-send the message before giving up.
 
 #### Label
-The name of the data channel as a UTF-8-encoded string. This may be an empty string.
+The name of the data channel is a UTF-8-encoded string. This may be an empty string.
 
 #### Protocol
 If this is an empty string, the protocol is unspecified. If it is a non-empty string, it specifies a protocol
@@ -115,7 +115,7 @@ Features in SCTP that are not used by WebRTC include multi-homing and path selec
 With over twenty years of development SCTP can be hard to fully grasp.
 
 ### Association
-Association is the term used for a SCTP Session. It is the state that is shared
+Association is the term used for an SCTP Session. It is the state that is shared
 between two SCTP Agents while they communicate.
 
 ### Streams
@@ -132,7 +132,7 @@ SCTP messages don't have size limits like UDP. A single SCTP message can be mult
 
 ### Chunks
 The SCTP protocol is made up of chunks. There are many different types of chunks. These chunks are used for all communication.
-User data, connection initialization, congestion control, and more is all done via chunks.
+User data, connection initialization, congestion control, and more are all done via chunks.
 
 Each SCTP packet contains a list of chunks. So in one UDP packet you can have multiple chunks carrying messages from different streams.
 
@@ -231,10 +231,10 @@ is transmitted via a DATA chunk.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-The INIT chunk starts the process of creating an assocation.
+The INIT chunk starts the process of creating an association.
 
 `Initiate Tag` is used for cookie generation. Cookies are used for Man-In-The-Middle
-and Denial of Service protection. They are described in greater details in the state
+and Denial of Service protection. They are described in greater detail in the state
 machine section.
 
 `Advertised Receiver Window Credit` is used for SCTP's Congestion Control. This
@@ -282,7 +282,7 @@ agent supports.
 
 The SACK (Selective Acknowledgment) Chunk is how a receiver notifies
 a sender it has gotten a packet. Until a sender gets a SACK for a TSN
-it will re-send the DATA chunk in question. A SACK does more then just
+it will re-send the DATA chunk in question. A SACK does more than just
 update the TSN though.
 
 `Cumulative TSN ACK` the highest TSN that has been received.
@@ -295,7 +295,7 @@ This is used if there is a gap in packets delivered. Let's say DATA chunks with 
 `100`, `102`, `103` and `104` are delivered. The `Cumulative TSN ACK` would be `100`, but
 `Ack Blocks` could be used to tell the sender it doesn't need to resend `102`, `103` or `104`.
 
-`Duplicate TSN` informs the sender that it has received the following DATA chunks more then once.
+`Duplicate TSN` informs the sender that it has received the following DATA chunks more than once.
 
 ### HEARTBEAT Chunk
 ```
@@ -343,7 +343,7 @@ the SHUTDOWN chunk.
 ```
 
 The SHUTDOWN Chunk starts a graceful shutdown of the SCTP association.
-Each agent informs the remote the last TSN it sent. This ensures
+Each agent informs the remote of the last TSN it sent. This ensures
 that no packets are lost. WebRTC doesn't do a graceful shutdown of
 the SCTP association. You need to tear down each data channel yourself
 to handle it gracefully.
@@ -417,7 +417,7 @@ sent and DATA chunks are ready to be exchanged.
 ![Connection establishment](../images/07-connection-establishment.png "Connection establishment")
 
 ### Connection Teardown Flow
-SCTP uses the `SHUTDOWN` Chunk. When a agent receives a `SHUTDOWN` Chunk it will wait until it
+SCTP uses the `SHUTDOWN` Chunk. When an agent receives a `SHUTDOWN` Chunk it will wait until it
 receives the requested `Cumulative TSN ACK`. This allows a user to ensure that all data
 is delivered even if the connection is lossy.
 

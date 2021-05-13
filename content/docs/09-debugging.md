@@ -105,11 +105,11 @@ XOR-ing against the dummy magic cookie is idempotent, so the port and address wi
 
 Common commands:
 
-- capture UDP packets to and from port 19302, print hexdump of the packet content:
+- capture UDP packets to and from port 19302, print a hexdump of the packet content:
 
     `sudo tcpdump 'udp port 19302' -xx`
 
-- same but save packets in PCAP (packet capture) file for later inspection
+- same but save packets in a PCAP (packet capture) file for later inspection
 
     `sudo tcpdump 'udp port 19302' -w stun.pcap`
 
@@ -151,7 +151,7 @@ When we talk about end-to-end latency, we mean the time between an event happeni
 ```
 EndToEndLatency = T(observe) - T(happen)
 ```
-A naive approach is to record time at event happening and subtract it from the time at observation.
+A naive approach is to record the time when an event happens and subtract it from the time at observation.
 However as precision goes down to milliseconds time synchronization becomes an issue.
 Trying to synchronize clocks across distributed systems is mostly futile, even a small error in time sync produces unreliable latency measurement.
 
@@ -182,13 +182,13 @@ However in this paragraph we discuss the most compatible way to automatically me
 
 Roundtrip time in a nutshell: I send you my time `tR1`, when i receive back my `tR1` at time `tR2` i know round trip time is `tR2 - tR1`
 
-Given a communication channel between sender and receiver (eg [DataChannel](https://webrtc.org/getting-started/data-channels)) receiver may model senders monotonic clock by following the below protocol.
+Given a communication channel between sender and receiver (eg [DataChannel](https://webrtc.org/getting-started/data-channels)) receiver may model the sender's monotonic clock by following the below protocol.
 1. At time `tR1` receiver sends a message its local monotonic clock timestamp.
 2. When received at sender local time `tS1` the sender responds with a copy of `tR1` as well as sender’s `tS1` and
  sender’s video track time `tSV1`.
-3. At time `tR2` on receiving end round trip time is calculated by subtracting the message’s  send and receive times. `RTT = tR2 - tR1`
-4. Round trip time `RTT` together with sender local timestamp `tS1` is enough to create an estimation of sender's monotonic clock. Current time on sender at time `tR2` would be equal to `tS1` plus half of round trip time.  
-5. Sender's local clock timestamp `tS1` paired with video track timestamp `tSV1` together with round trip time `RTT` is therefore enough to sync receiver video track time to sender video track. 
+3. At time `tR2` on receiving end round trip time is calculated by subtracting the message’s send and receive times. `RTT = tR2 - tR1`
+4. Round trip time `RTT` together with sender local timestamp `tS1` is enough to create an estimation of the sender's monotonic clock. Current time on the sender at time `tR2` would be equal to `tS1` plus half of round trip time.  
+5. Sender's local clock timestamp `tS1` paired with video track timestamp `tSV1` together with round trip time `RTT` is therefore enough to sync receiver video track time to the sender video track. 
 
 Now that we know how much time has passed since last known sender video frame time `tSV1` we can approximate latency by comparing currently displayed video frame's time less time elapsed since `tSV1`.
 
@@ -197,7 +197,7 @@ expected_video_time = tSV1 + time_since(tSV1)
 latency = expected_video_time - actual_video_time
 ```
 
-This method's drawback is that it does not include camera's intrinsic latency.
+This method's drawback is that it does not include the camera's intrinsic latency.
 Most video systems consider the frame capture timestamp to be the time when the frame from the camera is delivered to the main memory, which will be a few moments after the event being recorded actually happened.
 
 #### Example latency estimation
@@ -281,7 +281,7 @@ VIDEO.requestVideoFrameCallback((now, framemeta) => {
 Until very recently (May 2020) it was next to impossible to reliably get a timestamp of currently displayed video frame in browsers. Workaround methods based on `video.currentTime` existed but were not particularly precise. 
 Both the Chrome and Mozilla browser developers [supported](https://github.com/mozilla/standards-positions/issues/250) the introduction of a new W3C standard, [`HTMLVideoElement.requestVideoFrameCallback()`](https://wicg.github.io/video-rvfc/), that adds an API callback to access the current video frame time.
 While the addition sounds trivial it has enabled multiple advanced media applications on the web, which require audio/video synchronization.
-Specifically for WebRTC, the callback will include the `rtpTimestamp` field, the RTP timestamp associated with current video frame. 
+Specifically for WebRTC, the callback will include the `rtpTimestamp` field, the RTP timestamp associated with the current video frame. 
 This should be present for WebRTC applications, but absent otherwise.
 
 ### Latency Debugging Tips
@@ -307,19 +307,19 @@ We also use `guvcview` UI tool to quickly check and tweak camera settings.
 
 #### Encoder latency
 
-Most modern encoders will buffer a number of frames before outputting an encoded one.
-Their first priority is a balance between quality of produced picture and bitrate. 
-Multipass encoding is an extreme example of encoders disregard for output latency.
+Most modern encoders will buffer some frames before outputting an encoded one.
+Their first priority is a balance between the quality of the produced picture and bitrate. 
+Multipass encoding is an extreme example of an encoder's disregard for output latency.
 During the first pass encoder ingests the entire video and only after that starts outputting frames.
 
 However with proper tuning people have achieved sub-frame latencies.
 Make sure your encoder does not use excessive reference frames or rely on B-frames.
-Every codecs latency tuning settings are different but for x264 we recommend using `tune=zerolatency` and `profile=baseline` for lowest frame output latency.
+Every codecs latency tuning settings are different but for x264 we recommend using `tune=zerolatency` and `profile=baseline` for the lowest frame output latency.
 
 #### Network latency
 
 Network latency is the one you can arguably do least about, other than upgrading to a better network connection.
-Network latency is very much like weather - you can't stop the rain, but you can check the forecast and take an umbrella.
+Network latency is very much like the weather - you can't stop the rain, but you can check the forecast and take an umbrella.
 WebRTC is measuring network conditions with millisecond precision.
 Important metrics are:
 - Round-trip time
@@ -333,8 +333,8 @@ RTT sets the lower bound on the end-to-end latency.
 Your video frames can not reach the receiver faster than RTT/2, no matter how optimized your camera to encoder pipeline is.
 
 The built-in RTT mechanism is based on special RTCP packets called sender/receiver reports.
-Sender sends its time reading to receiver, receiver in turn reflects the same timestamp to the sender. 
-Thereby sender knows how much time it took for the packet to travel to receiver and return back.
+Sender sends its time reading to receiver, the receiver in turn reflects the same timestamp to the sender. 
+Thereby the sender knows how much time it took for the packet to travel to receiver and return back.
 Refer to [Sender/Receiver Reports](06-media-communication/#senderreceiver-reports) chapter for more details of RTT measurement. 
 
 **Packet loss and packet retransmissions**
@@ -346,10 +346,10 @@ In presence of packet loss decoding artifacts may appear if packets of a [P-fram
 If I-frame packets are lost then all of its dependent frames will either get heavy artifacts or won't be decoded at all. 
 This looks like video is "freezing".
 
-To avoid (well at least to try avoid) video freezing and/or decoding artifacts WebRTC uses negative acknowledgement messages ([NACK](../06-media-communication/#negative-acknowledgment)).
+To avoid (well at least to try to avoid) video freezing and/or decoding artifacts WebRTC uses negative acknowledgement messages ([NACK](../06-media-communication/#negative-acknowledgment)).
 When the receiver does not get an expected RTP packet, it returns a NACK message to tell the sender to send the missing packet again.
 The receiver _waits_ for the retransmission of the packet.
-Such retransmissions obviously causes increased latency.
+Such retransmissions causes increased latency.
 The number of NACK packets sent and received is recorded in WebRTC built-in stats fields [outbound stream nackCount](https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-nackcount) and [inbound stream nackCount](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-nackcount).
 
 You can see nice graphs of inbound and outbound `nackCount` on the [webrtc internals page](#webrtc-internals). 
@@ -358,7 +358,7 @@ If you see the `nackCount` increasing, it means the network is experiencing high
 When packet loss is so high that the decoder is unable to produce an image, or subsequent dependent images like in the case of a fully lost I-frame, all future P-frames will not be decoded. 
 The receiver will try to mitigate that by sending a special picture loss indication message ([PLI](../06-media-communication/#full-intra-frame-request-fir-and-picture-loss-indication-pli)).
 Once the sender receives a `PLI`, it will produce a new I-frame to help the receiver's decoder.
-I-frames are normally larger in size than P-frames. This increases number of packets that need to be transmitted.
+I-frames are normally larger in size than P-frames. This increases the number of packets that need to be transmitted.
 Like with NACK messages, the receiver will need to wait for the new I-frame, introducing additional latency.
 
 Watch for `pliCount` on [webrtc internals page](#webrtc-internals) if it increases - tweak your encoder to produce less packets or enable error resilient mode.
@@ -369,5 +369,5 @@ Latency will be affected by packets arriving out of order.
 If the bottom half of the image packet comes before the top you'd have to wait for the top before decoding.
 This is explained in the [Solving Jitter](05-real-time-networking/#solving-jitter) chapter in great detail.
 
-You can refer also to [jitterBufferDelay](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-jitterbufferdelay) built-in metric to see how long a frame was held in receive buffer waiting for all of its packets until it was released to decoder.
+You can refer also to [jitterBufferDelay](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-jitterbufferdelay) built-in metric to see how long a frame was held in receive buffer waiting for all of its packets until it was released to the decoder.
 
