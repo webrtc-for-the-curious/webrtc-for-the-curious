@@ -224,7 +224,7 @@ When the receiver gets an SR packet, it sends back RR.
 Among other things, the RR includes `sendertime1` just received from the sender.
 There will be a delay between receiving the SR and sending the RR. Because of that, the RR also includes a "delay since last sender report" time - `DLSR`. 
 The `DLSR` is used to adjust the round-trip time estimate later on in the process.
-Once the sender receives the RR it subtracts `sendertime1` and `DLSR` from thecurrent time `sendertime2`.
+Once the sender receives the RR it subtracts `sendertime1` and `DLSR` from the current time `sendertime2`.
 This time delta is called round-trip propagation delay or round-trip time.
 
 `rtt = sendertime2 - sendertime1 - DLSR`
