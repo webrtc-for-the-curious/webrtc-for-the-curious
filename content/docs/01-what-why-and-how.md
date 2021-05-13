@@ -138,7 +138,7 @@ When `setRemoteDescription` has been called on both sides, the WebRTC Agents now
 
 #### `ontrack`
 
-`ontrack` is a callback that is fired when an RTP packet is received from the remote peer. The incoming packets would have been declared in the Session Description that was passed to `setRemoteDescription`
+`ontrack` is a callback that is fired when an RTP packet is received from the remote peer. The incoming packets would have been declared in the Session Description that was passed to `setRemoteDescription`.
 
 WebRTC uses the SSRC and looks up the associated `MediaStream` and `MediaStreamTrack` and fires this callback with these details populated.
 
