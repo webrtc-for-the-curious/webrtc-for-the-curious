@@ -4,20 +4,18 @@ type: docs
 weight: 2
 ---
 
-
-
 # What is WebRTC?
 WebRTC, short for Web Real-Time Communication, is both an API and a Protocol. The WebRTC protocol is a set of rules for two WebRTC agents to negotiate bi-directional secure real-time communication. The WebRTC API then allows developers to use the WebRTC protocol. The WebRTC API is specified only for JavaScript.
 
-A similar relationship would be HTTP and the fetch API. WebRTC the protocol would be HTTP, and WebRTC the API would be the fetch API.
+A similar relationship would be the one between HTTP and the Fetch API. WebRTC the protocol would be HTTP, and WebRTC the API would be the Fetch API.
 
-The WebRTC protocol is available in other APIs/languages besides JavaScript. You can find servers and domain-specific tools as well for WebRTC. All of these implementations use the WebRTC protocol so they can interact with each other.
+The WebRTC protocol is available in other APIs and languages besides JavaScript. You can find servers and domain-specific tools as well for WebRTC. All of these implementations use the WebRTC protocol so that they can interact with each other.
 
 The WebRTC protocol is maintained in the IETF in the [rtcweb](https://datatracker.ietf.org/wg/rtcweb/documents/) working group. The WebRTC API is documented in the W3C as [webrtc-pc](https://w3c.github.io/webrtc-pc/).
 
 ## Why should I learn WebRTC?
 
-These are the things that WebRTC will give you. This list is not exhaustive but is some of the things you may appreciate during your journey. Don't worry if you don't know some of these terms yet, this book will teach them to you along the way.
+These are the things that WebRTC will give you. This list is not exhaustive, just an example of some things you may appreciate during your journey. Don't worry if you don't know all these terms yet, this book will teach them to you along the way.
 
 * Open standard
 * Multiple implementations
@@ -28,7 +26,7 @@ These are the things that WebRTC will give you. This list is not exhaustive but 
 * Congestion control
 * Sub-second latency
 
-## WebRTC Protocol is a collection of other technologies
+## The WebRTC Protocol is a collection of other technologies
 
 This is a topic that takes an entire book to explain. However, to start off we break it into four steps.
 
@@ -39,7 +37,7 @@ This is a topic that takes an entire book to explain. However, to start off we b
 
 These four steps happen sequentially. The prior step must be 100% successful for the subsequent one to even begin.
 
-One peculiar fact about WebRTC is that each step is actually made up of many other protocols! To make WebRTC we stitch together many existing technologies. In that sense, WebRTC is more a combination and configuration of well-understood tech that has been around since the early 2000s.
+One peculiar fact about WebRTC is that each step is actually made up of many other protocols! To make WebRTC, we stitch together many existing technologies. In that sense, WebRTC is more a combination and configuration of well-understood tech that has been around since the early 2000s.
 
 Each of these steps has dedicated chapters, but it is helpful to understand them at a high level first. Since they depend on each other, it will help when explaining further the purpose of each of these steps.
 
@@ -47,13 +45,13 @@ Each of these steps has dedicated chapters, but it is helpful to understand them
 
 When a WebRTC Agent starts it has no idea who it is going to communicate with and what they are going to communicate about. Signaling solves this issue! Signaling is used to bootstrap the call so that two WebRTC agents can start communicating.
 
-Signaling uses an existing protocol SDP (Session Description Protocol). SDP is a plain-text protocol. Each SDP message is made up of key/value pairs and contains a list of 'media sections'. The SDP that the two WebRTC Agents exchange contains details like.
+Signaling uses an existing protocol SDP (Session Description Protocol). SDP is a plain-text protocol. Each SDP message is made up of key/value pairs and contains a list of "media sections". The SDP that the two WebRTC Agents exchange contains details like:
 
-* IPs and Ports that the agent is reachable on (candidates)
-* How many audio and video tracks the agent wishes to send
-* What audio and video codecs each agent supports
-* Values used while connecting (uFrag/uPwd)
-* Values used while securing (certificate fingerprint)
+* IPs and Ports that the agent is reachable on (candidates).
+* How many audio and video tracks the agent wishes to send.
+* What audio and video codecs each agent supports.
+* Values used while connecting (`uFrag`/`uPwd`).
+* Values used while securing (certificate fingerprint).
 
 Note that signaling typically happens "out-of-band"; that is, applications generally don't use WebRTC itself to trade signaling messages. Any architecture suitable for sending messages can be used to relay the SDPs between the connecting peers, and many applications will use their existing infrastructure (like REST endpoints, WebSocket connections, or authentication proxies) to facilitate easy trading of SDPs between the proper clients.
 
@@ -67,7 +65,6 @@ The real magic here is 'NAT Traversal' and STUN/TURN Servers. These two concepts
 
 Once ICE successfully connects, WebRTC then moves on to establishing an encrypted transport. This transport is used for audio, video, and data.
 
-
 ### Securing the transport layer with DTLS and SRTP
 
 Now that we have bi-directional communication (via ICE) we need to establish secure communication. This is done through two protocols that pre-date WebRTC. The first protocol is DTLS (Datagram Transport Layer Security) which is just TLS over UDP. TLS is the cryptographic protocol used to secure communication over HTTPS. The second protocol is SRTP (Secure Real-time Transport Protocol).
@@ -76,7 +73,7 @@ First, WebRTC connects by doing a DTLS handshake over the connection established
 
 WebRTC then uses a different protocol for audio/video transmission called RTP. We secure our RTP packets using SRTP. We initialize our SRTP session by extracting the keys from the negotiated DTLS session. In a later chapter, we discuss why media transmission has its own protocol.
 
-We are done! You now have bi-directional and secure communication. If you have a stable connection between your WebRTC Agents this is all the complexity you may need. Unfortunately, the real world has packet loss and bandwidth limits, and the next section is about how we deal with them.
+Now we are done! You now have bi-directional and secure communication. If you have a stable connection between your WebRTC Agents, this is all the complexity you may need. Unfortunately, the real world has packet loss and bandwidth limits, and the next section is about how we deal with them.
 
 ### Communicating with peers via RTP and SCTP
 
@@ -85,7 +82,6 @@ We now have two WebRTC Agents with secure bi-directional communication. Let's st
 RTP is quite minimal but provides what is needed to implement real-time streaming. The important thing is that RTP gives flexibility to the developer, so they can handle latency, loss, and congestion as they please. We will discuss this further in the media chapter.
 
 The final protocol in the stack is SCTP. SCTP allows many delivery options for messages. You can optionally choose to have unreliable, out of order delivery, so you can get the latency needed for real-time systems.
-
 
 ## WebRTC, a collection of protocols
 WebRTC solves a lot of problems. At first, this may even seem over-engineered. The genius of WebRTC is really the humility. It didn't assume it could solve everything better. Instead, it embraced many existing single purpose technologies and bundled them together.
@@ -100,7 +96,7 @@ This section shows how the JavaScript API maps to the protocol. This isn't meant
 If you aren't familiar with either, it is ok. This could be a fun section to return to as you learn more!
 
 #### `new RTCPeerConnection`
-The `RTCPeerConnection` is the top-level 'WebRTC Session'. It contains all the protocols mentioned above. The subsystems are all allocated but nothing happens yet.
+The `RTCPeerConnection` is the top-level "WebRTC Session". It contains all the protocols mentioned above. The subsystems are all allocated but nothing happens yet.
 
 #### `addTrack`
 
@@ -130,7 +126,7 @@ Usually, after this call, you will send the offer to the remote peer, and they w
 
 `setRemoteDescription` is how we inform the local agent about the remote candidates' state. This is how the act of 'Signaling' is done with the JavaScript API.
 
-When `setRemoteDescription` has been called on both sides, the WebRTC Agents now have enough info to start communicating P2P!
+When `setRemoteDescription` has been called on both sides, the WebRTC Agents now have enough info to start communicating Peer-To-Peer (P2P)!
 
 #### `addIceCandidate`
 
@@ -140,7 +136,7 @@ When `setRemoteDescription` has been called on both sides, the WebRTC Agents now
 
 `ontrack` is a callback that is fired when an RTP packet is received from the remote peer. The incoming packets would have been declared in the Session Description that was passed to `setRemoteDescription`.
 
-WebRTC uses the SSRC and looks up the associated `MediaStream` and `MediaStreamTrack` and fires this callback with these details populated.
+WebRTC uses the SSRC and looks up the associated `MediaStream` and `MediaStreamTrack`, and fires this callback with these details populated.
 
 #### `oniceconnectionstatechange`
 
