@@ -16,7 +16,7 @@ and will not contain much code.
 WebRTC is a wonderful technology but is difficult to use. This book is vendor agnostic, and we have tried to
 remove any conflicts of interest.
 
-## Who is this book for.
+## Who this book is for:
 
 * Developers who don’t even know what WebRTC solves, and want to learn more.
 * Someone who is already building with WebRTC but wants to know more beyond the APIs.
@@ -37,7 +37,7 @@ Each chapter aims to answer a single question, with three levels of information.
 Each chapter doesn't assume prior knowledge. You can start at any point in the book and begin learning. This book will also recommend resources
 to go and learn more. Other books cover individual topics in much greater depth. This book aims to teach you the entire system, at the cost of expert level details.
 
-## Freely available and Privacy respecting
+## Freely available and privacy respecting
 
 This book is available on [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious) and [WebRTCforTheCurious.com](https://webrtcforthecurious.com).
 It is licensed in a way that you can use it however you think is best. You can also download the book in its current version as an [ePub](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.epub)
@@ -48,7 +48,7 @@ make recommendations that could be a conflict of interest.
 
 The website will not use analytics or tracking.
 
-## Get Involved!
+## Get involved!
 
 We need your help! This book is entirely developed on [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious)
 and is still being written. We encourage readers to open issues with questions on things we didn't do a good job of covering yet.
