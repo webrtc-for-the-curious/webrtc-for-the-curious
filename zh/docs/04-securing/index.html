@@ -36,7 +36,7 @@ Wikipedia在此处中有一个实际的例子。
 密钥派生（KDF） #  密钥派生是一类伪随机函数。是一种用于增强密钥的安全性的方法。一种常见的模式是密钥扩展。
 假设您获得的密钥为8字节。您可以使用KDF使其更坚固。
 Nonce #  Nonce是cipher的附加输入。这样，即使您多次加密同一条消息，也可以从cipher中获得不同的输出。
-如果将同一条消息加密10次，cipher将为您提供10次相同的密文。通过使用nonce，在使用同一个密钥的情况下，您将得到不同的输入。需要注意的是，每条消息都要使用不同的nonce！ 否则就没有什么意义了。"><meta property="og:type" content="article"><meta property="og:url" content="https://webrtcforthecurious.com/zh/docs/04-securing/"><meta property="article:modified_time" content="2021-03-01T18:10:32+08:00"><meta property="og:site_name" content="给好奇者的WebRTC"><title>安全性 | 给好奇者的WebRTC</title><link rel=manifest href=/manifest.json><link rel=icon href=/favicon.png type=image/x-icon><link rel=alternate hreflang=en href=https://webrtcforthecurious.com/docs/04-securing/ title=Securing><link rel=alternate hreflang=tr href=https://webrtcforthecurious.com/tr/docs/04-securing/ title=Securing><link rel=alternate hreflang=ja href=https://webrtcforthecurious.com/ja/docs/04-securing/ title=セキュリティ対策><link rel=stylesheet href=/book.min.6c7c6446dfdee7c8c933e9bbc6e80ee3ed6c913b2a59519f2092c3c6a9d63e55.css integrity="sha256-bHxkRt/e58jJM+m7xugO4+1skTsqWVGfIJLDxqnWPlU="><script defer src=/zh.search.min.e1d0cd2ad3cff0cd782f7d6b82e541066e0bdee754123cf2c5a8adebe2e915a4.js integrity="sha256-4dDNKtPP8M14L31rguVBBm4L3udUEjzyxait6+LpFaQ="></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+如果将同一条消息加密10次，cipher将为您提供10次相同的密文。通过使用nonce，在使用同一个密钥的情况下，您将得到不同的输入。需要注意的是，每条消息都要使用不同的nonce！ 否则就没有什么意义了。"><meta property="og:type" content="article"><meta property="og:url" content="https://webrtcforthecurious.com/zh/docs/04-securing/"><meta property="article:modified_time" content="2021-04-29T10:50:52+08:00"><meta property="og:site_name" content="给好奇者的WebRTC"><title>安全性 | 给好奇者的WebRTC</title><link rel=manifest href=/manifest.json><link rel=icon href=/favicon.png type=image/x-icon><link rel=alternate hreflang=en href=https://webrtcforthecurious.com/docs/04-securing/ title=Securing><link rel=alternate hreflang=tr href=https://webrtcforthecurious.com/tr/docs/04-securing/ title=Securing><link rel=alternate hreflang=ja href=https://webrtcforthecurious.com/ja/docs/04-securing/ title=セキュリティ対策><link rel=stylesheet href=/book.min.6c7c6446dfdee7c8c933e9bbc6e80ee3ed6c913b2a59519f2092c3c6a9d63e55.css integrity="sha256-bHxkRt/e58jJM+m7xugO4+1skTsqWVGfIJLDxqnWPlU="><script defer src=/zh.search.min.430d24100ad5992b0889a6bb88fa75e081d878721846b633f8bbe2f9cb16b1dd.js integrity="sha256-Qw0kEArVmSsIiaa7iPp14IHYeHIYRrYz+Lvi+csWsd0="></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
 <input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a href=/zh><span>给好奇者的WebRTC</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=搜索 aria-label=搜索 maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li><a href=https://webrtcforthecurious.com/zh/docs/01-what-why-and-how/>是什么，为什么，如何使用</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/02-signaling/>信令</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/03-connecting/>连接</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/04-securing/ class=active>安全性</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/05-real-time-networking/>搭建实时网络</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/06-media-communication/>媒体通信</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/07-data-communication/>数据通信</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/08-applied-webrtc/>WebRTC应用场景</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/09-debugging/>调试</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/10-history-of-webrtc/>历史</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/11-faq/>常见问题</a></li></ul></nav><script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label>
 <strong>安全性</strong>
 <label for=toc-control><img src=/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#它是如何做到的>它是如何做到的？</a></li><li><a href=#安全性101>安全性101</a><ul><li></li></ul></li><li><a href=#dtls>DTLS</a><ul><li><a href=#数据包格式>数据包格式</a></li><li><a href=#握手状态机><code>握手</code>状态机</a></li><li><a href=#密钥的生成>密钥的生成</a></li><li><a href=#交换applicationdata>交换ApplicationData</a></li></ul></li><li><a href=#srtp>SRTP</a><ul><li><a href=#会话创建>会话创建</a></li><li><a href=#交换媒体数据>交换媒体数据</a></li></ul></li></ul></nav></aside></header><article class=markdown><h1 id=webrtc具有哪些安全性保障>WebRTC具有哪些安全性保障？
@@ -62,33 +62,10 @@ Nonce #  Nonce是cipher的附加输入。这样，即使您多次加密同一条
 <a class=anchor href=#%e5%86%85%e5%ae%b9%e7%b1%bb%e5%9e%8b>#</a></h4><p>您可以看到数据包包括以下几种类型：</p><ul><li>Change Cipher Spec（更改Cipher规格） - <code>20</code></li><li>Handshake（握手） - <code>22</code></li><li>Application Data（应用程序数据） - <code>23</code></li></ul><p><code>握手</code>用于交换详细信息以开始会话。 <code>更改Cipher规格</code>用于通知另一端所有内容都将被加密。<code>应用程序数据</code>是加密的消息。</p><h4 id=版本>版本
 <a class=anchor href=#%e7%89%88%e6%9c%ac>#</a></h4><p>版本可以是<code>0x0000feff</code>（DTLS v1.0）或<code>0x0000fefd</code>（DTLS v1.2），没有v1.1。</p><h4 id=epoch时段>Epoch（时段）
 <a class=anchor href=#epoch%e6%97%b6%e6%ae%b5>#</a></h4><p>时段从<code>0</code>开始，但在<code>更改Cipher规格</code>之后变为<code>1</code>。在非零时段的任何消息都将被加密。</p><h4 id=序列号>序列号
-<a class=anchor href=#%e5%ba%8f%e5%88%97%e5%8f%b7>#</a></h4><p>序列号用于保持消息顺序。每条消息都会增加序列号。当时段增加时，序列号重新开始。</p><h4 id=长度和有效载荷>长度和有效载荷
+<a class=anchor href=#%e5%ba%8f%e5%88%97%e5%8f%b7>#</a></h4><p>序列号用于保持消息顺序。每条消息都会增加序列号。当Epoch（时段）增加时，序列号重新开始。</p><h4 id=长度和有效载荷>长度和有效载荷
 <a class=anchor href=#%e9%95%bf%e5%ba%a6%e5%92%8c%e6%9c%89%e6%95%88%e8%bd%bd%e8%8d%b7>#</a></h4><p>有效载荷是特定于<code>内容类型</code>的。 对于<code>应用程序数据</code>，<code>有效载荷</code>是加密的数据。 对于<code>握手</code>，它会根据消息而有所不同。</p><p>长度是指有效载荷的大小。</p><h3 id=握手状态机><code>握手</code>状态机
 <a class=anchor href=#%e6%8f%a1%e6%89%8b%e7%8a%b6%e6%80%81%e6%9c%ba>#</a></h3><p>在握手期间，客户端/服务器交换一系列消息。这些消息被分为多个Flight。每个Flight中可能有多个消息（或只有一个）。
-直到收到Flight中的所有消息，该Flight才算完成。我们将在下面更详细地描述每条消息的目的，</p><script src=/mermaid.min.js></script><script>mermaid.initialize({"flowchart":{"useMaxWidth":true},"theme":"default"})</script><p class=mermaid>sequenceDiagram
-participant C as Client
-participant S as Server
-C->>S: ClientHello
-Note over C,S: Flight 1
-S->>C: HelloVerifyRequest
-Note over C,S: Flight 2
-C->>S: ClientHello
-Note over C,S: Flight 3
-S->>C: ServerHello
-S->>C: Certificate
-S->>C: ServerKeyExchange
-S->>C: CertificateRequest
-S->>C: ServerHelloDone
-Note over C,S: Flight 4
-C->>S: Certificate
-C->>S: ClientKeyExchange
-C->>S: CertificateVerify
-C->>S: ChangeCipherSpec
-C->>S: Finished
-Note over C,S: Flight 5
-S->>C: ChangeCipherSpec
-S->>C: Finished
-Note over C,S: Flight 6</p><h4 id=clienthello>ClientHello
+直到收到Flight中的所有消息，该Flight才算完成。我们将在下面更详细地描述每条消息的目的，</p><p><img src=../images/04-handshake.png alt=握手 title=握手></p><h4 id=clienthello>ClientHello
 <a class=anchor href=#clienthello>#</a></h4><p>ClientHello是客户端发送的初始消息。它包含一个属性列表。这些属性告诉服务器客户端支持的cipher和功能。对于WebRTC，这也是我们选择SRTP cipher方式的原因。它还包含将用于生成会话密钥的随机数据。</p><h4 id=helloverifyrequest>HelloVerifyRequest
 <a class=anchor href=#helloverifyrequest>#</a></h4><p>服务器将HelloVerifyRequest发送到客户端。这是为了确认客户端准备继续发送请求。然后，客户端重新发送ClientHello，但这一次需要携带HelloVerifyRequest中提供的令牌。</p><h4 id=serverhello>ServerHello
 <a class=anchor href=#serverhello>#</a></h4><p>ServerHello是服务器响应消息，是此次会话的配置信息。它包含此会话直到结束时将使用的cipher。它还包含服务器端的随机数据。</p><h4 id=certificate>Certificate
@@ -110,6 +87,6 @@ English</a></li><li><a href=https://webrtcforthecurious.com/tr/docs/04-securing/
 Turkish</a></li><li><a href=https://webrtcforthecurious.com/fa/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
 Persian</a></li><li><a href=https://webrtcforthecurious.com/ja/docs/04-securing/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
 日本語</a></li><li class=active><a href=https://webrtcforthecurious.com/zh/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
-简体中文</a></li></ul></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/commit/03170d9f152cbb92aae773c54563736c1623b6bd title="最后修改者 Cliff Han | March 1, 2021" target=_blank rel=noopener><img src=/svg/calendar.svg class=book-icon alt=Calendar>
-<span>March 1, 2021</span></a></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content.zh-cn/docs/04-securing.md target=_blank rel=noopener><img src=/svg/edit.svg class=book-icon alt=Edit>
+简体中文</a></li></ul></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/commit/055496a4896797690f061da03b1e35ece2d9766c title="最后修改者 Cliff Han | April 29, 2021" target=_blank rel=noopener><img src=/svg/calendar.svg class=book-icon alt=Calendar>
+<span>April 29, 2021</span></a></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content.zh-cn/docs/04-securing.md target=_blank rel=noopener><img src=/svg/edit.svg class=book-icon alt=Edit>
 <span>编辑本页</span></a></div></div></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#它是如何做到的>它是如何做到的？</a></li><li><a href=#安全性101>安全性101</a><ul><li></li></ul></li><li><a href=#dtls>DTLS</a><ul><li><a href=#数据包格式>数据包格式</a></li><li><a href=#握手状态机><code>握手</code>状态机</a></li><li><a href=#密钥的生成>密钥的生成</a></li><li><a href=#交换applicationdata>交换ApplicationData</a></li></ul></li><li><a href=#srtp>SRTP</a><ul><li><a href=#会话创建>会话创建</a></li><li><a href=#交换媒体数据>交换媒体数据</a></li></ul></li></ul></nav></div></aside></main></body></html>

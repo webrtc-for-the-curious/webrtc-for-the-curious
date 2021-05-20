@@ -11,7 +11,12 @@ ICE是一种用来寻找两个ICE代理之间通信的最佳方式的协议。�
 现实世界的网络限制 #  ICE就是克服现实世界网络限制的方法。在我们开始讨论ICE如何解决问题之前，先讨论一下有哪些实际问题。
 不在同一个网络中 #  在大多数情况下，两个WebRTC代理不在同一个网络中。典型的呼叫通常是在没有直接连接的不同网络中的两个WebRTC代理之间进行的。
 下面是通过公共互联网连接的两个不同网络的示意图。在每个网络中，您拥有两个主机。
- mermaid.initialize({ &#34;flowchart&#34;: { &#34;useMaxWidth&#34;:true }, &#34;theme&#34;: &#34;default&#34; } ) graph TB subgraph netb [&#34;Network B (IP Address 5.0.0.2)&#34;] b3[&#34;Agent 3 (IP 192.168.0.1)&#34;] b4[&#34;Agent 4 (IP 192.168.0.2)&#34;] routerb[&#34;Router B&#34;"><meta name=theme-color content="#FFFFFF"><meta property="og:title" content="连接"><meta property="og:description" content="为什么WebRTC需要专用的子系统进行连接？ #  目前，大多数部署的应用程序都通过客户端/服务器方式进行连接。客户端/服务器方式连接要求服务器具有稳定且公开可用的传输地址。客户端与服务器联系，然后服务器做出响应。
+对于同一网络中的主机来说，互相连接非常容易。例如在192.168.0.1 -> 192.168.0.2之间通讯就很容易！这两个主机无需任何外部帮助即可相互连接。
+但是，使用Router B的主机无法直接访问Router A背后的任何主机。您如何区分Router A后面的191.168.0.1主机和Router B后面相同IP的主机之间的区别呢？它们都使用内网IP！使用Router B的主机可以将数据直接发送到Router A，但是请求在那里就结束了。Router A怎么知道它应该将消息转发给哪台主机呢？
+协议限制 #  有些网络不允许UDP通信，或者也有可能不允许TCP。有些网络的MTU（Maximum Transmission Unit/最大传输单元）可能非常低。网络管理员可以更改许多变量，这些修改可能会使通信变得困难。
+防火墙/IDS规则 #  另一个问题是深度数据包检查和其他智能过滤方式。某些网络管理员将运行一些软件，这些软件会试图处理每个数据包。很多时候，这些软件无法识别WebRTC的数据包，由于它们不知道如何处理，它们可能会阻拦这些数据包，例如，它们可能将WebRTC数据包视为不在端口白名单上的可疑UDP数据包。
+NAT映射 #  NAT（网络地址转换）映射是使得WebRTC连接成为可能的魔法。WebRTC就是使用NAT让处于完全不同的子网中的两个peer进行通信，从而解决了上述&#34;不在同一网络中&#34;的问题。尽管它带来了新的挑战，但让我们先来解释一下NAT映射是如何工作的。
+NAT映射不使用中继，代理或服务器。跟上一个例子一样，我们有Agent 1和Agent 2，它们位于不同的网络中。然而，流量穿透了路由器。看起来就像这样："><meta name=theme-color content="#FFFFFF"><meta property="og:title" content="连接"><meta property="og:description" content="为什么WebRTC需要专用的子系统进行连接？ #  目前，大多数部署的应用程序都通过客户端/服务器方式进行连接。客户端/服务器方式连接要求服务器具有稳定且公开可用的传输地址。客户端与服务器联系，然后服务器做出响应。
 WebRTC不使用客户端/服务器模型，它建立点对点（P2P）连接。 在P2P连接中，创建连接的任务被平均分配给两个对等方。这是因为无法猜测WebRTC中的传输地址（IP和端口），而且，在会话过程中，传输地址甚至可能会变更。WebRTC将收集所有可能收集的信息，并将尽力实现两个WebRTC代理之间的双向通信。
 听起来简单，建立点对点连接实际上可能会非常困难。这些代理可能位于没有直接连接的不同网络中。即使在两个代理可以直接连接的情况下，您可能还会遇到其他问题。比如在某些情况下，两个客户端使用不同的网络协议（UDP <-> TCP）或使用不同的IP版本（IPv4 <-> IPv6）。
 尽管在建立点对点连接方面存在一些困难，在WebRTC提供的下面这些属性的帮助下，您仍然可以获得相对于传统客户端/服务器技术的一些优势。
@@ -24,7 +29,12 @@ ICE是一种用来寻找两个ICE代理之间通信的最佳方式的协议。�
 现实世界的网络限制 #  ICE就是克服现实世界网络限制的方法。在我们开始讨论ICE如何解决问题之前，先讨论一下有哪些实际问题。
 不在同一个网络中 #  在大多数情况下，两个WebRTC代理不在同一个网络中。典型的呼叫通常是在没有直接连接的不同网络中的两个WebRTC代理之间进行的。
 下面是通过公共互联网连接的两个不同网络的示意图。在每个网络中，您拥有两个主机。
- mermaid.initialize({ &#34;flowchart&#34;: { &#34;useMaxWidth&#34;:true }, &#34;theme&#34;: &#34;default&#34; } ) graph TB subgraph netb [&#34;Network B (IP Address 5.0.0.2)&#34;] b3[&#34;Agent 3 (IP 192.168.0.1)&#34;] b4[&#34;Agent 4 (IP 192.168.0.2)&#34;] routerb[&#34;Router B&#34;"><meta property="og:type" content="article"><meta property="og:url" content="https://webrtcforthecurious.com/zh/docs/03-connecting/"><meta property="article:modified_time" content="2021-04-06T13:33:52+08:00"><meta property="og:site_name" content="给好奇者的WebRTC"><title>连接 | 给好奇者的WebRTC</title><link rel=manifest href=/manifest.json><link rel=icon href=/favicon.png type=image/x-icon><link rel=alternate hreflang=en href=https://webrtcforthecurious.com/docs/03-connecting/ title=Connecting><link rel=alternate hreflang=tr href=https://webrtcforthecurious.com/tr/docs/03-connecting/ title=Connecting><link rel=alternate hreflang=ja href=https://webrtcforthecurious.com/ja/docs/03-connecting/ title=接続><link rel=stylesheet href=/book.min.6c7c6446dfdee7c8c933e9bbc6e80ee3ed6c913b2a59519f2092c3c6a9d63e55.css integrity="sha256-bHxkRt/e58jJM+m7xugO4+1skTsqWVGfIJLDxqnWPlU="><script defer src=/zh.search.min.e1d0cd2ad3cff0cd782f7d6b82e541066e0bdee754123cf2c5a8adebe2e915a4.js integrity="sha256-4dDNKtPP8M14L31rguVBBm4L3udUEjzyxait6+LpFaQ="></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+对于同一网络中的主机来说，互相连接非常容易。例如在192.168.0.1 -> 192.168.0.2之间通讯就很容易！这两个主机无需任何外部帮助即可相互连接。
+但是，使用Router B的主机无法直接访问Router A背后的任何主机。您如何区分Router A后面的191.168.0.1主机和Router B后面相同IP的主机之间的区别呢？它们都使用内网IP！使用Router B的主机可以将数据直接发送到Router A，但是请求在那里就结束了。Router A怎么知道它应该将消息转发给哪台主机呢？
+协议限制 #  有些网络不允许UDP通信，或者也有可能不允许TCP。有些网络的MTU（Maximum Transmission Unit/最大传输单元）可能非常低。网络管理员可以更改许多变量，这些修改可能会使通信变得困难。
+防火墙/IDS规则 #  另一个问题是深度数据包检查和其他智能过滤方式。某些网络管理员将运行一些软件，这些软件会试图处理每个数据包。很多时候，这些软件无法识别WebRTC的数据包，由于它们不知道如何处理，它们可能会阻拦这些数据包，例如，它们可能将WebRTC数据包视为不在端口白名单上的可疑UDP数据包。
+NAT映射 #  NAT（网络地址转换）映射是使得WebRTC连接成为可能的魔法。WebRTC就是使用NAT让处于完全不同的子网中的两个peer进行通信，从而解决了上述&#34;不在同一网络中&#34;的问题。尽管它带来了新的挑战，但让我们先来解释一下NAT映射是如何工作的。
+NAT映射不使用中继，代理或服务器。跟上一个例子一样，我们有Agent 1和Agent 2，它们位于不同的网络中。然而，流量穿透了路由器。看起来就像这样："><meta property="og:type" content="article"><meta property="og:url" content="https://webrtcforthecurious.com/zh/docs/03-connecting/"><meta property="article:modified_time" content="2021-04-29T10:50:52+08:00"><meta property="og:site_name" content="给好奇者的WebRTC"><title>连接 | 给好奇者的WebRTC</title><link rel=manifest href=/manifest.json><link rel=icon href=/favicon.png type=image/x-icon><link rel=alternate hreflang=en href=https://webrtcforthecurious.com/docs/03-connecting/ title=Connecting><link rel=alternate hreflang=tr href=https://webrtcforthecurious.com/tr/docs/03-connecting/ title=Connecting><link rel=alternate hreflang=ja href=https://webrtcforthecurious.com/ja/docs/03-connecting/ title=接続><link rel=stylesheet href=/book.min.6c7c6446dfdee7c8c933e9bbc6e80ee3ed6c913b2a59519f2092c3c6a9d63e55.css integrity="sha256-bHxkRt/e58jJM+m7xugO4+1skTsqWVGfIJLDxqnWPlU="><script defer src=/zh.search.min.430d24100ad5992b0889a6bb88fa75e081d878721846b633f8bbe2f9cb16b1dd.js integrity="sha256-Qw0kEArVmSsIiaa7iPp14IHYeHIYRrYz+Lvi+csWsd0="></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
 <input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a href=/zh><span>给好奇者的WebRTC</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=搜索 aria-label=搜索 maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li><a href=https://webrtcforthecurious.com/zh/docs/01-what-why-and-how/>是什么，为什么，如何使用</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/02-signaling/>信令</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/03-connecting/ class=active>连接</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/04-securing/>安全性</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/05-real-time-networking/>搭建实时网络</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/06-media-communication/>媒体通信</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/07-data-communication/>数据通信</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/08-applied-webrtc/>WebRTC应用场景</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/09-debugging/>调试</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/10-history-of-webrtc/>历史</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/11-faq/>常见问题</a></li></ul></nav><script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label>
 <strong>连接</strong>
 <label for=toc-control><img src=/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><ul><li><a href=#降低带宽成本>降低带宽成本</a></li><li><a href=#更低延迟>更低延迟</a></li><li><a href=#安全的端到端通信>安全的端到端通信</a></li></ul></li><li><a href=#它是如何工作的>它是如何工作的？</a></li><li><a href=#现实世界的网络限制>现实世界的网络限制</a><ul><li><a href=#不在同一个网络中>不在同一个网络中</a></li><li><a href=#协议限制>协议限制</a></li><li><a href=#防火墙ids规则>防火墙/IDS规则</a></li></ul></li><li><a href=#nat映射>NAT映射</a><ul><li><a href=#创建映射>创建映射</a></li><li><a href=#映射创建的行为>映射创建的行为</a></li><li><a href=#映射过滤行为>映射过滤行为</a></li><li><a href=#映射的刷新>映射的刷新</a></li></ul></li><li><a href=#stun>STUN</a><ul><li><a href=#协议结构>协议结构</a></li><li><a href=#创建nat映射>创建NAT映射</a></li><li><a href=#确定nat类型>确定NAT类型</a></li></ul></li><li><a href=#turn>TURN</a><ul><li><a href=#turn生命周期>TURN生命周期</a></li><li><a href=#turn-使用方法>TURN 使用方法</a></li></ul></li><li><a href=#ice>ICE</a><ul><li><a href=#创建ice代理>创建ICE代理</a></li><li><a href=#候选地址收集>候选地址收集</a></li><li><a href=#连通性检查>连通性检查</a></li><li><a href=#候选地址选择>候选地址选择</a></li><li><a href=#重新启动>重新启动</a></li></ul></li></ul></nav></aside></header><article class=markdown><h1 id=为什么webrtc需要专用的子系统进行连接>为什么WebRTC需要专用的子系统进行连接？
@@ -34,36 +44,10 @@ ICE是一种用来寻找两个ICE代理之间通信的最佳方式的协议。�
 <a class=anchor href=#%e5%ae%89%e5%85%a8%e7%9a%84%e7%ab%af%e5%88%b0%e7%ab%af%e9%80%9a%e4%bf%a1>#</a></h3><p>直接通信更安全。由于用户数据根本没有通过服务器，因此用户不需要考虑服务端会不会解密。</p><h2 id=它是如何工作的>它是如何工作的？
 <a class=anchor href=#%e5%ae%83%e6%98%af%e5%a6%82%e4%bd%95%e5%b7%a5%e4%bd%9c%e7%9a%84>#</a></h2><p>上面描述的连接过程是通过Interactive Connectivity Establishment（<a href=https://tools.ietf.org/html/rfc8445>交互式连接建立/ICE</a>） 实现的。这是另一个在WebRTC之前就已经出现的协议。</p><p>ICE是一种用来寻找两个ICE代理之间通信的最佳方式的协议。每个ICE代理都会发布如何访问自己的方式，这些路径被称为候选地址（candidates）。候选地址本质上是一个传输地址，ICE代理认为这个传输地址可能可以被对端访问到。接下来ICE将确定候选地址的最佳搭配。</p><p>本章稍后将详细介绍实际的ICE过程。要了解ICE为什么存在，最好先了解我们要面临的网络特性。</p><h2 id=现实世界的网络限制>现实世界的网络限制
 <a class=anchor href=#%e7%8e%b0%e5%ae%9e%e4%b8%96%e7%95%8c%e7%9a%84%e7%bd%91%e7%bb%9c%e9%99%90%e5%88%b6>#</a></h2><p>ICE就是克服现实世界网络限制的方法。在我们开始讨论ICE如何解决问题之前，先讨论一下有哪些实际问题。</p><h3 id=不在同一个网络中>不在同一个网络中
-<a class=anchor href=#%e4%b8%8d%e5%9c%a8%e5%90%8c%e4%b8%80%e4%b8%aa%e7%bd%91%e7%bb%9c%e4%b8%ad>#</a></h3><p>在大多数情况下，两个WebRTC代理不在同一个网络中。典型的呼叫通常是在没有直接连接的不同网络中的两个WebRTC代理之间进行的。</p><p>下面是通过公共互联网连接的两个不同网络的示意图。在每个网络中，您拥有两个主机。</p><script src=/mermaid.min.js></script><script>mermaid.initialize({"flowchart":{"useMaxWidth":true},"theme":"default"})</script><p class=mermaid>graph TB
-subgraph netb ["Network B (IP Address 5.0.0.2)"]
-b3["Agent 3 (IP 192.168.0.1)"]
-b4["Agent 4 (IP 192.168.0.2)"]
-routerb["Router B"]
-end
-subgraph neta ["Network A (IP Address 5.0.0.1)"]
-routera["Router A"]
-a1["Agent 1 (IP 192.168.0.1)"]
-a2["Agent 2 (IP 192.168.0.2)"]
-end
-pub{Public Internet}
-routera-->pub
-routerb-->pub</p><p>对于同一网络中的主机来说，互相连接非常容易。例如在<code>192.168.0.1 -> 192.168.0.2</code>之间通讯就很容易！这两个主机无需任何外部帮助即可相互连接。</p><p>但是，使用<code>Router B</code>的主机无法直接访问<code>Router A</code>背后的任何主机。您如何区分<code>Router A</code>后面的<code>191.168.0.1</code>主机和<code>Router B</code>后面相同IP的主机之间的区别呢？它们都使用内网IP！使用<code>Router B</code>的主机可以将数据直接发送到<code>Router A</code>，但是请求在那里就结束了。<code>Router A</code>怎么知道它应该将消息转发给哪台主机呢？</p><h3 id=协议限制>协议限制
+<a class=anchor href=#%e4%b8%8d%e5%9c%a8%e5%90%8c%e4%b8%80%e4%b8%aa%e7%bd%91%e7%bb%9c%e4%b8%ad>#</a></h3><p>在大多数情况下，两个WebRTC代理不在同一个网络中。典型的呼叫通常是在没有直接连接的不同网络中的两个WebRTC代理之间进行的。</p><p>下面是通过公共互联网连接的两个不同网络的示意图。在每个网络中，您拥有两个主机。</p><p><img src=../images/03-two-networks.png alt=两个网络 title=两个网络></p><p>对于同一网络中的主机来说，互相连接非常容易。例如在<code>192.168.0.1 -> 192.168.0.2</code>之间通讯就很容易！这两个主机无需任何外部帮助即可相互连接。</p><p>但是，使用<code>Router B</code>的主机无法直接访问<code>Router A</code>背后的任何主机。您如何区分<code>Router A</code>后面的<code>191.168.0.1</code>主机和<code>Router B</code>后面相同IP的主机之间的区别呢？它们都使用内网IP！使用<code>Router B</code>的主机可以将数据直接发送到<code>Router A</code>，但是请求在那里就结束了。<code>Router A</code>怎么知道它应该将消息转发给哪台主机呢？</p><h3 id=协议限制>协议限制
 <a class=anchor href=#%e5%8d%8f%e8%ae%ae%e9%99%90%e5%88%b6>#</a></h3><p>有些网络不允许UDP通信，或者也有可能不允许TCP。有些网络的MTU（Maximum Transmission Unit/最大传输单元）可能非常低。网络管理员可以更改许多变量，这些修改可能会使通信变得困难。</p><h3 id=防火墙ids规则>防火墙/IDS规则
 <a class=anchor href=#%e9%98%b2%e7%81%ab%e5%a2%99ids%e8%a7%84%e5%88%99>#</a></h3><p>另一个问题是<code>深度数据包检查</code>和其他智能过滤方式。某些网络管理员将运行一些软件，这些软件会试图处理每个数据包。很多时候，这些软件无法识别WebRTC的数据包，由于它们不知道如何处理，它们可能会阻拦这些数据包，例如，它们可能将WebRTC数据包视为不在端口白名单上的可疑UDP数据包。</p><h2 id=nat映射>NAT映射
-<a class=anchor href=#nat%e6%98%a0%e5%b0%84>#</a></h2><p>NAT（网络地址转换）映射是使得WebRTC连接成为可能的魔法。WebRTC就是使用NAT让处于完全不同的子网中的两个peer进行通信，从而解决了上述"不在同一网络中"的问题，这同时也带来了新的挑战。首先，让我们解释一下NAT映射是如何工作的。</p><p>NAT映射不使用中继，代理或服务器。跟上一个例子一样，我们有<code>Agent 1</code>和<code>Agent 2</code>，它们位于不同的网络中。然而，流量穿透了路由器。看起来就像这样：</p><p class=mermaid>graph TB
-subgraph netb ["Network B (IP Address 5.0.0.2)"]
-b2["Agent 2 (IP 192.168.0.1)"]
-routerb["Router B"]
-end
-subgraph neta ["Network A (IP Address 5.0.0.1)"]
-routera["Router A"]
-a1["Agent 1 (IP 192.168.0.1)"]
-end
-pub{Public Internet}
-a1-.->routera;
-routera-.->pub;
-pub-.->routerb;
-routerb-.->b2;</p><p>想要这样通信的话，您需要创建一个NAT映射。Agent 1使用端口7000与Agent 2建立WebRTC连接。这将创建一个<code>192.168.0.1:7000</code>到<code>5.0.0.1:7000</code>的绑定。然后，Agent 2将数据包发送到<code>5.0.0.1:7000</code>时，数据包会被转发给Agent 1。在这个例子中，创建一个NAT映射，就像是在路由器中做了一次自动化的端口转发。</p><p>NAT映射的缺点是：映射的形式不止一种（例如静态端口转发），并且映射的实现方式在不同的网络中也是不一样的。ISP和硬件制造商可能会以不同的方式来实现NAT映射。在某些情况下，网络管理员甚至可能禁用它。</p><p>好消息是，NAT映射的所有行为都是可以理解和观察到的，因此ICE代理能够确认其创建了NAT映射，并确认该映射的属性。</p><p>描述这些行为的文档是 <a href=https://tools.ietf.org/html/rfc4787>RFC 4787</a>。</p><h3 id=创建映射>创建映射
+<a class=anchor href=#nat%e6%98%a0%e5%b0%84>#</a></h2><p>NAT（网络地址转换）映射是使得WebRTC连接成为可能的魔法。WebRTC就是使用NAT让处于完全不同的子网中的两个peer进行通信，从而解决了上述"不在同一网络中"的问题。尽管它带来了新的挑战，但让我们先来解释一下NAT映射是如何工作的。</p><p>NAT映射不使用中继，代理或服务器。跟上一个例子一样，我们有<code>Agent 1</code>和<code>Agent 2</code>，它们位于不同的网络中。然而，流量穿透了路由器。看起来就像这样：</p><p><img src=../images/03-nat-mapping.png alt=NAT映射 title=NAT映射></p><p>想要这样通信的话，您需要创建一个NAT映射。Agent 1使用端口7000与Agent 2建立WebRTC连接。这将创建一个<code>192.168.0.1:7000</code>到<code>5.0.0.1:7000</code>的绑定。然后，Agent 2将数据包发送到<code>5.0.0.1:7000</code>时，数据包会被转发给Agent 1。在这个例子中，创建一个NAT映射，就像是在路由器中做了一次自动化的端口转发。</p><p>NAT映射的缺点是：映射的形式不止一种（例如静态端口转发），并且映射的实现方式在不同的网络中也是不一样的。ISP和硬件制造商可能会以不同的方式来实现NAT映射。在某些情况下，网络管理员甚至可能禁用它。</p><p>好消息是，NAT映射的所有行为都是可以理解和观察到的，因此ICE代理能够确认其创建了NAT映射，并确认该映射的属性。</p><p>描述这些行为的文档是 <a href=https://tools.ietf.org/html/rfc4787>RFC 4787</a>。</p><h3 id=创建映射>创建映射
 <a class=anchor href=#%e5%88%9b%e5%bb%ba%e6%98%a0%e5%b0%84>#</a></h3><p>创建映射是最简单的部分。当您将数据包发送到网络外部的地址时，一个映射就被创建出来了！NAT映射只是由NAT分配的一个临时的公共IP/端口。出站的消息将被重写，使得其源地址变为新创建的映射地址。如果有消息被成功发到映射地址，消息会被自动路由返回给NAT网络中创建这个映射地址的主机。</p><p>说到映射相关的细节，这就开始变得复杂了。</p><h3 id=映射创建的行为>映射创建的行为
 <a class=anchor href=#%e6%98%a0%e5%b0%84%e5%88%9b%e5%bb%ba%e7%9a%84%e8%a1%8c%e4%b8%ba>#</a></h3><p>映射创建分为三类：</p><h4 id=端点无关的映射>端点无关的映射
 <a class=anchor href=#%e7%ab%af%e7%82%b9%e6%97%a0%e5%85%b3%e7%9a%84%e6%98%a0%e5%b0%84>#</a></h4><p>这种创建方式为NAT网络中的所有发送者只创建一个映射。如果您将两个数据包发送到两个不同的远程地址，这个NAT映射将被重用。两个远程主机将看到相同的源IP/端口。如果远程主机响应，它将被发送回相同的本地侦听器。</p><p>这是最好的情况。要使得呼叫能够建立起来，至少一侧必须是这种类型。</p><h4 id=地址相关的映射>地址相关的映射
@@ -112,34 +96,8 @@ routerb-.->b2;</p><p>想要这样通信的话，您需要创建一个NAT映射�
 <a class=anchor href=#sendindicationchanneldata>#</a></h4><p>这是TURN客户端将消息发送到远端peer时所使用的两个消息。</p><p>SendIndication是一个自包含的消息。它包含您希望发送的数据，以及您希望发送的目标。如果您要向远端peer发送大量消息的话，这种方式很昂贵。因为如果要发送1,000条消息，目标IP地址就被重复了1,000次！</p><p>ChannelData允许您发送数据，但不需要重复IP地址。您需要先创建一个具有IP/端口的通道（Channel）。然后使用ChannelId发送，IP/端口将在服务器端被填充进去。如果您要发送大量消息，这是更好的选择。</p><h4 id=刷新>刷新
 <a class=anchor href=#%e5%88%b7%e6%96%b0>#</a></h4><p>Allocations将自动销毁。要避免其过早销毁，TURN客户端必须在创建allocation时指定的<code>LIFETIME</code>到来之前，及时刷新它们。</p><h3 id=turn-使用方法>TURN 使用方法
 <a class=anchor href=#turn-%e4%bd%bf%e7%94%a8%e6%96%b9%e6%b3%95>#</a></h3><p>TURN有两种用法。通常情况下，一个peer会作为&rsquo;TURN客户端&rsquo;连接，而另一方则直接进行通信。在某些情况下，您可能在两侧都需要使用TURN服务。举例来说，当两个客户端都位于在禁用UDP的网络中时，只能通过TCP连接到各自的TURN服务器来建立连接。</p><p>下面这些图有助于说明TURN的用法。</p><h4 id=单个-turn-allocation-通信>单个 TURN Allocation 通信
-<a class=anchor href=#%e5%8d%95%e4%b8%aa-turn-allocation-%e9%80%9a%e4%bf%a1>#</a></h4><p class=mermaid>graph TB
-subgraph turn ["TURN Allocation"]
-serverport["Server Transport Address"]
-relayport["Relayed Transport Address" ]
-end
-turnclient{TURN Client}
-peer{UDP Client}
-turnclient-->|"ChannelData (To UDP Client)"|serverport
-serverport-->|"ChannelData (From UDP Client)"|turnclient
-peer-->|"Raw Network Traffic (To TURN Client)"|relayport
-relayport-->|"Raw Network Traffic (To UDP Client)"|peer</p><h4 id=双重-turn-allocation-通信>双重 TURN Allocation 通信
-<a class=anchor href=#%e5%8f%8c%e9%87%8d-turn-allocation-%e9%80%9a%e4%bf%a1>#</a></h4><p class=mermaid>graph TB
-subgraph turna["TURN Allocation A"]
-serverportA["Server Transport Address"]
-relayportA["Relayed Transport Address" ]
-end
-subgraph turnb["TURN Allocation B"]
-serverportB["Server Transport Address"]
-relayportB["Relayed Transport Address" ]
-end
-turnclientA{TURN Client A}
-turnclientB{TURN Client B}
-turnclientA-->|"ChannelData"|serverportA
-serverportA-->|"ChannelData"|turnclientA
-turnclientB-->|"ChannelData"|serverportB
-serverportB-->|"ChannelData"|turnclientB
-relayportA-->|"Raw Network Traffic"|relayportB
-relayportB-->|"Raw Network Traffic"|relayportA</p><blockquote class="book-hint info">译注：单个TURN Allocation的情况，指的是一个TURN Client和另一个可访问的UDP Client的通信。双重TURN Allocation的情况，指的是两个TURN Client之间通信。</blockquote><h2 id=ice>ICE
+<a class=anchor href=#%e5%8d%95%e4%b8%aa-turn-allocation-%e9%80%9a%e4%bf%a1>#</a></h4><p><img src=../images/03-one-turn-allocation.png alt="单个 TURN Allocation" title="单个 TURN Allocation"></p><h4 id=双重-turn-allocation-通信>双重 TURN Allocation 通信
+<a class=anchor href=#%e5%8f%8c%e9%87%8d-turn-allocation-%e9%80%9a%e4%bf%a1>#</a></h4><p><img src=../images/03-two-turn-allocations.png alt="双重 TURN Allocation" title="双重 TURN Allocation"></p><blockquote class="book-hint info">译注：单个TURN Allocation的情况，指的是一个TURN Client和另一个可访问的UDP Client的通信。双重TURN Allocation的情况，指的是两个TURN Client之间通信。</blockquote><h2 id=ice>ICE
 <a class=anchor href=#ice>#</a></h2><p>ICE（交互式连接建立）是WebRTC连接两个代理的方式。这也是WebRTC之前的一项技术，在<a href=https://tools.ietf.org/html/rfc8445>RFC 8445</a>中定义！ICE是用于建立连接的协议。它会确定两个peer之间所有可能的路由，然后确保您保持连接状态。</p><p>这些路由被称为<code>Candidate Pair（候选地址对）</code>，也就是本地地址和远程地址的配对。这就是STUN和TURN在ICE中发挥作用的地方。这些地址可以是您的本地IP地址，<code>NAT映射</code>或<code>中继传输地址</code>。通信双方需要收集它们要使用的所有地址，交换这些地址，然后尝试连接！</p><p>两个ICE代理使用ICE ping数据包（正式名称为连通性检查）进行通信。一旦建立连接后，他们就可以发送任何信息。感觉就像使用普通socket一样。连通性检查使用STUN协议。</p><h3 id=创建ice代理>创建ICE代理
 <a class=anchor href=#%e5%88%9b%e5%bb%baice%e4%bb%a3%e7%90%86>#</a></h3><p>ICE代理要么处于<code>控制中</code>，要么处于<code>受控中</code>。<code>控制中</code>的代理是决定选择<code>候选对</code>的代理。通常来说，发送offer的peer是<code>控制中</code>的一方。</p><p>每一方都必须有一个<code>用户片段</code>和一个<code>密码</code>。必须先交换这两个值，才能进行连接检查。<code>用户片段</code>以纯文本形式发送，用于多个ICE会话的解复用（demux）。
 <code>密码</code>用于生成<code>MESSAGE-INTEGRITY</code>属性。在每个STUN数据包的末尾，都有这个属性，该属性是使用<code>密码</code>作为密钥的整个数据包的哈希值。这用于验证数据包并确保它未被篡改。</p><p>对于WebRTC，所有这些值都通过上一章中所述的<code>会话描述</code>进行分发。</p><h3 id=候选地址收集>候选地址收集
@@ -149,32 +107,7 @@ relayportB-->|"Raw Network Traffic"|relayportA</p><blockquote class="book-hint i
 <a class=anchor href=#%e6%9c%8d%e5%8a%a1%e5%99%a8%e8%87%aa%e5%8f%8dserver-reflextive>#</a></h4><p>服务器自反候选地址是通过对STUN服务器执行<code>STUN绑定请求</code>时生成的。</p><p>当您收到<code>STUN绑定响应</code>时，<code>XOR-MAPPED-ADDRESS</code>就是您的服务器自反候选地址。</p><h4 id=peer自反>Peer自反
 <a class=anchor href=#peer%e8%87%aa%e5%8f%8d>#</a></h4><p>Peer自反候选地址是指，当您从您不知道的地址收到入站请求时，由于ICE是经过身份验证的协议，因此您知道这些传输是合法的，这只是意味着远端Peer是通过它也不知道的地址与您通信。</p><p>这通常会发生在这样的情况下，当<code>主机候选地址</code>与<code>服务器自反候选地址</code>进行通信时，由于您是在子网外部进行通信，因此创建了一个新的<code>NAT映射</code>。还记得我们说过的连通性检查实际上是STUN数据包吗？STUN响应的格式自然允许peer报告Peer自反地址。</p><h4 id=中继>中继
 <a class=anchor href=#%e4%b8%ad%e7%bb%a7>#</a></h4><p>中继候选地址是通过使用TURN服务器生成的。</p><p>在与TURN服务器进行初始握手之后，您将获得<code>RELAYED-ADDRESS</code>，这就是您的中继候选地址。</p><h3 id=连通性检查>连通性检查
-<a class=anchor href=#%e8%bf%9e%e9%80%9a%e6%80%a7%e6%a3%80%e6%9f%a5>#</a></h3><p>现在我们知道了远程代理的<code>用户片段</code>，<code>密码</code>和候选地址。我们可以尝试连接了！ 候选地址可以相互配对。因此，如果每边有3个候选地址，那么现在就有9个候选地址对。</p><p>看起来像这样<p class=mermaid>graph LR
-subgraph agentA["ICE Agent A"]
-hostA{Host Candidate}
-serverreflexiveA{Server Reflexive Candidate}
-relayA{Relay Candidate}
-end
-style hostA fill:#ECECFF,stroke:red
-style serverreflexiveA fill:#ECECFF,stroke:green
-style relayA fill:#ECECFF,stroke:blue
-subgraph agentB["ICE Agent B"]
-hostB{Host Candidate}
-serverreflexiveB{Server Reflexive Candidate}
-relayB{Relay Candidate}
-end
-hostA --- hostB
-hostA --- serverreflexiveB
-hostA --- relayB
-linkStyle 0,1,2 stroke-width:2px,fill:none,stroke:red;
-serverreflexiveA --- hostB
-serverreflexiveA --- serverreflexiveB
-serverreflexiveA --- relayB
-linkStyle 3,4,5 stroke-width:2px,fill:none,stroke:green;
-relayA --- hostB
-relayA --- serverreflexiveB
-relayA --- relayB
-linkStyle 6,7,8 stroke-width:2px,fill:none,stroke:blue;</p></p><h3 id=候选地址选择>候选地址选择
+<a class=anchor href=#%e8%bf%9e%e9%80%9a%e6%80%a7%e6%a3%80%e6%9f%a5>#</a></h3><p>现在我们知道了远程代理的<code>用户片段</code>，<code>密码</code>和候选地址。我们可以尝试连接了！ 候选地址可以相互配对。因此，如果每边有3个候选地址，那么现在就有9个候选地址对。</p><p>看起来像这样</p><p><img src=../images/03-connectivity-checks.png alt=连通性检查 title=连通性检查></p><h3 id=候选地址选择>候选地址选择
 <a class=anchor href=#%e5%80%99%e9%80%89%e5%9c%b0%e5%9d%80%e9%80%89%e6%8b%a9>#</a></h3><p><code>控制中</code>的代理和<code>受控中</code>的代理都开始在每个候选地址对上发送流量数据。这样是必须的，因为如果一个代理位于一个<code>地址相关映射</code>的网络中，这样会创建<code>Peer自反候选地址</code>。</p><p>每个收到流量数据的<code>候选地址对</code>，会被提升为<code>有效候选地址</code>对。接下来，<code>控制中</code>的代理将指定一个<code>有效候选地址</code>对。这就是<code>提名候选地址对</code>。然后，<code>控制中</code>的代理和<code>受控中</code>的代理再尝试进行一轮双向通信。如果成功，则<code>提名候选地址对</code>将成为<code>选定的候选地址对</code>！它将被用于后面的会话中。</p><h3 id=重新启动>重新启动
 <a class=anchor href=#%e9%87%8d%e6%96%b0%e5%90%af%e5%8a%a8>#</a></h3><p>如果<code>选定的候选地址对</code>由于任何原因停止工作（如：NAT映射到期，TURN服务器崩溃等），则ICE代理将进入<code>失败</code>状态。此时可以重新启动两个代理，然后重新完整执行整个过程。</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div class=book-languages tabindex=0 aria-haspopup=true><ul><li class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
 简体中文</li></ul><ul class=book-languages-list><li><a href=https://webrtcforthecurious.com/docs/03-connecting/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
@@ -182,6 +115,6 @@ English</a></li><li><a href=https://webrtcforthecurious.com/tr/docs/03-connectin
 Turkish</a></li><li><a href=https://webrtcforthecurious.com/fa/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
 Persian</a></li><li><a href=https://webrtcforthecurious.com/ja/docs/03-connecting/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
 日本語</a></li><li class=active><a href=https://webrtcforthecurious.com/zh/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
-简体中文</a></li></ul></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/commit/f61ac786c6e0fe3b07c3b4b3d23aa3ffd32f2826 title="最后修改者 Cliff Han | April 6, 2021" target=_blank rel=noopener><img src=/svg/calendar.svg class=book-icon alt=Calendar>
-<span>April 6, 2021</span></a></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content.zh-cn/docs/03-connecting.md target=_blank rel=noopener><img src=/svg/edit.svg class=book-icon alt=Edit>
+简体中文</a></li></ul></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/commit/055496a4896797690f061da03b1e35ece2d9766c title="最后修改者 Cliff Han | April 29, 2021" target=_blank rel=noopener><img src=/svg/calendar.svg class=book-icon alt=Calendar>
+<span>April 29, 2021</span></a></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content.zh-cn/docs/03-connecting.md target=_blank rel=noopener><img src=/svg/edit.svg class=book-icon alt=Edit>
 <span>编辑本页</span></a></div></div></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><ul><li><a href=#降低带宽成本>降低带宽成本</a></li><li><a href=#更低延迟>更低延迟</a></li><li><a href=#安全的端到端通信>安全的端到端通信</a></li></ul></li><li><a href=#它是如何工作的>它是如何工作的？</a></li><li><a href=#现实世界的网络限制>现实世界的网络限制</a><ul><li><a href=#不在同一个网络中>不在同一个网络中</a></li><li><a href=#协议限制>协议限制</a></li><li><a href=#防火墙ids规则>防火墙/IDS规则</a></li></ul></li><li><a href=#nat映射>NAT映射</a><ul><li><a href=#创建映射>创建映射</a></li><li><a href=#映射创建的行为>映射创建的行为</a></li><li><a href=#映射过滤行为>映射过滤行为</a></li><li><a href=#映射的刷新>映射的刷新</a></li></ul></li><li><a href=#stun>STUN</a><ul><li><a href=#协议结构>协议结构</a></li><li><a href=#创建nat映射>创建NAT映射</a></li><li><a href=#确定nat类型>确定NAT类型</a></li></ul></li><li><a href=#turn>TURN</a><ul><li><a href=#turn生命周期>TURN生命周期</a></li><li><a href=#turn-使用方法>TURN 使用方法</a></li></ul></li><li><a href=#ice>ICE</a><ul><li><a href=#创建ice代理>创建ICE代理</a></li><li><a href=#候选地址收集>候选地址收集</a></li><li><a href=#连通性检查>连通性检查</a></li><li><a href=#候选地址选择>候选地址选择</a></li><li><a href=#重新启动>重新启动</a></li></ul></li></ul></nav></div></aside></main></body></html>

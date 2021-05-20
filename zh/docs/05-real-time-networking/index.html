@@ -1,54 +1,61 @@
 <!doctype html><html lang=zh dir=ltr><head><meta name=generator content="Hugo 0.74.3"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="为什么网络在实时通信中如此重要？ #  网络是实时通信中的限制因素。在理想的世界中，我们将拥有无限的带宽，并且数据包会即时到达。但事实并非如此。网络是受限的，且其限定条件随时可能更改。测量和观察网络状况也是一个难题。根据您所使用的硬件，软件及其配置，您可能看到不同的表现。
-实时通信也带来了其他大多数领域中不存在的问题。对于网站开发人员来说，如果您的网站在某些网络上运行速度较慢，那不是致命问题。只要所有数据到达，用户都会感到满意。但对于WebRTC，如果您的数据延迟了，那就没用了。没有人在乎5秒钟前的电话会议中所说过的话。因此，在开发RTC（实时通信）系统时必须权衡。我的时间限制是多少，可以发送多少数据？
+实时通信也带来了其他大多数领域中不存在的问题。对于网站开发人员来说，如果您的网站在某些网络上运行速度较慢，那不是致命问题。只要所有数据到达，用户都会感到满意。但对于WebRTC，如果您的数据延迟了，那就没用了。没有人在乎5秒钟前的电话会议中所说过的话。因此，在开发一个实时通信系统时，必须作出权衡。我的时间限制是多少，可以发送多少数据？
 本章介绍了适用于数据和媒体通信的概念。在后面的章节中，我们将超出理论范围，讨论一下WebRTC的媒体和数据子系统如何解决这些问题。
 使网络变得困难的有哪些属性？ #  在所有网络上都能有效工作的代码很复杂。您会面对许多不同的因素，它们都可以相互影响。这些是开发人员将遇到的最常见问题。
 带宽 #  带宽是可以在给定路径上传输的最大数据速率。请记住，这也不是一个静态数字，这一点很重要。随着越来越多（或更少）的人使用带宽，带宽将沿路由变化。
-传输时间 #  传输时间指的是一个数据包需要多长时间到达。像带宽一样，这不是恒定的。 传输时间随时可能波动。
+传输时间和往返时间 #  传输时间指的是一个数据包需要多长时间到达。像带宽一样，这不是恒定的。 传输时间随时可能波动。
+传输时间 = 接收时间 - 发送时间
+要计算传输时间，您需要将发送方和接收方的时钟以毫秒级精度同步。 即使一个很小的偏差也会导致传输时间的测量结果不可靠。 由于WebRTC在高度异构的环境中运行，因此依靠主机之间完美的时间同步（来测量传输时间）几乎是不可能的。
+往返时间测量是对不完美的时钟同步的一种解决方法。
+（要测量往返时间，）WebRTC peer不使用分布式时钟，而是发送一个特殊数据包，携带名为sendertime1的自己的时间戳。 合作的peer接收到这个特殊数据包后，会将时间戳返还给发送方。 当原始发送方获得返还的时间戳时，它会用当前时间sendertime2减去sendertime1时间戳。 得到的时间差称为&#34;往返传播延迟（round-trip propagation delay）&#34;，或者就使用更常见的&#34;往返时间&rdquo;。
+rtt（往返时间） = sendertime2 - sendertime1
+通常认为，往返时间的一半是传输时间足够好的近似值。 但此解决方法并非没有缺点。 它假设发送和接收数据包花费的时间是相等的。 但是，在蜂窝网络上，发送和接收操作可能不是时间对称的。 您可能已经注意到了，手机上的上传速度几乎总是低于下载速度。
+传输时间 = rtt（往返时间）/2
+关于往返时间测量的技术，在RTCP的发送方和接收方报告章节中有更详细的描述。
 抖动 #  抖动是每个数据包的传输时间可能会有所不同的现实表现。您的数据包可能会延迟，但随后会突然大量集中到达。
 数据包丢失 #  数据包丢失是指消息在传输中丢失。数据损失率可能是稳定的，也可能出现波峰和波谷。 这可能是由于网络类型的原因造成的，例如卫星或Wi-Fi等。或者也可能是传输路径上的软件导致的。
 最大传输单位（MTU） #  最大传输单位指的是单个数据包大小的限制。网络不允许您发送一个巨大的消息。在协议级别，消息可能必须被拆分为多个较小的数据包。
 根据您采用的网络路径，MTU也将有所不同。您可以使用MTU路径发现之类的协议来确定可以发送的最大数据包大小。
 拥塞 #  拥塞是指网络达到极限时的情况。这通常是因为您已达到当前路由可以处理的峰值带宽。或者可能是运营商对您的ISP配置导致，比如限制了每小时的流量。
 拥塞会以多种不同的方式展现出来。没有标准化的表现。在大多数情况下，当拥塞发生时，网络将丢弃多余的数据包。在其他一些情况下，网络将缓存数据包。这将导致数据包的传输时间增加。随着网络的拥塞，您还会看到更多的抖动。这是一个快速变化的领域，并且还有其他用于拥塞检测的新算法目前仍在编写中。
-动态变化 #  网络是动态的，各种状况可能会迅速变化。在通话过程中，您可能会发送和接收数十万个数据包。 这些数据包可能经过多个跃点。这些跃点可能由数百万其他用户共享。即使在您的本地网络中，您也可能正在下载高清电影，或者可能有设备正要下载软件更新。
-保证通话质量不能仅仅是在启动时简单的度量您的网络。您需要持续不断的评估。还需要处理来自于多种网络硬件和软件的所有不同表现。
-解决数据包丢失问题 #  数据包损失是最需要解决的首要问题。有多种解决方法，每种方法都有自己的优势。这取决于您要发送的内容以及对延迟的容忍度。同样重要的一点是，并非所有数据包丢失都是致命的。丢失一些视频可能不是什么问题，人眼甚至可能无法感觉到。但丢掉用户的短信就是不可接受的了。
-假设您发送了10个数据包，而数据包5和6丢失了。下面是一些解决问题的方法。
-确认（Acknowledgments） #  确认是指接收方收到每个数据包时，都去通知发送方。如果发送方收到一个数据包的两次确认消息，且该数据包不是最终数据包时，发送方就会意识到有数据包已经丢失。例如，当发送方两次收到数据包4的ACK消息时，它就知道接收方没有收到数据包5。
-选择性确认（Selective Acknowledgments） #  选择性确认是对确认的改进。接收方可以发送一个SACK消息来确认多个数据包已经收到，并通知发送者间隔时间。 例如，发送方可能收到一个包含数据包4和7的SACK消息。这样它就知道需要重新发送数据包5和6。
-否定应答（Negative Acknowledgments） #  否定应答以相反的方式解决了问题。接收方并不通知发送方自己已经收到了什么，而是通知发送方丢失了什么。在我们的例子里，将为数据包5和6发送一个NACK。发送方仅知道接收方希望再次发送的数据包。
-前向纠错（FEC） #  前向纠错可以抢先解决丢包问题。发送方将发送冗余数据，这意味着部分数据包丢失不会影响最终流。一种流行的算法是Reed–Solomon纠错算法。
-这减少了发送和处理确认的延迟/复杂度。如果您所在的网络的损耗为零，则前向纠错会浪费带宽。
-解决抖动问题 #  大多数网络都存在抖动。即使在局域网内部，您也有许多设备以变化的速率发送数据。您可以通过运行ping命令对其他设备执行ping操作，并注意往返延迟的波动，从而轻松地观察到抖动。"><meta name=theme-color content="#FFFFFF"><meta property="og:title" content="搭建实时网络"><meta property="og:description" content="为什么网络在实时通信中如此重要？ #  网络是实时通信中的限制因素。在理想的世界中，我们将拥有无限的带宽，并且数据包会即时到达。但事实并非如此。网络是受限的，且其限定条件随时可能更改。测量和观察网络状况也是一个难题。根据您所使用的硬件，软件及其配置，您可能看到不同的表现。
-实时通信也带来了其他大多数领域中不存在的问题。对于网站开发人员来说，如果您的网站在某些网络上运行速度较慢，那不是致命问题。只要所有数据到达，用户都会感到满意。但对于WebRTC，如果您的数据延迟了，那就没用了。没有人在乎5秒钟前的电话会议中所说过的话。因此，在开发RTC（实时通信）系统时必须权衡。我的时间限制是多少，可以发送多少数据？
+动态变化 #  网络是动态的，各种状况可能会迅速变化。在通话过程中，您可能会发送和接收数十万个数据包。 这些数据包可能经过多个跃点。这些跃点可能由数百万其他用户共享。即使在您的本地网络中，您也可能正在下载高清电影，或者可能有设备正要下载软件更新。"><meta name=theme-color content="#FFFFFF"><meta property="og:title" content="搭建实时网络"><meta property="og:description" content="为什么网络在实时通信中如此重要？ #  网络是实时通信中的限制因素。在理想的世界中，我们将拥有无限的带宽，并且数据包会即时到达。但事实并非如此。网络是受限的，且其限定条件随时可能更改。测量和观察网络状况也是一个难题。根据您所使用的硬件，软件及其配置，您可能看到不同的表现。
+实时通信也带来了其他大多数领域中不存在的问题。对于网站开发人员来说，如果您的网站在某些网络上运行速度较慢，那不是致命问题。只要所有数据到达，用户都会感到满意。但对于WebRTC，如果您的数据延迟了，那就没用了。没有人在乎5秒钟前的电话会议中所说过的话。因此，在开发一个实时通信系统时，必须作出权衡。我的时间限制是多少，可以发送多少数据？
 本章介绍了适用于数据和媒体通信的概念。在后面的章节中，我们将超出理论范围，讨论一下WebRTC的媒体和数据子系统如何解决这些问题。
 使网络变得困难的有哪些属性？ #  在所有网络上都能有效工作的代码很复杂。您会面对许多不同的因素，它们都可以相互影响。这些是开发人员将遇到的最常见问题。
 带宽 #  带宽是可以在给定路径上传输的最大数据速率。请记住，这也不是一个静态数字，这一点很重要。随着越来越多（或更少）的人使用带宽，带宽将沿路由变化。
-传输时间 #  传输时间指的是一个数据包需要多长时间到达。像带宽一样，这不是恒定的。 传输时间随时可能波动。
+传输时间和往返时间 #  传输时间指的是一个数据包需要多长时间到达。像带宽一样，这不是恒定的。 传输时间随时可能波动。
+传输时间 = 接收时间 - 发送时间
+要计算传输时间，您需要将发送方和接收方的时钟以毫秒级精度同步。 即使一个很小的偏差也会导致传输时间的测量结果不可靠。 由于WebRTC在高度异构的环境中运行，因此依靠主机之间完美的时间同步（来测量传输时间）几乎是不可能的。
+往返时间测量是对不完美的时钟同步的一种解决方法。
+（要测量往返时间，）WebRTC peer不使用分布式时钟，而是发送一个特殊数据包，携带名为sendertime1的自己的时间戳。 合作的peer接收到这个特殊数据包后，会将时间戳返还给发送方。 当原始发送方获得返还的时间戳时，它会用当前时间sendertime2减去sendertime1时间戳。 得到的时间差称为&#34;往返传播延迟（round-trip propagation delay）&#34;，或者就使用更常见的&#34;往返时间&rdquo;。
+rtt（往返时间） = sendertime2 - sendertime1
+通常认为，往返时间的一半是传输时间足够好的近似值。 但此解决方法并非没有缺点。 它假设发送和接收数据包花费的时间是相等的。 但是，在蜂窝网络上，发送和接收操作可能不是时间对称的。 您可能已经注意到了，手机上的上传速度几乎总是低于下载速度。
+传输时间 = rtt（往返时间）/2
+关于往返时间测量的技术，在RTCP的发送方和接收方报告章节中有更详细的描述。
 抖动 #  抖动是每个数据包的传输时间可能会有所不同的现实表现。您的数据包可能会延迟，但随后会突然大量集中到达。
 数据包丢失 #  数据包丢失是指消息在传输中丢失。数据损失率可能是稳定的，也可能出现波峰和波谷。 这可能是由于网络类型的原因造成的，例如卫星或Wi-Fi等。或者也可能是传输路径上的软件导致的。
 最大传输单位（MTU） #  最大传输单位指的是单个数据包大小的限制。网络不允许您发送一个巨大的消息。在协议级别，消息可能必须被拆分为多个较小的数据包。
 根据您采用的网络路径，MTU也将有所不同。您可以使用MTU路径发现之类的协议来确定可以发送的最大数据包大小。
 拥塞 #  拥塞是指网络达到极限时的情况。这通常是因为您已达到当前路由可以处理的峰值带宽。或者可能是运营商对您的ISP配置导致，比如限制了每小时的流量。
 拥塞会以多种不同的方式展现出来。没有标准化的表现。在大多数情况下，当拥塞发生时，网络将丢弃多余的数据包。在其他一些情况下，网络将缓存数据包。这将导致数据包的传输时间增加。随着网络的拥塞，您还会看到更多的抖动。这是一个快速变化的领域，并且还有其他用于拥塞检测的新算法目前仍在编写中。
-动态变化 #  网络是动态的，各种状况可能会迅速变化。在通话过程中，您可能会发送和接收数十万个数据包。 这些数据包可能经过多个跃点。这些跃点可能由数百万其他用户共享。即使在您的本地网络中，您也可能正在下载高清电影，或者可能有设备正要下载软件更新。
-保证通话质量不能仅仅是在启动时简单的度量您的网络。您需要持续不断的评估。还需要处理来自于多种网络硬件和软件的所有不同表现。
-解决数据包丢失问题 #  数据包损失是最需要解决的首要问题。有多种解决方法，每种方法都有自己的优势。这取决于您要发送的内容以及对延迟的容忍度。同样重要的一点是，并非所有数据包丢失都是致命的。丢失一些视频可能不是什么问题，人眼甚至可能无法感觉到。但丢掉用户的短信就是不可接受的了。
-假设您发送了10个数据包，而数据包5和6丢失了。下面是一些解决问题的方法。
-确认（Acknowledgments） #  确认是指接收方收到每个数据包时，都去通知发送方。如果发送方收到一个数据包的两次确认消息，且该数据包不是最终数据包时，发送方就会意识到有数据包已经丢失。例如，当发送方两次收到数据包4的ACK消息时，它就知道接收方没有收到数据包5。
-选择性确认（Selective Acknowledgments） #  选择性确认是对确认的改进。接收方可以发送一个SACK消息来确认多个数据包已经收到，并通知发送者间隔时间。 例如，发送方可能收到一个包含数据包4和7的SACK消息。这样它就知道需要重新发送数据包5和6。
-否定应答（Negative Acknowledgments） #  否定应答以相反的方式解决了问题。接收方并不通知发送方自己已经收到了什么，而是通知发送方丢失了什么。在我们的例子里，将为数据包5和6发送一个NACK。发送方仅知道接收方希望再次发送的数据包。
-前向纠错（FEC） #  前向纠错可以抢先解决丢包问题。发送方将发送冗余数据，这意味着部分数据包丢失不会影响最终流。一种流行的算法是Reed–Solomon纠错算法。
-这减少了发送和处理确认的延迟/复杂度。如果您所在的网络的损耗为零，则前向纠错会浪费带宽。
-解决抖动问题 #  大多数网络都存在抖动。即使在局域网内部，您也有许多设备以变化的速率发送数据。您可以通过运行ping命令对其他设备执行ping操作，并注意往返延迟的波动，从而轻松地观察到抖动。"><meta property="og:type" content="article"><meta property="og:url" content="https://webrtcforthecurious.com/zh/docs/05-real-time-networking/"><meta property="article:modified_time" content="2021-04-06T13:33:52+08:00"><meta property="og:site_name" content="给好奇者的WebRTC"><title>搭建实时网络 | 给好奇者的WebRTC</title><link rel=manifest href=/manifest.json><link rel=icon href=/favicon.png type=image/x-icon><link rel=alternate hreflang=en href=https://webrtcforthecurious.com/docs/05-real-time-networking/ title="Real-time Networking"><link rel=alternate hreflang=tr href=https://webrtcforthecurious.com/tr/docs/05-real-time-networking/ title="Real-time Networking"><link rel=alternate hreflang=ja href=https://webrtcforthecurious.com/ja/docs/05-real-time-networking/ title=リアルタイム・ネットワーキング><link rel=stylesheet href=/book.min.6c7c6446dfdee7c8c933e9bbc6e80ee3ed6c913b2a59519f2092c3c6a9d63e55.css integrity="sha256-bHxkRt/e58jJM+m7xugO4+1skTsqWVGfIJLDxqnWPlU="><script defer src=/zh.search.min.e1d0cd2ad3cff0cd782f7d6b82e541066e0bdee754123cf2c5a8adebe2e915a4.js integrity="sha256-4dDNKtPP8M14L31rguVBBm4L3udUEjzyxait6+LpFaQ="></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+动态变化 #  网络是动态的，各种状况可能会迅速变化。在通话过程中，您可能会发送和接收数十万个数据包。 这些数据包可能经过多个跃点。这些跃点可能由数百万其他用户共享。即使在您的本地网络中，您也可能正在下载高清电影，或者可能有设备正要下载软件更新。"><meta property="og:type" content="article"><meta property="og:url" content="https://webrtcforthecurious.com/zh/docs/05-real-time-networking/"><meta property="article:modified_time" content="2021-04-29T10:50:52+08:00"><meta property="og:site_name" content="给好奇者的WebRTC"><title>搭建实时网络 | 给好奇者的WebRTC</title><link rel=manifest href=/manifest.json><link rel=icon href=/favicon.png type=image/x-icon><link rel=alternate hreflang=en href=https://webrtcforthecurious.com/docs/05-real-time-networking/ title="Real-time Networking"><link rel=alternate hreflang=tr href=https://webrtcforthecurious.com/tr/docs/05-real-time-networking/ title="Real-time Networking"><link rel=alternate hreflang=ja href=https://webrtcforthecurious.com/ja/docs/05-real-time-networking/ title=リアルタイム・ネットワーキング><link rel=stylesheet href=/book.min.6c7c6446dfdee7c8c933e9bbc6e80ee3ed6c913b2a59519f2092c3c6a9d63e55.css integrity="sha256-bHxkRt/e58jJM+m7xugO4+1skTsqWVGfIJLDxqnWPlU="><script defer src=/zh.search.min.430d24100ad5992b0889a6bb88fa75e081d878721846b633f8bbe2f9cb16b1dd.js integrity="sha256-Qw0kEArVmSsIiaa7iPp14IHYeHIYRrYz+Lvi+csWsd0="></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
 <input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a href=/zh><span>给好奇者的WebRTC</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=搜索 aria-label=搜索 maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li><a href=https://webrtcforthecurious.com/zh/docs/01-what-why-and-how/>是什么，为什么，如何使用</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/02-signaling/>信令</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/03-connecting/>连接</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/04-securing/>安全性</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/05-real-time-networking/ class=active>搭建实时网络</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/06-media-communication/>媒体通信</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/07-data-communication/>数据通信</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/08-applied-webrtc/>WebRTC应用场景</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/09-debugging/>调试</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/10-history-of-webrtc/>历史</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/11-faq/>常见问题</a></li></ul></nav><script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label>
 <strong>搭建实时网络</strong>
-<label for=toc-control><img src=/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#使网络变得困难的有哪些属性>使网络变得困难的有哪些属性？</a><ul><li></li><li><a href=#拥塞>拥塞</a></li><li><a href=#动态变化>动态变化</a></li></ul></li><li><a href=#解决数据包丢失问题>解决数据包丢失问题</a><ul><li><a href=#确认acknowledgments>确认（Acknowledgments）</a></li><li><a href=#选择性确认selective-acknowledgments>选择性确认（Selective Acknowledgments）</a></li><li><a href=#否定应答negative-acknowledgments>否定应答（Negative Acknowledgments）</a></li><li><a href=#前向纠错fec>前向纠错（FEC）</a></li></ul></li><li><a href=#解决抖动问题>解决抖动问题</a></li><li><a href=#检测拥塞问题>检测拥塞问题</a></li><li><a href=#解决拥塞问题>解决拥塞问题</a><ul><li><a href=#降低发送速度>降低发送速度</a></li><li><a href=#减少发送的数据>减少发送的数据</a></li></ul></li></ul></nav></aside></header><article class=markdown><h1 id=为什么网络在实时通信中如此重要>为什么网络在实时通信中如此重要？
-<a class=anchor href=#%e4%b8%ba%e4%bb%80%e4%b9%88%e7%bd%91%e7%bb%9c%e5%9c%a8%e5%ae%9e%e6%97%b6%e9%80%9a%e4%bf%a1%e4%b8%ad%e5%a6%82%e6%ad%a4%e9%87%8d%e8%a6%81>#</a></h1><p>网络是实时通信中的限制因素。在理想的世界中，我们将拥有无限的带宽，并且数据包会即时到达。但事实并非如此。网络是受限的，且其限定条件随时可能更改。测量和观察网络状况也是一个难题。根据您所使用的硬件，软件及其配置，您可能看到不同的表现。</p><p>实时通信也带来了其他大多数领域中不存在的问题。对于网站开发人员来说，如果您的网站在某些网络上运行速度较慢，那不是致命问题。只要所有数据到达，用户都会感到满意。但对于WebRTC，如果您的数据延迟了，那就没用了。没有人在乎5秒钟前的电话会议中所说过的话。因此，在开发RTC（实时通信）系统时必须权衡。我的时间限制是多少，可以发送多少数据？</p><p>本章介绍了适用于数据和媒体通信的概念。在后面的章节中，我们将超出理论范围，讨论一下WebRTC的媒体和数据子系统如何解决这些问题。</p><h2 id=使网络变得困难的有哪些属性>使网络变得困难的有哪些属性？
+<label for=toc-control><img src=/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#使网络变得困难的有哪些属性>使网络变得困难的有哪些属性？</a><ul><li></li><li><a href=#拥塞>拥塞</a></li><li><a href=#动态变化>动态变化</a></li></ul></li><li><a href=#解决数据包丢失问题>解决数据包丢失问题</a><ul><li><a href=#确认acknowledgments>确认（Acknowledgments）</a></li><li><a href=#选择性确认selective-acknowledgments>选择性确认（Selective Acknowledgments）</a></li><li><a href=#否定应答negative-acknowledgments>否定应答（Negative Acknowledgments）</a></li><li><a href=#前向纠错fec>前向纠错（FEC）</a></li></ul></li><li><a href=#解决抖动问题>解决抖动问题</a><ul><li><a href=#jitterbuffer抖动缓冲区操作>JitterBuffer（抖动缓冲区）操作</a></li></ul></li><li><a href=#检测拥塞问题>检测拥塞问题</a></li><li><a href=#解决拥塞问题>解决拥塞问题</a><ul><li><a href=#降低发送速度>降低发送速度</a></li><li><a href=#减少发送的数据>减少发送的数据</a></li></ul></li></ul></nav></aside></header><article class=markdown><h1 id=为什么网络在实时通信中如此重要>为什么网络在实时通信中如此重要？
+<a class=anchor href=#%e4%b8%ba%e4%bb%80%e4%b9%88%e7%bd%91%e7%bb%9c%e5%9c%a8%e5%ae%9e%e6%97%b6%e9%80%9a%e4%bf%a1%e4%b8%ad%e5%a6%82%e6%ad%a4%e9%87%8d%e8%a6%81>#</a></h1><p>网络是实时通信中的限制因素。在理想的世界中，我们将拥有无限的带宽，并且数据包会即时到达。但事实并非如此。网络是受限的，且其限定条件随时可能更改。测量和观察网络状况也是一个难题。根据您所使用的硬件，软件及其配置，您可能看到不同的表现。</p><p>实时通信也带来了其他大多数领域中不存在的问题。对于网站开发人员来说，如果您的网站在某些网络上运行速度较慢，那不是致命问题。只要所有数据到达，用户都会感到满意。但对于WebRTC，如果您的数据延迟了，那就没用了。没有人在乎5秒钟前的电话会议中所说过的话。因此，在开发一个实时通信系统时，必须作出权衡。我的时间限制是多少，可以发送多少数据？</p><p>本章介绍了适用于数据和媒体通信的概念。在后面的章节中，我们将超出理论范围，讨论一下WebRTC的媒体和数据子系统如何解决这些问题。</p><h2 id=使网络变得困难的有哪些属性>使网络变得困难的有哪些属性？
 <a class=anchor href=#%e4%bd%bf%e7%bd%91%e7%bb%9c%e5%8f%98%e5%be%97%e5%9b%b0%e9%9a%be%e7%9a%84%e6%9c%89%e5%93%aa%e4%ba%9b%e5%b1%9e%e6%80%a7>#</a></h2><p>在所有网络上都能有效工作的代码很复杂。您会面对许多不同的因素，它们都可以相互影响。这些是开发人员将遇到的最常见问题。</p><h4 id=带宽>带宽
-<a class=anchor href=#%e5%b8%a6%e5%ae%bd>#</a></h4><p>带宽是可以在给定路径上传输的最大数据速率。请记住，这也不是一个静态数字，这一点很重要。随着越来越多（或更少）的人使用带宽，带宽将沿路由变化。</p><h4 id=传输时间>传输时间
-<a class=anchor href=#%e4%bc%a0%e8%be%93%e6%97%b6%e9%97%b4>#</a></h4><p>传输时间指的是一个数据包需要多长时间到达。像带宽一样，这不是恒定的。
-传输时间随时可能波动。</p><h4 id=抖动>抖动
+<a class=anchor href=#%e5%b8%a6%e5%ae%bd>#</a></h4><p>带宽是可以在给定路径上传输的最大数据速率。请记住，这也不是一个静态数字，这一点很重要。随着越来越多（或更少）的人使用带宽，带宽将沿路由变化。</p><h4 id=传输时间和往返时间>传输时间和往返时间
+<a class=anchor href=#%e4%bc%a0%e8%be%93%e6%97%b6%e9%97%b4%e5%92%8c%e5%be%80%e8%bf%94%e6%97%b6%e9%97%b4>#</a></h4><p>传输时间指的是一个数据包需要多长时间到达。像带宽一样，这不是恒定的。
+传输时间随时可能波动。</p><p><code>传输时间 = 接收时间 - 发送时间</code></p><p>要计算传输时间，您需要将发送方和接收方的时钟以毫秒级精度同步。
+即使一个很小的偏差也会导致传输时间的测量结果不可靠。
+由于WebRTC在高度异构的环境中运行，因此依靠主机之间完美的时间同步（来测量传输时间）几乎是不可能的。</p><p>往返时间测量是对不完美的时钟同步的一种解决方法。</p><p>（要测量往返时间，）WebRTC peer不使用分布式时钟，而是发送一个特殊数据包，携带名为<code>sendertime1</code>的自己的时间戳。
+合作的peer接收到这个特殊数据包后，会将时间戳返还给发送方。
+当原始发送方获得返还的时间戳时，它会用当前时间<code>sendertime2</code>减去<code>sendertime1</code>时间戳。
+得到的时间差称为"往返传播延迟（round-trip propagation delay）"，或者就使用更常见的"往返时间&rdquo;。</p><p><code>rtt（往返时间） = sendertime2 - sendertime1</code></p><p>通常认为，往返时间的一半是传输时间足够好的近似值。
+但此解决方法并非没有缺点。
+它假设发送和接收数据包花费的时间是相等的。
+但是，在蜂窝网络上，发送和接收操作可能不是时间对称的。
+您可能已经注意到了，手机上的上传速度几乎总是低于下载速度。</p><p><code>传输时间 = rtt（往返时间）/2</code></p><p>关于往返时间测量的技术，在<a href=../06-media-communication/#senderreceiver-reports%e5%8f%91%e9%80%81%e6%96%b9%e6%8e%a5%e6%94%b6%e6%96%b9%e6%8a%a5%e5%91%8a>RTCP的发送方和接收方报告章节</a>中有更详细的描述。</p><h4 id=抖动>抖动
 <a class=anchor href=#%e6%8a%96%e5%8a%a8>#</a></h4><p>抖动是每个数据包的<code>传输时间</code>可能会有所不同的现实表现。您的数据包可能会延迟，但随后会突然大量集中到达。</p><h4 id=数据包丢失>数据包丢失
 <a class=anchor href=#%e6%95%b0%e6%8d%ae%e5%8c%85%e4%b8%a2%e5%a4%b1>#</a></h4><p>数据包丢失是指消息在传输中丢失。数据损失率可能是稳定的，也可能出现波峰和波谷。
 这可能是由于网络类型的原因造成的，例如卫星或Wi-Fi等。或者也可能是传输路径上的软件导致的。</p><h4 id=最大传输单位mtu>最大传输单位（MTU）
@@ -72,10 +79,17 @@
 * time=1.45 ms
 * time=1.73 ms
 * time=1.80 ms
-</code></pre><p>在这个例子里，~1.8 ms是一个不错的选择。较晚到达的数据包将使用我们的延迟窗口。较早到达的数据包将被延迟，并可以填充由较晚的数据包耗尽的延迟窗口。这意味着我们不会再陷入无数据包可用的困境，可以为客户提供顺畅的传输率。</p><h2 id=检测拥塞问题>检测拥塞问题
+</code></pre><p>在这个例子里，~1.8 ms是一个不错的选择。较晚到达的数据包将使用我们的延迟窗口。较早到达的数据包将被延迟，并可以填充由较晚的数据包耗尽的延迟窗口。这意味着我们不会再陷入无数据包可用的困境，可以为客户提供顺畅的传输率。</p><h3 id=jitterbuffer抖动缓冲区操作>JitterBuffer（抖动缓冲区）操作
+<a class=anchor href=#jitterbuffer%e6%8a%96%e5%8a%a8%e7%bc%93%e5%86%b2%e5%8c%ba%e6%93%8d%e4%bd%9c>#</a></h3><p><img src=../images/05-jitterbuffer.png alt=JitterBuffer title=JitterBuffer></p><p>一收到数据包，便立即将其添加到抖动缓冲区。
+一旦有了足够的数据包来重建帧，就将组成该帧的数据包从缓冲区中释放出来，并发给解码器进行解码。
+解码器按顺序进行解码，并在用户屏幕上绘制视频帧。
+由于抖动缓冲区的容量是有限的，因此在缓冲区中停放时间过长的数据包将被丢弃。</p><p>关于视频帧是如何转换为RTP数据包，以及为何需要重建视频帧的知识，您可以<a href=../06-media-communication/#rtp>在媒体通信章节中</a>读到更多。</p><p><code>jitterBufferDelay</code>（抖动缓冲延迟）为了解您的网络性能及其对播放平滑度的影响提供了一个很好的视角。
+它是<a href=https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-jitterbufferdelay>WebRTC统计API</a>中的一部分，与接收方的入站流有关。
+该延迟定义了视频帧在被发给解码器之前在JitterBuffer中所花费的时间。
+较长的抖动缓冲延迟，意味着您的网络处于高度拥塞状态。</p><h2 id=检测拥塞问题>检测拥塞问题
 <a class=anchor href=#%e6%a3%80%e6%b5%8b%e6%8b%a5%e5%a1%9e%e9%97%ae%e9%a2%98>#</a></h2><p>在我们解决拥塞问题之前，我们需要先检测到拥塞。为了检测到它，我们使用拥塞控制器。这是一个复杂的主题，并且仍在迅速变化中。
 一些新算法仍在持续被发布和测试。总的来看，它们都以相同的方式运行。即是说，拥塞控制器在给定某些输入的情况下提供带宽估计值。
-这里是一些可能的输入。</p><ul><li><strong>数据包丢失</strong> - 随着网络逐渐变得拥塞，数据包开始被丢弃。</li><li><strong>抖动</strong> - 随着网络设备变得越来越过载，将导致数据包排队时间变得不稳定。</li><li><strong>封包往返时间（RTT）</strong> - 拥塞时，数据包将需要更长的时间才能到达。与抖动不同的是，往返时间是持续增加的。</li><li><strong>显式拥塞通知（ECN）</strong> - 较新的网络可能会将数据包标记为有拥塞造成丢失的风险，这样可以缓解拥塞。</li></ul><p>这些值需要在通话期间持续不断的测量。网络的利用率可能会增加/减少，因此可用带宽可能会不断变化。</p><h2 id=解决拥塞问题>解决拥塞问题
+这里是一些可能的输入：</p><ul><li><strong>数据包丢失</strong> - 随着网络逐渐变得拥塞，数据包开始被丢弃。</li><li><strong>抖动</strong> - 随着网络设备变得越来越过载，将导致数据包排队时间变得不稳定。</li><li><strong>封包往返时间（RTT）</strong> - 拥塞时，数据包将需要更长的时间才能到达。与抖动不同的是，往返时间是持续增加的。</li><li><strong>显式拥塞通知（ECN）</strong> - 较新的网络可能会将数据包标记为有拥塞造成丢失的风险，这样可以缓解拥塞。</li></ul><p>这些值需要在通话期间持续不断的测量。网络的利用率可能会增加/减少，因此可用带宽可能会不断变化。</p><h2 id=解决拥塞问题>解决拥塞问题
 <a class=anchor href=#%e8%a7%a3%e5%86%b3%e6%8b%a5%e5%a1%9e%e9%97%ae%e9%a2%98>#</a></h2><p>现在我们有了一个估计的带宽值，我们需要调整发送的内容。如何调整取决于我们要发送的数据类型。</p><h3 id=降低发送速度>降低发送速度
 <a class=anchor href=#%e9%99%8d%e4%bd%8e%e5%8f%91%e9%80%81%e9%80%9f%e5%ba%a6>#</a></h3><p>限制发送数据的速度是防止拥塞的第一个解决方案。拥塞控制器为您提供了带宽的估计值，发送方有责任对发送速率进行限制。</p><p>这是适用于大多数数据通信的方法。对于像TCP这样的协议，这全部由操作系统完成，并且对用户和开发人员完全透明。</p><h3 id=减少发送的数据>减少发送的数据
 <a class=anchor href=#%e5%87%8f%e5%b0%91%e5%8f%91%e9%80%81%e7%9a%84%e6%95%b0%e6%8d%ae>#</a></h3><p>在某些情况下，我们可以发送更少的信息来满足我们的限制。对于数据的到达时间，我们可能有严格的限制，因此我们发送速度不能太慢。这些是实时媒体所受的限制。</p><p>如果我们没有足够的可用带宽，我们可以降低发送的视频质量。这要求您的视频编码器和拥塞控制器之间存在紧密的反馈回路。</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div class=book-languages tabindex=0 aria-haspopup=true><ul><li class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
@@ -84,6 +98,6 @@ English</a></li><li><a href=https://webrtcforthecurious.com/tr/docs/05-real-time
 Turkish</a></li><li><a href=https://webrtcforthecurious.com/fa/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
 Persian</a></li><li><a href=https://webrtcforthecurious.com/ja/docs/05-real-time-networking/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
 日本語</a></li><li class=active><a href=https://webrtcforthecurious.com/zh/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
-简体中文</a></li></ul></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/commit/f61ac786c6e0fe3b07c3b4b3d23aa3ffd32f2826 title="最后修改者 Cliff Han | April 6, 2021" target=_blank rel=noopener><img src=/svg/calendar.svg class=book-icon alt=Calendar>
-<span>April 6, 2021</span></a></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content.zh-cn/docs/05-real-time-networking.md target=_blank rel=noopener><img src=/svg/edit.svg class=book-icon alt=Edit>
-<span>编辑本页</span></a></div></div></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#使网络变得困难的有哪些属性>使网络变得困难的有哪些属性？</a><ul><li></li><li><a href=#拥塞>拥塞</a></li><li><a href=#动态变化>动态变化</a></li></ul></li><li><a href=#解决数据包丢失问题>解决数据包丢失问题</a><ul><li><a href=#确认acknowledgments>确认（Acknowledgments）</a></li><li><a href=#选择性确认selective-acknowledgments>选择性确认（Selective Acknowledgments）</a></li><li><a href=#否定应答negative-acknowledgments>否定应答（Negative Acknowledgments）</a></li><li><a href=#前向纠错fec>前向纠错（FEC）</a></li></ul></li><li><a href=#解决抖动问题>解决抖动问题</a></li><li><a href=#检测拥塞问题>检测拥塞问题</a></li><li><a href=#解决拥塞问题>解决拥塞问题</a><ul><li><a href=#降低发送速度>降低发送速度</a></li><li><a href=#减少发送的数据>减少发送的数据</a></li></ul></li></ul></nav></div></aside></main></body></html>
+简体中文</a></li></ul></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/commit/055496a4896797690f061da03b1e35ece2d9766c title="最后修改者 Cliff Han | April 29, 2021" target=_blank rel=noopener><img src=/svg/calendar.svg class=book-icon alt=Calendar>
+<span>April 29, 2021</span></a></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content.zh-cn/docs/05-real-time-networking.md target=_blank rel=noopener><img src=/svg/edit.svg class=book-icon alt=Edit>
+<span>编辑本页</span></a></div></div></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#使网络变得困难的有哪些属性>使网络变得困难的有哪些属性？</a><ul><li></li><li><a href=#拥塞>拥塞</a></li><li><a href=#动态变化>动态变化</a></li></ul></li><li><a href=#解决数据包丢失问题>解决数据包丢失问题</a><ul><li><a href=#确认acknowledgments>确认（Acknowledgments）</a></li><li><a href=#选择性确认selective-acknowledgments>选择性确认（Selective Acknowledgments）</a></li><li><a href=#否定应答negative-acknowledgments>否定应答（Negative Acknowledgments）</a></li><li><a href=#前向纠错fec>前向纠错（FEC）</a></li></ul></li><li><a href=#解决抖动问题>解决抖动问题</a><ul><li><a href=#jitterbuffer抖动缓冲区操作>JitterBuffer（抖动缓冲区）操作</a></li></ul></li><li><a href=#检测拥塞问题>检测拥塞问题</a></li><li><a href=#解决拥塞问题>解决拥塞问题</a><ul><li><a href=#降低发送速度>降低发送速度</a></li><li><a href=#减少发送的数据>减少发送的数据</a></li></ul></li></ul></nav></div></aside></main></body></html>
