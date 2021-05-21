@@ -360,7 +360,7 @@ SCTP使用FORWARD TSN块来实现这一点。它告诉接收方，`14`和`15`将
 
 `INIT ACK`块包含cookie。然后，使用`COOKIE ECHO`将cookie返回给其创建者。如果cookie验证成功，则发送`COOKIE ACK`，并且准备交换DATA块。
 
-![连接的建立](../images/07-connection-establishment.png "连接的建立")
+![连接的建立](../../images/07-connection-establishment.png "连接的建立")
 
 ### 连接关闭流程
 SCTP使用`SHUTDOWN`块。当代理收到`SHUTDOWN`块时，它将等待直到收到请求的`Cumulative TSN ACK`。这样，即使连接有损，用户也可以确保传送了所有数据。

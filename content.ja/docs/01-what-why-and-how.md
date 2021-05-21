@@ -92,7 +92,7 @@ WebRTC は多くの問題を解決していて、一見過剰な技術とさえ�
 
 これにより、私たちは圧倒されることなく、各部分を個別に検討し、学ぶことができるのです。「WebRTC エージェント」とは、実際には多くの異なるプロトコルを組み合わせたものに過ぎないということです。
 
-![WebRTC Agent](/images/01-webrtc-agent.png "WebRTC Agent Diagram")
+![WebRTC Agent](../../images/01-webrtc-agent.png "WebRTC Agent Diagram")
 
 ## WebRTC (API) はどのように動作するか
 

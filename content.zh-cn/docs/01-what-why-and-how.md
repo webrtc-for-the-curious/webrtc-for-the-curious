@@ -5,7 +5,6 @@ weight: 2
 ---
 
 
-
 # WebRTC是什么？
 
 WebRTC是Web实时通信（Real-Time Communication）的缩写，它既是API也是协议。WebRTC协议是两个WebRTC代理协商双向安全实时通信的一组规则。开发人员可以通过WebRTC API使用WebRTC协议。目前WebRTC API仅有JavaScript版本。
@@ -93,7 +92,7 @@ WebRTC解决了许多问题。初看起来，这似乎是过度设计的。实�
 
 这使得我们可以独立的检查和学习每个部分，而不会毫无头绪。实际上，从另一个角度去看“ WebRTC代理”，它只是许多不同协议的协调器。
 
-![WebRTC代理](../images/01-webrtc-agent.png "WebRTC代理图示")
+![WebRTC代理](../../images/01-webrtc-agent.png "WebRTC代理图示")
 
 ## WebRTC（API）如何工作
 

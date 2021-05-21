@@ -42,7 +42,7 @@ För det mesta kommer den andra WebRTC-agenten inte ens att vara i samma nätver
 
 Nedan är en figur som visar två distinkta nätverk, anslutna via internet. I varje nätverk har du två parter.
 
-![Två nätverk](../images/03-two-networks.png "Två nätverk")
+![Två nätverk](../../images/03-two-networks.png "Två nätverk")
 
 För parterna i samma nätverk är det mycket enkelt att ansluta. Kommunikation mellan `192.168.0.1 -> 192.168.0.2` är lätt att göra! Dessa två parter kan ansluta till varandra utan någon extern hjälp.
 
@@ -59,7 +59,7 @@ NAT (Network Address Translation) är den magi som gör anslutningen av WebRTC m
 
 Det använder inte ett relay, proxy eller server. Återigen har vi `Agent 1` och `Agent 2` och de finns i olika nätverk, men ändå flyter trafiken utan problem. Visualiserat ser det ut så här:
 
-![NAT mapping](../images/03-nat-mapping.png "NAT mapping")
+![NAT mapping](../../images/03-nat-mapping.png "NAT mapping")
 
 För att få denna kommunikation att upprätta skapar du en översättning med hjälp av NAT. Agent 1 använder port 7000 för att upprätta en WebRTC-anslutning med Agent 2. Detta skapar en koppling från `192.168.0.1:7000` till `5.0.0.1:7000`. Detta gör det möjligt för Agent 2 att nå Agent 1 genom att skicka paket till `5.0.0.1:7000`. Att skapa en NAT-mappning som i det här exemplet är som en automatisk version av att forward:a en port i din router.
 
@@ -220,11 +220,11 @@ Dessa figurer hjälper till att illustrera hur det skulle se ut.
 
 #### En TURN allokering för kommunikation
 
-![En TURN allokering](../images/03-one-turn-allocation.png "En TURN allokering")
+![En TURN allokering](../../images/03-one-turn-allocation.png "En TURN allokering")
 
 #### Två TURN allokeringar för kommunikation
 
-![Två TURN allokeringar](../images/03-two-turn-allocations.png "Två TURN allokeringar")
+![Två TURN allokeringar](../../images/03-two-turn-allocations.png "Två TURN allokeringar")
 
 ## ICE
 ICE (Interactive Connectivity Establishment) är tekniken WebRTC använder för att ansluta två klienter med varandra. Definierad i [RFC 8445](https://tools.ietf.org/html/rfc8445), detta är ytterligare en standard som är återanvänd i WebRTC. ICE är ett protokoll för att sätta upp av anslutningar. Det hittar alla möjliga rutter (routes) mellan de två klienterna och säkerställer att de kan kommunicera med varandra.
@@ -274,7 +274,7 @@ Vi känner nu till den andra klientens "användarfragment", "lösenord" och kand
 
 Visuellt ser det ut så här:
 
-![Anslutningskontroller](../images/03-connectivity-checks.png "Anslutningskontroller")
+![Anslutningskontroller](../../images/03-connectivity-checks.png "Anslutningskontroller")
 
 ### Kandidatval
 Den kontrollerande och kontrollerade agenten skickar a trafik över varje par. Detta behövs om en agent står bakom en "adressberoende mappning" (`Address Dependent Mapping`). Detta kommer att skapa en ny "peer reflexive kandidat".

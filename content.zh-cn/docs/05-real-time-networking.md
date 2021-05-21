@@ -111,7 +111,7 @@ weight: 6
 
 ### JitterBuffer（抖动缓冲区）操作
 
-![JitterBuffer](../images/05-jitterbuffer.png "JitterBuffer")
+![JitterBuffer](../../images/05-jitterbuffer.png "JitterBuffer")
 
 一收到数据包，便立即将其添加到抖动缓冲区。
 一旦有了足够的数据包来重建帧，就将组成该帧的数据包从缓冲区中释放出来，并发给解码器进行解码。

@@ -44,7 +44,7 @@ ICE就是克服现实世界网络限制的方法。在我们开始讨论ICE如�
 
 下面是通过公共互联网连接的两个不同网络的示意图。在每个网络中，您拥有两个主机。
 
-![两个网络](../images/03-two-networks.png "两个网络")
+![两个网络](../../images/03-two-networks.png "两个网络")
 
 对于同一网络中的主机来说，互相连接非常容易。例如在`192.168.0.1 -> 192.168.0.2`之间通讯就很容易！这两个主机无需任何外部帮助即可相互连接。
 
@@ -64,7 +64,7 @@ NAT（网络地址转换）映射是使得WebRTC连接成为可能的魔法。We
 
 NAT映射不使用中继，代理或服务器。跟上一个例子一样，我们有`Agent 1`和`Agent 2`，它们位于不同的网络中。然而，流量穿透了路由器。看起来就像这样：
 
-![NAT映射](../images/03-nat-mapping.png "NAT映射")
+![NAT映射](../../images/03-nat-mapping.png "NAT映射")
 
 想要这样通信的话，您需要创建一个NAT映射。Agent 1使用端口7000与Agent 2建立WebRTC连接。这将创建一个`192.168.0.1:7000`到`5.0.0.1:7000`的绑定。然后，Agent 2将数据包发送到`5.0.0.1:7000`时，数据包会被转发给Agent 1。在这个例子中，创建一个NAT映射，就像是在路由器中做了一次自动化的端口转发。
 
@@ -265,11 +265,11 @@ TURN有两种用法。通常情况下，一个peer会作为'TURN客户端'连接
 
 #### 单个 TURN Allocation 通信
 
-![单个 TURN Allocation](../images/03-one-turn-allocation.png "单个 TURN Allocation")
+![单个 TURN Allocation](../../images/03-one-turn-allocation.png "单个 TURN Allocation")
 
 #### 双重 TURN Allocation 通信
 
-![双重 TURN Allocation](../images/03-two-turn-allocations.png "双重 TURN Allocation")
+![双重 TURN Allocation](../../images/03-two-turn-allocations.png "双重 TURN Allocation")
 
 {{< hint info >}}
 译注：单个TURN Allocation的情况，指的是一个TURN Client和另一个可访问的UDP Client的通信。双重TURN Allocation的情况，指的是两个TURN Client之间通信。
@@ -332,7 +332,7 @@ Peer自反候选地址是指，当您从您不知道的地址收到入站请求�
 
 看起来像这样
 
-![连通性检查](../images/03-connectivity-checks.png "连通性检查")
+![连通性检查](../../images/03-connectivity-checks.png "连通性检查")
 
 ### 候选地址选择
 
