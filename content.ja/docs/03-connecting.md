@@ -43,7 +43,7 @@ ICEは、実世界のネットワークの制約を克服するためのもの�
 
 下の図は、公衆インターネットで接続された2つの異なるネットワークのグラフです。各ネットワークには2つのホストがあります。
 
-![Two networks](/images/03-two-networks.png "Two networks")
+![Two networks](../../images/03-two-networks.png "Two networks")
 
 同一ネットワーク内のホストは、非常に簡単に接続できます。 `192.168.0.1` -> `192.168.0.2` の間の通信は簡単にできます。これらの2つのホストは、外部の助けを借りずにお互いに接続できます。
 
@@ -63,7 +63,7 @@ NAT（Network Address Translation）マッピングは、WebRTCの接続性を�
 
 NATマッピングは、リレーやプロキシ、サーバーを使用しません。ここでも、「エージェント1」と「エージェント2」がいて、それぞれ別のネットワークにいます。しかし、トラフィックは完全に通過しています。視覚的には次のようになります。
 
-![NAT mapping](/images/03-nat-mapping.png "NAT mapping")
+![NAT mapping](../../images/03-nat-mapping.png "NAT mapping")
 
 この通信を実現するために、NATマッピングを確立します。エージェント1は、ポート7000を使用して、エージェント2とのWebRTC接続を確立します。これにより、 `192.168.0.1:7000` から `5.0.0.1:7000` へのバインディングが作成されます。これにより、エージェント2は、 `5.0.0.1:7000` にパケットを送信することで、エージェント1に到達できるようになります。この例のようにNATマッピングを作成することは、ルータでポートフォワーディングを行うことの自動化版のようなものです。
 
@@ -251,11 +251,11 @@ TURNの使い方には2つの形態があります。通常は、片方のピア
 
 #### 通信のための1TURNの割り当て
 
-![One TURN allocation](/images/03-one-turn-allocation.png "One TURN allocation")
+![One TURN allocation](../../images/03-one-turn-allocation.png "One TURN allocation")
 
 #### コミュニケーションのための2つのTURNアロケーション
 
-![Two TURN allocations](/images/03-two-turn-allocations.png "Two TURN allocations")
+![Two TURN allocations](../../images/03-two-turn-allocations.png "Two TURN allocations")
 
 ## ICE
 
@@ -313,7 +313,7 @@ TURNサーバーとの最初のハンドシェイクの後、`RELAYED-ADDRESS`�
 
 視覚的には次のようになります。
 
-![Connectivity checks](/images/03-connectivity-checks.png "Connectivity checks")
+![Connectivity checks](../../images/03-connectivity-checks.png "Connectivity checks")
 
 ### 候補者選定
 

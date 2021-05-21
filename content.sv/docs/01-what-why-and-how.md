@@ -88,7 +88,7 @@ WebRTC löser väldigt många problem åt oss. Först kan detta verka väldigt a
 
 Detta gör att vi kan undersöka och lära oss om varje del individuellt, utan att bli överväldigade. Ett bra sätt att visualisera det hela är att en "WebRTC Agent" egentligen bara är en samordnare av många olika protokoll.
 
-![WebRTC Agent](../images/01-webrtc-agent.png "WebRTC Agent")
+![WebRTC Agent](../../images/01-webrtc-agent.png "WebRTC Agent")
 
 ## Hur fungerar API:et WebRTC
 

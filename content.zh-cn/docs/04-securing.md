@@ -121,7 +121,7 @@ DTLS（数据报传输层安全协议）允许两个peer在没有预先存在的
 在握手期间，客户端/服务器交换一系列消息。这些消息被分为多个Flight。每个Flight中可能有多个消息（或只有一个）。
 直到收到Flight中的所有消息，该Flight才算完成。我们将在下面更详细地描述每条消息的目的，
 
-![握手](../images/04-handshake.png "握手")
+![握手](../../images/04-handshake.png "握手")
 
 #### ClientHello
 ClientHello是客户端发送的初始消息。它包含一个属性列表。这些属性告诉服务器客户端支持的cipher和功能。对于WebRTC，这也是我们选择SRTP cipher方式的原因。它还包含将用于生成会话密钥的随机数据。

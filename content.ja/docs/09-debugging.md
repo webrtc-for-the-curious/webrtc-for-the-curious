@@ -164,8 +164,8 @@ EndToEndLatency = T(observe) - T(happen)
 これが最も正確なエンド・ツー・エンドのレイテンシー測定法です。
 これはすべてのコンポーネント（カメラ、エンコーダー、ネットワーク、デコーダー）のレイテンシーを考慮しており、クロック同期に依存していません。
 
-![DIY Latency](/images/09-diy-latency.png "DIY Latency Measurement")を参照してください。
-![DIY Latency Example](/images/09-diy-latency-happen-observe.png "DIY Latency Measurement Example")
+![DIY Latency](../../images/09-diy-latency.png "DIY Latency Measurement")を参照してください。
+![DIY Latency Example](../../images/09-diy-latency-happen-observe.png "DIY Latency Measurement Example")
 
 上の写真では、測定されたエンドツーエンドのレイテンシーは101ミリ秒です。現在発生しているイベントは10:16:02.862ですが、ライブストリーミングシステムのオブザーバーは10:16:02.761を見ています。
 
@@ -175,7 +175,7 @@ EndToEndLatency = T(observe) - T(happen)
 Firefoxは、標準的なWebRTC APIの上に、ユーザーが自動遅延測定を作成できるようにするための一連のAPIを実装しました。
 しかし、この段落では、遅延を自動的に測定する最も互換性のある方法について説明します。
 
-![NTP Style Latency Measurement](/images/09-ntp-latency.png "NTP Style Latency Measurement")
+![NTP Style Latency Measurement](../../images/09-ntp-latency.png "NTP Style Latency Measurement")
 
 ラウンドトリップタイムを簡単に説明すると 私はあなたに私の時間 `tR1` を送り、私の `tR1` を時間 `tR2` で受け取ると、ラウンドトリップタイムは `tR2 - tR1` であることがわかります。
 
