@@ -13,7 +13,7 @@ depending on hardware, software and the configuration of it.
 Real-time communication also poses a problem that doesn't exist in most other domains. For a web developer it isn't fatal
 if your website is slower on some networks. As long as all the data arrives, users are happy. With WebRTC, if your data is
 late it is useless. No one cares about what was said in a conference call 5 seconds ago. So when developing a realtime communication system, 
-you have to make a trade-off. What is my time limit, and how much can I send?
+you have to make a trade-off. What is my time limit, and how much data can I send?
 
 This chapter covers the concepts that apply to both data and media communication. In later chapters we go beyond
 the theoretical and discuss how WebRTC's media and data subsystems solve these problems.
@@ -27,14 +27,13 @@ Bandwidth is the maximum rate of data that can be transferred across a given pat
 this isn't a static number either. The bandwidth will change along the route as more (or less) people use it.
 
 #### Transmission Time and Round Trip Time
-Transmission Time is how long it takes for a packet to arrive. Like Bandwidth this isn't constant.
-The Transmission Time can fluctuate at anytime.
+Transmission Time is how long it takes for a packet to arrive to its destination. Like Bandwidth this isn't constant. The Transmission Time can fluctuate at anytime.
 
 `transmission_time = receive_time - send_time`
 
 To compute transmission time, you need clocks on sender and receiver synchronized with millisecond precision.
 Even a small deviation would produce an unreliable transmission time measurement.
-Since WebRTC is operating in highly heterogenous environments, it is next to impossible to rely on perfect time synchronization between hosts.
+Since WebRTC is operating in highly heterogeneous environments, it is next to impossible to rely on perfect time synchronization between hosts.
 
 Round-trip time measurement is a workaround for imperfect clock synchronization.
 
@@ -53,16 +52,14 @@ You may have noticed that upload speeds on your phone are almost always lower th
 
 `transmission_time = rtt/2`
 
-The technicalities of Round-trip time measurement are described in greater detail in [RTCP Sender and Receiver Reports chapter](../06-media-communication/#senderreceiver-reports))
+The technicalities of round-trip time measurement are described in greater detail in [RTCP Sender and Receiver Reports chapter](../06-media-communication/#senderreceiver-reports).
 
 #### Jitter
-Jitter is the fact that `Transmission Time` may vary for each packet. Your packets could be delayed, but then
-arrive in bursts.
+Jitter is the fact that `Transmission Time` may vary for each packet. Your packets could be delayed, but then arrive in bursts.
 
 #### Packet Loss
 Packet Loss is when messages are lost in transmission. The loss could be steady, or it could come in spikes.
-This could be because of the network type like satellite or Wi-Fi. Or it could be introduced by the software
-along the way.
+This could be because of the network type like satellite or Wi-Fi. Or it could be introduced by the software along the way.
 
 #### Maximum Transmission Unit
 Maximum Transmission Unit is the limit on how large a single packet can be. Networks don't allow you to send
@@ -77,7 +74,7 @@ bandwidth that the current route can handle. Or it could be operator imposed lik
 
 Congestion exhibits itself in many different ways. There is no standardized behavior. In most cases when congestion is
 reached the network will drop excess packets. In other cases the network will buffer. This will cause the Transmission Time
-for your packets to increase. You could also see more Jitter as your network becomes congested. This is a rapidly changing area
+for your packets to increase. You could also see more jitter as your network becomes congested. This is a rapidly changing area
 and new algorithms for congestion detection are still being written.
 
 ### Dynamic
@@ -89,7 +86,7 @@ Having a good call isn't as simple as measuring your network on startup. You nee
 behaviors that come from a multitude of network hardware and software.
 
 ## Solving Packet Loss
-Solving loss is the first problem most solve. There are multiple ways to solve it, each with their own benefits. It depends on what you are sending and how
+Handling packet loss is the first problem to solve. There are multiple ways to solve it, each with their own benefits. It depends on what you are sending and how
 latency tolerant you are. It is also important to note that not all packet loss is fatal. Losing some video might not be a problem, the human eye might not
 even able to perceive it. Losing a users text messages are fatal.
 
@@ -97,11 +94,11 @@ Let's say you send 10 packets, and packets 5 and 6 are lost. Here are the ways y
 
 ### Acknowledgments
 Acknowledgments is when the receiver notifies the sender of every packet they have received. The sender is aware of packet loss when it gets an acknowledgment
-for a packet twice that isn't final. When the sender gets an `ACK` for packet 4 twice, it knows that 5 hasn't been seen yet.
+for a packet twice that isn't final. When the sender gets an `ACK` for packet 4 twice, it knows that packet 5 has not been seen yet.
 
 ### Selective Acknowledgments
-Selective Acknowledgments is an improvement upon Acknowledgments. A Receiver can send a `SACK` that acknowledgment multiple packets and notifies the sender of gaps.
-Now the sender will get a `SACK` for 4 and 7. It then knows it needs to re-send 5 and 6.
+Selective Acknowledgments is an improvement upon Acknowledgments. A receiver can send a `SACK` that acknowledges multiple packets and notifies the sender of gaps.
+Now the sender can get a `SACK` for packet 4 and 7. It then knows it needs to re-send packets 5 and 6.
 
 ### Negative Acknowledgments
 Negative Acknowledgments solve the problem the opposite way. Instead of notifying the sender what it has received, the receiver notifies the sender what has been lost. In our case a `NACK`
@@ -114,10 +111,10 @@ this is Reed–Solomon error correction.
 This reduces the latency/complexity of sending and handling Acknowledgments. Forward Error Correction is a waste of bandwidth if the network you are in has zero loss.
 
 ## Solving Jitter
-Jitter is present in most networks. Even inside a LAN you have many devices sending data at fluctuating rates. You can easily observe Jitter by pinging another device with the `ping` command and noticing the fluctuations in round-trip latency.
+Jitter is present in most networks. Even inside a LAN you have many devices sending data at fluctuating rates. You can easily observe jitter by pinging another device with the `ping` command and noticing the fluctuations in round-trip latency.
 
-To solve Jitter clients use a JitterBuffer. The JitterBuffer ensures a steady delivery time of packets. The downside is that JitterBuffer adds some latency to packets that arrive early.
-The upside is that late packets don't cause jitter.  Imagine during a call you see packet arrival times like the following.
+To solve jitter, clients use a JitterBuffer. The JitterBuffer ensures a steady delivery time of packets. The downside is that JitterBuffer adds some latency to packets that arrive early.
+The upside is that late packets don't cause jitter. Imagine that during a call, you see the following packet arrival times:
 
 ```
 * time=1.46 ms
@@ -131,24 +128,24 @@ The upside is that late packets don't cause jitter.  Imagine during a call you s
 * time=1.80 ms
 ```
 
-In this case ~1.8 ms is a good choice. Packets that arrive late will use our window of latency. Packets that arrive early will be delayed and can
+In this case, around 1.8 ms would be a good choice. Packets that arrive late will use our window of latency. Packets that arrive early will be delayed a bit and can
 fill the window depleted by late packets. This means we no longer have stuttering and provide a smooth delivery rate for the client.
 
 ### JitterBuffer operation
 
 ![JitterBuffer](../images/05-jitterbuffer.png "JitterBuffer")
 
-Every packet is added to the jitter buffer as soon as it is received. 
+Every packet gets added to the jitter buffer as soon as it is received. 
 Once there are enough packets to reconstruct the frame, packets that make up the frame are released from the buffer and emitted for decoding.
-The decoder, in turn, decodes and draws the video frame on users screen.
+The decoder, in turn, decodes and draws the video frame on the user's screen.
 Since the jitter buffer has a limited capacity, packets that stay in the buffer for too long will be discarded.
 
 Read more on how video frames are converted to RTP packets, and why reconstruction is necessary [in the media communication chapter](../06-media-communication/#rtp).
 
 `jitterBufferDelay` provides a great insight into your network performance and its influence on playback smoothness.
 It is a part of [WebRTC statistics API](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-jitterbufferdelay) relevant to the receiver's inbound stream.
-The delay defines the amount of time video frames spend in JitterBuffer before being emitted for decoding.
-A longer jitter buffer delay means your network is highly congested.
+The delay defines the amount of time video frames spend in the jitter buffer before being emitted for decoding.
+A long jitter buffer delay means your network is highly congested.
 
 ## Detecting Congestion
 Before we can even resolve congestion, we need to detect it. To detect it we use a congestion controller. This is a complicated subject, and is still rapidly changing.
@@ -157,10 +154,10 @@ These are some possible inputs:
 
 * **Packet Loss** - Packets are dropped as the network becomes congested.
 * **Jitter** - As network equipment becomes more overloaded packets queuing will cause the times to be erratic.
-* **Round Trip Time** - Packets take longer to arrive when congested. Unlike Jitter the Round Trip Time just keeps increasing.
+* **Round Trip Time** - Packets take longer to arrive when congested. Unlike jitter, the Round Trip Time just keeps increasing.
 * **Explicit Congestion Notification** - Newer networks may tag packets as at risk for being dropped to relieve congestion.
 
-These values need to be measured continuously during the call. Utilization of the network may increase/decrease so the available bandwidth could constantly be changing.
+These values need to be measured continuously during the call. Utilization of the network may increase or decrease, so the available bandwidth could constantly be changing.
 
 ## Resolving Congestion
 Now that we have an estimated bandwidth we need to adjust what we are sending. How we adjust depends on what kind of data we want to send.
@@ -169,7 +166,7 @@ Now that we have an estimated bandwidth we need to adjust what we are sending. H
 Limiting the speed at which you send data is the first solution to preventing congestion. The Congestion Controller gives you an estimate, and it is the
 sender's responsibility to rate limit.
 
-This is the method used for most data communication. With protocols like TCP this is all done by the operating system and completely transparent to users and developers.
+This is the method used for most data communication. With protocols like TCP this is all done by the operating system and completely transparent to both users and developers.
 
 ### Sending Less
 In some cases we can send less information to satisfy our limits. We also have hard deadlines on the arrival of our data, so we can't send slower. These are the constraints
