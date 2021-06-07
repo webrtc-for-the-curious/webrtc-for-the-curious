@@ -24,7 +24,7 @@ Det här är en lista på några saker som WebRTC kommer att ge dig. Listan är 
 * NAT Traversal
 * Byggt på beprövad, befintlig, teknik
 * Trängselkontroll
-* Sub-sekunders latens
+* Latens som kan mätas i bråkdelar av en sekund
 
 ## WebRTC Protokollet är en samling av andra tekniker
 
@@ -53,7 +53,7 @@ Signalering använder ett befintligt protokoll SDP (Session Description Protocol
 * Värden som används vid anslutning (`uFrag`/`uPwd`).
 * Värden som används vid säkringen (certifikatfingeravtryck).
 
-Observera att signalering vanligtvis sker "utanför bandet"; applikationer använder i allmänhet inte WebRTC för att handla signalmeddelanden. Vilken arkitektur som helst som är lämplig för att skicka meddelanden kan användas för att vidarebefordra SDP:erna mellan de anslutande parterna. Många applikationer använder sin befintliga infrastruktur (som REST-API:er, WebSocket-anslutningar eller autentiserande proxys) för att på enklaste sätt utbyta SDP:er mellan rätt klienter.
+Observera att signalering vanligtvis sker i en separat kanal (out-of-band); applikationer använder i allmänhet inte WebRTC för att skicka signalmeddelanden. Vilken arkitektur som helst som är lämplig för att skicka meddelanden kan användas för att vidarebefordra SDP:erna mellan de anslutande parterna. Många applikationer använder sin befintliga infrastruktur (som REST-API:er, WebSocket-anslutningar eller autentiserande proxys) för att på enklaste sätt utbyta SDP:er mellan rätt klienter.
 
 ### Anslutning och NAT Traversal med STUN/TURN
 

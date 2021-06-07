@@ -5,14 +5,14 @@ weight: 7
 ---
 
 # What do I get from WebRTC's media communication?
-WebRTC allows you to send and receive an unlimited amount of audio and video streams. You can add and remove these streams at anytime during a call. These streams could all be independent, or they could be bundled together! You could send a video feed of your desktop, and then include audio/video from your webcam.
+WebRTC allows you to send and receive an unlimited amount of audio and video streams. You can add and remove these streams at anytime during a call. These streams could all be independent, or they could be bundled together! You could send a video feed of your desktop, and then include audio and video from your webcam.
 
 The WebRTC protocol is codec agnostic. The underlying transport supports everything, even things that don't exist yet! However, the WebRTC Agent you are communicating with may not have the necessary tools to accept it.
 
 WebRTC is also designed to handle dynamic network conditions. During a call your bandwidth might increase, or decrease. Maybe you suddenly experience lots of packet loss. The protocol is designed to handle all of this. WebRTC responds to network conditions and tries to give you the best experience possible with the resources available.
 
 ## How does it work?
-WebRTC uses two pre-existing protocols RTP and RTCP, both defined in [RFC 1889](https://tools.ietf.org/html/rfc1889)
+WebRTC uses two pre-existing protocols RTP and RTCP, both defined in [RFC 1889](https://tools.ietf.org/html/rfc1889).
 
 RTP (Real-time Transport Protocol) is the protocol that carries the media. It was designed to allow for real-time delivery of video. It does not stipulate any rules around latency or reliability, but gives you the tools to implement them. RTP gives you streams, so you can run multiple media feeds over one connection. It also gives you the timing and ordering information you need to feed a media pipeline.
 
@@ -25,7 +25,7 @@ Real-time media is about making trade-offs between latency and quality. The more
 These constraints are all caused by the limitations of the real world. They are all characteristics of your network that you will need to overcome.
 
 ### Video is Complex
-Transporting video isn't easy. To store 30 minutes of uncompressed 720 8-bit video you need ~110Gb. With those numbers, a 4-person conference call isn't going to happen. We need a way to make it smaller, and the answer is video compression. That doesn't come without downsides though.
+Transporting video isn't easy. To store 30 minutes of uncompressed 720 8-bit video you need about 110 GB. With those numbers, a 4-person conference call isn't going to happen. We need a way to make it smaller, and the answer is video compression. That doesn't come without downsides though.
 
 ## Video 101
 We aren't going to cover video compression in depth, but just enough to understand why RTP is designed the way it is. Video compression encodes video into a new format that requires fewer bits to represent the same video.
@@ -39,11 +39,11 @@ Video compression comes in two types. The first is intra-frame. Intra-frame comp
 The second type is inter-frame compression. Since video is made up of many pictures we look for ways to not send the same information twice.
 
 ### Inter-frame types
-You then have three frame types
+You then have three frame types:
 
-* **I-Frame** - A complete picture, can be decoded without anything else
-* **P-Frame** - A partial picture, is a modification of previous pictures
-* **B-Frame** - A partial picture, is a modification of previous and future pictures
+* **I-Frame** - A complete picture, can be decoded without anything else.
+* **P-Frame** - A partial picture, containing only changes from the previous picture.
+* **B-Frame** - A partial picture, is a modification of previous and future pictures.
 
 The following is visualization of the three frame types.
 
@@ -95,7 +95,7 @@ In some cases it is set when a user is speaking. It is also commonly used to mar
 #### Payload Type (PT)
 `Payload Type` is a unique identifier for what codec is being carried by this packet.
 
-For WebRTC the `Payload Type` is dynamic. VP8 in one call may be different then another. The Offerer in the call determines the mapping of `Payload Types` to codecs in the `Session Description`.
+For WebRTC the `Payload Type` is dynamic. VP8 in one call may be different from another. The offerer in the call determines the mapping of `Payload Types` to codecs in the `Session Description`.
 
 #### Sequence Number
 `Sequence Number` is used for ordering packets in a stream. Every time a packet is sent the `Sequence Number` is incremented by one.
@@ -103,15 +103,15 @@ For WebRTC the `Payload Type` is dynamic. VP8 in one call may be different then 
 RTP is designed to be useful over lossy networks. This gives the receiver a way to detect when packets have been lost.
 
 #### Timestamp
-The sampling instant for this packet. This is not a global clock, but how much time has passed in the media stream.
+The sampling instant for this packet. This is not a global clock, but how much time has passed in the media stream. Several RTP packages can have the same timestamp if they for example are all part of the same video frame. 
 
 #### Synchronization Source (SSRC)
-An `SSRC` is the unique identifier for this stream. This allows you to run multiple streams of media over a single stream.
+An `SSRC` is the unique identifier for this stream. This allows you to run multiple streams of media over a single RTP stream.
 
 #### Contributing Source (CSRC)
 A list that communicates what `SSRC`es contributed to this packet.
 
-This is commonly used for talking indicators. Let's say server side you combined multiple audio feeds into a single RTP stream. You could then use this field to say 'Input stream A and C were talking at this moment'
+This is commonly used for talking indicators. Let's say server side you combined multiple audio feeds into a single RTP stream. You could then use this field to say "Input stream A and C were talking at this moment".
 
 #### Payload
 The actual payload data. Might end with the count of how many padding bytes were added, if the padding flag is set.
@@ -134,71 +134,65 @@ Every RTCP packet has the following structure:
 ```
 
 #### Version (V)
-`Version` is always `2`
+`Version` is always `2`.
 
 #### Padding (P)
 `Padding` is a bool that controls if the payload has padding.
 
-The last byte of the payload contains a count of how many padding bytes
-were added.
+The last byte of the payload contains a count of how many padding bytes were added.
 
 #### Reception Report Count (RC)
-The number of reports in this packet. A single RTCP Packet can contain multiple events.
+The number of reports in this packet. A single RTCP packet can contain multiple events.
 
 #### Packet Type (PT)
-Unique Identifier for what type of RTCP Packet this is. A WebRTC Agent doesn't need to support all these types, and support between Agents can be different. These are the ones you may commonly see though.
+Unique Identifier for what type of RTCP Packet this is. A WebRTC Agent doesn't need to support all these types, and support between Agents can be different. These are the ones you may commonly see though:
 
-* Full INTRA-frame Request (FIR) - `192`
-* Negative ACKnowledgements (NACK) - `193`
-* Sender Report - `200`
-* Receiver Report - `201`
-* Generic RTP Feedback - `205`
-* Payload Specific Feedback - `206`
+* `192` - Full INTRA-frame Request (`FIR`)
+* `193` - Negative ACKnowledgements (`NACK`)
+* `200` - Sender Report
+* `201` - Receiver Report
+* `205` - Generic RTP Feedback
+* `206` - Payload Specific Feedback
 
 The significance of these packet types will be described in greater detail below.
 
 ### Full INTRA-frame Request (FIR) and Picture Loss Indication (PLI)
-Both FIR and PLI messages serve a similar purpose. These messages request a full key frame from the sender.
-`PLI` is used when partial frames were given to the decoder but it was unable to decode them.
+Both `FIR` and `PLI` messages serve a similar purpose. These messages request a full key frame from the sender.
+`PLI` is used when partial frames were given to the decoder, but it was unable to decode them.
 This could happen because you had lots of packet loss, or maybe the decoder crashed.
 
-According to [RFC5104](https://tools.ietf.org/html/rfc5104#section-4.3.1.2) `FIR` shall not be used when packets or frames are lost, that's  `PLI`s job. `FIR` requests a key frame for reasons other than packet loss - for example when a new member enters a video conference. They need a full key frame to start decoding video stream, the decoder will be discarding frames until key frame arrives. 
+According to [RFC 5104](https://tools.ietf.org/html/rfc5104#section-4.3.1.2), `FIR` shall not be used when packets or frames are lost. That is  `PLI`s job. `FIR` requests a key frame for reasons other than packet loss - for example when a new member enters a video conference. They need a full key frame to start decoding video stream, the decoder will be discarding frames until key frame arrives. 
 
-It is a good idea for a receiver to request a full key frame right after connecting, this minimizes the delay between connecting and an image showing up on the user's screen.
+It is a good idea for a receiver to request a full key frame right after connecting, this minimizes the delay between connecting, and an image showing up on the user's screen.
 
 `PLI` packets are a part of Payload Specific Feedback messages.
 
 In practice, software that is able to handle both `PLI` and `FIR` packets will act the same way in both cases. It will send a signal to the encoder to produce a new full key frame.
 
-### Negative ACKnowledgements
-A NACK requests that a sender re-transmits a single RTP packet. This is usually caused when an RTP packet is lost, but could also happen because it is late.
+### Negative Acknowledgment
+A `NACK` requests that a sender re-transmits a single RTP packet. This is usually caused by an RTP packet getting lost, but could also happen because it is late.
 
-NACKs are much more bandwidth efficient than requesting that the whole frame get sent again. Since RTP breaks up packets into very small chunks, you are really just requesting one small missing piece.
+`NACK`s are much more bandwidth efficient than requesting that the whole frame get sent again. Since RTP breaks up packets into very small chunks, you are really just requesting one small missing piece. The receiver crafts an RTCP message with the SSRC and Sequence Number. If the sender does not have this RTP packet available to re-send, it just ignores the message.
 
-### Sender/Receiver Reports
+### Sender and Receiver Reports
 These reports are used to send statistics between agents. This communicates the amount of packets actually received and jitter.
 
-The reports can be used for diagnostics and Congestion Control.
+The reports can be used for diagnostics and congestion control.
 
 ## How RTP/RTCP solve problems together
 RTP and RTCP then work together to solve all the problems caused by networks. These techniques are still constantly changing!
 
-### Negative Acknowledgment
-Also known as a NACK. This is one method of dealing with packet loss with RTP.
-
-A NACK is an RTCP message sent back to a sender to request re-transmission. The receiver crafts an RTCP message with the SSRC and Sequence Number. If the sender does not have this RTP packet available to re-send, it just ignores the message.
-
 ### Forward Error Correction
 Also known as FEC. Another method of dealing with packet loss. FEC is when you send the same data multiple times, without it even being requested. This is done at the RTP level, or even lower with the codec.
 
-If the packet loss for a call is steady then FEC is a much lower latency solution than NACK. The round trip time of having to request, and then re-transmit the packet can be significant for NACKs.
+If the packet loss for a call is steady then FEC is a much lower latency solution than NACK. The round trip time of having to request, and then re-transmit the missing packet can be significant for NACKs.
 
 ### Adaptive Bitrate and Bandwidth Estimation
-As discussed in [Real-time networking](../05-real-time-networking/) networks are unpredictable and unreliable. Bandwidth availability can change multiple times throughout a session.
+As discussed in the [Real-time networking](../05-real-time-networking/) chapter, networks are unpredictable and unreliable. Bandwidth availability can change multiple times throughout a session.
 It is not uncommon to see available bandwidth change dramatically (orders of magnitude) within a second.
 
 The main idea is to adjust encoding bitrate based on predicted, current, and future available network bandwidth.
-This ensures that video/audio signal of the best possible quality is transmitted, and the connection does not get dropped because of network congestion.
+This ensures that video and audio signal of the best possible quality is transmitted, and the connection does not get dropped because of network congestion.
 Heuristics that model the network behavior and tries to predict it is known as Bandwidth estimation.
 
 There is a lot of nuance to this, so let's explore in greater detail.
@@ -206,16 +200,16 @@ There is a lot of nuance to this, so let's explore in greater detail.
 ## Communicating Network Status
 The first roadblock with implementing Congestion Control is that UDP and RTP don't communicate network status. As a sender I have no idea when my packets are arriving or if they are arriving at all!
 
-RTP/RTCP has 3 different solutions to this problem. They all have their pros and cons. What you use will depend on what clients you are working with, the type of topology you are working with, or even just how much development time you have available.
+RTP/RTCP has three different solutions to this problem. They all have their pros and cons. What you use will depend on what clients you are working with, the type of topology you are working with, or even just how much development time you have available.
 
 ### Receiver Reports
 Receiver Reports are RTCP messages, the original way to communicate network status. You can find them in [RFC 3550](https://tools.ietf.org/html/rfc3550#section-6.4). They are sent on a schedule for each SSRC and contain the following fields:
 
-* **Fraction Lost** -- What percentage of packets have been lost since the last Receiver Report.
-* **Cumulative Number of Packets Lost** -- How many packets have been lost during the entire call.
-* **Extended Highest Sequence Number Received** -- What was the last Sequence Number received, and how many times has it rolled over.
-* **Interarrival Jitter** -- The rolling Jitter for the entire call.
-* **Last Sender Report Timestamp** -- Last known time on sender, used for round-trip time calculation.
+* **Fraction Lost** - What percentage of packets have been lost since the last Receiver Report.
+* **Cumulative Number of Packets Lost** - How many packets have been lost during the entire call.
+* **Extended Highest Sequence Number Received** - What was the last Sequence Number received, and how many times has it rolled over.
+* **Interarrival Jitter** - The rolling Jitter for the entire call.
+* **Last Sender Report Timestamp** - Last known time on sender, used for round-trip time calculation.
 
 Sender and Receiver reports (SR and RR) work together to compute round-trip time.
 
@@ -238,7 +232,7 @@ Round-trip time in plain English:
 - It means that it took 265 milliseconds (690 - 420 - 5) to reach you and return back to me.
 - Therefore, the round-trip time is 265 milliseconds.
 
-![RTT](../images/06-rtt.png "RTT")
+![Round-trip time](../images/06-rtt.png "Round-trip time")
 
 ### TMMBR, TMMBN and REMB
 The next generation of Network Status messages all involve receivers messaging senders via RTCP with explicit bitrate requests.
@@ -265,13 +259,13 @@ This method works great on paper. The Sender receives estimation from the receiv
 
 However in practice, the REMB approach has multiple drawbacks.
 
-Encoder inefficiency is one of them, when you set a bitrate for the encoder, it won't necessarily output the exact bitrate you requested. It may output less or more bits, depending on the encoder settings and the frame being encoded.
+Encoder inefficiency is one of them. When you set a bitrate for the encoder, it won't necessarily output the exact bitrate you requested. It may output less or more bits, depending on the encoder settings and the frame being encoded.
 
-For example, using the x264 encoder with tune=zerolatency can significantly deviate from the specified target bitrate. Here is a possible scenario:
+For example, using the x264 encoder with `tune=zerolatency` can significantly deviate from the specified target bitrate. Here is a possible scenario:
 
 - Let's say we start off by setting the bitrate to 1000 kbps.
 - The encoder outputs only 700 kbps, because there is not enough high frequency features to encode. (AKA - "staring at a wall".)
-- Let's also imagine that the receiver gets the 700 kbps video at zero packet loss, it applies REMB rule 1 to increase the incoming bitrate by 8%.
+- Let's also imagine that the receiver gets the 700 kbps video at zero packet loss. It then applies REMB rule 1 to increase the incoming bitrate by 8%.
 - The receiver sends a REMB packet with a 756 kbps suggestion (700 kbps * 1.08) to the sender.
 - The sender sets the encoder bitrate to 756 kbps.
 - The encoder outputs an even lower bitrate.
@@ -310,10 +304,10 @@ A trivial congestion control algorithm to estimate the incoming bitrate on the r
 
 ## Generating a Bandwidth Estimate
 Now that we have information around the state of the network we can make estimates around the bandwidth available. In 2012 the IETF started the RMCAT (RTP Media Congestion Avoidance Techniques) working group.
-This working group contains multiple submitted standards for congestion control algorithms. Before then, all Congestion Controllers algorithms were proprietary.
+This working group contains multiple submitted standards for congestion control algorithms. Before then, all congestion controller algorithms were proprietary.
 
-The most deployed implementation is 'A Google Congestion Control Algorithm for Real-Time Communication' defined in [draft-alvestrand-rmcat-congestion](https://tools.ietf.org/html/draft-alvestrand-rmcat-congestion-02).
-In can run in two passes. First a 'loss based' pass that just uses Receiver Reports. If TWCC is available it will also take that additional data into consideration.
+The most deployed implementation is "A Google Congestion Control Algorithm for Real-Time Communication" defined in [draft-alvestrand-rmcat-congestion](https://tools.ietf.org/html/draft-alvestrand-rmcat-congestion-02).
+In can run in two passes. First a "loss based" pass that just uses Receiver Reports. If TWCC is available, it will also take that additional data into consideration.
 It predicts the current and future network bandwidth by using a [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter).
 
 There are several alternatives to GCC, for example [NADA: A Unified Congestion Control Scheme for Real-Time Media](https://tools.ietf.org/html/draft-zhu-rmcat-nada-04) and [SCReAM - Self-Clocked Rate Adaptation for Multimedia](https://tools.ietf.org/html/draft-johansson-rmcat-scream-cc-05).
