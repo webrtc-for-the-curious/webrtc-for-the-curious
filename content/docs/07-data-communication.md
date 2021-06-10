@@ -6,20 +6,16 @@ weight: 8
 
 # What do I get from WebRTC's data communication?
 WebRTC provides data channels for data communication. Between two peers you can open 65,534 data channels.
-A data channel is datagram based, and each has its own durability settings. By default, each data
-channel has guaranteed ordered delivery.
+A data channel is datagram based, and each has its own durability settings. By default, each data channel has guaranteed ordered delivery.
 
-If you are approaching WebRTC from a media background data channels might seem wasteful. Why do
-I need this whole subsystem when I could just use HTTP or WebSockets?
+If you are approaching WebRTC from a media background data channels might seem wasteful. Why do I need this whole subsystem when I could just use HTTP or WebSockets?
 
 The real power with data channels is that you can configure them to behave like UDP with unordered/lossy delivery.
-This is necessary for low latency and high performance situations. You can measure the backpressure and ensure you
-are only sending as much as your network supports.
+This is necessary for low latency and high performance situations. You can measure the backpressure and ensure you are only sending as much as your network supports.
 
 ## How does it work?
 WebRTC uses the Stream Control Transmission Protocol (SCTP), defined in [RFC 2960](https://tools.ietf.org/html/rfc2960). SCTP is a
-transport layer protocol that was intended as an alternative to TCP or UDP. For WebRTC we use it as an application layer protocol
-which runs over our DTLS connection.
+transport layer protocol that was intended as an alternative to TCP or UDP. For WebRTC we use it as an application layer protocol which runs over our DTLS connection.
 
 SCTP gives you streams and each stream can be configured independently. WebRTC data channels are just thin abstractions around them. The settings
 around durability and ordering are just passed right into the SCTP Agent.
@@ -55,21 +51,20 @@ This message is sent by the WebRTC Agent that wishes to open a channel.
 ```
 
 #### Message Type
-Message Type is a static value of `0x03`
+Message Type is a static value of `0x03`.
 
 #### Channel Type
 Channel Type controls durability/ordering attributes of the channel. It may have the following values:
 
 * `DATA_CHANNEL_RELIABLE` (`0x00`) - No messages are lost and will arrive in order
-* `DATA_CHANNEL_RELIABLE_UNORDERED` (`0x80`) - No messages are lost and may arrive out of order
-* `DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT` (`0x01`) - Messages may be lost after trying the requested amount of times and will arrive in order
-* `DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT_UNORDERED` (`0x81`) - Messages may be lost after trying the requested amount of times and may arrive out of order
-* `DATA_CHANNEL_PARTIAL_RELIABLE_TIMED` (`0x02`) - Messages may be lost if they don't arrive in the requested amount of time and will arrive in order
-* `DATA_CHANNEL_PARTIAL_RELIABLE_TIMED_UNORDERED` (`0x82`) - Messages may be lost if they don't arrive in the requested amount of time and may arrive out of order
+* `DATA_CHANNEL_RELIABLE_UNORDERED` (`0x80`) - No messages are lost, but they may arrive out of order.
+* `DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT` (`0x01`) - Messages may be lost after trying the requested amount of times, but they will arrive in order.
+* `DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT_UNORDERED` (`0x81`) - Messages may be lost after trying the requested amount of times and may arrive out of order.
+* `DATA_CHANNEL_PARTIAL_RELIABLE_TIMED` (`0x02`) - Messages may be lost if they don't arrive in the requested amount of time, but they will arrive in order.
+* `DATA_CHANNEL_PARTIAL_RELIABLE_TIMED_UNORDERED` (`0x82`) - Messages may be lost if they don't arrive in the requested amount of time and may arrive out of order.
 
 #### Priority
-The priority of the data channel. Data channels having a higher priority will be scheduled first. Large lower-priority user
-messages will not delay the sending of higher-priority user messages.
+The priority of the data channel. Data channels having a higher priority will be scheduled first. Large lower-priority user messages will not delay the sending of higher-priority user messages.
 
 #### Reliability Parameter
 If the data channel type is `DATA_CHANNEL_PARTIAL_RELIABLE`, the suffixes configures the behavior:
@@ -81,8 +76,7 @@ If the data channel type is `DATA_CHANNEL_PARTIAL_RELIABLE`, the suffixes config
 A UTF-8-encoded string containing the name of the data channel. This string may be empty.
 
 #### Protocol
-If this is an empty string, the protocol is unspecified. If it is a non-empty string, it specifies a protocol
-registered in the "WebSocket Subprotocol Name Registry", defined in [RFC 6455](https://tools.ietf.org/html/rfc6455#page-61).
+If this is an empty string, the protocol is unspecified. If it is a non-empty string, it should specify a protocol registered in the "WebSocket Subprotocol Name Registry", defined in [RFC 6455](https://tools.ietf.org/html/rfc6455#page-61).
 
 ### DATA_CHANNEL_ACK
 This message is sent by the WebRTC Agent to acknowledge that this data channel has been opened.
@@ -96,7 +90,7 @@ This message is sent by the WebRTC Agent to acknowledge that this data channel h
 +-+-+-+-+-+-+-+-+
 ```
 
-## SCTP
+## Stream Control Transmission Protocol
 SCTP is the real power behind WebRTC data channels. It provides all these features of the data channel:
 
 * Multiplexing
@@ -105,8 +99,7 @@ SCTP is the real power behind WebRTC data channels. It provides all these featur
 * Congestion Avoidance
 * Flow Control
 
-To understand SCTP we will explore it in 3 parts. The goal is that you will know enough to debug and learn the
-deep details of SCTP on your own after this chapter.
+To understand SCTP we will explore it in three parts. The goal is that you will know enough to debug and learn the deep details of SCTP on your own after this chapter.
 
 ## Concepts
 SCTP is a feature rich protocol. This section is only going to cover the parts of SCTP that are used by WebRTC.
@@ -119,8 +112,7 @@ Association is the term used for an SCTP Session. It is the state that is shared
 between two SCTP Agents while they communicate.
 
 ### Streams
-A stream is one bi-directional sequence of user data. When you create a data channel you are actually just creating a
-SCTP stream.  Each SCTP Association contains a list of streams.  Each stream can be configured with different reliability types.
+A stream is one bi-directional sequence of user data. When you create a data channel you are actually just creating a SCTP stream. Each SCTP Association contains a list of streams. Each stream can be configured with different reliability types.
 
 WebRTC only allows you to configure on stream creation, but SCTP actually allows changing the configuration at anytime.
 
@@ -137,24 +129,22 @@ User data, connection initialization, congestion control, and more are all done 
 Each SCTP packet contains a list of chunks. So in one UDP packet you can have multiple chunks carrying messages from different streams.
 
 ### Transmission Sequence Number
-The Transmission Sequence Number (TSN) is a global unique identifier for DATA chunks. A DATA chunk is what carries all the messages
-a user wishes to send. The TSN is important because it helps a receiver determine if packets are lost or out of order.
+The Transmission Sequence Number (TSN) is a global unique identifier for DATA chunks. A DATA chunk is what carries all the messages a user wishes to send. The TSN is important because it helps a receiver determine if packets are lost or out of order.
 
 If the receiver notices a missing TSN, it doesn't give the data to the user until it is fulfilled.
 
 ### Stream Identifier
-Each stream has a unique identifier. When you create a data channel with an explicit ID, it is actually just passed right into SCTP
-as the stream identifier. If you don't pass an ID the stream identifier is chosen for you.
+Each stream has a unique identifier. When you create a data channel with an explicit ID, it is actually just passed right into SCTP as the stream identifier. If you don't pass an ID the stream identifier is chosen for you.
 
 ### Payload Protocol Identifier
 Each DATA chunk also has a Payload Protocol Identifier (PPID). This is used to uniquely identify what type of data is being exchanged.
-SCTP has many PPIDs, but WebRTC is only using the following 5:
+SCTP has many PPIDs, but WebRTC is only using the following five:
 
-* `WebRTC DCEP` (`50`) - DCEP messages
-* `WebRTC String` (`51`) - Datachannel string messages
-* `WebRTC Binary` (`53`) - Datachannel binary messages
-* `WebRTC String Empty` (`56`) - Datachannel string messages with 0 length
-* `WebRTC Binary Empty` (`57`) - Datachannel binary messages with 0 length
+* `WebRTC DCEP` (`50`) - DCEP messages.
+* `WebRTC String` (`51`) - Datachannel string messages.
+* `WebRTC Binary` (`53`) - Datachannel binary messages.
+* `WebRTC String Empty` (`56`) - Datachannel string messages with 0 length.
+* `WebRTC Binary Empty` (`57`) - Datachannel binary messages with 0 length.
 
 ## Protocol
 The following are some of the chunks used by the SCTP protocol. This is
@@ -193,16 +183,15 @@ message that is too large for one DATA chunk it needs to be fragmented.
 With the the `B` and `E` bit and Sequence Numbers SCTP is able to express
 this.
 
-* `B=1`, `E=0` - First piece of a fragmented user message
-* `B=0`, `E=0` - Middle piece of a fragmented user message
-* `B=0`, `E=1` - Last piece of a fragmented user message
-* `B=1`, `E=1` - Unfragmented message
+* `B=1`, `E=0` - First piece of a fragmented user message.
+* `B=0`, `E=0` - Middle piece of a fragmented user message.
+* `B=0`, `E=1` - Last piece of a fragmented user message.
+* `B=1`, `E=1` - Unfragmented message.
 
 `TSN` is the Transmission Sequence Number. It is the global unique
-identifier for this message. After 4,294,967,295 messages this will wrap.
+identifier for this message. After 4,294,967,295 messages this will wrap around.
 
-`Stream Identifier` is the unique identifier for the stream this data
-belongs too.
+`Stream Identifier` is the unique identifier for the stream this data belongs too.
 
 `Payload Protocol Identifier` is the type of data that is flowing through
 this stream. For WebRTC, it is going to be DCEP, String or Binary.
@@ -385,13 +374,14 @@ error has occurred.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-The FORWARD TSN Chunk moves the global TSN forward. SCTP does this, so you can skip some packets you don't care about anymore. Let's say
+The `FORWARD TSN` chunk moves the global TSN forward. SCTP does this, 
+so you can skip some packets you don't care about anymore. Let's say
 you send `10 11 12 13 14 15` and these packets are only valid if they
 all arrive. This data is also real-time sensitive, so if it arrives
 late it isn't useful.
 
 If you lose `12` and `13` there is no reason to send `14` and `15`!
-SCTP uses the FORWARD TSN Chunk to achieve that. It tells the receiver
+SCTP uses the `FORWARD TSN` chunk to achieve that. It tells the receiver
 that `14` and `15` aren't going to be delivered anymore.
 
 `New Cumulative TSN` this is the new TSN of the connection. Any packets
@@ -402,22 +392,21 @@ number ahead. Refer back to the DATA Chunk for the significance of this field.
 
 ## State Machine
 These are some interesting parts of the SCTP state machine. WebRTC doesn't use all
-the features of the SCTP state machine, so we have excluded those parts. We also have simplified some components
-to make them understandable on their own.
+the features of the SCTP state machine, so we have excluded those parts. We also have simplified some components to make them understandable on their own.
 
 ### Connection Establishment Flow
 The `INIT` and `INIT ACK` chunks are used to exchange the capabilities and configurations
 of each peer. SCTP uses a cookie during the handshake to validate the peer it is communicating with.
 This is to ensure that the handshake is not intercepted and to prevent DoS attacks.
 
-The `INIT ACK` Chunk contains the cookie. The cookie is then returned to its creator
+The `INIT ACK` chunk contains the cookie. The cookie is then returned to its creator
 using the `COOKIE ECHO`. If cookie verification is successful the `COOKIE ACK` is
 sent and DATA chunks are ready to be exchanged.
 
 ![Connection establishment](../images/07-connection-establishment.png "Connection establishment")
 
 ### Connection Teardown Flow
-SCTP uses the `SHUTDOWN` Chunk. When an agent receives a `SHUTDOWN` Chunk it will wait until it
+SCTP uses the `SHUTDOWN` chunk. When an agent receives a `SHUTDOWN` chunk it will wait until it
 receives the requested `Cumulative TSN ACK`. This allows a user to ensure that all data
 is delivered even if the connection is lossy.
 
@@ -425,5 +414,4 @@ is delivered even if the connection is lossy.
 SCTP uses the `HEARTBEAT REQUEST` and `HEARTBEAT ACK` Chunks to keep the connection alive. These are sent
 on a configurable interval. SCTP also performs an exponential backoff if the packet hasn't arrived.
 
-The HEARTBEAT also contains a time value. This allows two associations to compute trip time between
-two agents.
+The `HEARTBEAT` chunk also contains a time value. This allows two associations to compute trip time between two agents.
