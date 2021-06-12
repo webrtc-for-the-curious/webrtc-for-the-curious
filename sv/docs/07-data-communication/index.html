@@ -1,0 +1,230 @@
+<!doctype html><html lang=sv dir=ltr><head><meta name=generator content="Hugo 0.74.3"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Vad får jag från WebRTCs datakommunikation? #  WebRTC tillhandahåller datakanaler för datakommunikation. Mellan två klienter kan du öppna 65534 datakanaler. En datakanal är UDP-baserad och alla har sina egna hållbarhetsinställningar. Som standard har varje data kanal garanterad leveransordning på skickade paket.
+Om du närmar dig WebRTC från ett mediabakgrund kan datakanaler verka slösaktiga. Varför använda hela detta delsystem när du bara kan använda HTTP eller WebSockets?
+Den verkliga kraften hos datakanaler är att du kan konfigurera dem så att de beter sig som UDP med oordnad/osäker leverans."><meta name=theme-color content="#FFFFFF"><meta property="og:title" content="Datakommunikation"><meta property="og:description" content="Vad får jag från WebRTCs datakommunikation? #  WebRTC tillhandahåller datakanaler för datakommunikation. Mellan två klienter kan du öppna 65534 datakanaler. En datakanal är UDP-baserad och alla har sina egna hållbarhetsinställningar. Som standard har varje data kanal garanterad leveransordning på skickade paket.
+Om du närmar dig WebRTC från ett mediabakgrund kan datakanaler verka slösaktiga. Varför använda hela detta delsystem när du bara kan använda HTTP eller WebSockets?
+Den verkliga kraften hos datakanaler är att du kan konfigurera dem så att de beter sig som UDP med oordnad/osäker leverans."><meta property="og:type" content="article"><meta property="og:url" content="https://webrtcforthecurious.com/sv/docs/07-data-communication/"><meta property="article:modified_time" content="2021-06-09T19:57:52-07:00"><meta property="og:site_name" content="WebRTC för nyfikna"><title>Datakommunikation | WebRTC för nyfikna</title><link rel=manifest href=/manifest.json><link rel=icon href=/favicon.png type=image/x-icon><link rel=alternate hreflang=en href=https://webrtcforthecurious.com/docs/07-data-communication/ title="Data Communication"><link rel=alternate hreflang=zh href=https://webrtcforthecurious.com/zh/docs/07-data-communication/ title=数据通信><link rel=alternate hreflang=ja href=https://webrtcforthecurious.com/ja/docs/07-data-communication/ title=データ・コミュニケーション><link rel=stylesheet href=/book.min.6c7c6446dfdee7c8c933e9bbc6e80ee3ed6c913b2a59519f2092c3c6a9d63e55.css integrity="sha256-bHxkRt/e58jJM+m7xugO4+1skTsqWVGfIJLDxqnWPlU="><script defer src=/sv.search.min.5a54e22e099666a707a42b512c724899ef7f757b80c149d9d2e9ecc1ff0660d0.js integrity="sha256-WlTiLgmWZqcHpCtRLHJIme9/dXuAwUnZ0unswf8GYNA="></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a href=/sv><span>WebRTC för nyfikna</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=Sök aria-label=Sök maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li><a href=https://webrtcforthecurious.com/sv/docs/01-what-why-and-how/>Vad, varför och hur</a></li><li><a href=https://webrtcforthecurious.com/sv/docs/02-signaling/>Signalering</a></li><li><a href=https://webrtcforthecurious.com/sv/docs/03-connecting/>Anslutning</a></li><li><a href=https://webrtcforthecurious.com/sv/docs/04-securing/>Säkerhet</a></li><li><a href=https://webrtcforthecurious.com/sv/docs/05-real-time-networking/>Realtidsnätverk</a></li><li><a href=https://webrtcforthecurious.com/sv/docs/06-media-communication/>Mediakommunikation</a></li><li><a href=https://webrtcforthecurious.com/sv/docs/07-data-communication/ class=active>Datakommunikation</a></li></ul></nav><script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label>
+<strong>Datakommunikation</strong>
+<label for=toc-control><img src=/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#hur-fungerar-det>Hur fungerar det?</a></li><li><a href=#dcep>DCEP</a><ul><li><a href=#data_channel_open>DATA_CHANNEL_OPEN</a></li><li><a href=#data_channel_ack>DATA_CHANNEL_ACK</a></li></ul></li><li><a href=#stream-control-transmission-protocol>Stream Control Transmission Protocol</a></li><li><a href=#begrepp>Begrepp</a><ul><li><a href=#association>Association</a></li><li><a href=#strömmar>Strömmar</a></li><li><a href=#datagrambaserat>Datagrambaserat</a></li><li><a href=#avsnitt>Avsnitt</a></li><li><a href=#sändningssekvensnummer>Sändningssekvensnummer</a></li><li><a href=#strömidentifierare>Strömidentifierare</a></li><li><a href=#payload-protocol-identifier>Payload Protocol Identifier</a></li></ul></li><li><a href=#protokoll-1>Protokoll</a><ul><li><a href=#data-avsnitt>DATA-avsnitt</a></li><li><a href=#init-avsnitt>INIT-avsnitt</a></li><li><a href=#sack-avsnitt>SACK-avsnitt</a></li><li><a href=#heartbeat-avsnitt>HEARTBEAT-avsnitt</a></li><li><a href=#abort-avsnitt>ABORT-avsnitt</a></li><li><a href=#shutdown-avsnitt>SHUTDOWN-avsnitt</a></li><li><a href=#error-avsnitt>ERROR-avsnitt</a></li><li><a href=#forward-tsn-avsnitt>FORWARD TSN-avsnitt</a></li></ul></li><li><a href=#tillståndsmaskinen-för-sctp>Tillståndsmaskinen för SCTP</a><ul><li><a href=#anslutningsetableringsflöde>Anslutningsetableringsflöde</a></li><li><a href=#anslutning-av-kopplingen>Anslutning av kopplingen</a></li><li><a href=#keep-alive-mekanism>Keep-Alive mekanism</a></li></ul></li></ul></nav></aside></header><article class=markdown><h1 id=vad-får-jag-från-webrtcs-datakommunikation>Vad får jag från WebRTCs datakommunikation?
+<a class=anchor href=#vad-f%c3%a5r-jag-fr%c3%a5n-webrtcs-datakommunikation>#</a></h1><p>WebRTC tillhandahåller datakanaler för datakommunikation. Mellan två klienter kan du öppna 65534 datakanaler.
+En datakanal är UDP-baserad och alla har sina egna hållbarhetsinställningar. Som standard har varje data kanal garanterad leveransordning på skickade paket.</p><p>Om du närmar dig WebRTC från ett mediabakgrund kan datakanaler verka slösaktiga. Varför använda hela detta delsystem när du bara kan använda HTTP eller WebSockets?</p><p>Den verkliga kraften hos datakanaler är att du kan konfigurera dem så att de beter sig som UDP med oordnad/osäker leverans.
+Detta är nödvändigt för situationer med låg latens och höga prestanda. Du kan mäta mottrycket och försäkra dig att du bar skickar bara så mycket data som ditt nätverk klarar.</p><h2 id=hur-fungerar-det>Hur fungerar det?
+<a class=anchor href=#hur-fungerar-det>#</a></h2><p>WebRTC använder Stream Control Transmission Protocol (SCTP), definierat i <a href=https://tools.ietf.org/html/rfc2960>RFC 2960</a>. SCTP är ett
+transportlagerprotokoll som var tänkt som ett alternativ till TCP eller UDP. För WebRTC använder vi det som ett applikationslagerprotokoll via vår DTLS-anslutning.</p><p>SCTP ger dig strömmar och varje ström kan konfigureras oberoende. WebRTC-datakanaler är bara tunna abstraktioner kring dem. Inställningarna
+kring hållbarhet och beställning skickas precis in i SCTP-agenten.</p><p>Datakanaler har vissa funktioner som SCTP inte kan hantera, till exempel kanaletiketter (labels). För att lösa det använder WebRTC DCEP (Data Channel Establishment Protocol)
+vilket definieras i <a href=https://tools.ietf.org/html/rfc8832>RFC 8832</a>. DCEP definierar meddelanden för att kommunicera kanaletiketten och protokollet.</p><h2 id=dcep>DCEP
+<a class=anchor href=#dcep>#</a></h2><p>DCEP har bara två meddelanden <code>DATA_CHANNEL_OPEN</code> och <code>DATA_CHANNEL_ACK</code>. För varje datakanal som öppnas måste mottagaren svara med ett ack.</p><h3 id=data_channel_open>DATA_CHANNEL_OPEN
+<a class=anchor href=#data_channel_open>#</a></h3><p>Detta meddelande skickas av WebRTC-agenten som vill öppna en kanal.</p><h4 id=paketformat>Paketformat
+<a class=anchor href=#paketformat>#</a></h4><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Message Type |  Channel Type |            Priority           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    Reliability Parameter                      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Label Length          |       Protocol Length         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/                             Label                             /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/                            Protocol                           /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><h4 id=message-type>Message Type
+<a class=anchor href=#message-type>#</a></h4><p>Message Type har alltid samma värde, <code>0x03</code>.</p><h4 id=channel-type>Channel Type
+<a class=anchor href=#channel-type>#</a></h4><p>Med Channel Type sätter man kanalens hållbarhet och ordningsattribut. Den kan ha följande värden:</p><ul><li><code>DATA_CHANNEL_RELIABLE</code> (<code> 0x00</code>) - Inga meddelanden går förlorade och de levereras i ordning.</li><li><code>DATA_CHANNEL_RELIABLE_UNORDERED</code> (<code> 0x80</code>) - Inga meddelanden går förlorade, men kan komma i fel ordning.</li><li><code>DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT</code> (<code> 0x01</code>) - Meddelanden kan gå förlorade efter att ha försökt ett givet antal gånger, men de kommer i ordning.</li><li><code>DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT_UNORDERED</code> (<code> 0x81</code>) - Meddelanden kan gå förlorade efter att ha försökt ett givet antal gånger och kan också komma i fel ordning.</li><li><code>DATA_CHANNEL_PARTIAL_RELIABLE_TIMED</code> (<code> 0x02</code>) - Meddelanden kan gå förlorade om de inte kommer fram inom den önskade tiden, men de kommer fram i ordning.</li><li><code>DATA_CHANNEL_PARTIAL_RELIABLE_TIMED_UNORDERED</code> (<code> 0x82</code>) - Meddelanden kan gå förlorade om de inte kommer fram inom önskad tid och kan komma i vilken ordning som helst.</li></ul><h4 id=prioritet>Prioritet
+<a class=anchor href=#prioritet>#</a></h4><p>Datakanalens prioritet. Datakanaler med högre prioritet schemaläggs först. Stora meddelanden med lägre prioritet kommer inte att orsaka fördröjningar för meddelanden med högre prioritet.</p><h4 id=pålitlighetsparameter>Pålitlighetsparameter
+<a class=anchor href=#p%c3%a5litlighetsparameter>#</a></h4><p>Om datakanaltypen är <code>DATA_CHANNEL_PARTIAL_RELIABLE</code> konfigurerar suffixet beteendet:</p><ul><li><code>REXMIT</code> - Definierar hur många gånger avsändaren ska skicka meddelandet igen innan den ger upp.</li><li><code>TIMED</code> - Definierar hur länge (i ms) avsändaren ska skicka meddelandet igen innan den ger upp.</li></ul><h4 id=etikett-label>Etikett (Label)
+<a class=anchor href=#etikett-label>#</a></h4><p>Namnet på datakanalen som en UTF-8-kodad sträng. Det kan vara en tom sträng.</p><h4 id=protokoll>Protokoll
+<a class=anchor href=#protokoll>#</a></h4><p>Om det är en tom sträng är protokollet ospecificerat. Om fältet innehåller text ska det vara ett protokoll registrerat i &ldquo;WebSocket Subprotocol Name Registry&rdquo;, definierat i <a href=https://tools.ietf.org/html/rfc6455#page-61>RFC 6455</a>.</p><h3 id=data_channel_ack>DATA_CHANNEL_ACK
+<a class=anchor href=#data_channel_ack>#</a></h3><p>Detta meddelande skickas av WebRTC-agenten för att bekräfta att datakanalen har öppnats.</p><h4 id=paketformat-1>Paketformat
+<a class=anchor href=#paketformat-1>#</a></h4><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Message Type |
++-+-+-+-+-+-+-+-+
+</code></pre><h2 id=stream-control-transmission-protocol>Stream Control Transmission Protocol
+<a class=anchor href=#stream-control-transmission-protocol>#</a></h2><p>SCTP är den kraftfulla biten med WebRTC-datakanaler. Det ger alla dessa funktioner i datakanalen:</p><ul><li>Multiplexing av data.</li><li>Pålitlig leverans med en TCP-liknande återsändningsmekanism.</li><li>Alternativ för tillåta en viss paketförlust.</li><li>Inställningar för att undvika trängsel i nätet.</li><li>Flödeskontroll.</li></ul><p>För att förstå SCTP kommer vi att utforska protokollet i tre delar. Målet är att du ska veta tillräckligt för att kunna felsöka och själv lära dig detaljer om SCTP efter detta kapitel.</p><h2 id=begrepp>Begrepp
+<a class=anchor href=#begrepp>#</a></h2><p>SCTP är ett protokoll med många funktioner. Detta avsnitt kommer endast att gå igenom de delar av SCTP som används av WebRTC.
+Funktioner i SCTP som inte används av WebRTC inkluderar multi-homing och sökväg (path selection).</p><p>Med över tjugo års utveckling bakom sig kan det vara svårt att få en överblick av SCTP.</p><h3 id=association>Association
+<a class=anchor href=#association>#</a></h3><p>Association är den term som används för en SCTP-session. Det är tillståndet som delas
+mellan två SCTP-agenter medan de kommunicerar.</p><h3 id=strömmar>Strömmar
+<a class=anchor href=#str%c3%b6mmar>#</a></h3><p>En ström är en dubbelriktad sekvens av användardata. När du skapar en datakanal skapar du bara en SCTP-ström. Varje SCTP Association innehåller en lista med strömmar. Varje ström kan konfigureras med olika tillförlitlighetstyper.</p><p>WebRTC låter dig bara konfigurera när strömmen skapas, men SCTP tillåter egentligen att ändra konfigurationen när som helst.</p><h3 id=datagrambaserat>Datagrambaserat
+<a class=anchor href=#datagrambaserat>#</a></h3><p>SCTP skickar data som datagram och inte som en byte-ström. Att skicka och ta emot data känns mer som att använda UDP istället för TCP.
+Du behöver inte lägga till någon extra kod för att skicka flera filer över en ström.</p><p>SCTP-meddelanden har inga storleksgränser, till skillnad från UDP. Ett enda SCTP-meddelande kan innehålla flera gigabyte.</p><h3 id=avsnitt>Avsnitt
+<a class=anchor href=#avsnitt>#</a></h3><p>SCTP-protokollet består av avsnitt (chunks). Det finns många olika typer av avsnitt och de används för all kommunikation.
+Användardata, initialisering av anslutningar, överbelastningskontroll och mer görs via avsnitt.</p><p>Varje SCTP-paket innehåller en lista med avsnitt. Så i ett UDP-paket kan du ha flera avsnitt med meddelanden från olika strömmar.</p><h3 id=sändningssekvensnummer>Sändningssekvensnummer
+<a class=anchor href=#s%c3%a4ndningssekvensnummer>#</a></h3><p>Transmission Sequence Number (TSN) är en global unik identifierare för DATA-avsnitt. Ett DATA-avsnitt är det som innehåller alla meddelanden en användare vill skicka. TSN är viktigt eftersom det hjälper en mottagaren att avgöra om paket har tappats eller om de inte fungerar.</p><p>Om mottagaren märker att en TSN saknas, ger den inte datan till användaren förrän den har tagit emot den.</p><h3 id=strömidentifierare>Strömidentifierare
+<a class=anchor href=#str%c3%b6midentifierare>#</a></h3><p>Varje ström har en unik identifierare. När du skapar en datakanal med ett uttryckligt ID skickas det faktiskt precis in i SCTP som strömidentifierare. Om du inte skickar ett ID väljs strömidentifieraren åt dig.</p><h3 id=payload-protocol-identifier>Payload Protocol Identifier
+<a class=anchor href=#payload-protocol-identifier>#</a></h3><p>Varje DATA-avsnitt har också en Payload Protocol Identifier (PPID). Detta används för att unikt identifiera vilken typ av data som utbyts.
+SCTP har många PPID, men WebRTC använder bara följande fem:</p><ul><li><code>WebRTC DCEP</code> (<code>50</code>) - DCEP-meddelanden.</li><li><code>WebRTC String</code> (<code>51</code>) - Strängmeddelanden.</li><li><code>WebRTC Binary</code> (<code>53</code>) - Binära meddelanden.</li><li><code>WebRTC String Empty</code> (<code>56</code>) - Strängmeddelanden med 0 längd.</li><li><code>WebRTC Binary Empty</code> (<code>57</code>) - Binära meddelanden med 0 längd.</li></ul><h2 id=protokoll-1>Protokoll
+<a class=anchor href=#protokoll-1>#</a></h2><p>Följande är några av de bitar som används av SCTP-protokollet. Detta är
+inte någon utförlig beskrivning, utan bara de grundläggande strukturerna
+för att förstå tillståndsmaskinen.</p><p>Varje avsnitt börjar med ett <code>type</code>-fält. Innan en lista med avsnitt kommer du att finnas en rubrik (header).</p><h3 id=data-avsnitt>DATA-avsnitt
+<a class=anchor href=#data-avsnitt>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 0    | Reserved|U|B|E|    Length                     |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                              TSN                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|      Stream Identifier        |   Stream Sequence Number      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                  Payload Protocol Identifier                  |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/                            User Data                          /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>När du skickar något över datakanalen, DATA-avsnitt är hur all data skickas.</p><p><code>U</code>-flaggan är satt om detta är ett oordnat paket. Då kan vi ignorera strömsekvensnumret.</p><p><code>B</code> och <code>E</code> är början och slutet. Om du vill skicka ett
+meddelande som är för stort för ett DATA-avsnitt, måste det fragmenteras.
+Flaggorna <code>B</code> och <code>E</code> och sekvensnummret är hur SCTP kommunicerar detta.</p><ul><li><code>B=1</code>, <code>E=0</code> - Första delen av ett fragmenterat användarmeddelande.</li><li><code>B=0</code>, <code>E=0</code> - Mellanstycke i ett fragmenterat användarmeddelande.</li><li><code>B=0</code>, <code>E=1</code> - Sista delen av ett fragmenterat användarmeddelande.</li><li><code>B=1</code>, <code>E=1</code> - Ofragmenterat meddelande.</li></ul><p><code>TSN</code> är sändningssekvensnumret. Det är det globala unika
+identifierare för detta meddelande. Efter 4 294 967 295 meddelanden börjar räknaren om.</p><p><code>Stream Identifier</code> är den unika IDt för strömmen som den här datan tillhör.</p><p><code>Payload Protocol Identifier</code> visar vilken typ av data som skickas via
+den här strömmen. För WebRTC kommer det att vara DCEP, String eller Binary.</p><p><code>User Data</code> är den data du skickar. All data du skickar via en WebRTC-datakanal
+överförs i DATA-avsnitt.</p><h3 id=init-avsnitt>INIT-avsnitt
+<a class=anchor href=#init-avsnitt>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 1    |  Chunk Flags  |      Chunk Length             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         Initiate Tag                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|           Advertised Receiver Window Credit (a_rwnd)          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Number of Outbound Streams   |  Number of Inbound Streams    |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                          Initial TSN                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/              Optional/Variable-Length Parameters              /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>INIT-avsnittet startar processen att skapa en koppling.</p><p><code>Initiate Tag</code> används för att generera kakor. Cookies används för Man-In-The-Middle
+och Denial of Service-skydd. De beskrivs mer detaljerat i staten
+maskinsektion.</p><p><code>Advertised Receiver Window Credit</code> används för SCTPs trängselskontroll. Fältet
+visar hur stor buffert mottagaren har tilldelat för den här kopplingen.</p><p><code>Number of Outbound/Inbound Streams</code> meddelar mottagaren hur många strömmar avsändaren klarar av.</p><p><code>Initial TSN</code> är en slumpmässigt vald <code>uint32</code> att starta den lokala räknaren på.</p><p><code>Optional Parameters</code> gör det möjligt att introducera nya funktioner till SCTP protokollet.</p><h3 id=sack-avsnitt>SACK-avsnitt
+<a class=anchor href=#sack-avsnitt>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 3    |Chunk  Flags   |      Chunk Length             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      Cumulative TSN Ack                       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|          Advertised Receiver Window Credit (a_rwnd)           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+| Number of Gap Ack Blocks = N  |  Number of Duplicate TSNs = X |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Gap Ack Block #1 Start       |   Gap Ack Block #1 End        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+/                                                               /
+\                              ...                              \
+/                                                               /
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Gap Ack Block #N Start      |  Gap Ack Block #N End         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       Duplicate TSN 1                         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+/                                                               /
+\                              ...                              \
+/                                                               /
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       Duplicate TSN X                         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>SACK (Selective Acknowledgment) avsnitt är hur en mottagare meddelar
+en avsändare att den har fått ett paket. En avsändare kommer att skicka den aktuella DATA-biten om och om igen tills den får en SACK. En SACK gör mer än bara
+uppdatera TSN dock.</p><p><code>Cumulative TSN ACK</code> är det högsta TSN som har mottagits.</p><p><code>Advertised Receiver Window Credit</code> är mottagarens buffertstorlek för det annonserade mottagarfönstret`. Mottagaren kan ändra detta under sessionen om mer minne blir tillgängligt.</p><p><code>Ack Blocks</code> är TSN:er som har tagits emot efter <code>Cumulative TSN ACK</code>.
+Detta används om det finns ett lucka av levererade paket. Låt oss säga DATA-avsnitt med TSN
+<code>100</code>,<code> 102</code>, <code>103</code> och<code> 104</code> levereras. <code>Cumulative TSN ACK</code> skulle vara <code>100</code>, men
+<code>Ack Blocks</code> kan användas för att meddela avsändaren att den inte behöver skicka <code>102</code>, <code>103</code> eller <code>104</code> igen.</p><p><code>Duplicate TSN</code> meddelar avsändaren att den har fått följande DATA-avsnitt mer än en gång.</p><h3 id=heartbeat-avsnitt>HEARTBEAT-avsnitt
+<a class=anchor href=#heartbeat-avsnitt>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 4    | Chunk  Flags  |      Heartbeat Length         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/            Heartbeat Information TLV (Variable-Length)        /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>HEARTBEAT-avsnitt används för att kontrollera att mottagaren fortfarande svarar.
+Användbart om du inte skickar några DATA-avsnitt, men vill behålla en NAT
+mappning öppen.</p><h3 id=abort-avsnitt>ABORT-avsnitt
+<a class=anchor href=#abort-avsnitt>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 6    |Reserved     |T|           Length              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+/                                                               /
+\               Zero or more Error Causes                       \
+/                                                               /
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>Ett ABORT-avsnitt stänger plötsligt av kopplingen. Används när
+ena sidan får ett kritiskt fel. För att avsluta på ett snyggare sätt
+används SHUTDOWN-avsnitt istället.</p><h3 id=shutdown-avsnitt>SHUTDOWN-avsnitt
+<a class=anchor href=#shutdown-avsnitt>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 7    | Chunk  Flags  |      Length = 8               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      Cumulative TSN Ack                       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>SHUTDOWN-avsnitt startar en kontrollerad avstängning av SCTP-kopplingen.
+Varje klient informerar mottagaren om den senaste TSN som den skickade.
+Detta säkerställer att inga paket har tappats. WebRTC gör inte en graciös
+avstängning av själva SCTP-kopplingen. Du måste stänga ner varje datakanal
+själv för att hantera det graciöst.</p><p><code>Cumulative TSN ACK</code> är den sista TSN som skickades. Varje sida vet att
+den inte ska stänga ner förrän de har fått DATA-avsnittet med denna TSN.</p><h3 id=error-avsnitt>ERROR-avsnitt
+<a class=anchor href=#error-avsnitt>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 9    | Chunk  Flags  |           Length              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/                    One or more Error Causes                   /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>Ett ERROR-avsnitt används för att meddela den andra SCTP klienten
+att ett icke-kritiskt fel har inträffat.</p><h3 id=forward-tsn-avsnitt>FORWARD TSN-avsnitt
+<a class=anchor href=#forward-tsn-avsnitt>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 192  |  Flags = 0x00 |        Length = Variable      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      New Cumulative TSN                       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Stream-1              |       Stream Sequence-1       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               /
+/                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Stream-N              |       Stream Sequence-N       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p><code>FORWARD TSN</code>-avsnitt flyttar den globala TSN framåt. SCTP gör detta så
+att du kan hoppa över några paket som du inte bryr dig om längre. Låt oss säga
+du skickar <code>10 11 12 13 14 15</code> och dessa paket endast är giltiga om alla
+kommer fram. Den här datan måste komma fram i realtid, så om ett paket anländer
+för sent är det inte användbart.</p><p>Om du tappar <code>12</code> och <code>13</code> finns det ingen anledning att skicka <code>14</code> och <code>15</code>!
+SCTP använder <code>FORWARD TSN</code>-avsnitt för att göra det. Meddelandet låter mottagaren
+veta att paket <code>14</code> och <code>15</code> inte kommer att skickas längre.</p><p><code>New Cumulative TSN</code> är den nya TSN:en för anslutningen. Alla paket
+innan detta TSN kommer att slängas.</p><p><code>Stream</code> och <code>Stream Sequence</code> används för att hoppa <code>Stream Sequence Number</code>
+antal avsnitt framåt. Gå tillbaka till DATA-avsnitt för betydelsen av detta fält.</p><h2 id=tillståndsmaskinen-för-sctp>Tillståndsmaskinen för SCTP
+<a class=anchor href=#tillst%c3%a5ndsmaskinen-f%c3%b6r-sctp>#</a></h2><p>Det finns några intressanta delar av SCTPs tillståndsmaskin. WebRTC använder inte alla
+funktioner i SCTP-tillståndsmaskinen, så vi har uteslutit vissa delar. Vi har också förenklat vissa komponenter för att göra dem begripliga på egen hand.</p><h3 id=anslutningsetableringsflöde>Anslutningsetableringsflöde
+<a class=anchor href=#anslutningsetableringsfl%c3%b6de>#</a></h3><p><code>INIT</code> och <code>INIT ACK</code> avsnitt används för att utbyta funktioner och konfigurationer
+mellan varje klient. SCTP använder en kaka (cookie) under handskakningen för att validera den kollega den kommunicerar med.
+Detta för att säkerställa att handskakningen inte avlyssnas och för att förhindra DoS-attacker.</p><p><code>INIT ACK</code> avsnittet innehåller kakan. Kakan returneras sedan till dess skapare
+med <code>COOKIE ECHO</code>. Om cookieverifiering lyckas skickas ett <code>COOKIE ACK</code>
+och DATA-avsnitt är redo att börja skickas.</p><p><img src=../../images/07-connection-establishment.png alt=Uppkoppling title=Uppkoppling></p><h3 id=anslutning-av-kopplingen>Anslutning av kopplingen
+<a class=anchor href=#anslutning-av-kopplingen>#</a></h3><p>SCTP använder <code>SHUTDOWN</code> avsnittet. När en agent får ett <code>SHUTDOWN</code>-avsnitt kommer den att vänta tills den
+fått det begärda <code>Cumulative TSN ACK</code>. Detta gör det möjligt för en användare att se till att all data
+levereras även om anslutningen har hög paketförlust.</p><h3 id=keep-alive-mekanism>Keep-Alive mekanism
+<a class=anchor href=#keep-alive-mekanism>#</a></h3><p>SCTP använder <code>HEARTBEAT REQUEST</code> och <code>HEARTBEAT ACK</code> avsnitt för att hålla anslutningen vid liv. Dessa meddelanden skickas
+på ett konfigurerbart intervall. SCTP använder sig av exponentiell backoff om paketet inte har kommit fram.</p><p><code>HEARTBEAT</code>-avsnitt innehåller också ett tidsvärde. Detta gör det möjligt för två kopplingar att beräkna tur-och-retur-tiden mellan två klienter.</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div class=book-languages tabindex=0 aria-haspopup=true><ul><li class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Svenska</li></ul><ul class=book-languages-list><li><a href=https://webrtcforthecurious.com/docs/07-data-communication/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+English</a></li><li class=active><a href=https://webrtcforthecurious.com/sv/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Svenska</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/07-data-communication/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+简体中文</a></li><li><a href=https://webrtcforthecurious.com/ja/docs/07-data-communication/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+日本語</a></li></ul></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/commit/e96acd2e072c88dfcc229af4fc72049b04d97a30 title="Senast modifierad av Claes Mogren | June 10, 2021" target=_blank rel=noopener><img src=/svg/calendar.svg class=book-icon alt=Calendar>
+<span>June 10, 2021</span></a></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content.sv/docs/07-data-communication.md target=_blank rel=noopener><img src=/svg/edit.svg class=book-icon alt=Edit>
+<span>Redigera denna sida</span></a></div></div></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#hur-fungerar-det>Hur fungerar det?</a></li><li><a href=#dcep>DCEP</a><ul><li><a href=#data_channel_open>DATA_CHANNEL_OPEN</a></li><li><a href=#data_channel_ack>DATA_CHANNEL_ACK</a></li></ul></li><li><a href=#stream-control-transmission-protocol>Stream Control Transmission Protocol</a></li><li><a href=#begrepp>Begrepp</a><ul><li><a href=#association>Association</a></li><li><a href=#strömmar>Strömmar</a></li><li><a href=#datagrambaserat>Datagrambaserat</a></li><li><a href=#avsnitt>Avsnitt</a></li><li><a href=#sändningssekvensnummer>Sändningssekvensnummer</a></li><li><a href=#strömidentifierare>Strömidentifierare</a></li><li><a href=#payload-protocol-identifier>Payload Protocol Identifier</a></li></ul></li><li><a href=#protokoll-1>Protokoll</a><ul><li><a href=#data-avsnitt>DATA-avsnitt</a></li><li><a href=#init-avsnitt>INIT-avsnitt</a></li><li><a href=#sack-avsnitt>SACK-avsnitt</a></li><li><a href=#heartbeat-avsnitt>HEARTBEAT-avsnitt</a></li><li><a href=#abort-avsnitt>ABORT-avsnitt</a></li><li><a href=#shutdown-avsnitt>SHUTDOWN-avsnitt</a></li><li><a href=#error-avsnitt>ERROR-avsnitt</a></li><li><a href=#forward-tsn-avsnitt>FORWARD TSN-avsnitt</a></li></ul></li><li><a href=#tillståndsmaskinen-för-sctp>Tillståndsmaskinen för SCTP</a><ul><li><a href=#anslutningsetableringsflöde>Anslutningsetableringsflöde</a></li><li><a href=#anslutning-av-kopplingen>Anslutning av kopplingen</a></li><li><a href=#keep-alive-mekanism>Keep-Alive mekanism</a></li></ul></li></ul></nav></div></aside></main></body></html>
