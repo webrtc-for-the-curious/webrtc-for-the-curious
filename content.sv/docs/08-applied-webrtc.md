@@ -44,7 +44,7 @@ Fjärråtkomst är när du ansluter till en annan dator via WebRTC. Du kan ha fu
 applikation på den. En vanlig tillämpning är att köra tunga beräkningsuppgifter som den lokala hårdvaran inte klarar av. Som att köra ett nytt videospel, eller
 CAD-programvara. WebRTC har revolutionerat det här området på tre sätt.
 
-WebRTC kan användas för att ansluta till en server som inte har någon publik address. Med NAT Traversal kan du komma åt en dator som endast är tillgänglig
+WebRTC kan användas för att ansluta till en server som inte har någon publik adress. Med NAT Traversal kan du komma åt en dator som endast är tillgänglig
 via STUN. Detta är bra för säkerhet och anonymitet. Dina användare behöver inte skicka video via någon publik server. NAT Traversal gör också
 distributionen enklare. Du behöver inte oroa dig om att öppna portar eller ställa in et statiskt IP i förväg.
 
