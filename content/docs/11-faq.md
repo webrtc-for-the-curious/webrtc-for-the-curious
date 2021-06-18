@@ -29,11 +29,11 @@ Yes, you can send both text and binary data via DataChannels.
 {{</details>}}
 
 {{<details "What latency can I expect with WebRTC?">}}
-For un-tuned media you can expect sub-500 milliseconds. If you are willing to tune or sacrifice quality
-for latency developers have gotten sub-100ms
+For un-tuned media, you can expect sub-500 milliseconds. If you are willing to tune or sacrifice quality
+for latency, developers have gotten sub-100ms latency.
 
 DataChannels support "Partial-reliability" option which can reduce latency caused by
-data retransmissions over a lossy connection. If configured properly it has been shown to beat TCP TLS connections.
+data retransmissions over a lossy connection. If configured properly, it has been shown to beat TCP TLS connections.
 {{</details>}}
 
 {{<details "Why would I want unordered delivery for DataChannels?">}}
@@ -43,7 +43,7 @@ head-of-line blocking delay.
 {{</details>}}
 
 {{<details "Can I send audio or video over a DataChannel?">}}
-You could send any data over DataChannel. In a browser case, it is your
+Yes, you can send any data over a DataChannel. In the browser case, it will be your
 responsibility to decode the data and pass it to a media player for rendering,
-where it is automatically done when you use media channels.
+while all of that is done automatically if you use media channels.
 {{</details>}}
