@@ -338,6 +338,6 @@ Kolla efter `pliCount` på [webrtc internals sidan](#webrtc-internals). Om den �
 #### Latens på mottagarsidan
 Latens kommer att påverkas av paket som kommer fram i fel ordning.
 Om den nedre halvan av en bild kommer före toppen måste du vänta på toppen innan du kan avkoda den.
-Detta förklaras mer noggrant i kapitlet [Solving Jitter](05-real-time-networking/#solving-jitter).
+Detta förklaras mer noggrant i kapitlet [Solving Jitter](../05-real-time-networking/#solving-jitter).
 
 Du kan också hänvisa till det inbyggda [jitterBufferDelay](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-jitterbufferdelay) mätningen för att se hur länge en bild hölls i mottagningsbufferten i väntan på alla paket, innan den skickades vidare till avkodaren.

@@ -6,14 +6,12 @@ weight: 11
 
 
 # History
-
 This section is ongoing, and we don't have all the facts yet. We are conducting interviews to build a history of digital communication.
 
 ### RTP
-
 RTP and RTCP is the protocol that handles all media transport for WebRTC. It was defined in [RFC 1889](https://tools.ietf.org/html/rfc1889) in January 1996.
 We are very lucky to have one of the authors [Ron Frederick](https://github.com/ronf) talk about it himself. Ron recently uploaded
-[Network Video tool](https://github.com/ronf/nv), a project that informed RTP.
+[Network Video tool](https://github.com/ronf/nv) to GitHub, a project that informed RTP.
 
 **In his own words:**
 
@@ -65,7 +63,7 @@ formats of audio and video.
 [4]: https://tools.ietf.org/html/rfc3550
 [5]: https://tools.ietf.org/html/rfc3551
 
-Over the next couple of years, work contined on "nv", porting the tool
+Over the next couple of years, work continued on "nv", porting the tool
 to a number of additional hardware platforms and video capture devices.
 It continued to be used as one of the primary tools for broadcasting
 conferences on the Internet at the time, including being selected by NASA
@@ -109,7 +107,6 @@ had MBONE tools that we were working on that allowed for various forms of
 online collaboration, and trying to come up with a common base protocol
 all these tools could use was what led to RTP.
 
-
 **Multicast is super fascinating. WebRTC is entirely unicast, mind expanding on
 that?**
 
@@ -140,7 +137,7 @@ out onto the network that wasn't directed at anyone in particular, but
 everyone who tuned to that “channel” could receive it. As it happened, the
 computer I was porting the IP multicast code to what was the first generation
 SPARC-station from Sun, and it actually had built-in telephone-quality audio
-hardware!  You could digitize sound from a microphone and play it back over
+hardware! You could digitize sound from a microphone and play it back over
 built-in speakers (or via a headphone output). So, my first thought was to
 figure out how to send that audio out onto the network in real-time using
 IP multicast, and see if I could build a “CB radio” equivalent with actual
@@ -152,7 +149,6 @@ you needed to mathematically “mix” multiple audio streams into one before
 you could play it, but that could all be done in software once you understood
 how the audio sampling worked. That audio application led me to working on
 the MBONE and eventually moving from audio to video with “nv”.
-
 
 **Anything that got left out of the protocol that you wish you had added?
 Anything in the protocol you regret?**
@@ -174,7 +170,6 @@ efficient from a bandwidth perspective. I sometimes wish we had pushed
 harder to get IP multicast adopted beyond just the research community.
 I think we could have seen the transition from cable and broadcast
 television to Internet-based audio and video much sooner if we had.
-
 
 **What things did you imagine being built with RTP? Do have any cool RTP
 projects/ideas that got lost to time?**
