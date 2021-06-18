@@ -6,12 +6,29 @@ weight: 11
 
 
 # History
-This section is ongoing, and we don't have all the facts yet. We are conducting interviews to build a history of digital communication.
+When learning WebRTC developers often feel frustrated by the complexity. They
+see
+WebRTC features irrelevant to their current project and wish WebRTC was
+simpler. The issue
+is that everyone has a different set of use cases. Real-time communications has
+a rich
+history with lots of different people building many different things.
 
-### RTP
-RTP and RTCP is the protocol that handles all media transport for WebRTC. It was defined in [RFC 1889](https://tools.ietf.org/html/rfc1889) in January 1996.
-We are very lucky to have one of the authors [Ron Frederick](https://github.com/ronf) talk about it himself. Ron recently uploaded
-[Network Video tool](https://github.com/ronf/nv) to GitHub, a project that informed RTP.
+This chapter contains interviews with the authors of the protocols that make up
+WebRTC.
+It gives insight into the designs made when building each protocol, and
+finishes with an
+interview about WebRTC itself. If you understand the intentions and designs of
+the software
+you can build more effective systems with it.
+
+## RTP
+RTP and RTCP is the protocol that handles all media transport for WebRTC. It
+was defined in [RFC 1889](https://tools.ietf.org/html/rfc1889) in January 1996.
+We are very lucky to have one of the authors [Ron
+Frederick](https://github.com/ronf) talk about it himself. Ron recently uploaded
+[Network Video tool](https://github.com/ronf/nv) to GitHub, a project that
+informed RTP.
 
 **In his own words:**
 
@@ -235,8 +252,126 @@ time had come. I actually ended up making “nv” interoperate with many of
 these tools, and in a few cases other tools picked up my “nv” codecs, so
 they could interoperate when using my compression scheme.
 
-# SDP
-# ICE
-# SRTP
-# SCTP
-# DTLS
+## WebRTC
+WebRTC required a standardization effort that dwarfs all of the other efforts
+described in this chapter. It required cooperation across two different
+standards bodies (IETF and W3C) and hundreds of individuals across many
+companies and countries. To give us a  look inside the motivations and
+monumental effort it took to make WebRTC happen we have
+[Serge Lachapelle](https://twitter.com/slac)
+
+Serge is a product manager at Google, currently serving as a product manager
+for Google Workspace. This is my summary of the interview.
+
+### What led you to work on WebRTC?
+I have been passionate about building communications software since I was in
+college. In the 90s the technology like [nv](https://github.com/ronf/nv)
+started to appear, but was difficult to use.  I created a project that allowed
+you to join a video call right from your browser. I also ported it to Windows.
+
+I took this experience to Marratech, a company I co-founded. We created
+software for group video conferencing.  Technologically the landscape
+was so different. The cutting edge in video was based on multicast networking.
+A user could depend on the network to deliver to a video packet to everyone in
+the call. This meant that we had very simple servers. This had a big downside
+though, networks had to be designed to accommodate it. The industry moved away
+from multicast to packet shufflers, more commonly known as SFUs.
+
+Marratech was acquired by Google in 2007. I would then go on to work on the
+project that would inform WebRTC.
+
+### The first Google project
+The first project that the future WebRTC team worked on was Gmail voice and
+video chat. Getting audio and video into the browser was no easy task. It
+required specialty components that we had to license from different companies.
+Audio was licensed from GIPs, video was licensed for Vidyo and the networking
+was libjingle. The magic was then making all of them work together.
+
+Each subsystem has completely different APIs, and assumed you were solving
+different problems. To make it all work together you need working knowledge
+of networking, cryptography, media and more.
+[Justin Uberti](https://juberti.com) was the person that took on this work.
+He brought these components together to make a usable product.
+
+Rendering real-time in the browser was also really hard. We had to use the
+NPAPI (Netscape Plugin API) and do lots of clever things to make it work.
+The lessons we learned from this project greatly influenced WebRTC.
+
+### Chrome
+At the same time the Chrome project started inside of Google. There was
+so much excitement, and this project had huge goals. There was talk about
+WebGL, Offline, Database capabilities, low latency input for gaming just
+to name a few.
+
+Moving away from NPAPI became a big focus. It is a powerful API, but comes with
+big security consequences. Chrome uses a sandbox design to keep users safe.
+Operations that can be potentially unsafe are run in different processes.
+Even if something goes wrong an attacker still doesn’t have access to the
+user data.
+
+### WebRTC is born
+For me WebRTC was born with a few motivations. Combined they gave birth to the
+effort.
+
+It shouldn’t be this hard to build RTC experiences. So much effort is wasted
+re-implementing the same thing by different developers. We should solve these
+frustrating integration problems once, and focus on other things.
+
+Human communication should be unhampered and should be open. How is it ok for
+text and HTML to be open, but my voice and my image in real-time not to be?
+
+Security is a priority. Using the NPAPI wasn’t best for users. This was also
+a chance to make a protocol that was secure by default.
+
+To make WebRTC happen Google acquired and Open Sourced the components we had
+used before. [On2](https://en.wikipedia.org/wiki/On2_Technologies) was
+acquired for it’s video technology and
+[Global IP Solutions](https://en.wikipedia.org/wiki/Global_IP_Solutions)
+for its RTC technology.  I was in charge of the effort of acquiring GIPS.
+We got to work combining these and making them easy to use in and outside
+the browser.
+
+### Standardization
+Standardizing WebRTC was something we really wanted to do, but not something I
+had done before nor anyone on our immediate team. For this we were really
+fortunate to have Harald Alvestrand at Google. He had done extensive work in
+the IETF already and started the WebRTC standardization process.
+
+In summer 2010 an informal lunch was scheduled in Maastricht. Developers from
+many companies came together to discuss what WebRTC should be. The lunch had
+engineers from Google, Cisco, Ericsson, Skype, Mozilla, Linden Labs and more.
+You can find the full attendance and presenter slides on
+[rtc-web.alvestrand.com](http://rtc-web.alvestrand.com)
+
+Skype also provided some great guidance because of the work they had done with
+Opus in the IETF.
+
+### Standing on the shoulders of giants
+When working in the IETF you are extending the work that has come before you.
+With WebRTC we were lucky that so many things existed. We didn’t have to take
+on every problem because they already were solved. If you don’t like the
+pre-existing technology it can be frustrating though. There has to be a pretty
+big reason to disregard existing work, so rolling your own isn’t an option.
+
+We also consciously didn’t attempt to re-standardize things like signaling.
+This had already been solved with SIP and other non-IETF efforts and it
+felt like it could end up being very political. In the end it just didn’t
+feel like there was much value to add to the space.
+
+I didn’t stay as involved in standardization as Justin and Harald, but I
+enjoyed my time doing it. I was more excited about returning to building
+things for users.
+
+### The future
+WebRTC is in a great place today. There are lots of iterative changes
+happening, but nothing in particular I have been working on.
+
+I am most excited about what cloud computing can do for communication. Using
+advanced algorithms we can remove background noise from a call and make
+communication possible where it wasn’t before.  We are also seeing WebRTC
+extend far beyond Communications… who knew that it would be powering cloud
+based gaming 9 years later? All of this wouldn’t be possible without the
+foundation of WebRTC.
+
+
+
