@@ -30,7 +30,7 @@ Frederick](https://github.com/ronf) talk about it himself. Ron recently uploaded
 [Network Video tool](https://github.com/ronf/nv) to GitHub, a project that
 informed RTP.
 
-**In his own words:**
+### In his own words
 
 In October of 1992, I began to experiment with the Sun VideoPix frame grabber
 card, with the idea of writing a network videoconferencing tool based upon IP
@@ -109,7 +109,7 @@ broadcast quality video over high-bandwidth Ethernet and ATM networks.
 I also later used some of this code as the basis for "Mediastore", which
 was a network-based video recording and playback service.
 
-**Do you remember the motivations/ideas of the other people on the draft?**
+### Do you remember the motivations/ideas of the other people on the draft?
 
 We were all researchers working on IP multicast, and helping to create
 the Internet multicast backbone (aka MBONE). The MBONE was created by
@@ -124,8 +124,7 @@ had MBONE tools that we were working on that allowed for various forms of
 online collaboration, and trying to come up with a common base protocol
 all these tools could use was what led to RTP.
 
-**Multicast is super fascinating. WebRTC is entirely unicast, mind expanding on
-that?**
+### Multicast is super fascinating. WebRTC is entirely unicast, mind expanding on that?
 
 Before getting to Stanford and learning about IP multicast, I had a
 long history working on ways to use computers as a way for people to
@@ -167,8 +166,7 @@ you could play it, but that could all be done in software once you understood
 how the audio sampling worked. That audio application led me to working on
 the MBONE and eventually moving from audio to video with “nv”.
 
-**Anything that got left out of the protocol that you wish you had added?
-Anything in the protocol you regret?**
+### Anything that got left out of the protocol that you wish you had added? Anything in the protocol you regret?
 
 I wouldn't say I regret it, but one of the big complaints people ended up
 having about RTP was the complexity of implementing RTCP, the control protocol
@@ -188,8 +186,7 @@ harder to get IP multicast adopted beyond just the research community.
 I think we could have seen the transition from cable and broadcast
 television to Internet-based audio and video much sooner if we had.
 
-**What things did you imagine being built with RTP? Do have any cool RTP
-projects/ideas that got lost to time?**
+### What things did you imagine being built with RTP? Do have any cool RTP projects/ideas that got lost to time?
 
 One of the fun things I built was a version of the classic “Spacewar” game
 which used IP multicast. Without having any kind of central server, multiple
@@ -223,8 +220,8 @@ too could be multicast to others in that region, since a packet loss in
 the middle of the network would tend to mean a bunch of clients
 downstream of that point all missed the same data.
 
-**Why did you have to roll your own video compression. Was nothing else
-available at the time?**
+### Why did you have to roll your own video compression. Was nothing else
+available at the time?
 
 At the time I began to build “nv”, the only systems I know of that did
 videoconferencing were very expensive specialized hardware. For instance,
@@ -256,9 +253,9 @@ they could interoperate when using my compression scheme.
 WebRTC required a standardization effort that dwarfs all of the other efforts
 described in this chapter. It required cooperation across two different
 standards bodies (IETF and W3C) and hundreds of individuals across many
-companies and countries. To give us a  look inside the motivations and
+companies and countries. To give us a look inside the motivations and
 monumental effort it took to make WebRTC happen we have
-[Serge Lachapelle](https://twitter.com/slac)
+[Serge Lachapelle](https://twitter.com/slac).
 
 Serge is a product manager at Google, currently serving as a product manager
 for Google Workspace. This is my summary of the interview.
@@ -266,11 +263,11 @@ for Google Workspace. This is my summary of the interview.
 ### What led you to work on WebRTC?
 I have been passionate about building communications software since I was in
 college. In the 90s the technology like [nv](https://github.com/ronf/nv)
-started to appear, but was difficult to use.  I created a project that allowed
+started to appear, but was difficult to use. I created a project that allowed
 you to join a video call right from your browser. I also ported it to Windows.
 
 I took this experience to Marratech, a company I co-founded. We created
-software for group video conferencing.  Technologically the landscape
+software for group video conferencing. Technologically the landscape
 was so different. The cutting edge in video was based on multicast networking.
 A user could depend on the network to deliver to a video packet to everyone in
 the call. This meant that we had very simple servers. This had a big downside
@@ -306,28 +303,28 @@ to name a few.
 Moving away from NPAPI became a big focus. It is a powerful API, but comes with
 big security consequences. Chrome uses a sandbox design to keep users safe.
 Operations that can be potentially unsafe are run in different processes.
-Even if something goes wrong an attacker still doesn’t have access to the
+Even if something goes wrong an attacker still doesn't have access to the
 user data.
 
 ### WebRTC is born
 For me WebRTC was born with a few motivations. Combined they gave birth to the
 effort.
 
-It shouldn’t be this hard to build RTC experiences. So much effort is wasted
+It shouldn't be this hard to build RTC experiences. So much effort is wasted
 re-implementing the same thing by different developers. We should solve these
 frustrating integration problems once, and focus on other things.
 
 Human communication should be unhampered and should be open. How is it ok for
 text and HTML to be open, but my voice and my image in real-time not to be?
 
-Security is a priority. Using the NPAPI wasn’t best for users. This was also
+Security is a priority. Using the NPAPI wasn't best for users. This was also
 a chance to make a protocol that was secure by default.
 
 To make WebRTC happen Google acquired and Open Sourced the components we had
 used before. [On2](https://en.wikipedia.org/wiki/On2_Technologies) was
 acquired for it’s video technology and
 [Global IP Solutions](https://en.wikipedia.org/wiki/Global_IP_Solutions)
-for its RTC technology.  I was in charge of the effort of acquiring GIPS.
+for its RTC technology. I was in charge of the effort of acquiring GIPS.
 We got to work combining these and making them easy to use in and outside
 the browser.
 
@@ -341,24 +338,24 @@ In summer 2010 an informal lunch was scheduled in Maastricht. Developers from
 many companies came together to discuss what WebRTC should be. The lunch had
 engineers from Google, Cisco, Ericsson, Skype, Mozilla, Linden Labs and more.
 You can find the full attendance and presenter slides on
-[rtc-web.alvestrand.com](http://rtc-web.alvestrand.com)
+[rtc-web.alvestrand.com](http://rtc-web.alvestrand.com).
 
 Skype also provided some great guidance because of the work they had done with
 Opus in the IETF.
 
 ### Standing on the shoulders of giants
 When working in the IETF you are extending the work that has come before you.
-With WebRTC we were lucky that so many things existed. We didn’t have to take
-on every problem because they already were solved. If you don’t like the
+With WebRTC we were lucky that so many things existed. We didn't have to take
+on every problem because they already were solved. If you don't like the
 pre-existing technology it can be frustrating though. There has to be a pretty
-big reason to disregard existing work, so rolling your own isn’t an option.
+big reason to disregard existing work, so rolling your own isn't an option.
 
-We also consciously didn’t attempt to re-standardize things like signaling.
-This had already been solved with SIP and other non-IETF efforts and it
-felt like it could end up being very political. In the end it just didn’t
+We also consciously didn't attempt to re-standardize things like signaling.
+This had already been solved with SIP and other non-IETF efforts, and it
+felt like it could end up being very political. In the end it just didn't
 feel like there was much value to add to the space.
 
-I didn’t stay as involved in standardization as Justin and Harald, but I
+I didn't stay as involved in standardization as Justin and Harald, but I
 enjoyed my time doing it. I was more excited about returning to building
 things for users.
 
@@ -368,10 +365,7 @@ happening, but nothing in particular I have been working on.
 
 I am most excited about what cloud computing can do for communication. Using
 advanced algorithms we can remove background noise from a call and make
-communication possible where it wasn’t before.  We are also seeing WebRTC
-extend far beyond Communications… who knew that it would be powering cloud
-based gaming 9 years later? All of this wouldn’t be possible without the
+communication possible where it wasn't before. We are also seeing WebRTC
+extend far beyond communications… Who knew that it would be powering cloud
+based gaming 9 years later? All of this wouldn't be possible without the
 foundation of WebRTC.
-
-
-
