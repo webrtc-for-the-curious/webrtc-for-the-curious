@@ -8,12 +8,13 @@ weight: 11
 # Historia
 Detta kapitel skrivs fortfarande och vi har inte alla fakta än. Vi genomför intervjuer för att bygga en mer samlad historia av digital kommunikation.
 
-### RTP
+## RTP
 RTP och RTCP är protokollet som hanterar all mediatransport för WebRTC. Det definierades i [RFC 1889](https://tools.ietf.org/html/rfc1889) i januari 1996.
 Vi är väldigt lyckliga att få en av författarna [Ron Frederick](https://github.com/ronf) prata om det själv. Ron laddade nyligen upp
 [Network Video tool](https://github.com/ronf/nv) på GitHub, ett projekt som la grunden till RTP.
 
-**I hans egna ord:** ([Originaltext på engelska](../../10-history-of-webrtc/#rtp))
+### I hans egna ord 
+([Originaltext på engelska](../../../doc/10-history-of-webrtc/#rtp))
 
 I oktober 1992 började jag experimentera med Sun VideoPix frame grabber
 med tanken att skriva ett nätverksvideokonferensverktyg baserat på IP
@@ -91,8 +92,7 @@ video över Ethernet och ATM-nätverk med hög bandbredd.
 Jag använde också senare en del av den här koden som grund för "Mediastore", 
 som var en nätverksbaserad videoinspelnings- och uppspelningstjänst.
 
-**Kommer du ihåg de andra personernas motiv/idéer i utkastet?**
-
+### Kommer du ihåg de andra personernas motiv/idéer i utkastet?
 Vi var alla forskare som arbetade med IP-multicast och hjälpte till att skapa
 internet-multicast-systemet (även kallad MBONE). MBONE skapades av
 Steve Deering (som först utvecklade IP-multicast), Van Jacobson och Steve
@@ -106,8 +106,7 @@ och jag själv. Vi alla hade MBONE-verktyg som vi arbetade med som möjliggjorde
 olika former av online-samarbete och försöker komma på ett gemensamt basprotokoll
 alla dessa verktyg som kunde användas var det som ledde till RTP.
 
-**Multicast är superfascinerande. WebRTC är enkelsändning, kan du utveckla det lite mer?**
-
+### Multicast är superfascinerande. WebRTC är enkelsändning, kan du utveckla det lite mer?
 Innan jag kom till Stanford och lärde mig om IP-multicast hade jag en lång 
 historia av att arbeta med olika sätt för människor att använda datorer som ett 
 sätt kommunicera med varandra. Detta började i början av 80-talet för mig
@@ -148,8 +147,7 @@ du kunde spela upp det, men det kunde göras i mjukvara när man förstått
 hur ljud-samplingen fungerade. Den ljudapplikationen ledde mig till att 
 arbeta med MBONE och så småningom gå från ljud till video med “nv”.
 
-**Har något som utelämnats från protokollet som du önskar att du hade lagt till?
-Är det något i protokollet du ångrar?**
+###Har något som utelämnats från protokollet som du önskar att du hade lagt till? Är det något i protokollet du ångrar?
 
 Jag skulle inte säga att jag ångrar det, men ett vanligt klagomål som människor 
 har om RTP är komplexiteten i att implementera RTCP, kontrollprotokollet
@@ -169,8 +167,8 @@ på hårdare att få IP-multicast accepterat utanför forskarkretsarna.
 Jag tror att vi kunde ha sett övergången från kabel och analog TV till
 internetbaserad ljud och video mycket tidigare om vi hade gjort det.
 
-**Vilka saker trodde du skulle byggas med RTP? Har något coolt RTP
-projekt eller idé som aldrig blev av?**
+### Vilka saker trodde du skulle byggas med RTP? Har något coolt RTP
+projekt eller idé som aldrig blev av?
 
 En rolig sak jag byggde var en version av det klassiska ”Spacewar”-spelet
 som använde IP-multicast. Utan att ha någon form av central server kunde
@@ -204,8 +202,7 @@ kan vara multicast för andra i den regionen, eftersom en paketförlust i
 mitt i nätverket ofta betyder at en massa klienter nedströms från den punkten 
 alla saknar samma data.
 
-**Varför var du tvungen att bygga din egen videokomprimering. Fanns det inget annat
-tillgängligt då?**
+### Varför var du tvungen att bygga din egen videokomprimering. Fanns det inget annat tillgängligt då?
 
 När jag började bygga "nv" använde de enda systemen jag kände till för
 videokonferenser mycket dyr och specialiserad hårdvara. Till exempel,
@@ -234,8 +231,122 @@ hade kommit. Jag gjorde faktiskt "nv" kompatibelt med många av dessa verktyg,
 och i ett fåtal fall plockade andra verktyg upp min "nv"-codec, så att de 
 kunde kommunicera via min komprimeringsalgoritm.
 
-# SDP
-# ICE
-# SRTP
-# SCTP
-# DTLS
+## WebRTC
+WebRTC krävde ett störe standardiseringsarbete än alla andra insatser
+som beskrivs i detta kapitel. Det krävde samarbete mellan två olika
+standardorgan (IETF och W3C) och hundratals individer i många
+företag och länder. För att ge oss en bild av motivationen och den
+monumentala ansträngning som krävdes för att få WebRTC att hända har vi
+frågat [Serge Lachapelle](https://twitter.com/slac).
+
+Serge jobbar på Google, för närvarande produktchef
+för Google Workspace. Det här är min sammanfattning av intervjun.
+
+### Vad fick dig att börja jobba på WebRTC?
+Jag har varit intresserad av att bygga kommunikationsverktyg ända sedan jag var i
+college. På 90-talet började teknik som [nv](https://github.com/ronf/nv)
+dyka up, men den var svår att använda. Jag skapade ett projekt som användarna gå
+med i ett videosamtal direkt från webbläsaren. Jag portade det också till Windows.
+
+Jag tog med den erfarenheten till Marratech, ett företag som jag grundade. Vi 
+skapade programvara för gruppvideokonferenser. Tekniskt sett var landskapet
+helt annorlunda då. Lösningar i framkanten för video baserades på multicast-nätverk.
+En användare var beroende av nätverket för att leverera till ett videopaket till alla 
+andra i samtalet. Detta innebar att vi hade mycket enkla servrar. Men det har också 
+en stor nackdel, nätverket måste konfigureras för att stödja det. Branschen slutade 
+använda multicast och gick över till paketblandare (packet shufflers), mer allmänt 
+känt som SFU.
+
+Marratech förvärvades av Google 2007. Jag fortsatte att arbeta med projektet som 
+var föregångaren till WebRTC.
+
+### Det första Google-projektet
+Det första projektet som det framtida WebRTC-teamet arbetade med var Gmail ljud och
+videochatt. Att få in ljud och video i webbläsaren var ingen lätt uppgift. Det
+krävde specialkomponenter som vi var tvungna att licensiera från olika företag.
+Ljud licensierades från GIP, video licensierades för Vidyo och nätverket
+var libjingle. Magin var att få alla att fungera tillsammans.
+
+Varje delsystem har helt olika API:er och antog att du löste olika problem. För 
+att allt ska fungera tillsammans behöver du kunskap om nätverk, kryptografi, media 
+med mera. [Justin Uberti](https://juberti.com) var den som tog sig an detta arbete.
+Han kopplade ihop komponenterna till en användbar produkt.
+
+Att rendera i realtid i webbläsaren var också riktigt svårt. Vi var tvungna att använda
+NPAPI (Netscape Plugin API) och göra massor av smarta saker för att få det att fungera.
+De lärdomar vi fick från det projektet påverkade WebRTC mycket.
+
+### Chrome
+Samtidigt startade Chrome-projektet hos Google. Det var så mycket entusiasm,
+och detta projekt hade stora planer. Det pratades om WebGL, offline-stöd, 
+databasfunktioner, låg latenskontroll för spel bara för att nämna några.
+
+Att flytta bort från NPAPI blev ett stort fokus. Det är ett kraftfullt API, men 
+kommer med stora säkerhetsmässiga konsekvenser. Chrome använder en sandlåda för 
+att skydda användarna.
+Operationer som kan vara potentiellt osäkra körs i olika processer.
+Även om något går fel har en angripare fortfarande inte tillgång till
+användardatan.
+
+### Hur WebRTC kom till
+För mig skapades WebRTC utifrån några specifika motiv som tillsammans ledde fram 
+till projektet.
+
+Det borde inte vara så svårt att bygga RTC-upplevelser. Så mycket ansträngning går
+åt till att återimplementera samma sak. Vi borde lösa dessa frustrerande 
+integrationsproblem en gång för alla, och sen fokusera på andra saker.
+
+Mänsklig kommunikation bör vara oförhindrad och öppen. Varför är det ok att
+text och HTML är öppet, men min röst och video i realtid är inte det?
+
+Säkerhet är en prioritet. Att använda NPAPI var inte bäst för användarna. 
+Detta var också en chans att skapa ett protokoll som är säkert från start.
+
+För att få WebRTC att bli av köpte Google de komponenter vi hade använts tidigare
+och släppte källkoden till dem. [On2](https://en.wikipedia.org/wiki/On2_Technologies) var
+förvärvat för sin videoteknik och [Global IP Solutions](https://en.wikipedia.org/wiki/Global_IP_Solutions)
+för sin RTC-teknik. Jag hade ansvaret för att förvärva GIPS. Vi fick arbeta med 
+att kombinera dessa och göra dem lätta att använda inom och utanför webbläsaren.
+
+### Standardisering
+Standardisering av WebRTC var något vi verkligen ville göra, men inte något 
+jag eller någon i vårt team hade gjort tidigare. Som tur var hade vi Harald 
+Alvestrand på Google. Han hade gjort omfattande arbete i IETF redan och 
+startade WebRTC-standardiseringsprocessen.
+
+Sommaren 2010 planerades en informell lunch i Maastricht. Utvecklare från
+många företag kom tillsammans för att diskutera vad WebRTC borde vara. Lunchen 
+hade ingenjörer från Google, Cisco, Ericsson, Skype, Mozilla, Linden Labs med
+flera. En lista av alla närvarande och själva presentationen finns på
+[rtc-web.alvestrand.com](http://rtc-web.alvestrand.com).
+
+Skype gav också bra vägledning på grund av det arbete de hade gjort med
+Opus i IETF.
+
+### Att stå på jättarnas axlar
+När du arbetar i IETF bygger du vidare det arbete som gjorts före dig. Med
+WebRTC hade vi turen att många saker redan fanns. Vi behövde inte ta oss an 
+alla problem eftersom många redan var lösta. Om du inte gillar den redan 
+befintliga tekniken kan det dock vara frustrerande. Det måste vara en ganska
+stark anledning att bortse från befintligt arbete, så att skapa en egen är 
+sällan ett alternativ.
+
+Vi valde medvetet inte att standardisera saker som signalering. Detta hade 
+redan lösts med SIP och andra ansträngningar utanför IETF, och det kändes 
+som att det kunde bli mycket politiska debatter. Slutsatsen var att det 
+inte kändes some det fanns mycket att lägga till på det området.
+
+Jag var inte lika involverad i standardiseringen som Justin och Harald, men 
+jag tyckte det var kul att göra. Jag var mer intresserat att återvända till 
+att bygga lösningar för användare.
+
+### Framtiden
+WebRTC är i ett bra läge idag. Det finns många inkrementella förändringar
+under utveckling, men inget speciellt som jag har jobbat med.
+
+Jag är mest intresserad att se vad molnet kan göra för kommunikation. Genom
+att använda avancerade algoritmer kan vi ta bort bakgrundsbrus från ett samtal 
+och göra kommunikation möjlig där det inte var möjligt tidigare. Vi ser också 
+att WebRTC sträcker sig långt bortom kommunikation… Vem kunde tro att det 
+skulle driva moln-baserade spel 9 år senare? Allt detta skulle vara omöjligt 
+utan grunden från WebRTC.
