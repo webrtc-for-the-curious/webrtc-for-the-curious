@@ -1,13 +1,28 @@
-<!doctype html><html lang=en dir=ltr><head><meta name=generator content="Hugo 0.74.3"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="History #  This section is ongoing, and we don&rsquo;t have all the facts yet. We are conducting interviews to build a history of digital communication.
-RTP #  RTP and RTCP is the protocol that handles all media transport for WebRTC. It was defined in RFC 1889 in January 1996. We are very lucky to have one of the authors Ron Frederick talk about it himself. Ron recently uploaded Network Video tool to GitHub, a project that informed RTP."><meta name=theme-color content="#FFFFFF"><meta property="og:title" content="History"><meta property="og:description" content="History #  This section is ongoing, and we don&rsquo;t have all the facts yet. We are conducting interviews to build a history of digital communication.
-RTP #  RTP and RTCP is the protocol that handles all media transport for WebRTC. It was defined in RFC 1889 in January 1996. We are very lucky to have one of the authors Ron Frederick talk about it himself. Ron recently uploaded Network Video tool to GitHub, a project that informed RTP."><meta property="og:type" content="article"><meta property="og:url" content="https://webrtcforthecurious.com/docs/10-history-of-webrtc/"><meta property="article:modified_time" content="2021-06-17T22:51:27-07:00"><meta property="og:site_name" content="WebRTC for the Curious"><title>History | WebRTC for the Curious</title><link rel=manifest href=/manifest.json><link rel=icon href=/favicon.png type=image/x-icon><link rel=alternate hreflang=sv href=https://webrtcforthecurious.com/sv/docs/10-history-of-webrtc/ title=Historia><link rel=alternate hreflang=zh href=https://webrtcforthecurious.com/zh/docs/10-history-of-webrtc/ title=历史><link rel=alternate hreflang=ja href=https://webrtcforthecurious.com/ja/docs/10-history-of-webrtc/ title=歴史><link rel=stylesheet href=/book.min.6c7c6446dfdee7c8c933e9bbc6e80ee3ed6c913b2a59519f2092c3c6a9d63e55.css integrity="sha256-bHxkRt/e58jJM+m7xugO4+1skTsqWVGfIJLDxqnWPlU="><script defer src=/en.search.min.d72a47c63d19b2dc1c4b1fd083056bebb628f58465275d0f55ec67add4049d9e.js integrity="sha256-1ypHxj0ZstwcSx/QgwVr67Yo9YRlJ10PVexnrdQEnZ4="></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<!doctype html><html lang=en dir=ltr><head><meta name=generator content="Hugo 0.74.3"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="History #  When learning WebRTC developers often feel frustrated by the complexity. They see WebRTC features irrelevant to their current project and wish WebRTC was simpler. The issue is that everyone has a different set of use cases. Real-time communications has a rich history with lots of different people building many different things.
+This chapter contains interviews with the authors of the protocols that make up WebRTC. It gives insight into the designs made when building each protocol, and finishes with an interview about WebRTC itself."><meta name=theme-color content="#FFFFFF"><meta property="og:title" content="History"><meta property="og:description" content="History #  When learning WebRTC developers often feel frustrated by the complexity. They see WebRTC features irrelevant to their current project and wish WebRTC was simpler. The issue is that everyone has a different set of use cases. Real-time communications has a rich history with lots of different people building many different things.
+This chapter contains interviews with the authors of the protocols that make up WebRTC. It gives insight into the designs made when building each protocol, and finishes with an interview about WebRTC itself."><meta property="og:type" content="article"><meta property="og:url" content="https://webrtcforthecurious.com/docs/10-history-of-webrtc/"><meta property="article:modified_time" content="2021-06-18T14:49:06-04:00"><meta property="og:site_name" content="WebRTC for the Curious"><title>History | WebRTC for the Curious</title><link rel=manifest href=/manifest.json><link rel=icon href=/favicon.png type=image/x-icon><link rel=alternate hreflang=sv href=https://webrtcforthecurious.com/sv/docs/10-history-of-webrtc/ title=Historia><link rel=alternate hreflang=zh href=https://webrtcforthecurious.com/zh/docs/10-history-of-webrtc/ title=历史><link rel=alternate hreflang=ja href=https://webrtcforthecurious.com/ja/docs/10-history-of-webrtc/ title=歴史><link rel=stylesheet href=/book.min.6c7c6446dfdee7c8c933e9bbc6e80ee3ed6c913b2a59519f2092c3c6a9d63e55.css integrity="sha256-bHxkRt/e58jJM+m7xugO4+1skTsqWVGfIJLDxqnWPlU="><script defer src=/en.search.min.0f3c0083c00f730f4b992623abc22bb8d0a1d90ca137d9216f99ff9936eae7dc.js integrity="sha256-DzwAg8APcw9LmSYjq8IruNCh2QyhN9khb5n/mTbq59w="></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
 <input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a href=/><span>WebRTC for the Curious</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li><a href=https://webrtcforthecurious.com/docs/01-what-why-and-how/>What, Why and How</a></li><li><a href=https://webrtcforthecurious.com/docs/02-signaling/>Signaling</a></li><li><a href=https://webrtcforthecurious.com/docs/03-connecting/>Connecting</a></li><li><a href=https://webrtcforthecurious.com/docs/04-securing/>Securing</a></li><li><a href=https://webrtcforthecurious.com/docs/05-real-time-networking/>Real-time Networking</a></li><li><a href=https://webrtcforthecurious.com/docs/06-media-communication/>Media Communication</a></li><li><a href=https://webrtcforthecurious.com/docs/07-data-communication/>Data Communication</a></li><li><a href=https://webrtcforthecurious.com/docs/08-applied-webrtc/>Applied WebRTC</a></li><li><a href=https://webrtcforthecurious.com/docs/09-debugging/>Debugging</a></li><li><a href=https://webrtcforthecurious.com/docs/10-history-of-webrtc/ class=active>History</a></li><li><a href=https://webrtcforthecurious.com/docs/11-faq/>FAQ</a></li></ul></nav><script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label>
 <strong>History</strong>
-<label for=toc-control><img src=/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><ul><li><a href=#rtp>RTP</a></li></ul></li></ul></nav></aside></header><article class=markdown><h1 id=history>History
-<a class=anchor href=#history>#</a></h1><p>This section is ongoing, and we don&rsquo;t have all the facts yet. We are conducting interviews to build a history of digital communication.</p><h3 id=rtp>RTP
-<a class=anchor href=#rtp>#</a></h3><p>RTP and RTCP is the protocol that handles all media transport for WebRTC. It was defined in <a href=https://tools.ietf.org/html/rfc1889>RFC 1889</a> in January 1996.
-We are very lucky to have one of the authors <a href=https://github.com/ronf>Ron Frederick</a> talk about it himself. Ron recently uploaded
-<a href=https://github.com/ronf/nv>Network Video tool</a> to GitHub, a project that informed RTP.</p><p><strong>In his own words:</strong></p><p>In October of 1992, I began to experiment with the Sun VideoPix frame grabber
+<label for=toc-control><img src=/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#rtp>RTP</a></li><li><a href=#webrtc>WebRTC</a><ul><li><a href=#what-led-you-to-work-on-webrtc>What led you to work on WebRTC?</a></li><li><a href=#the-first-google-project>The first Google project</a></li><li><a href=#chrome>Chrome</a></li><li><a href=#webrtc-is-born>WebRTC is born</a></li><li><a href=#standardization>Standardization</a></li><li><a href=#standing-on-the-shoulders-of-giants>Standing on the shoulders of giants</a></li><li><a href=#the-future>The future</a></li></ul></li></ul></nav></aside></header><article class=markdown><h1 id=history>History
+<a class=anchor href=#history>#</a></h1><p>When learning WebRTC developers often feel frustrated by the complexity. They
+see
+WebRTC features irrelevant to their current project and wish WebRTC was
+simpler. The issue
+is that everyone has a different set of use cases. Real-time communications has
+a rich
+history with lots of different people building many different things.</p><p>This chapter contains interviews with the authors of the protocols that make up
+WebRTC.
+It gives insight into the designs made when building each protocol, and
+finishes with an
+interview about WebRTC itself. If you understand the intentions and designs of
+the software
+you can build more effective systems with it.</p><h2 id=rtp>RTP
+<a class=anchor href=#rtp>#</a></h2><p>RTP and RTCP is the protocol that handles all media transport for WebRTC. It
+was defined in <a href=https://tools.ietf.org/html/rfc1889>RFC 1889</a> in January 1996.
+We are very lucky to have one of the authors <a href=https://github.com/ronf>Ron
+Frederick</a> talk about it himself. Ron recently uploaded
+<a href=https://github.com/ronf/nv>Network Video tool</a> to GitHub, a project that
+informed RTP.</p><p><strong>In his own words:</strong></p><p>In October of 1992, I began to experiment with the Sun VideoPix frame grabber
 card, with the idea of writing a network videoconferencing tool based upon IP
 multicast. It was modeled after &ldquo;vat&rdquo; &ndash; an audioconferencing tool developed
 at LBL, in that it used a similar lightweight session protocol for users
@@ -164,16 +179,86 @@ and video tools to choose from, not only on the MBONE but in other places
 like the CU-SeeMe tool built on the Mac. So, it was clearly an idea whose
 time had come. I actually ended up making “nv” interoperate with many of
 these tools, and in a few cases other tools picked up my “nv” codecs, so
-they could interoperate when using my compression scheme.</p><h1 id=sdp>SDP
-<a class=anchor href=#sdp>#</a></h1><h1 id=ice>ICE
-<a class=anchor href=#ice>#</a></h1><h1 id=srtp>SRTP
-<a class=anchor href=#srtp>#</a></h1><h1 id=sctp>SCTP
-<a class=anchor href=#sctp>#</a></h1><h1 id=dtls>DTLS
-<a class=anchor href=#dtls>#</a></h1></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div class=book-languages tabindex=0 aria-haspopup=true><ul><li class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+they could interoperate when using my compression scheme.</p><h2 id=webrtc>WebRTC
+<a class=anchor href=#webrtc>#</a></h2><p>WebRTC required a standardization effort that dwarfs all of the other efforts
+described in this chapter. It required cooperation across two different
+standards bodies (IETF and W3C) and hundreds of individuals across many
+companies and countries. To give us a look inside the motivations and
+monumental effort it took to make WebRTC happen we have
+<a href=https://twitter.com/slac>Serge Lachapelle</a></p><p>Serge is a product manager at Google, currently serving as a product manager
+for Google Workspace. This is my summary of the interview.</p><h3 id=what-led-you-to-work-on-webrtc>What led you to work on WebRTC?
+<a class=anchor href=#what-led-you-to-work-on-webrtc>#</a></h3><p>I have been passionate about building communications software since I was in
+college. In the 90s the technology like <a href=https://github.com/ronf/nv>nv</a>
+started to appear, but was difficult to use. I created a project that allowed
+you to join a video call right from your browser. I also ported it to Windows.</p><p>I took this experience to Marratech, a company I co-founded. We created
+software for group video conferencing. Technologically the landscape
+was so different. The cutting edge in video was based on multicast networking.
+A user could depend on the network to deliver to a video packet to everyone in
+the call. This meant that we had very simple servers. This had a big downside
+though, networks had to be designed to accommodate it. The industry moved away
+from multicast to packet shufflers, more commonly known as SFUs.</p><p>Marratech was acquired by Google in 2007. I would then go on to work on the
+project that would inform WebRTC.</p><h3 id=the-first-google-project>The first Google project
+<a class=anchor href=#the-first-google-project>#</a></h3><p>The first project that the future WebRTC team worked on was Gmail voice and
+video chat. Getting audio and video into the browser was no easy task. It
+required specialty components that we had to license from different companies.
+Audio was licensed from GIPs, video was licensed for Vidyo and the networking
+was libjingle. The magic was then making all of them work together.</p><p>Each subsystem has completely different APIs, and assumed you were solving
+different problems. To make it all work together you need working knowledge
+of networking, cryptography, media and more.
+<a href=https://juberti.com>Justin Uberti</a> was the person that took on this work.
+He brought these components together to make a usable product.</p><p>Rendering real-time in the browser was also really hard. We had to use the
+NPAPI (Netscape Plugin API) and do lots of clever things to make it work.
+The lessons we learned from this project greatly influenced WebRTC.</p><h3 id=chrome>Chrome
+<a class=anchor href=#chrome>#</a></h3><p>At the same time the Chrome project started inside of Google. There was
+so much excitement, and this project had huge goals. There was talk about
+WebGL, Offline, Database capabilities, low latency input for gaming just
+to name a few.</p><p>Moving away from NPAPI became a big focus. It is a powerful API, but comes with
+big security consequences. Chrome uses a sandbox design to keep users safe.
+Operations that can be potentially unsafe are run in different processes.
+Even if something goes wrong an attacker still doesn’t have access to the
+user data.</p><h3 id=webrtc-is-born>WebRTC is born
+<a class=anchor href=#webrtc-is-born>#</a></h3><p>For me WebRTC was born with a few motivations. Combined they gave birth to the
+effort.</p><p>It shouldn’t be this hard to build RTC experiences. So much effort is wasted
+re-implementing the same thing by different developers. We should solve these
+frustrating integration problems once, and focus on other things.</p><p>Human communication should be unhampered and should be open. How is it ok for
+text and HTML to be open, but my voice and my image in real-time not to be?</p><p>Security is a priority. Using the NPAPI wasn’t best for users. This was also
+a chance to make a protocol that was secure by default.</p><p>To make WebRTC happen Google acquired and Open Sourced the components we had
+used before. <a href=https://en.wikipedia.org/wiki/On2_Technologies>On2</a> was
+acquired for it’s video technology and
+<a href=https://en.wikipedia.org/wiki/Global_IP_Solutions>Global IP Solutions</a>
+for its RTC technology. I was in charge of the effort of acquiring GIPS.
+We got to work combining these and making them easy to use in and outside
+the browser.</p><h3 id=standardization>Standardization
+<a class=anchor href=#standardization>#</a></h3><p>Standardizing WebRTC was something we really wanted to do, but not something I
+had done before nor anyone on our immediate team. For this we were really
+fortunate to have Harald Alvestrand at Google. He had done extensive work in
+the IETF already and started the WebRTC standardization process.</p><p>In summer 2010 an informal lunch was scheduled in Maastricht. Developers from
+many companies came together to discuss what WebRTC should be. The lunch had
+engineers from Google, Cisco, Ericsson, Skype, Mozilla, Linden Labs and more.
+You can find the full attendance and presenter slides on
+<a href=http://rtc-web.alvestrand.com>rtc-web.alvestrand.com</a></p><p>Skype also provided some great guidance because of the work they had done with
+Opus in the IETF.</p><h3 id=standing-on-the-shoulders-of-giants>Standing on the shoulders of giants
+<a class=anchor href=#standing-on-the-shoulders-of-giants>#</a></h3><p>When working in the IETF you are extending the work that has come before you.
+With WebRTC we were lucky that so many things existed. We didn’t have to take
+on every problem because they already were solved. If you don’t like the
+pre-existing technology it can be frustrating though. There has to be a pretty
+big reason to disregard existing work, so rolling your own isn’t an option.</p><p>We also consciously didn’t attempt to re-standardize things like signaling.
+This had already been solved with SIP and other non-IETF efforts and it
+felt like it could end up being very political. In the end it just didn’t
+feel like there was much value to add to the space.</p><p>I didn’t stay as involved in standardization as Justin and Harald, but I
+enjoyed my time doing it. I was more excited about returning to building
+things for users.</p><h3 id=the-future>The future
+<a class=anchor href=#the-future>#</a></h3><p>WebRTC is in a great place today. There are lots of iterative changes
+happening, but nothing in particular I have been working on.</p><p>I am most excited about what cloud computing can do for communication. Using
+advanced algorithms we can remove background noise from a call and make
+communication possible where it wasn’t before. We are also seeing WebRTC
+extend far beyond Communications… who knew that it would be powering cloud
+based gaming 9 years later? All of this wouldn’t be possible without the
+foundation of WebRTC.</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div class=book-languages tabindex=0 aria-haspopup=true><ul><li class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
 English</li></ul><ul class=book-languages-list><li class=active><a href=https://webrtcforthecurious.com/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
 English</a></li><li><a href=https://webrtcforthecurious.com/sv/docs/10-history-of-webrtc/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
 Svenska</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/10-history-of-webrtc/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
 简体中文</a></li><li><a href=https://webrtcforthecurious.com/ja/docs/10-history-of-webrtc/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
-日本語</a></li></ul></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/commit/5dcc17c0a3ea8a697a6b7a5c89fa5f5137c4622c title="Last modified by Claes Mogren | June 18, 2021" target=_blank rel=noopener><img src=/svg/calendar.svg class=book-icon alt=Calendar>
+日本語</a></li></ul></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/commit/c56f1dec3c3b916d3d5baeb60e6f28bcbbf67283 title="Last modified by Sean DuBois | June 18, 2021" target=_blank rel=noopener><img src=/svg/calendar.svg class=book-icon alt=Calendar>
 <span>June 18, 2021</span></a></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content/docs/10-history-of-webrtc.md target=_blank rel=noopener><img src=/svg/edit.svg class=book-icon alt=Edit>
-<span>Edit this page</span></a></div></div></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><ul><li><a href=#rtp>RTP</a></li></ul></li></ul></nav></div></aside></main></body></html>
+<span>Edit this page</span></a></div></div></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#rtp>RTP</a></li><li><a href=#webrtc>WebRTC</a><ul><li><a href=#what-led-you-to-work-on-webrtc>What led you to work on WebRTC?</a></li><li><a href=#the-first-google-project>The first Google project</a></li><li><a href=#chrome>Chrome</a></li><li><a href=#webrtc-is-born>WebRTC is born</a></li><li><a href=#standardization>Standardization</a></li><li><a href=#standing-on-the-shoulders-of-giants>Standing on the shoulders of giants</a></li><li><a href=#the-future>The future</a></li></ul></li></ul></nav></div></aside></main></body></html>
