@@ -14,7 +14,7 @@ Vi är väldigt lyckliga att få en av författarna [Ron Frederick](https://gith
 [Network Video tool](https://github.com/ronf/nv) på GitHub, ett projekt som la grunden till RTP.
 
 ### I hans egna ord 
-([Originaltext på engelska](../../../doc/10-history-of-webrtc/#rtp))
+([Originaltext på engelska](../../../docs/10-history-of-webrtc/#rtp))
 
 I oktober 1992 började jag experimentera med Sun VideoPix frame grabber
 med tanken att skriva ett nätverksvideokonferensverktyg baserat på IP
