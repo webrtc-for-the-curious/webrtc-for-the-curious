@@ -14,7 +14,7 @@ WebRTC を学ぶ際、開発者はその複雑さに苛立ちを覚えること�
 
 ## RTP
 
-RTP および RTCP は、WebRTC のすべてのメディア伝送を担当するプロトコルです。1996年1月に[RFC 1889](https://tools.ietf.org/html/rfc1889)で定義されました。 著者の一人である[Ron Frederick](https://github.com/ronf)が自ら語ってくれるというのはとてもラッキーなことです。Ron は最近、RTPを知らせたプロジェクトである[Network Video tool](https://github.com/ronf/nv)を GitHub にアップロードしました。
+RTP および RTCP は、WebRTC のすべてのメディア伝送を担当するプロトコルです。1996年1月に[RFC 1889](https://tools.ietf.org/html/rfc1889)で定義されました。 著者の一人である[Ron Frederick](https://github.com/ronf)が自ら語ってくれるというのはとてもラッキーなことです。Ron は最近、RTPに影響を与えたプロジェクトである[Network Video tool](https://github.com/ronf/nv)を GitHub にアップロードしました。
 
 **彼自身の言葉です。**
 
