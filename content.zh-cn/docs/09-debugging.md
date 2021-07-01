@@ -165,8 +165,8 @@ EndToEndLatency = T(observe) - T(happen)
 这是最真实的端到端延迟测量。
 它考虑了所有组件的延迟（相机、编码器、网络、解码器）并且不依赖任何时钟同步。
 
-![DIY Latency](../images/09-diy-latency.png "DIY Latency Measurement").
-![DIY Latency Example](../images/09-diy-latency-happen-observe.png "DIY Latency Measurement Example")
+![DIY Latency](../../images/09-diy-latency.png "DIY Latency Measurement").
+![DIY Latency Example](../../images/09-diy-latency-happen-observe.png "DIY Latency Measurement Example")
 在上面的照片中，测得的端到端延迟为 101 msec。事件发生的时间是 10:16:02.862 , 而 直播观看者看到的时间是 10:16:02.761。
 
 ### 端到端延迟——自动测量
@@ -175,7 +175,7 @@ EndToEndLatency = T(observe) - T(happen)
 Firefox 实现了 一套 APIs ，来允许用户在标准WebRTCAPIs之上，创建对延迟的自动测量。
 不过在本章节，我们将讨论端到端延迟自动测量的最通用的方法。
 
-![NTP Style Latency Measurement](../images/09-ntp-latency.png "NTP Style Latency Measurement")
+![NTP Style Latency Measurement](../../images/09-ntp-latency.png "NTP Style Latency Measurement")
 
 Roundtrip ，即往返时间，简而言之就是： 我向你发送我的时间 `tR1`, 当我接收到 `tR1` 回来时，时间是 `tR2` ，可得 round trip time 是 `tR2 - tR1` 。
 
