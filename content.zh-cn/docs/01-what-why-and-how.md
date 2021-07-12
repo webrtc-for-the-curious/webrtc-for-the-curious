@@ -48,7 +48,7 @@ WebRTC协议由IETF工作组在[rtcweb](https://datatracker.ietf.org/wg/rtcweb/d
 
 信令使用现有的协议SDP（会话描述协议）。SDP是一种纯文本协议。每个SDP消息均由键/值对组成，并包含“media sections（媒体部分）”列表。两个WebRTC代理交换的SDP所包含一些详细信息，如：
 
-* 代理可供访问的（候选的）IP和端口。
+* 代理可供外部访问的（候选的）IP和端口。
 * 代理希望发送多少路音频和视频流。
 * 代理支持哪些音频和视频编解码器。
 * 连接时需要用到的值（`uFrag`/`uPwd`）。
