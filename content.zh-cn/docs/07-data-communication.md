@@ -48,18 +48,18 @@ DCEP只有两个消息`DATA_CHANNEL_OPEN`和`DATA_CHANNEL_ACK`。对于打开的
 ```
 
 #### 消息类型（Message Type）
-消息类型是一个静态值`0x03`
+消息类型是一个静态值`0x03`。
 
 #### 通道类型（Channel Type）
 Channel Type controls durability/ordering attributes of the channel. It may have the following values:
 通道类型控制通道的持久性/排序属性。它可能具有以下值：
 
-* `DATA_CHANNEL_RELIABLE` (`0x00`) - 没有消息丢失，消息依序到达
-* `DATA_CHANNEL_RELIABLE_UNORDERED` (`0x80`) - 没有消息丢失，消息可能乱序到达
-* `DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT` (`0x01`) - 按照请求中的次数重试发送，消息可能会丢失，消息依序到达
-* `DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT_UNORDERED` (`0x81`) - 按照请求中的次数重试发送，消息可能会丢失，消息可能乱序到达
-* `DATA_CHANNEL_PARTIAL_RELIABLE_TIMED` (`0x02`) - 如消息未在请求中的时间限制内收到，消息可能会丢失，消息依序到达
-* `DATA_CHANNEL_PARTIAL_RELIABLE_TIMED_UNORDERED` (`0x82`) - 如消息未在请求中的时间限制内收到，消息可能会丢失，消息可能乱序到达
+* `DATA_CHANNEL_RELIABLE` (`0x00`) - 没有消息丢失，消息依序到达。
+* `DATA_CHANNEL_RELIABLE_UNORDERED` (`0x80`) - 没有消息丢失，但消息可能乱序到达。
+* `DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT` (`0x01`) - 按照请求中的次数重试发送后，消息可能会丢失，但消息将依序到达。
+* `DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT_UNORDERED` (`0x81`) - 按照请求中的次数重试发送后，消息可能会丢失，且消息可能乱序到达。
+* `DATA_CHANNEL_PARTIAL_RELIABLE_TIMED` (`0x02`) - 如果没有在请求的时间内到达，消息可能会丢失，但消息将依序到达。
+* `DATA_CHANNEL_PARTIAL_RELIABLE_TIMED_UNORDERED` (`0x82`) - 如果没有在请求的时间内到达，消息可能会丢失，且消息可能乱序到达。
 
 #### 优先级（Priority）
 数据通道的优先级。具有较高优先级的数据通道将首先被调度。较大的低优先级用户消息不会耽误高优先级用户消息的发送。
@@ -71,10 +71,10 @@ Channel Type controls durability/ordering attributes of the channel. It may have
 * `TIMED` - 定义发送方重试发送消息的时间（以毫秒为单位），超出此时间将放弃尝试。
 
 #### 标签（Label）
-数据通道的名称，是一个UTF-8编码的字符串。可以为空。
+一个包含数据通道名称的UTF-8编码的字符串。可能为空。
 
 #### 协议（Protocol）
-如果这里为空，则协议未指定。如果是非空字符串，则这里定义的协议应在[RFC 6455](https://tools.ietf.org/html/rfc6455#page-61)中定义的"WebSocket子协议名称注册表"中注册。
+如果这里为空字符串，则协议未指定。如果是非空字符串，则这里应指定一个协议，可指定的协议请参考[RFC 6455](https://tools.ietf.org/html/rfc6455#page-61)中定义的"WebSocket子协议名称注册表"中的注册协议。
 
 ### DATA_CHANNEL_ACK
 WebRTC代理发送此消息以确认此数据通道已打开。
@@ -88,7 +88,7 @@ WebRTC代理发送此消息以确认此数据通道已打开。
 +-+-+-+-+-+-+-+-+
 ```
 
-## SCTP
+## 流控传输协议（SCTP）
 SCTP是WebRTC数据通道背后的真正动力。它提供了数据通道的以下所有功能：
 
 * 多路复用
@@ -97,7 +97,7 @@ SCTP是WebRTC数据通道背后的真正动力。它提供了数据通道的以�
 * 避免拥塞
 * 流量控制
 
-为了理解SCTP，我们将分3部分进行探讨。我们的目标是，在本章之后，您将拥有足够的知识来自行调试和学习SCTP的详细信息。
+为了理解SCTP，我们将分三个部分进行探讨。我们的目标是，在本章之后，您将拥有足够的知识来自行调试和学习SCTP的详细信息。
 
 ## 概念
 SCTP协议功能很多。本节仅涵盖WebRTC使用的SCTP部分。
@@ -135,13 +135,13 @@ SCTP协议由块组成。有许多不同类型的块。这些块用于所有通�
 
 ### 有效负载协议标识符
 每个DATA块还具有一个有效负载协议标识符（PPID）。这用于唯一地标识正在交换的数据类型。
-SCTP具有许多PPID，但是WebRTC仅使用以下5种：
+SCTP具有许多PPID，但是WebRTC仅使用以下五种：
 
-* `WebRTC DCEP` (`50`) - DCEP消息
-* `WebRTC String` (`51`) - 数据通道字符串消息
-* `WebRTC Binary` (`53`) - 数据通道二进制消息
-* `WebRTC String Empty` (`56`) - 长度为0的数据通道字符串消息
-* `WebRTC Binary Empty` (`57`) - 长度为0的数据通道二进制消息
+* `WebRTC DCEP` (`50`) - DCEP消息。
+* `WebRTC String` (`51`) - 数据通道字符串消息。
+* `WebRTC Binary` (`53`) - 数据通道二进制消息。
+* `WebRTC String Empty` (`56`) - 长度为0的数据通道字符串消息。
+* `WebRTC Binary Empty` (`57`) - 长度为0的数据通道二进制消息。
 
 ## 协议
 以下是SCTP协议使用的一些块。这不是一个详尽的演示。只提供了足够的结构让状态机运作起来。
@@ -173,10 +173,10 @@ DATA块是交换所有用户数据的方式。下面是对DATA块更详细的说
 `B`和`E`是开始位和结束位。如果要发送的消息对于单个DATA块而言太大，则需要将其分片。
 SCTP使用`B`和`E`位以及序列号（TSN）来表达这一点。
 
-* `B=1`, `E=0` - 用户消息的第一个分片
-* `B=0`, `E=0` - 用户消息的中间的分片
-* `B=0`, `E=1` - 用户消息的最后一个分片
-* `B=1`, `E=1` - 未分片的用户消息
+* `B=1`, `E=0` - 用户消息的第一个分片。
+* `B=0`, `E=0` - 用户消息的中间的分片。
+* `B=0`, `E=1` - 用户消息的最后一个分片。
+* `B=1`, `E=1` - 未分片的用户消息。
 
 `TSN`是传输序列号。它是此消息的全局唯一标识符。在4,294,967,295（译注：32位最大值）条消息之后，该值将循环使用。
 
@@ -342,10 +342,10 @@ ERROR块用于通知远端SCTP代理发生了非致命错误。
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-FORWARD TSN块将全局TSN向前移动。SCTP这样做是为了允许跳过一些您不再关心的数据包。假设您发送了`10 11 12 13 14 15`，这些数据包只有在它们全部到达后才有意义。而这些数据又对实时性很敏感，在这种情况下，如果数据收晚了，它们就没有用了。
+`FORWARD TSN`块将全局TSN向前移动。SCTP这样做是为了允许跳过一些您不再关心的数据包。假设您发送了`10 11 12 13 14 15`，这些数据包只有在它们全部到达后才有意义。而这些数据又对实时性很敏感，在这种情况下，如果数据收晚了，它们就没有用了。
 
 如果您丢失了`12`和`13`，则不需要再发送`14`和`15`！
-SCTP使用FORWARD TSN块来实现这一点。它告诉接收方，`14`和`15`将不再传递。
+SCTP使用`FORWARD TSN`块来实现这一点。它告诉接收方，`14`和`15`将不再传递。
 
 `New Cumulative TSN`（新的累积TSN），是连接的新TSN。此TSN之前的任何数据包都不会被保留。
 
@@ -368,4 +368,4 @@ SCTP使用`SHUTDOWN`块。当代理收到`SHUTDOWN`块时，它将等待直到�
 ### Keep-Alive（保持活动）机制
 SCTP使用`HEARTBEAT REQUEST`和`HEARTBEAT ACK`块使连接保持活动状态。它们以固定间隔发送，间隔时间可配置。如果数据包尚未到达，SCTP还会将指数回退。
 
-HEARTBEAT还包含一个时间值。两个关联可以用此来计算两个代理之间的数据传递时间。
+`HEARTBEAT`块还包含一个时间值。两个关联可以用此来计算两个代理之间的数据传递时间。
