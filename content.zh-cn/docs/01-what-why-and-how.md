@@ -22,8 +22,8 @@ WebRTC协议由IETF工作组在[rtcweb](https://datatracker.ietf.org/wg/rtcweb/d
 * 多种实现
 * 在浏览器中可用
 * 强制加密
-* NAT遍历
-* 重新利用现有技术
+* NAT穿透
+* 复用现有技术
 * 拥塞控制
 * 亚秒级延迟
 
@@ -33,7 +33,7 @@ WebRTC协议由IETF工作组在[rtcweb](https://datatracker.ietf.org/wg/rtcweb/d
 
 * 信令（Signaling）
 * 连接（Connecting）
-* 保护（Securing）
+* 安全加密（Securing）
 * 通信（Communicating）
 
 这四个步骤依次发生。上一个步骤必须100％成功，随后的步骤才能开始。
@@ -48,13 +48,13 @@ WebRTC协议由IETF工作组在[rtcweb](https://datatracker.ietf.org/wg/rtcweb/d
 
 信令使用现有的协议SDP（会话描述协议）。SDP是一种纯文本协议。每个SDP消息均由键/值对组成，并包含“media sections（媒体部分）”列表。两个WebRTC代理交换的SDP所包含一些详细信息，如：
 
-* 代理可访问的（候选的）IP和端口。
+* 代理可供访问的（候选的）IP和端口。
 * 代理希望发送多少路音频和视频流。
 * 代理支持哪些音频和视频编解码器。
-* 连接时需要使用的值（`uFrag`/`uPwd`）。
-* 保护时使用的值（证书指纹）。
+* 连接时需要用到的值（`uFrag`/`uPwd`）。
+* 加密传输时需要用到的值（证书指纹）。
 
-注意，信令通常发生在“out-of-band”。也就是说，应用通常不使用WebRTC本身来交换信令消息。在连接的peer中，任何适合发送消息的架构均可被用于传递SDP信息，许多应用程序都使用其现有的基础结构（例如REST端点，WebSocket连接或身份验证代理）来解决适当客户端之间的SDP传递问题。
+注意，信令通常发生在“out-of-band”。也就是说，应用通常不使用WebRTC本身来交换信令消息。在连接的peer中，任何适合发送消息的架构均可被用于传递SDP信息，许多应用程序都使用其现有的基础设施（例如REST端点，WebSocket连接或身份验证代理）来解决适当客户端之间的SDP传递问题。
 
 ### 使用STUN/TURN进行连接和NAT穿透
 
@@ -66,7 +66,7 @@ ICE（交互式连接建立）是WebRTC之前的协议。ICE允许在两个代�
 
 ICE成功连接后，WebRTC继续建立加密的传输。此传输用于音频，视频和数据。
 
-### 使用DTLS和SRTP保护传输层
+### 使用DTLS和SRTP加密传输层
 
 现在我们有了双向通信（通过ICE），我们需要建立安全的通信。这是通过WebRTC之前的两种协议完成的。第一个协议是DTLS（数据报传输层安全性），它只是基于UDP的TLS。TLS是用于保护通过HTTPS进行通信的加密协议。第二种协议是SRTP（安全实时传输协议）。
 
@@ -132,7 +132,7 @@ WebRTC解决了许多问题。初看起来，这似乎是过度设计的。实�
 
 #### `addIceCandidate`
 
-`addIceCandidate`允许WebRTC代理随时添加更多远程ICE候选对象。该API将ICE候选对象发送到ICE子系统，并且对更大的WebRTC连接没有其他影响。
+`addIceCandidate`允许WebRTC代理随时添加更多的远程ICE候选对象。该API将ICE候选对象发送到ICE子系统，并且对更大的WebRTC连接没有其他影响。
 
 #### `ontrack`
 
@@ -146,4 +146,4 @@ WebRTC使用SSRC并查找关联的`MediaStream`和`MediaStreamTrack`，并使用
 
 #### `onstatechange`
 
-`onstatechange`是ICE代理和DTLS代理状态的组合。当ICE和DTLS都成功完成时，您将看到此通知。
+`onstatechange`是ICE代理和DTLS代理状态的组合。当ICE和DTLS都成功完成时，您将得到此通知。
