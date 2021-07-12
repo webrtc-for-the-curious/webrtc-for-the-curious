@@ -11,7 +11,7 @@ type: docs
 
 WebRTC是一种优秀的技术，但它很难使用。本书与供应商无关，我们已尝试消除了各种利益冲突。
 
-## 本书面向的对象
+## 本书面向的读者
 
 * 完全不了解WebRTC，并希望了解更多信息的开发者
 * 已经使用WebRTC构建软件，但又想了解API以外的更多信息的开发者
@@ -25,13 +25,12 @@ WebRTC是一种优秀的技术，但它很难使用。本书与供应商无关�
 每个章节都试图通过三个级别的信息回答一个问题：
 
 * 需要解决什么问题？
-* 我们如何解决问题？
-* 有关解决方案的技术细节。
-* 去哪里了解更多。
+* 我们如何解决问题？（包括相关解决方案的技术细节。）
+* 哪里可以了解更多。
 
 每个章节都不假定读者需要具有的前面章节的知识。您可以从书中的任何位置开始学习。本书还将推荐更多的资源，让您可以进一步学习。其他书籍对于所涵盖的各个主题有更深入的分析。本书的目标是对整个系统的运作方式进行说明，而不是对各部分的专家级指导。
 
-## 非商业性和尊重隐私
+## 免费提供和尊重隐私
 
 本书可在[GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious)和[WebRTCforTheCurious.com](https://webrtcforthecurious.com)访问。我们许可您可以用您认为最好的方式使用本书。您也可以使用[ePub格式](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.epub)或[PDF格式](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.pdf)下载本书的当前版本。
 
