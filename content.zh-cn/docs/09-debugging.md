@@ -5,18 +5,18 @@ weight: 10
 ---
 
 # 调试
-调试WebRTC可能是一项艰巨的任务。有很多部分都处于运行状态，每一个部分都可能出现问题。如果您不够细心，可能会浪费数周的时间来查看错误的模块。当您最终找到出错的部分时，您还需要学习一些知识才能理解问题的根源。
+调试WebRTC可能是一项艰巨的任务。有很多部分都处于运行状态，每一个部分都可能出现问题。如果你不够细心，可能会浪费数周的时间来查看错误的模块。当你最终找到出错的部分时，你还需要学习一些知识才能理解问题的根源。
 
-本章将带您学习WebRTC的调试。它将向您展示如何分析并定位相关问题。确定问题后，我们将快速介绍一下流行的调试工具。
+本章将带你学习WebRTC的调试。它将向你展示如何分析并定位相关问题。确定问题后，我们将快速介绍一下流行的调试工具。
 
 ### 分解问题
-开始调试时，您需要先分解问题的源头。从以下题目开始：
+开始调试时，你需要先分解问题的源头。从以下题目开始：
 
 #### 信令故障
 
 #### 网络故障
 
-使用netcat测试您的STUN服务器：
+使用netcat测试你的STUN服务器：
 
 1. 准备**20字节**的绑定请求数据包：
 
@@ -299,7 +299,7 @@ v4l2-ctl -d /dev/video0 -c focus_absolute=0
 在第一次编码过程中，编码器需要获取到完整的视频数据，然后才会开始输出视频帧。
 
 不过，通过适当的调整，我们可以减少sub-frame的延迟（*译者注：这里应该是指 subsequent-frame,避免对后续帧的依赖*）。
-请确保您的编码器不使用过多的参考帧或依赖于B帧。
+请确保你的编码器不使用过多的参考帧或依赖于B帧。
 每个编解码器的延迟调整设置都不同，但对于x264而言，我们建议使用`tune=zerolatency`和`profile=baseline`以获得最低的帧输出延迟。
 
 #### 网络延迟
@@ -338,8 +338,8 @@ RTP和RTCP协议都是基于UDP，对于数据的顺序、成功送达或者避�
 这样的重传会导致延迟增加。
 NACK包的发送和接收的数量会被记录在WebRTC内建的统计数据中，对应的字段是[outbound stream nackCount](https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-nackcount)和[inbound stream nackCount](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-nackcount) 。
 
-在[webrtc internals页面](#webrtc-internals)中，您可以看到展示入站和出站的`nackCount`的漂亮的图表。
-如果您看到`nackCount`正在增加，这意味着网络正处于大量丢包的状态，尽管如此，WebRTC协议栈仍在努力创建流畅的音视频体验。
+在[webrtc internals页面](#webrtc-internals)中，你可以看到展示入站和出站的`nackCount`的漂亮的图表。
+如果你看到`nackCount`正在增加，这意味着网络正处于大量丢包的状态，尽管如此，WebRTC协议栈仍在努力创建流畅的音视频体验。
 
 当丢包率太高，解码器已经无法解码图像或者后续关联帧（例如I帧完全丢失的情况）的时候，所有后续的P帧都将无法解码。
 在这种情况下，接收方将通过发送图片丢失指示（[PLI](../06-media-communication/#完整的帧内请求fir和图片丢失指示pli)）消息来尝试缓解问题。
@@ -347,7 +347,7 @@ NACK包的发送和接收的数量会被记录在WebRTC内建的统计数据中�
 I帧一般比P帧大，这也增加了需要传输的数据包数量。
 和NACK消息一样，接收方需要等待新的I帧，这也引入了额外的延迟。
 
-您需要关注[webrtc internals页面](#webrtc-internals)中的`pliCount`指标，如果它增加了，您需要调整编码器以减少数据包的输出；或者启用容错度更高的模式。
+你需要关注[webrtc internals页面](#webrtc-internals)中的`pliCount`指标，如果它增加了，你需要调整编码器以减少数据包的输出；或者启用容错度更高的模式。
 
 #### 接收方一侧的延迟
 
@@ -355,4 +355,4 @@ I帧一般比P帧大，这也增加了需要传输的数据包数量。
 比如一张图片下半部分的数据包先到达了，那么必须等待上半部分的数据包到达后，才能开始解码。
 关于这个问题的更详细内容，请参考[解决抖动问题](../05-real-time-networking/#解决抖动问题)章节。
 
-您也可以参考内建的[jitterBufferDelay](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-jitterbufferdelay)指标，看一下一帧需要在接收缓冲区中存放多久，才能等到所有的数据包接收完成，并被释放到解码器。
+你也可以参考内建的[jitterBufferDelay](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-jitterbufferdelay)指标，看一下一帧需要在接收缓冲区中存放多久，才能等到所有的数据包接收完成，并被释放到解码器。

@@ -10,13 +10,13 @@ WebRTC是Web实时通信（Real-Time Communication）的缩写，它既是API也
 
 可以用HTTP和Fetch API之间的关系作为类比。WebRTC协议就是HTTP，而WebRTC API就是Fetch API。
 
-除了JavaScript语言，WebRTC协议也可以在其他API和语言中使用。您还可以找到WebRTC的服务器和特定领域的工具。所有这些实现都使用WebRTC协议，以便它们可以彼此交互。
+除了JavaScript语言，WebRTC协议也可以在其他API和语言中使用。你还可以找到WebRTC的服务器和特定领域的工具。所有这些实现都使用WebRTC协议，以便它们可以彼此交互。
 
 WebRTC协议由IETF工作组在[rtcweb](https://datatracker.ietf.org/wg/rtcweb/documents/)中维护。WebRTC API的W3C文档在[webrtc-pc](https://w3c.github.io/webrtc-pc/)。
 
 ## 为什么我应该学习WebRTC？
 
-下面这些是WebRTC可以带给你的东西。这并不是一份详尽的清单，只是列举一些你在学习中可能感兴趣的点。如果您还不了解所有这些术语，请不要担心，本书将陆续将这些概念教给您。
+下面这些是WebRTC可以带给你的东西。这并不是一份详尽的清单，只是列举一些你在学习中可能感兴趣的点。如果你还不了解所有这些术语，请不要担心，本书将陆续将这些概念教给你。
 
 * 开放标准
 * 多种实现
@@ -74,7 +74,7 @@ ICE成功连接后，WebRTC继续建立加密的传输。此传输用于音频�
 
 接下来，WebRTC使用RTP协议进行音频/视频的传输。我们使用SRTP来保护我们的RTP数据包。我们从协商的DTLS会话中提取密钥，用来初始化SRTP会话。在下一章中，我们讨论为什么媒体传输拥有其自己的协议。
 
-现在我们完成了！您现在可以进行安全的双向通信。如果您的WebRTC代理之间具有稳定的连接，上面这就是您可能需要解决的所有复杂问题。不幸的是，现实世界中存在着数据包丢失和带宽限制，下一章节将介绍我们如何处理它们。
+现在我们完成了！你现在可以进行安全的双向通信。如果你的WebRTC代理之间具有稳定的连接，上面这就是你可能需要解决的所有复杂问题。不幸的是，现实世界中存在着数据包丢失和带宽限制，下一章节将介绍我们如何处理它们。
 
 ### 通过RTP和SCTP进行点对点通信
 
@@ -82,7 +82,7 @@ ICE成功连接后，WebRTC继续建立加密的传输。此传输用于音频�
 
 RTP很小，但是提供了实现实时流式传输所需的功能。重要的是，RTP为开发人员提供了灵活性，因此他们可以根据需要处理延迟，丢失和拥塞。我们将在媒体章节中对此进行进一步讨论。
 
-堆栈中的最终协议是SCTP。SCTP支持许多不同的消息传送选项。您可以选择不可靠的无序交付，以便获得实时系统所需的延迟。
+堆栈中的最终协议是SCTP。SCTP支持许多不同的消息传送选项。你可以选择不可靠的无序交付，以便获得实时系统所需的延迟。
 
 ## WebRTC是一系列协议的集合
 
@@ -94,7 +94,7 @@ WebRTC解决了许多问题。初看起来，这似乎是过度设计的。实�
 
 ## WebRTC（API）如何工作
 
-本部分显示JavaScript API是如何跟协议相对应的。这不只是WebRTC API的一个粗略演示，更像是创建了一个思维模型，以此将所有部分联系在一起。如果您对各部分都不熟悉，那也不要紧。当您了解更多信息时，再回头看看这一部分，可能会很有趣！
+本部分显示JavaScript API是如何跟协议相对应的。这不只是WebRTC API的一个粗略演示，更像是创建了一个思维模型，以此将所有部分联系在一起。如果你对各部分都不熟悉，那也不要紧。当你了解更多信息时，再回头看看这一部分，可能会很有趣！
 
 #### `new RTCPeerConnection`
 
@@ -122,7 +122,7 @@ WebRTC解决了许多问题。初看起来，这似乎是过度设计的。实�
 
 `setLocalDescription`提交所有请求的更改。 在此调用之前，`addTrack`，`createDataChannel`和类似调用都是临时的。 调用`setLocalDescription`时，使用由`createOffer`生成的值。
 
-通常，在此调用之后，您会将offer发送给远端Peer，他们将调用`setRemoteDescription`，将此offer设入。
+通常，在此调用之后，你会将offer发送给远端Peer，他们将调用`setRemoteDescription`，将此offer设入。
 
 #### `setRemoteDescription`
 
@@ -142,8 +142,8 @@ WebRTC使用SSRC并查找关联的`MediaStream`和`MediaStreamTrack`，并使用
 
 #### `oniceconnectionstatechange`
 
-`oniceconnectionstatechange`是ICE代理的状态变化时触发的回调。当网络连接或断开时，您将得到此通知。
+`oniceconnectionstatechange`是ICE代理的状态变化时触发的回调。当网络连接或断开时，你将得到此通知。
 
 #### `onstatechange`
 
-`onstatechange`是ICE代理和DTLS代理状态的组合。当ICE和DTLS都成功完成时，您将得到此通知。
+`onstatechange`是ICE代理和DTLS代理状态的组合。当ICE和DTLS都成功完成时，你将得到此通知。
