@@ -6,7 +6,7 @@ weight: 2
 
 # WebRTC是什么？
 
-WebRTC是Web实时通信（Real-Time Communication）的缩写，它既是API也是协议。WebRTC协议是两个WebRTC代理协商双向安全实时通信的一组规则。开发人员可以通过WebRTC API使用WebRTC协议。目前WebRTC API仅有JavaScript版本。
+WebRTC是Web实时通信（Real-Time Communication）的缩写，它既是API也是协议。WebRTC协议是两个WebRTC Agent协商双向安全实时通信的一组规则。开发人员可以通过WebRTC API使用WebRTC协议。目前WebRTC API仅有JavaScript版本。
 
 可以用HTTP和Fetch API之间的关系作为类比。WebRTC协议就是HTTP，而WebRTC API就是Fetch API。
 
@@ -44,13 +44,13 @@ WebRTC协议由IETF工作组在[rtcweb](https://datatracker.ietf.org/wg/rtcweb/d
 
 ### 信令：peer如何在WebRTC中找到彼此
 
-当WebRTC代理启动时，它不知道与谁通信以及他们将要通信的内容。信令解决了这个问题！信令用于引导呼叫，以便两个WebRTC代理可以开始通信。
+当WebRTC Agent启动时，它不知道与谁通信以及他们将要通信的内容。信令解决了这个问题！信令用于引导呼叫，以便两个WebRTC Agent可以开始通信。
 
-信令使用现有的协议SDP（会话描述协议）。SDP是一种纯文本协议。每个SDP消息均由键/值对组成，并包含“media sections（媒体部分）”列表。两个WebRTC代理交换的SDP所包含一些详细信息，如：
+信令使用现有的协议SDP（会话描述协议）。SDP是一种纯文本协议。每个SDP消息均由键/值对组成，并包含“media sections（媒体部分）”列表。两个WebRTC Agent交换的SDP所包含一些详细信息，如：
 
-* 代理可供外部访问的（候选的）IP和端口。
-* 代理希望发送多少路音频和视频流。
-* 代理支持哪些音频和视频编解码器。
+* Agent可供外部访问的（候选的）IP和端口。
+* Agent希望发送多少路音频和视频流。
+* Agent支持哪些音频和视频编解码器。
 * 连接时需要用到的值（`uFrag`/`uPwd`）。
 * 加密传输时需要用到的值（证书指纹）。
 
@@ -58,11 +58,11 @@ WebRTC协议由IETF工作组在[rtcweb](https://datatracker.ietf.org/wg/rtcweb/d
 
 ### 使用STUN/TURN进行连接和NAT穿透
 
-现在，两个WebRTC代理知道足够的详细信息以尝试相互连接。接下来，WebRTC将使用另一种成熟的技术，称为ICE。
+现在，两个WebRTC Agent知道足够的详细信息以尝试相互连接。接下来，WebRTC将使用另一种成熟的技术，称为ICE。
 
-ICE（交互式连接建立）是WebRTC之前的协议。ICE允许在两个代理之间建立连接。这些代理可以在同一网络上，也可以在世界的另一端。ICE是无需中央服务器即可建立直接连接的解决方案。
+ICE（交互式连接建立）是WebRTC之前的协议。ICE允许在两个Agent之间建立连接。这些Agent可以在同一网络上，也可以在世界的另一端。ICE是无需中央服务器即可建立直接连接的解决方案。
 
-这里真正的魔法是“ NAT穿透”和STUN/TURN服务器。这两个概念是与另一个子网中的ICE代理进行通信所需的全部。稍后我们将深入探讨这些主题。
+这里真正的魔法是“ NAT穿透”和STUN/TURN服务器。这两个概念是与另一个子网中的ICE Agent进行通信所需的全部。稍后我们将深入探讨这些主题。
 
 ICE成功连接后，WebRTC继续建立加密的传输。此传输用于音频，视频和数据。
 
@@ -74,11 +74,11 @@ ICE成功连接后，WebRTC继续建立加密的传输。此传输用于音频�
 
 接下来，WebRTC使用RTP协议进行音频/视频的传输。我们使用SRTP来保护我们的RTP数据包。我们从协商的DTLS会话中提取密钥，用来初始化SRTP会话。在下一章中，我们讨论为什么媒体传输拥有其自己的协议。
 
-现在我们完成了！你现在可以进行安全的双向通信。如果你的WebRTC代理之间具有稳定的连接，上面这就是你可能需要解决的所有复杂问题。不幸的是，现实世界中存在着数据包丢失和带宽限制，下一章节将介绍我们如何处理它们。
+现在我们完成了！你现在可以进行安全的双向通信。如果你的WebRTC Agent之间具有稳定的连接，上面这就是你可能需要解决的所有复杂问题。不幸的是，现实世界中存在着数据包丢失和带宽限制，下一章节将介绍我们如何处理它们。
 
 ### 通过RTP和SCTP进行点对点通信
 
-现在，我们有了两个具有安全的双向通信功能的WebRTC代理。让我们开始通信！跟前面一样，我们使用两个预先存在的协议：RTP（实时传输协议）和SCTP（流控制传输协议）。我们使用RTP来交换用SRTP加密过的媒体数据，使用SCTP发送和接收那些用DTLS加密过的DataChannel消息。
+现在，我们有了两个具有安全的双向通信功能的WebRTC Agent。让我们开始通信！跟前面一样，我们使用两个预先存在的协议：RTP（实时传输协议）和SCTP（流控制传输协议）。我们使用RTP来交换用SRTP加密过的媒体数据，使用SCTP发送和接收那些用DTLS加密过的DataChannel消息。
 
 RTP很小，但是提供了实现实时流式传输所需的功能。重要的是，RTP为开发人员提供了灵活性，因此他们可以根据需要处理延迟，丢失和拥塞。我们将在媒体章节中对此进行进一步讨论。
 
@@ -88,9 +88,9 @@ RTP很小，但是提供了实现实时流式传输所需的功能。重要的�
 
 WebRTC解决了许多问题。初看起来，这似乎是过度设计的。实际上，WebRTC非常克制。它并未认为它可以更好的解决所有问题。相反，它采纳了许多现有的单一目的技术，并将它们捆绑在一起。
 
-这使得我们可以独立的检查和学习每个部分，而不会毫无头绪。实际上，从另一个角度去看“ WebRTC代理”，它只是许多不同协议的协调器。
+这使得我们可以独立的检查和学习每个部分，而不会毫无头绪。实际上，从另一个角度去看“ WebRTC Agent”，它只是许多不同协议的协调器。
 
-![WebRTC代理](../../images/01-webrtc-agent.png "WebRTC代理图示")
+![WebRTC Agent](../../images/01-webrtc-agent.png "WebRTC Agent图示")
 
 ## WebRTC（API）如何工作
 
@@ -126,13 +126,13 @@ WebRTC解决了许多问题。初看起来，这似乎是过度设计的。实�
 
 #### `setRemoteDescription`
 
-收到远端Peer发来的offer之后，我们通过`setRemoteDescription`通知本地代理。这就是使用JavaScript API传递“信令”的方式。
+收到远端Peer发来的offer之后，我们通过`setRemoteDescription`通知本地Agent。这就是使用JavaScript API传递“信令”的方式。
 
-双方都调用过`setRemoteDescription`后，WebRTC代理现在拥有足够的信息来开始进行点对点（P2P）通信！
+双方都调用过`setRemoteDescription`后，WebRTC Agent现在拥有足够的信息来开始进行点对点（P2P）通信！
 
 #### `addIceCandidate`
 
-`addIceCandidate`允许WebRTC代理随时添加更多的远程ICE候选对象。该API将ICE候选对象发送到ICE子系统，并且对更大的WebRTC连接没有其他影响。
+`addIceCandidate`允许WebRTC Agent随时添加更多的远程ICE候选对象。该API将ICE候选对象发送到ICE子系统，并且对更大的WebRTC连接没有其他影响。
 
 #### `ontrack`
 
@@ -142,8 +142,8 @@ WebRTC使用SSRC并查找关联的`MediaStream`和`MediaStreamTrack`，并使用
 
 #### `oniceconnectionstatechange`
 
-`oniceconnectionstatechange`是ICE代理的状态变化时触发的回调。当网络连接或断开时，你将得到此通知。
+`oniceconnectionstatechange`是ICE Agent的状态变化时触发的回调。当网络连接或断开时，你将得到此通知。
 
 #### `onstatechange`
 
-`onstatechange`是ICE代理和DTLS代理状态的组合。当ICE和DTLS都成功完成时，你将得到此通知。
+`onstatechange`是ICE Agent和DTLS Agent状态的组合。当ICE和DTLS都成功完成时，你将得到此通知。
