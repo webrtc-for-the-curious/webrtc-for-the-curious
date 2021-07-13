@@ -138,8 +138,8 @@ SCTP协议由块组成。有许多不同类型的块。这些块用于所有通�
 SCTP具有许多PPID，但是WebRTC仅使用以下五种：
 
 * `WebRTC DCEP` (`50`) - DCEP消息。
-* `WebRTC String` (`51`) - 数据通道字符串消息。
-* `WebRTC Binary` (`53`) - 数据通道二进制消息。
+* `WebRTC String` (`51`) - Datachannel字符串消息。
+* `WebRTC Binary` (`53`) - Datachannel二进制消息。
 * `WebRTC String Empty` (`56`) - 长度为0的数据通道字符串消息。
 * `WebRTC Binary Empty` (`57`) - 长度为0的数据通道二进制消息。
 
