@@ -140,8 +140,8 @@ SCTP具有许多PPID，但是WebRTC仅使用以下五种：
 * `WebRTC DCEP` (`50`) - DCEP消息。
 * `WebRTC String` (`51`) - Datachannel字符串消息。
 * `WebRTC Binary` (`53`) - Datachannel二进制消息。
-* `WebRTC String Empty` (`56`) - 长度为0的数据通道字符串消息。
-* `WebRTC Binary Empty` (`57`) - 长度为0的数据通道二进制消息。
+* `WebRTC String Empty` (`56`) - 长度为0的Datachannel字符串消息。
+* `WebRTC Binary Empty` (`57`) - 长度为0的Datachannel二进制消息。
 
 ## 协议
 以下是SCTP协议使用的一些块。这不是一个详尽的演示。只提供了足够的结构让状态机运作起来。
