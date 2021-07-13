@@ -6,14 +6,14 @@ weight: 3
 
 # 什么是WebRTC信令？
 
-当一个WebRTC代理被创建时，它对其他peer一无所知。它不知道它将与谁联系，也不知道它们将发送些什么！
-信令是使呼叫成为可能的初始引导程序。交换信令消息后，WebRTC代理才可以直接相互通信。
+当一个WebRTC Agent被创建时，它对其他peer一无所知。它不知道它将与谁联系，也不知道它们将发送些什么！
+信令是使呼叫成为可能的初始引导程序。交换信令消息后，WebRTC Agent才可以直接相互通信。
 
-信令消息只是文本。WebRTC代理并不关心它们的传递方式。信令通常使用Websockets分享，但这不是必需的。
+信令消息只是文本。WebRTC Agent并不关心它们的传递方式。信令通常使用Websockets分享，但这不是必需的。
 
 ## WebRTC信令如何工作？
 
-WebRTC使用到一种现有的协议，称为会话描述协议（Session Description Protocol，简称SDP）。两个WebRTC代理会将建立连接所需的所有状态通过此协议来分享。该协议本身亦易于阅读和理解。
+WebRTC使用到一种现有的协议，称为会话描述协议（Session Description Protocol，简称SDP）。两个WebRTC Agent会将建立连接所需的所有状态通过此协议来分享。该协议本身亦易于阅读和理解。
 但要理解WebRTC填充于协议中的所有值，将有一定复杂性。
 
 该协议不是WebRTC特有的。我们将首先学习会话描述协议，这里甚至不用提及WebRTC。WebRTC实际上仅是利用了SDP协议的子集，因此我们将仅介绍我们所需的内容。
@@ -106,7 +106,7 @@ a=rtpmap:96 VP8/90000
 
 ### 什么是Offer和Answer？
 
-WebRTC使用Offer/Answer模型。这指的是，一个WebRTC代理发出"Offer"以开始呼叫，如果另一个WebRTC代理愿意接受"Offer"的内容，它会响应"Answer"。
+WebRTC使用Offer/Answer模型。这指的是，一个WebRTC Agent发出"Offer"以开始呼叫，如果另一个WebRTC Agent愿意接受"Offer"的内容，它会响应"Answer"。
 
 这使得应答者有机会拒绝媒体描述中的某些不支持的编解码器，也是两个peer互相理解他们希望交换何种格式的方式。
 
@@ -114,7 +114,7 @@ WebRTC使用Offer/Answer模型。这指的是，一个WebRTC代理发出"Offer"�
 
 收发器是WebRTC中特有的概念，你将在API中看到它。它的作用是将"媒体描述"暴露给JavaScript API。每个媒体描述都将成为一个收发器。每次创建收发器时，都会将新的媒体描述添加到本地会话描述中。
 
-WebRTC中的每个媒体描述都包含一个direction属性。这样，WebRTC代理可以声明"我将向你发送此编解码器，但我不打算接受任何返回的内容"。direction属性有四个有效值：
+WebRTC中的每个媒体描述都包含一个direction属性。这样，WebRTC Agent可以声明"我将向你发送此编解码器，但我不打算接受任何返回的内容"。direction属性有四个有效值：
 
 * `send`
 * `recv`
@@ -123,7 +123,7 @@ WebRTC中的每个媒体描述都包含一个direction属性。这样，WebRTC�
 
 ### WebRTC用到的SDP值
 
-这个列表包含了你将在WebRTC代理的会话描述中看到的一些常见属性。这些值控制着我们尚未讨论到的子系统。
+这个列表包含了你将在WebRTC Agent的会话描述中看到的一些常见属性。这些值控制着我们尚未讨论到的子系统。
 
 ##### `group:BUNDLE`
 
@@ -143,19 +143,19 @@ a=fingerprint:SHA-1 \
 
 ##### `setup:`
 
-该属性控制了DTLS代理的行为。在ICE连接后，该属性将确定DTLS代理是作为客户端还是服务器来运行。有以下几个可能的值：
+该属性控制了DTLS Agent的行为。在ICE连接后，该属性将确定DTLS Agent是作为客户端还是服务器来运行。有以下几个可能的值：
 
 * `setup:active` - 作为DTLS客户端运行。
 * `setup:passive` - 作为DTLS服务器运行。
-* `setup:actpass` - 要求另一个WebRTC代理选择。
+* `setup:actpass` - 要求另一个WebRTC Agent选择。
 
 ##### `ice-ufrag`
 
-该属性是ICE代理的用户片段值。用于ICE流量的身份验证。
+该属性是ICE Agent的用户片段值。用于ICE流量的身份验证。
 
 ##### `ice-pwd`
 
-该属性是ICE代理的密码。用于ICE流量的身份验证。
+该属性是ICE Agent的密码。用于ICE流量的身份验证。
 
 ##### `rtpmap`
 
@@ -167,7 +167,7 @@ a=fingerprint:SHA-1 \
 
 ##### `candidate`
 
-该属性是来自ICE代理的ICE候选。这是一个可能被WebRTC代理使用的地址。这些将在下一章中详细说明。
+该属性是来自ICE Agent的ICE候选地址。这是一个可能被WebRTC Agent使用的地址。这些将在下一章中详细说明。
 
 ##### `ssrc`
 
@@ -228,14 +228,14 @@ a=sendrecv
 
 * 我们有两个媒体描述，一个是音频，一个是视频
 * 这两个媒体描述都是 `sendrecv` 收发器。我们将得到两个流，也可以发送两个流回去。
-* 我们有候选ICE代理和身份验证的详细信息，因此我们可以尝试连接
+* 我们有ICE候选地址和身份验证的详细信息，因此我们可以尝试连接
 * 我们有一个证书指纹，因此我们可以进行安全的呼叫
 
 {{< hint info >}}
 译注：对照以上4点
 * 两个媒体描述即是两个`m=`段
 * 两个m段中都有`a=sendrecv`，即是说可以收也可以发
-* 候选ICE代理对应`a=candidate:foundation`到`a=end-of-candidates`之间的部分，身份验证信息参考前面的`ice-ufrag`和`ice-pwd`等
+* ICE候选地址对应`a=candidate:foundation`到`a=end-of-candidates`之间的部分，身份验证信息参考前面的`ice-ufrag`和`ice-pwd`等
 * 指的是`fingerprint:sha-256`属性
 {{< /hint >}}
 

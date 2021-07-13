@@ -16,7 +16,7 @@ WebRTC提供用于数据通信的数据通道。在两个peer之间，你可以�
 ## 它是如何工作的？
 WebRTC使用[RFC 2960](https://tools.ietf.org/html/rfc2960)中定义的流控制传输协议（SCTP）。SCTP是一种传输层协议，旨在替代TCP或UDP。对于WebRTC，我们将SCTP用作在DTLS连接上运行的应用层协议。
 
-SCTP为你提供流，并且每个流都可以独立配置。WebRTC数据通道只是基于流的简单抽象。有关持久性和顺序的设置会被直接传递到SCTP代理中。
+SCTP为你提供流，并且每个流都可以独立配置。WebRTC数据通道只是基于流的简单抽象。有关持久性和顺序的设置会被直接传递到SCTP Agent中。
 
 数据通道具有SCTP无法表达的某些功能，例如通道标签。为了解决该问题，WebRTC使用了[RFC 8832](https://tools.ietf.org/html/rfc8832)中定义的数据通道建立协议（DCEP）。DCEP定义了一条消息，用于传递通道标签和协议。
 
@@ -24,7 +24,7 @@ SCTP为你提供流，并且每个流都可以独立配置。WebRTC数据通道�
 DCEP只有两个消息`DATA_CHANNEL_OPEN`和`DATA_CHANNEL_ACK`。对于打开的每个数据通道，远端必须以ack响应。
 
 ### DATA_CHANNEL_OPEN
-该消息由希望打开数据通道的WebRTC代理发送。
+该消息由希望打开数据通道的WebRTC Agent发送。
 
 #### 封包格式
 ```
@@ -77,7 +77,7 @@ Channel Type controls durability/ordering attributes of the channel. It may have
 如果这里为空字符串，则协议未指定。如果是非空字符串，则这里应指定一个协议，可指定的协议请参考[RFC 6455](https://tools.ietf.org/html/rfc6455#page-61)中定义的"WebSocket子协议名称注册表"中的注册协议。
 
 ### DATA_CHANNEL_ACK
-WebRTC代理发送此消息以确认此数据通道已打开。
+WebRTC Agent发送此消息以确认此数据通道已打开。
 
 #### 封包格式
 ```
@@ -106,7 +106,7 @@ SCTP中，WebRTC不使用的功能包括多宿主（multi-homing）和路径选�
 经过20多年的发展，SCTP变得难以完全掌握。
 
 ### 关联（Association）
-关联是用于SCTP会话的术语。这是两个SCTP代理在通信时共享的状态。
+关联是用于SCTP会话的术语。这是两个SCTP Agent在通信时共享的状态。
 
 ### 流
 一个流是用户数据的一个双向序列。创建数据通道时，实际上只是在创建一个SCTP流。每个SCTP关联都包含一个流列表。可以为每个流配置不同的可靠性类型。
@@ -213,7 +213,7 @@ INIT块开始创建一个关联（association）的过程。
 
 `Advertised Receiver Window Credit`（广播接收者窗口信用值）用于SCTP的拥塞控制。它传达了接收方已为此关联分配了多大的缓冲区。
 
-`Number of Outbound/Inbound Streams`（出站/入站流的数量）通知该代理支持多少个流。
+`Number of Outbound/Inbound Streams`（出站/入站流的数量）通知该Agent支持多少个流。
 
 `Initial TSN`（初始TSN）是随机的`uint32`，本地TSN以这个值开始计数。
 
@@ -305,7 +305,7 @@ ABORT块用于关联的突然关闭。当一侧进入错误状态时使用。正
 ```
 
 SHUTDOWN块将正常关闭SCTP关联。
-每个代理将其发送的最后一个TSN通知给远端。这样可以确保不会丢失任何数据包。（如果有资源仍在使用中的话，）WebRTC不能正常关闭SCTP关联。你需要自行关闭所有数据通道。
+每个Agent将其发送的最后一个TSN通知给远端。这样可以确保不会丢失任何数据包。（如果有资源仍在使用中的话，）WebRTC不能正常关闭SCTP关联。你需要自行关闭所有数据通道。
 
 `Cumulative TSN ACK`（累积TSN ACK）是发送的最后一个TSN。双方都知道在接收到此TSN对应的DATA块之前不要终止。
 
@@ -322,7 +322,7 @@ SHUTDOWN块将正常关闭SCTP关联。
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-ERROR块用于通知远端SCTP代理发生了非致命错误。
+ERROR块用于通知远端SCTP Agent：本端发生了非致命错误。
 
 ### FORWARD TSN块
 ```
@@ -363,9 +363,9 @@ SCTP使用`FORWARD TSN`块来实现这一点。它告诉接收方，`14`和`15`�
 ![连接的建立](../../images/07-connection-establishment.png "连接的建立")
 
 ### 连接关闭流程
-SCTP使用`SHUTDOWN`块。当代理收到`SHUTDOWN`块时，它将等待直到收到请求的`Cumulative TSN ACK`。这样，即使连接有损，用户也可以确保传送了所有数据。
+SCTP使用`SHUTDOWN`块。当Agent收到`SHUTDOWN`块时，它将等待直到收到请求的`Cumulative TSN ACK`。这样，即使连接有损，用户也可以确保传送了所有数据。
 
 ### Keep-Alive（保持活动）机制
 SCTP使用`HEARTBEAT REQUEST`和`HEARTBEAT ACK`块使连接保持活动状态。它们以固定间隔发送，间隔时间可配置。如果数据包尚未到达，SCTP还会将指数回退。
 
-`HEARTBEAT`块还包含一个时间值。两个关联可以用此来计算两个代理之间的数据传递时间。
+`HEARTBEAT`块还包含一个时间值。两个关联可以用此来计算两个Agent之间的数据传递时间。
