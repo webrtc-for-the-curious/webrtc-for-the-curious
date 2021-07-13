@@ -141,10 +141,10 @@ Each DATA chunk also has a Payload Protocol Identifier (PPID). This is used to u
 SCTP has many PPIDs, but WebRTC is only using the following five:
 
 * `WebRTC DCEP` (`50`) - DCEP messages.
-* `WebRTC String` (`51`) - Datachannel string messages.
-* `WebRTC Binary` (`53`) - Datachannel binary messages.
-* `WebRTC String Empty` (`56`) - Datachannel string messages with 0 length.
-* `WebRTC Binary Empty` (`57`) - Datachannel binary messages with 0 length.
+* `WebRTC String` (`51`) - DataChannel string messages.
+* `WebRTC Binary` (`53`) - DataChannel binary messages.
+* `WebRTC String Empty` (`56`) - DataChannel string messages with 0 length.
+* `WebRTC Binary Empty` (`57`) - DataChannel binary messages with 0 length.
 
 ## Protocol
 The following are some of the chunks used by the SCTP protocol. This is
