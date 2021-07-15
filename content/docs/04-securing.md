@@ -57,7 +57,7 @@ Let's say you are given a key that is 8 bytes. You could use a KDF to make it st
 #### Nonce
 A nonce is an additional input to a cipher. This is used so that you can get different output from the cipher, even if you are encrypting the same message multiple times.
 
-If you encrypt the same message 10 times, the cipher will give you the same ciphertext 10 times. By using a nonce you can get different input, while still using the same key. It is important you use a different nonce for each message! Otherwise, it negates much of the value.
+If you encrypt the same message 10 times, the cipher will give you the same ciphertext 10 times. By using a nonce you can get different output, while still using the same key. It is important you use a different nonce for each message! Otherwise, it negates much of the value.
 
 #### Message Authentication Code
 A Message Authentication Code is a hash that is placed at the end of a message. A MAC proves that the message comes from the user you expected.
