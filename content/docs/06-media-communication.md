@@ -307,7 +307,7 @@ Now that we have information around the state of the network we can make estimat
 This working group contains multiple submitted standards for congestion control algorithms. Before then, all congestion controller algorithms were proprietary.
 
 The most deployed implementation is "A Google Congestion Control Algorithm for Real-Time Communication" defined in [draft-alvestrand-rmcat-congestion](https://tools.ietf.org/html/draft-alvestrand-rmcat-congestion-02).
-In can run in two passes. First a "loss based" pass that just uses Receiver Reports. If TWCC is available, it will also take that additional data into consideration.
+It can run in two passes. First a "loss based" pass that just uses Receiver Reports. If TWCC is available, it will also take that additional data into consideration.
 It predicts the current and future network bandwidth by using a [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter).
 
 There are several alternatives to GCC, for example [NADA: A Unified Congestion Control Scheme for Real-Time Media](https://tools.ietf.org/html/draft-zhu-rmcat-nada-04) and [SCReAM - Self-Clocked Rate Adaptation for Multimedia](https://tools.ietf.org/html/draft-johansson-rmcat-scream-cc-05).
