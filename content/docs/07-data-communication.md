@@ -180,7 +180,7 @@ Stream Sequence Number.
 
 `B` and `E` are the beginning and end bits. If you want to send a
 message that is too large for one DATA chunk it needs to be fragmented.
-With the the `B` and `E` bit and Sequence Numbers SCTP is able to express
+With the `B` and `E` bit and Sequence Numbers SCTP is able to express
 this.
 
 * `B=1`, `E=0` - First piece of a fragmented user message.
