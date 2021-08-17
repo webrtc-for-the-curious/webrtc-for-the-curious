@@ -12,7 +12,7 @@ challenging. This chapter will try to explain those challenges before you hit th
 
 ## By Use Case
 Many think WebRTC is just a technology for conferencing in the web browser. It is so much more than that though!
-WebRTC is used for a wide range of use cases. New use cases showing up all the time. In this chapter we will list some common ones and how WebRTC is revolutionizing them.
+WebRTC is used in a wide range of applications. New use cases are showing up all the time. In this chapter we will list some common ones and how WebRTC is revolutionizing them.
 
 ### Conferencing
 Conferencing is the original use case for WebRTC. The protocol contains a few necessary features that no other protocol offers
@@ -49,9 +49,9 @@ WebRTC can be used to remotely access a host that isn't world routable. With NAT
 via STUN. This is great for security and privacy. Your users don't have to route video through an ingest, or a "jump box". NAT Traversal also
 makes deployments easier. You don't have to worry about port forwarding or setting up a static IP ahead of time.
 
-Data channels are really powerful as well in this scenario. They can be configured so that only the latest data is accepted. With TCP run the
+Data channels are really powerful as well in this scenario. They can be configured so that only the latest data is accepted. With TCP you run the
 risk of encountering Head-of-line blocking. An old mouse click or keypress could arrive late, and block the subsequent ones from being accepted.
-WebRTC's data channels are designed to handle this and can be configured to not retry on lost packets. You can also measure the backpressure and
+WebRTC's data channels are designed to handle this and can be configured to not resend lost packets. You can also measure the backpressure and
 make sure that you aren't sending more data than your network supports.
 
 WebRTC being available in the browser has been a huge quality of life improvement. You don't have to download a proprietary client to start the
@@ -99,7 +99,7 @@ can access. A popular example is using SSH from your browser to access a server.
 WebRTC's data channels allow unreliable and unordered delivery. In cases where low latency is critical this is needed. You don't want new data to be
 blocked by old data, this is known as head-of-line blocking. Imagine you are playing a multiplayer First-person shooter. Do you really care where the
 player was two seconds ago? If that data didn't arrive in time, it doesn't make sense to keep trying to send it. Unreliable and unordered delivery allows
-you to get your data as soon as it arrives.
+you to use the data as soon as it arrives.
 
 Data channels also provide feedback pressure. This tells you if you are sending data faster than your connection can support. You then have two
 choices when this happens. The data channel can either be configured to buffer and deliver the data late, or you can drop the data that hasn't arrived
@@ -134,7 +134,7 @@ The connection looks like this.
 Full mesh is the answer if you want to build a conference call or a multiplayer game. In this topology each user establishes a connection
 with every other user directly. This allows you to build your application, but it comes with some downsides.
 
-In a Full Mesh topology each user is connected directly. That means you have to encode and upload video independently for each member of the call.
+In a Full Mesh topology each user is connected directly. That means each user has to upload video independently for each member of the call.
 The network conditions between each connection will be different, so you can't reuse the same video. Error handling is also difficult in these
 deployments. You need to carefully consider if you have lost complete connectivity, or just connectivity with one remote peer.
 
