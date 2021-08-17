@@ -134,7 +134,7 @@ The connection looks like this.
 Full mesh is the answer if you want to build a conference call or a multiplayer game. In this topology each user establishes a connection
 with every other user directly. This allows you to build your application, but it comes with some downsides.
 
-In a Full Mesh topology each user is connected directly. That means each user has to upload video independently for each member of the call.
+In a Full Mesh topology each user is connected directly. That means you have to encode and upload video independently for each member of the call.
 The network conditions between each connection will be different, so you can't reuse the same video. Error handling is also difficult in these
 deployments. You need to carefully consider if you have lost complete connectivity, or just connectivity with one remote peer.
 
