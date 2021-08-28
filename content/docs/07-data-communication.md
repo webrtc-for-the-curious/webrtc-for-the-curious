@@ -179,7 +179,7 @@ anything over the data channel, this is how it is exchanged.
 Stream Sequence Number.
 
 `B` and `E` are the beginning and end bits. If you want to send a
-message that is too large for one DATA chunk it needs to be fragmented.
+message that is too large for one DATA chunk it needs to be fragmented into multiple DATA chunks that are sent in seperate packets.
 With the `B` and `E` bit and Sequence Numbers SCTP is able to express
 this.
 
@@ -189,9 +189,13 @@ this.
 * `B=1`, `E=1` - Unfragmented message.
 
 `TSN` is the Transmission Sequence Number. It is the global unique
-identifier for this message. After 4,294,967,295 messages this will wrap around.
+identifier for this DATA chunk. After 4,294,967,295 chunks this will wrap around.
+The TSN is incremented every chunk in a fragmented user message so the other user knows how to order the received chunks to get a complete message.
 
 `Stream Identifier` is the unique identifier for the stream this data belongs too.
+
+`Stream Sequence Number` - A 16-bit number incremented every user message and included in the DATA message chunk header. This number is used to decide the message order of delivery to the user if `U` is 0. Similar to the TSN except the Stream Sequence Number is only incremented for each message as a whole and not each individual chunk.
+
 
 `Payload Protocol Identifier` is the type of data that is flowing through
 this stream. For WebRTC, it is going to be DCEP, String or Binary.
