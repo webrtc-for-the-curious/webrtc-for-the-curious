@@ -179,7 +179,7 @@ anything over the data channel, this is how it is exchanged.
 Stream Sequence Number.
 
 `B` and `E` are the beginning and end bits. If you want to send a
-message that is too large for one DATA chunk it needs to be fragmented into multiple DATA chunks that are sent in seperate packets.
+message that is too large for one DATA chunk it needs to be fragmented into multiple DATA chunks sent in separate packets.
 With the `B` and `E` bit and Sequence Numbers SCTP is able to express
 this.
 
@@ -194,7 +194,7 @@ The TSN is incremented every chunk in a fragmented user message so the other use
 
 `Stream Identifier` is the unique identifier for the stream this data belongs too.
 
-`Stream Sequence Number` - A 16-bit number incremented every user message and included in the DATA message chunk header. After 65535 messages this will wrap around to 0. This number is used to decide the message order of delivery to the user if `U` is set to 0. Similar to the TSN except the Stream Sequence Number is only incremented for each message as a whole and not each individual chunk.
+`Stream Sequence Number` is a 16-bit number incremented every user message and included in the DATA message chunk header. After 65535 messages this will wrap around to 0. This number is used to decide the message order of delivery to the user if `U` is set to 0. Similar to the TSN except the Stream Sequence Number is only incremented for each message as a whole and not each individual chunk.
 
 
 `Payload Protocol Identifier` is the type of data that is flowing through
