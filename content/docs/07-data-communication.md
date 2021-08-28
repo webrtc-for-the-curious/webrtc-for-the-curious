@@ -189,12 +189,12 @@ this.
 * `B=1`, `E=1` - Unfragmented message.
 
 `TSN` is the Transmission Sequence Number. It is the global unique
-identifier for this DATA chunk. After 4,294,967,295 chunks this will wrap around.
+identifier for this DATA chunk. After 4,294,967,295 chunks this will wrap around to 0.
 The TSN is incremented every chunk in a fragmented user message so the other user knows how to order the received chunks to get a complete message.
 
 `Stream Identifier` is the unique identifier for the stream this data belongs too.
 
-`Stream Sequence Number` - A 16-bit number incremented every user message and included in the DATA message chunk header. This number is used to decide the message order of delivery to the user if `U` is 0. Similar to the TSN except the Stream Sequence Number is only incremented for each message as a whole and not each individual chunk.
+`Stream Sequence Number` - A 16-bit number incremented every user message and included in the DATA message chunk header. After 65535 messages this will wrap around to 0. This number is used to decide the message order of delivery to the user if `U` is set to 0. Similar to the TSN except the Stream Sequence Number is only incremented for each message as a whole and not each individual chunk.
 
 
 `Payload Protocol Identifier` is the type of data that is flowing through
