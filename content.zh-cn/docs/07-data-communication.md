@@ -170,21 +170,26 @@ DATA块是交换所有用户数据的方式。下面是对DATA块更详细的说
 
 如果是无序数据包，则将`U`位设置为1。我们可以忽略流序列号（Stream Sequence Number）。
 
-`B`和`E`是开始位和结束位。如果要发送的消息对于单个DATA块而言太大，则需要将其分片。
-SCTP使用`B`和`E`位以及序列号（TSN）来表达这一点。
+`B`和`E`是开始位和结束位。如果要发送的消息对于单个DATA块而言太大，则需要将其分片成多个DATA块发送。
+SCTP使用 比特位`B`和`E` 以及序列号（TSN）来描述消息分包。
 
 * `B=1`, `E=0` - 用户消息的第一个分片。
 * `B=0`, `E=0` - 用户消息的中间的分片。
 * `B=0`, `E=1` - 用户消息的最后一个分片。
 * `B=1`, `E=1` - 未分片的用户消息。
 
-`TSN`是传输序列号。它是此消息的全局唯一标识符。在4,294,967,295（译注：32位最大值）条消息之后，该值将循环使用。
+`TSN`是`Transmission Sequence Number`，一个 DATA chunk 的唯一标识符。它是一个递增的32 bit数，最大值为4,294,967,295 之后，继续从0开始递增。
 
 `Stream Identifier`（流标识符）是该数据所属流的唯一标识符。
 
+`Stream Sequence Number` , 标识一个用户消息。它是一个递增的16-bit 数，在 达到最大值 65535 之后，继续从0开始递增。
+比特位`U`设置为1时，表示无序消息包，`Stream Sequence Number`可以忽略。
+比特位`U`设置为0时，表示有序消息包，该编号用于确定消息包的顺序。
+与TSN类似，但是 `Stream Sequence Number` 以一个用户消息的粒度递增，TSN以一个Chunk的粒度递增。
+
 `Payload Protocol Identifier`（有效负载协议标识符）是流过此流的数据类型。对于WebRTC而言，它可能是DCEP，String或Binary。
 
-`User Data`（用户数据）就是你要发送的内容。通过WebRTC数据通道发送的所有数据均通过DATA块传输。
+`User Data`（用户数据）就是你要发送的内容。通过WebRTC Data Channel发送的所有数据均通过DATA块传输。
 
 ### INIT块
 ```
