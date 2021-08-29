@@ -178,11 +178,11 @@ SCTP使用 比特位`B`和`E` 以及序列号（TSN）来描述消息分包。
 * `B=0`, `E=1` - 用户消息的最后一个分片。
 * `B=1`, `E=1` - 未分片的用户消息。
 
-`TSN`是`Transmission Sequence Number`，一个 DATA chunk 的唯一标识符。它是一个递增的32 bit数，最大值为4,294,967,295 之后，继续从0开始递增。
+`TSN`是`Transmission Sequence Number`，一个 DATA chunk 的唯一标识符。它是一个递增的32-bit数，在达到最大值4,294,967,295 之后，继续从0开始递增。
 
 `Stream Identifier`（流标识符）是该数据所属流的唯一标识符。
 
-`Stream Sequence Number` , 标识一个用户消息。它是一个递增的16-bit 数，在 达到最大值 65535 之后，继续从0开始递增。
+`Stream Sequence Number` , 标识一个用户消息。它是一个递增的16-bit数，在 达到最大值 65535 之后，继续从0开始递增。
 比特位`U`设置为1时，表示无序消息包，`Stream Sequence Number`可以忽略。
 比特位`U`设置为0时，表示有序消息包，该编号用于确定消息包的顺序。
 与TSN类似，但是 `Stream Sequence Number` 以一个用户消息的粒度递增，TSN以一个Chunk的粒度递增。
