@@ -171,12 +171,13 @@ Varje avsnitt börjar med ett `type`-fält. Innan en lista med avsnitt kommer du
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
-När du skickar något över datakanalen, DATA-avsnitt är hur all data skickas.
+När du skickar data över datakanalen packeteras allt som DATA-avsnitt.
 
 `U`-flaggan är satt om detta är ett oordnat paket. Då kan vi ignorera strömsekvensnumret.
 
 `B` och `E` är början och slutet. Om du vill skicka ett
-meddelande som är för stort för ett DATA-avsnitt, måste det fragmenteras.
+meddelande som är för stort för ett DATA-avsnitt, måste det fragmenteras till flera mindre
+DATA-avsnitt som skickas var för sig.
 Flaggorna `B` och `E` och sekvensnummret är hur SCTP kommunicerar detta.
 
 * `B=1`, `E=0` - Första delen av ett fragmenterat användarmeddelande.
@@ -185,9 +186,13 @@ Flaggorna `B` och `E` och sekvensnummret är hur SCTP kommunicerar detta.
 * `B=1`, `E=1` - Ofragmenterat meddelande.
 
 `TSN` är sändningssekvensnumret. Det är det globala unika
-identifierare för detta meddelande. Efter 4 294 967 295 meddelanden börjar räknaren om.
+identifierare för detta meddelande. Efter 4 294 967 295 DATA-avsnitt börjar räknaren om.
+Om ett meddelande fragmenterats till flera DATA-avsnitt, uppdateras sändningssekvensnumret
+för varje DATA-avsnitt så att mottagaren kan återskapa det usprungliga meddelandet korrekt.
 
-`Stream Identifier` är den unika IDt för strömmen som den här datan tillhör.
+`Stream Identifier` är det unika IDt för strömmen som den här datan tillhör.    
+
+`Stream Sequence Number` (strömssekvensnumret) är ett 16-bitars nummer som ökas på för användarmeddelande och ingår i rubriken för varje DATA-avsnitt. Efter 65 535 meddelanden börjar räknaren om på 0. Detta nummer används för att bestämma meddelandets leveransordning till mottagaren om flaggan `U` inte är satt. Det liknar TSN, förutom att strömssekvensnumret bara ökas för varje meddelande som skickas och inte varje enskilt DATA-avsnitt.            
 
 `Payload Protocol Identifier` visar vilken typ av data som skickas via
 den här strömmen. För WebRTC kommer det att vara DCEP, String eller Binary.
