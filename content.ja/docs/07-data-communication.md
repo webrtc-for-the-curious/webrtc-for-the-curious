@@ -59,11 +59,11 @@ DCEPには、`DATA_CHANNEL_OPEN`と`DATA_CHANNEL_ACK`の2つのメッセージ�
 Channel Type は、チャネルの耐久性や順序の属性を制御します。以下のような値があります。
 
 * `DATA_CHANNEL_RELIABLE` (`0x00`) - メッセージが失われることはなく、順番に到着します。
-* `DATA_CHANNEL_RELIABLE_UNORDERED` (`0x80`) - メッセージは失われず、順番に到着しないことがあります。　
-* `DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT` (`0x01`) - メッセージは要求された回数を試した後に失われ、順番に到着します。
-* `DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT_UNORDERED` (`0x81`) - メッセージは要求された回数だけ試行した後に失われる可能性があり、順番に到着しないことがあります。
-* `DATA_CHANNEL_PARTIAL_RELIABLE_TIMED` (`0x02`) - メッセージは、要求された時間内に到着しないと失われる可能性があり、順番に到着します。
-* `DATA_CHANNEL_PARTIAL_RELIABLE_TIMED_UNORDERED` (`0x82`) - メッセージは、要求された時間内に到着しなかった場合に失われる可能性があり、順番に到着しないことがあります。
+* `DATA_CHANNEL_RELIABLE_UNORDERED` (`0x80`) - メッセージは失われませんが、順不同に到着することがあります。
+* `DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT` (`0x01`) - メッセージは要求された回数を試した後に失われる可能性がありますが、順番に到着します。
+* `DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT_UNORDERED` (`0x81`) - メッセージは要求された回数だけ試行した後に失われる可能性があり、順不同に到着することがあります。
+* `DATA_CHANNEL_PARTIAL_RELIABLE_TIMED` (`0x02`) - メッセージは要求された時間内に到着しないと失われる可能性がありますが、順番に到着します。
+* `DATA_CHANNEL_PARTIAL_RELIABLE_TIMED_UNORDERED` (`0x82`) - メッセージは、要求された時間内に到着しなかった場合に失われる可能性があり、順不同に到着することがあります。
 
 #### 優先順位
 
@@ -119,7 +119,6 @@ WebRTC で使用されていない SCTP の機能には、マルチホーミン�
 
 ### アソシエーション
 SCTP セッションのことをアソシエーションと言います。2つのSCTPエージェントが通信している間、2つのSCTPエージェント間で共有される状態です。
-2つのSCTPエージェントが通信する際に共有する状態です。
 
 ### ストリーム
 ストリームとは、ユーザーデータの1つの双方向シーケンスです。データチャネルを作成することは、実際には SCTP ストリームを作成することに他なりません。
