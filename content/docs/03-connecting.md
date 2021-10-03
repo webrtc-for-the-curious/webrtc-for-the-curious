@@ -242,7 +242,7 @@ The `password` is used to generate a `MESSAGE-INTEGRITY` attribute. At the end o
 For WebRTC, all these values are distributed via the `Session Description` as described in the previous chapter.
 
 ### Candidate Gathering
-We now need to gather all the possible addresses we are reachable at. These addresses are known as candidates. These candidates are also distributed via the `Session Description`.
+We now need to gather all the possible addresses we are reachable at. These addresses are known as candidates.
 
 #### Host
 A Host candidate is listening directly on a local interface. This can either be UDP or TCP.
