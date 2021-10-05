@@ -234,7 +234,7 @@ Dessa rutter är kända som `Candidate Pairs`, vilket är en anslutning mellan e
 Två ICE-agenter kommunicerar med hjälp av ICE-ping-paket (`connectivity checks`) för att sätta upp en anslutning. När anslutningen har upprättats kan de skicka vilken data de vill. Det blir som att använda en normal socket. Dessa kontroller använder STUN-protokollet.
 
 ### Skapa en ICE-agent
-En ICE-agent är antingen  `Controlling` eller `Controlled`. Den "kontrollerande" agenten är den som bestämmer vilken kandidat (`Candidate Pair`) som ska användas. Vanligtvis är den klient som skickar erbjudandet den kontrollerande sidan.
+En ICE-agent är antingen `Controlling` eller `Controlled`. Den "kontrollerande" agenten är den som bestämmer vilken kandidat (`Candidate Pair`) som ska användas. Vanligtvis är den klient som skickar erbjudandet den kontrollerande sidan.
 
 Varje klient måste ha ett "användarfragment" (`user fragment`) och ett "lösenord" (`password`). Dessa två värden måste utbytas innan anslutningskontroller kan göras. "Användarfragmentet" skickas i klartext och är användbart för att separera (demuxing) flera ICE-sessioner.
 Lösenordet används för att generera attributet `MESSAGE-INTEGRITY`. I slutet av varje STUN-paket finns det ett attribut som är en hash för hela paketet med "lösenordet" som en nyckel. Detta används för att autentisera paketet och se till att det inte har blivit manipulerat.
@@ -242,7 +242,7 @@ Lösenordet används för att generera attributet `MESSAGE-INTEGRITY`. I slutet 
 För WebRTC skickas alla dessa värden via "sessionsbeskrivningen" som beskrevs i förra kapitlet.
 
 ### Kandidatsamling
-Vi måste nu samla alla möjliga adresser vi kan nås på. Dessa adresser kallas kandidater. Dessa kandidater skickas också via "sessionsbeskrivningen".
+Vi måste nu samla alla möjliga adresser vi kan nås på. Dessa adresser kallas kandidater.
 
 #### Klient
 En klientkandidat lyssnar direkt på ett lokalt nätverksinterface, antingen via UDP eller TCP.
