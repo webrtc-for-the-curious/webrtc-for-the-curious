@@ -39,7 +39,7 @@ a=second-value
 You have two lines. Each with the key `a`. The first line has the value `my-sdp-value`, the second line has the value `second-value`.
 
 ### WebRTC only uses some SDP keys
-Not all key values defined by the Session Description Protocol are used by WebRTC. The following seven keys are the only ones you need to understand right now:
+Not all key values defined by the Session Description Protocol are used by WebRTC. Only keys used in the JavaScript Session Establishment Protocol (JSEP), defined in [RFC 8829](https://datatracker.ietf.org/doc/html/rfc8829), are important. The following seven keys are the only ones you need to understand right now:
 
 * `v` - Version, should be equal to `0`.
 * `o` - Origin, contains a unique ID useful for renegotiations.
