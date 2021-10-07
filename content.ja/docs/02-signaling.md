@@ -43,7 +43,7 @@ a=second-value
 
 ### WebRTCは一部のSDPキーしか使用しない
 
-WebRTC では、SDP で定義されているすべてのキー値を使用しているわけではありません。以下の 7 つのキーだけは、今すぐ理解しておく必要があります。
+WebRTC では、SDP で定義されているすべてのキー値を使用しているわけではありません。[RFC 8829](https://datatracker.ietf.org/doc/html/rfc8829) JavaScriptセッション確立規約 (JavaScript Session Establishment Protocol (JSEP)) で定義されたキーのみが重要です。以下の 7 つのキーだけは、今すぐ理解しておく必要があります。
 
 * `v` - バージョン(Version)、`0` と同じでなければなりません。
 * `o` - オリジン(Origin)、再交渉に便利なユニークな ID を含む。
