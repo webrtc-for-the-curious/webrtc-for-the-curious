@@ -39,7 +39,7 @@ a=second-value
 Du har två rader. Var och en med nyckeln `a`. Den första raden har värdet `my-sdp-value`, den andra raden har värdet `second-value`.
 
 ### WebRTC använder bara vissa SDP-nycklar
-Inte alla nycklar som definieras i SDP används av WebRTC. Följande sju nycklar är de enda du behöver förstå just nu:
+Inte alla nycklar som definieras i SDP används av WebRTC. Bara nycklar som används i JavaScript Session Establishment Protocol (JSEP), definierat i [RFC 8829](https://datatracker.ietf.org/doc/html/rfc8829), är viktiga. Följande sju nycklar är de enda du behöver förstå just nu:
 
 * `v` - Version, ska vara satt till `0`.
 * `o` - Ursprung (Origin). Innehåller ett unikt ID som är användbart för omförhandlingar.
