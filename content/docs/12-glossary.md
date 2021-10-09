@@ -1,12 +1,14 @@
 ---
-title: Glossaries
+title: Glossary
 type: docs
-weight: 12
+weight: 13
 ---
 
-# Glossaries
+# Glossary
 
 * ACK: Acknowledgment
+* AV1:  A video codec developed by Alliance for Open Media
+* AVP: Audio and Vide profile
 * B-Frame: Bi-directional Predicted Frame. A partial picture, is a modification of previous and future pictures.
 * DCEP: Data Channel Establishment Protocol
 * DeMux: Demultiplexer
@@ -15,6 +17,9 @@ weight: 12
 * E2E: end-to-end
 * FEC: Forward Error Correction
 * FIR: Full INTRA-frame Request
+* H264: Advanced video coding for generic audiovisual services
+* H265: Conformance specification for ITU-T H.265 high efficiency video coding
+* HEVC: High Efficiency Video Coding
 * HTTP: Hypertext Transfer Protocol
 * HTTPS: HTTP Over TLS [RFC 2818](https://datatracker.ietf.org/doc/html/rfc2818)
 * I-Frame: Intra-coded Frame. A complete picture, can be decoded without anything else.
@@ -32,6 +37,7 @@ weight: 12
 * MUX: Multiplexing
 * NACK: Negative Acknowledgment
 * NAT: Network Address Translation [RFC 4787](https://datatracker.ietf.org/doc/html/rfc4787)
+* Opus: A totally open, royalty-free, highly versatile audio codec
 * P-Frame: Predicted Frame. A partial picture, containing only changes from the previous picture.
 * P2P: peer-to-peer
 * PLI: Picture Loss Indication
@@ -49,6 +55,7 @@ weight: 12
 * SFU: Selective Forwarding Unit
 * SR: Sender Report
 * SRTP: Secure Real-time Transport Protocol [RFC 3711](https://datatracker.ietf.org/doc/html/rfc3711)
+* SSRC: Synchronization Source
 * STUN: Session Traversal Utilities for NAT [RFC 5389](https://datatracker.ietf.org/doc/html/rfc5389)
 * TCP: Transmission Control Protocol
 * TLS: The Transport Layer Security [RFC 8446](https://datatracker.ietf.org/doc/html/rfc8446)
@@ -58,5 +65,7 @@ weight: 12
 * TURN: Traversal Using Relays around NAT [RFC 5766](https://datatracker.ietf.org/doc/html/rfc5766)
 * TWCC: Transport Wide Congestion Control
 * UDP: User Datagram Protocol
+* VP8: Highly-efficient video compression technologies (video "codecs") developed by the WebM Project. Anyone may use these codecs royalty-free.
+* VP9: Highly-efficient video compression technologies (video "codecs") developed by the WebM Project. Anyone may use these codecs royalty-free.
+* WebM: An open media file format designed for the web.
 * WebRTC: Web Real-Time Communications. [W3C WebRTC 1.0: Real-Time Communication Between Browsers](https://www.w3.org/TR/webrtc/)
-
