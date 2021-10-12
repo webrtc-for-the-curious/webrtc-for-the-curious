@@ -8,7 +8,7 @@ weight: 13
 
 * ACK: Acknowledgment
 * AVP: Audio and Video profile
-* B-Frame: [Bi-directional Predicted Frame](../06-media-communication/#フレーム間の種類). 部分的な画像で、以前の画像と未来の画像を組み合わせたもの
+* B-Frame: [Bi-directional Predicted Frame](../06-media-communication/#フレーム間の種類). 部分的な画像で,以前の画像と未来の画像を組み合わせたもの
 * DCEP: [Data Channel Establishment Protocol](../07-data-communication/#dcep) 策定文書 [RFC 8832](https://datatracker.ietf.org/doc/html/rfc8832)
 * DeMux: Demultiplexer
 * DLSR: delay since last sender report
@@ -22,7 +22,7 @@ weight: 13
 * HEVC: High Efficiency Video Coding
 * HTTP: Hypertext Transfer Protocol
 * HTTPS: HTTP Over TLS 策定文書 [RFC 2818](https://datatracker.ietf.org/doc/html/rfc2818)
-* I-Frame: [Intra-coded Frame](../06-media-communication/#フレーム間の種類). 完全な画像で、何もなくてもデコードできる
+* I-Frame: [Intra-coded Frame](../06-media-communication/#フレーム間の種類). 完全な画像で,何もなくてもデコードできる
 * ICE: [Interactive Connectivity Establishment](../03-connecting/#ice) 策定文書 [RFC 8445](https://datatracker.ietf.org/doc/html/rfc8445)
 * INIT: Initiate
 * IoT: Internet of Things
@@ -38,7 +38,7 @@ weight: 13
 * NACK: Negative Acknowledgment
 * NAT: [Network Address Translation](../03-connecting/#natマッピング) 策定文書 [RFC 4787](https://datatracker.ietf.org/doc/html/rfc4787)
 * Opus: A totally open, royalty-free, highly versatile audio codec
-* P-Frame: [Predicted Frame](../06-media-communication/#フレーム間の種類). 部分的な画像で、前の画像を修正したもの
+* P-Frame: [Predicted Frame](../06-media-communication/#フレーム間の種類). 部分的な画像で,前の画像を修正したもの
 * P2P: peer-to-peer
 * PLI: [Picture Loss Indication](../06-media-communication/#full-intra-frame-request-firとpicture-loss-indication-pli)
 * PPID: [Payload Protocol Identifier](../07-data-communication/#ペイロードプロトコル識別子)
