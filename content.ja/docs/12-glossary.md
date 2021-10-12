@@ -17,8 +17,8 @@ weight: 13
 * FEC: [Forward Error Correction](../06-media-communication/#前方誤り訂正-forward-error-correction)
 * FIR: [Full INTRA-frame Request](../06-media-communication/#full-intra-frame-request-firとpicture-loss-indication-pli)
 * G.711: A narrowband audio codec
-* H264: Advanced video coding for generic audiovisual services
-* H265: Conformance specification for ITU-T H.265 high efficiency video coding
+* H.264: Advanced video coding for generic audiovisual services
+* H.265: Conformance specification for ITU-T H.265 high efficiency video coding
 * HEVC: High Efficiency Video Coding
 * HTTP: Hypertext Transfer Protocol
 * HTTPS: HTTP Over TLS 策定文書 [RFC 2818](https://datatracker.ietf.org/doc/html/rfc2818)
