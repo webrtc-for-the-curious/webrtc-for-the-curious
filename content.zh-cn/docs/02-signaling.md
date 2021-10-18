@@ -43,7 +43,7 @@ a=second-value
 
 ### WebRTC仅使用了部分SDP的key
 
-WebRTC并未使用会话描述协议定义的所有key。你当前只需要理解下面的7个key。
+WebRTC并未使用会话描述协议定义的所有key，只有那些在 JavaScript Session Establishment Protocol (JSEP，协议定义在[RFC 8829](https://datatracker.ietf.org/doc/html/rfc8829))中被使用到的key 是重要的。你当前只需要理解下面的7个key。
 
 * `v` - Version，版本，版本，应等于`0`。
 * `o` - Origin，源，包含一个唯一ID，用于重新协商。
