@@ -4,7 +4,7 @@ type: docs
 weight: 13
 ---
 
-# Glossary
+# 术语
 
 * ACK: Acknowledgment  (确认报文)
 * AVP:  Audio and Video profile (音频视频描述)
@@ -15,7 +15,7 @@ weight: 13
 * DTLS: [Datagram Transport Layer Security](../04-securing/#dtls) defined in [RFC 6347](https://datatracker.ietf.org/doc/html/rfc6347) 
 * E2E: end-to-end
 * FEC: [Forward Error Correction](../06-media-communication/#forward-error-correction) (前向纠错)
-* FIR: [Full INTRA-frame Request](../06-media-communication/#full-intra-frame-request-fir-and-picture-loss-indication-pli)  (完整帧请求)
+* FIR: [Full INTRA-frame Request](../06-media-communication/#full-intra-frame-request-fir-and-picture-loss-indication-pli)  (完整I帧请求)
 * G.711: A narrowband audio codec (一个窄带音频编码器)
 * H.264: Advanced video coding for generic audiovisual services  (面向通用视听服务的高级视频编码)
 * H.265: Conformance specification for ITU-T H.265 high efficiency video coding. (ITU-T H.265高效视频编码的一致性规范)
@@ -38,7 +38,7 @@ weight: 13
 * NACK: Negative Acknowledgment  (逆确认报文，ACK反馈收到报文,NACK反馈未收到报文 )
 * NAT: [Network Address Translation](../03-connecting/#nat-mapping) defined in [RFC 4787](https://datatracker.ietf.org/doc/html/rfc4787)   (网络地址转换，域名地址转换成IP地址)
 * Opus: A totally open, royalty-free, highly versatile audio codec (一个完全开放、免版税、高度通用的音频编解码器)
-* P-Frame: [Predicted Frame](../06-media-communication/#intra-and-inter-frame-compression). A partial picture, containing only changes from the previous picture. (前向预测帧，只保存相对相对于上一帧的差异信息)
+* P-Frame: [Predicted Frame](../06-media-communication/#intra-and-inter-frame-compression). A partial picture, containing only changes from the previous picture. (前向预测帧，只保存相对于上一帧的差异信息)
 * P2P: peer-to-peer
 * PLI: [Picture Loss Indication](../06-media-communication/#full-intra-frame-request-fir-and-picture-loss-indication-pli)  (图片丢失指示)
 * PPID: [Payload Protocol Identifier](../07-data-communication/#payload-protocol-identifier)  (Payload协议标识)
@@ -56,16 +56,16 @@ weight: 13
 * SR: Sender Report  (RCTP发送者报告)
 * SRTP: [Secure Real-time Transport Protocol](../04-securing/#srtp) defined in [RFC 3711](https://datatracker.ietf.org/doc/html/rfc3711) (安全的RTP)
 * SSRC: Synchronization Source (同步源)
-* STUN: [Session Traversal Utilities for NAT](../03-connecting/#stun) defined in [RFC 5389](https://datatracker.ietf.org/doc/html/rfc5389)  (一种NAT穿透方式)
+* STUN: [Session Traversal Utilities for NAT](../03-connecting/#stun) defined in [RFC 5389](https://datatracker.ietf.org/doc/html/rfc5389)  (NAT会话穿透)
 * TCP: Transmission Control Protocol (传输控制协议)
 * TLS: The Transport Layer Security defined in [RFC 8446](https://datatracker.ietf.org/doc/html/rfc8446) (传输层安全)
 * TMMBN: [Temporary Maximum Media Stream Bit Rate Notification](../06-media-communication/#tmmbr-tmmbn-and-remb) (临时最大媒体流比特率通知)
 * TMMBR: [Temporary Maximum Media Stream Bit Rate Request](../06-media-communication/#tmmbr-tmmbn-and-remb) (临时最大媒体流比特率请求)
 * TSN: [Transmission Sequence Number](../07-data-communication/#transmission-sequence-number) (传输序列号)
-* TURN: [Traversal Using Relays around NAT](../03-connecting/#turn) defined in [RFC 5766](https://datatracker.ietf.org/doc/html/rfc5766) (一种基于转发的NAT穿透方式)
+* TURN: [Traversal Using Relays around NAT](../03-connecting/#turn) defined in [RFC 5766](https://datatracker.ietf.org/doc/html/rfc5766) (基于转发的NAT穿透)
 * TWCC: [Transport Wide Congestion Control](../06-media-communication/#transport-wide-congestion-control) (传输拥塞控制)
 * UDP: User Datagram Protocol (数据报协议)
-* VP8, VP9: Highly-efficient video compression technologies (video "codecs") developed by the WebM Project. Anyone may use these codecs royalty-free.  (WebM 项目开发的搞笑视频压缩技术(视频编解码)，完全免费)
+* VP8, VP9: Highly-efficient video compression technologies (video "codecs") developed by the WebM Project. Anyone may use these codecs royalty-free.  (WebM项目开发的高效视频压缩技术(视频编解码)，完全免费)
 * WebM: An open media file format designed for the web. (一个开放的Web媒体文件格式)
 * WebRTC: Web Real-Time Communications. [W3C WebRTC 1.0: Real-Time Communication Between Browsers](https://www.w3.org/TR/webrtc/) (Web实时通信)
 
