@@ -14,7 +14,7 @@ Se [Connecting]({{< ref "03-connecting" >}}) för mer info.
 {{</details>}}
 
 {{<details "Hut många DataChannels kan jag ha?">}}
-65536 kanaler, eftersom strömidentifieraren har 16 bitar. Du kan när som helst stänga eller öppna nya kanaler.
+65534 kanaler, eftersom strömidentifieraren har 16 bitar. Du kan när som helst stänga eller öppna nya kanaler.
 {{</details>}}
 
 {{<details "Begränsar WebRTC bandbreden på något sätt?">}}
