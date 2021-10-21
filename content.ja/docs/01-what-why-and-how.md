@@ -147,6 +147,6 @@ WebRTC は SSRC を使用して、関連する `MediaStream` と `MediaStreamTra
 
 `oniceconnectionstatechange` は、ICE エージェントの状態を反映して起動されるコールバックです。ネットワークに接続されたときや、切断されたときに、このように通知されます。
 
-#### `onstatechange`
+#### `onconnectionstatechange`
 
-`onstatechange` は、ICE エージェントと DTLS エージェントの状態を組み合わせたものです。これを見ることで、ICE と DTLS の両方が正常に完了したときに通知を受けることができます。
+`onconnectionstatechange` は、ICE エージェントと DTLS エージェントの状態を組み合わせたものです。これを見ることで、ICE と DTLS の両方が正常に完了したときに通知を受けることができます。

@@ -142,6 +142,6 @@ WebRTC uses the SSRC and looks up the associated `MediaStream` and `MediaStreamT
 
 `oniceconnectionstatechange` is a callback that is fired that reflects the state of the ICE Agent. When you have network connectivity or when you become disconnected this is how you are notified.
 
-#### `onstatechange`
+#### `onconnectionstatechange`
 
-`onstatechange` is a combination of ICE Agent and DTLS Agent state. You can watch this to be notified when ICE and DTLS have both completed successfully.
+`onconnectionstatechange` is a combination of ICE Agent and DTLS Agent state. You can watch this to be notified when ICE and DTLS have both completed successfully.

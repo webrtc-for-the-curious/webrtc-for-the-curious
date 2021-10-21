@@ -144,6 +144,6 @@ WebRTC使用SSRC并查找关联的`MediaStream`和`MediaStreamTrack`，并使用
 
 `oniceconnectionstatechange`是ICE Agent的状态变化时触发的回调。当网络连接或断开时，你将得到此通知。
 
-#### `onstatechange`
+#### `onconnectionstatechange`
 
-`onstatechange`是ICE Agent和DTLS Agent状态的组合。当ICE和DTLS都成功完成时，你将得到此通知。
+`onconnectionstatechange`是ICE Agent和DTLS Agent状态的组合。当ICE和DTLS都成功完成时，你将得到此通知。

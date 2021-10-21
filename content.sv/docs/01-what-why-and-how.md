@@ -142,6 +142,6 @@ WebRTC använder SSRC för att hitta rätt `MediaStream` och `MediaStreamTrack`,
 
 `oniceconnectionstatechange` är en återanrop som avfyras för att visa tillståndet hos ICE-agenten. När du har fått en nätverksanslutning eller när du kopplas bort så får du det här meddelandet.
 
-#### `onstatechange`
+#### `onconnectionstatechange`
 
-`onstatechange` är en kombination av ICE Agenten och DTLS Agentens tillstånd. Du kan lyssna på detta meddelande för att få veta när uppsättningen av både ICE och DTLS har slutförts.
+`onconnectionstatechange` är en kombination av ICE Agenten och DTLS Agentens tillstånd. Du kan lyssna på detta meddelande för att få veta när uppsättningen av både ICE och DTLS har slutförts.
