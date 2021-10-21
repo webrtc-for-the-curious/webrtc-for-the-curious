@@ -11,9 +11,9 @@ weight: 13
 * B-Frame: [Bi-directional Predicted Frame](../06-media-communication/#intra-and-inter-frame-compression). A partial picture, is a modification of previous and future pictures.
 * DCEP: [Data Channel Establishment Protocol](../07-data-communication/#dcep) defined in [RFC 8832](https://datatracker.ietf.org/doc/html/rfc8832)
 * DeMux: Demultiplexer
-* DLSR: delay since last sender report
+* DLSR: Delay since last sender report
 * DTLS: [Datagram Transport Layer Security](../04-securing/#dtls) defined in [RFC 6347](https://datatracker.ietf.org/doc/html/rfc6347)
-* E2E: end-to-end
+* E2E: End-to-End
 * FEC: [Forward Error Correction](../06-media-communication/#forward-error-correction)
 * FIR: [Full INTRA-frame Request](../06-media-communication/#full-intra-frame-request-fir-and-picture-loss-indication-pli)
 * G.711: A narrowband audio codec
@@ -21,7 +21,7 @@ weight: 13
 * H.265: Conformance specification for ITU-T H.265 high efficiency video coding
 * HEVC: High Efficiency Video Coding
 * HTTP: Hypertext Transfer Protocol
-* HTTPS: HTTP Over TLS defined in [RFC 2818](https://datatracker.ietf.org/doc/html/rfc2818)
+* HTTPS: HTTP Over TLS, defined in [RFC 2818](https://datatracker.ietf.org/doc/html/rfc2818)
 * I-Frame: [Intra-coded Frame](../06-media-communication/#intra-and-inter-frame-compression). A complete picture, can be decoded without anything else.
 * ICE: [Interactive Connectivity Establishment](../03-connecting/#ice) defined in [RFC 8445](https://datatracker.ietf.org/doc/html/rfc8445)
 * INIT: Initiate
@@ -33,13 +33,13 @@ weight: 13
 * MCU: [Multi-point Conferencing Unit](../08-applied-webrtc/#mcu)
 * mDNS: [Multicast DNS](../03-connecting/#mdns) defined in [RFC 6762](https://datatracker.ietf.org/doc/html/rfc6762)
 * MITM: Man-In-The-Middle
-* MTU: Maximum Transmission Unit
+* MTU: Maximum Transmission Unit, the packet size
 * MUX: Multiplexing
 * NACK: Negative Acknowledgment
 * NAT: [Network Address Translation](../03-connecting/#nat-mapping) defined in [RFC 4787](https://datatracker.ietf.org/doc/html/rfc4787)
 * Opus: A totally open, royalty-free, highly versatile audio codec
 * P-Frame: [Predicted Frame](../06-media-communication/#intra-and-inter-frame-compression). A partial picture, containing only changes from the previous picture.
-* P2P: peer-to-peer
+* P2P: Peer-to-Peer
 * PLI: [Picture Loss Indication](../06-media-communication/#full-intra-frame-request-fir-and-picture-loss-indication-pli)
 * PPID: [Payload Protocol Identifier](../07-data-communication/#payload-protocol-identifier)
 * REMB: [Receiver Estimated Maximum Bitrate](../06-media-communication/#tmmbr-tmmbn-and-remb)
@@ -48,7 +48,7 @@ weight: 13
 * RR: Receiver Report
 * RTCP: [RTP Control Protocol](../10-history-of-webrtc/#rtp) defined in [RFC 3550](https://datatracker.ietf.org/doc/html/rfc3550)
 * RTP: [Real-time transport protocol](../10-history-of-webrtc/#rtp) defined in [RFC 3550](https://datatracker.ietf.org/doc/html/rfc3550)
-* RTT: Round-trip time
+* RTT: Round-Trip Time
 * SACK: Selective Acknowledgment
 * SCTP: [Stream Control Transmission Protocol](../07-data-communication/#stream-control-transmission-protocol) defined in [RFC 4960](https://datatracker.ietf.org/doc/html/rfc4960)
 * SDP: [Session Description Protocol](../02-signaling/#what-is-the-session-description-protocol-sdp) defined in [RFC 8866](https://datatracker.ietf.org/doc/html/rfc8866)

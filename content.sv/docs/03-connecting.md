@@ -5,7 +5,6 @@ weight: 4
 ---
 
 # Varför behöver WebRTC ett särskilt delsystem för anslutning?
-
 De flesta applikationer som distribueras idag upprättar klient/serveranslutningar. En klient/serveranslutning kräver att servern har en känd och publik adress. En klient ansluter till en server, och servern svarar.
 
 WebRTC använder inte en klient/server-modell utan skapar peer-to-peer (P2P) anslutningar. I en P2P-anslutning fördelas uppgiften att skapa en anslutning lika till båda parterna. Detta beror på att en publik nätverksadress (IP och port) är inget man kan förvänta sig i WebRTC, och den kan till och med ändras mitt under sessionen. WebRTC kommer att samla så mycket information som det går, och sedan göra allt den kan för sätta upp en dubbelriktad kommunikationsväg mellan två WebRTC-agenter.
@@ -15,19 +14,15 @@ Det kan dock vara svårt att skapa peer-to-peer-anslutning. Dessa agenter kan fi
 Trots dessa svårigheter med att skapa en P2P-anslutning får du fördelar jämfört med traditionell klient/server-teknik på grund av följande funktioner WebRTC erbjuder.
 
 ### Reducerade bandbreddskostnader
-
 Eftersom mediekommunikation sker direkt mellan klienterna behöver du inte betala för eller drifta en egen server för att vidarebefordra media.
 
 ### Lägre latens
-
 Kommunikationen går snabbare när den är direkt! När en användare måste köra allt via din server gör det överföringarna långsammare.
 
 ### Säker E2E-kommunikation
-
 Direkt kommunikation är säkrare. Eftersom användarnas trafik inte går via din server, behöver de inte ens lita på att du inte dekrypterar den.
 
 ## Hur fungerar det?
-
 Processen som beskrivs ovan kallas Interactive Connectivity Establishment ([ICE](https://tools.ietf.org/html/rfc8445)). Ytterligare ett protokoll som är äldre än WebRTC.
 
 ICE är ett protokoll som försöker hitta det bästa sättet att kommunicera mellan två ICE-agenter. Varje ICE-agent publicerar hur den kan nås, dessa kallas kandidater. En kandidat är i huvudsak en nätverksadress för agenten som den tror att den andra klienten kan nå. ICE bestämmer sedan det bästa hopkopplingen av klienterna.
