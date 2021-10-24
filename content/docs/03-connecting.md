@@ -102,7 +102,7 @@ Only the host and port for which the mapping was created for can use that mappin
 It is recommended that if a mapping is unused for 5 minutes it should be destroyed. This is entirely up to the ISP or hardware manufacturer.
 
 ## STUN
-STUN (Session Traversal Utilities for NAT) is a protocol that was created just for working with NATs. This is another technology that pre-dates WebRTC (and ICE!). It is defined by [RFC 5389](https://tools.ietf.org/html/rfc5389), which also defines the STUN packet structure. The STUN protocol is also used by ICE/TURN.
+STUN (Session Traversal Utilities for NAT) is a protocol that was created just for working with NATs. This is another technology that pre-dates WebRTC (and ICE!). It is defined by [RFC 8489](https://tools.ietf.org/html/rfc8489), which also defines the STUN packet structure. The STUN protocol is also used by ICE/TURN.
 
 STUN is useful because it allows the programmatic creation of NAT Mappings. Before STUN, we were able to create a NAT mapping, but we had no idea what the IP and port of it was! STUN not only gives you the ability to create a mapping, but also gives you the details so that you can share them with others, so they can send traffic back to you via the mapping you just created.
 
@@ -174,7 +174,7 @@ Unfortunately, the `Mapped Address` might not be useful in all cases. If it is `
 [RFC 5780](https://tools.ietf.org/html/rfc5780) defines a method for running a test to determine your NAT Type. This is useful because you would know ahead of time if direct connectivity is possible.
 
 ## TURN
-TURN (Traversal Using Relays around NAT) is defined in [RFC 5766](https://tools.ietf.org/html/rfc5766) is the solution when direct connectivity isn't possible. It could be because you have two NAT Types that are incompatible, or maybe can't speak the same protocol! TURN can also be used for privacy purposes. By running all your communication through TURN you obscure the client's actual address.
+TURN (Traversal Using Relays around NAT) is defined in [RFC 8656](https://tools.ietf.org/html/rfc8656) is the solution when direct connectivity isn't possible. It could be because you have two NAT Types that are incompatible, or maybe can't speak the same protocol! TURN can also be used for privacy purposes. By running all your communication through TURN you obscure the client's actual address.
 
 TURN uses a dedicated server. This server acts as a proxy for a client. The client connects to a TURN Server and creates an `Allocation`. By creating an allocation, a client gets a temporary IP/Port/Protocol that can be used to send traffic back to the client. This new listener is known as the `Relayed Transport Address`. Think of it as a forwarding address, you give this out so that others can send you traffic via TURN! For each peer you give the `Relay Transport Address` to, you must create a new `Permission` to allow communication with you.
 

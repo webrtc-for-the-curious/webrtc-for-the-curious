@@ -21,7 +21,7 @@ WebRTC は、Session Description Protocol と呼ばれる既存のプロトコ�
 
 ## *Session Description Protocol* (SDP)とは？
 
-SDP は、[RFC 4566](https://tools.ietf.org/html/rfc4566)で定義されています。SDP はキーと値で構成されるプロトコルで、各値の後には改行が入ります。これは、INI ファイルに似ています。
+SDP は、[RFC 8866](https://tools.ietf.org/html/rfc8866)で定義されています。SDP はキーと値で構成されるプロトコルで、各値の後には改行が入ります。これは、INI ファイルに似ています。
 Session Description は、0 個以上のメディア記述を含みます。頭の中では、Session Description にメディア記述の配列が含まれているようにモデル化できます。
 
 メディア記述は通常、メディアの 1 つのストリームに対応しています。つまり、3 つのビデオストリームと 2 つのオーディオトラックを持つ通話を記述したい場合、5 つのメディア記述が必要になります。

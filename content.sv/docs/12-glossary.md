@@ -56,13 +56,13 @@ weight: 13
 * SR: Sender Report, avsändarens rapport
 * SRTP: [Secure Real-time Transport Protocol](../04-securing/#srtp) definierat i [RFC 3711](https://datatracker.ietf.org/doc/html/rfc3711)
 * SSRC: Synchronization Source
-* STUN: [Session Traversal Utilities for NAT](../03-connecting/#stun) definierat i [RFC 5389](https://datatracker.ietf.org/doc/html/rfc5389)
+* STUN: [Session Traversal Utilities for NAT](../03-connecting/#stun) definierat i [RFC 8489](https://datatracker.ietf.org/doc/html/rfc8489)
 * TCP: Transmission Control Protocol, protokoll med leveransgaranti
 * TLS: Transport Layer Security, definierat i [RFC 8446](https://datatracker.ietf.org/doc/html/rfc8446)
 * TMMBN: [Temporary Maximum Media Stream Bit Rate Notification](../06-media-communication/#tmmbr-tmmbn-and-remb)
 * TMMBR: [Temporary Maximum Media Stream Bit Rate Request](../06-media-communication/#tmmbr-tmmbn-and-remb)
 * TSN: [Transmission Sequence Number](../07-data-communication/#sandningssekvensnummer)
-* TURN: [Traversal Using Relays around NAT](../03-connecting/#turn) defined in [RFC 5766](https://datatracker.ietf.org/doc/html/rfc5766)
+* TURN: [Traversal Using Relays around NAT](../03-connecting/#turn) defined in [RFC 8656](https://datatracker.ietf.org/doc/html/rfc8656)
 * TWCC: [Transport Wide Congestion Control](../06-media-communication/#transport-wide-congestion-control)
 * UDP: User Datagram Protocol, protokoll utan leveransgaranti
 * VP8, VP9: Mycket effektiva videokompressionsteknologier (video "kodeks") utvecklade av WebM Projektet. Fria att använda utan att betala royalty.

@@ -19,7 +19,7 @@ This protocol is not specific to WebRTC. We will learn the Session Description P
 After we understand the protocol, we will move on to its applied usage in WebRTC.
 
 ## What is the *Session Description Protocol* (SDP)?
-The Session Description Protocol is defined in [RFC 4566](https://tools.ietf.org/html/rfc4566). It is a key/value protocol with a newline after each value. It will feel similar to an INI file.
+The Session Description Protocol is defined in [RFC 8866](https://tools.ietf.org/html/rfc8866). It is a key/value protocol with a newline after each value. It will feel similar to an INI file.
 A Session Description contains zero or more Media Descriptions. Mentally you can model it as a Session Description that contains an array of Media Descriptions.
 
 A Media Description usually maps to a single stream of media. So if you wanted to describe a call with three video streams and two audio tracks you would have five Media Descriptions.

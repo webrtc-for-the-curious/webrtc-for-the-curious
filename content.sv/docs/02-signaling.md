@@ -19,7 +19,7 @@ SDP protokollet är inte skapat specifikt för WebRTC. Eftersom WebRTC bara utny
 När vi förstår protokollet kommer vi att gå vidare till hur det används i WebRTC.
 
 ## Vad är *Session Description Protocol* (SDP)?
-Sessionsbeskrivningsprotokollet definieras i [RFC 4566](https://tools.ietf.org/html/rfc4566). Det är ett nyckel/värde-protokoll med en ny rad efter varje värde, ungefär som en INI-fil.
+Sessionsbeskrivningsprotokollet definieras i [RFC 8866](https://tools.ietf.org/html/rfc8866). Det är ett nyckel/värde-protokoll med en ny rad efter varje värde, ungefär som en INI-fil.
 En sessionsbeskrivning (Session Description) innehåller noll eller fler mediebeskrivningar (Media Descriptions). Mentalt kan du se det som att en sessionsbeskrivning innehåller en uppsättning mediebeskrivningar.
 
 En mediebeskrivning beskriver vanligtvis en enda ström av media. Så om du ville beskriva ett samtal med tre videoströmmar och två ljudspår skulle du ha fem mediebeskrivningar.

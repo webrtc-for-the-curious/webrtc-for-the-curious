@@ -14,7 +14,7 @@ The real power with data channels is that you can configure them to behave like 
 This is necessary for low latency and high performance situations. You can measure the backpressure and ensure you are only sending as much as your network supports.
 
 ## How does it work?
-WebRTC uses the Stream Control Transmission Protocol (SCTP), defined in [RFC 2960](https://tools.ietf.org/html/rfc2960). SCTP is a
+WebRTC uses the Stream Control Transmission Protocol (SCTP), defined in [RFC 4960](https://tools.ietf.org/html/rfc4960). SCTP is a
 transport layer protocol that was intended as an alternative to TCP or UDP. For WebRTC we use it as an application layer protocol which runs over our DTLS connection.
 
 SCTP gives you streams and each stream can be configured independently. WebRTC data channels are just thin abstractions around them. The settings

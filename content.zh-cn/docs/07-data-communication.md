@@ -14,7 +14,7 @@ WebRTC提供用于数据通信的数据通道。在两个peer之间，你可以�
 对于低延迟和高性能的情况，这是必需的。你可以测量背压，并确保你仅发送网络支持的最大数据量。
 
 ## 它是如何工作的？
-WebRTC使用[RFC 2960](https://tools.ietf.org/html/rfc2960)中定义的流控制传输协议（SCTP）。SCTP是一种传输层协议，旨在替代TCP或UDP。对于WebRTC，我们将SCTP用作在DTLS连接上运行的应用层协议。
+WebRTC使用[RFC 4960](https://tools.ietf.org/html/rfc4960)中定义的流控制传输协议（SCTP）。SCTP是一种传输层协议，旨在替代TCP或UDP。对于WebRTC，我们将SCTP用作在DTLS连接上运行的应用层协议。
 
 SCTP为你提供流，并且每个流都可以独立配置。WebRTC数据通道只是基于流的简单抽象。有关持久性和顺序的设置会被直接传递到SCTP Agent中。
 

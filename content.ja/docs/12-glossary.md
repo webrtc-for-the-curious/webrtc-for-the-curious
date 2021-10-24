@@ -56,13 +56,13 @@ weight: 13
 * SR: Sender Report
 * SRTP: [Secure Real-time Transport Protocol](../04-securing/#srtp) 策定文書 [RFC 3711](https://datatracker.ietf.org/doc/html/rfc3711)
 * SSRC: Synchronization Source
-* STUN: [Session Traversal Utilities for NAT](../03-connecting/#stun) 策定文書 [RFC 5389](https://datatracker.ietf.org/doc/html/rfc5389)
+* STUN: [Session Traversal Utilities for NAT](../03-connecting/#stun) 策定文書 [RFC 8489](https://datatracker.ietf.org/doc/html/rfc8489)
 * TCP: Transmission Control Protocol
 * TLS: The Transport Layer Security 策定文書 [RFC 8446](https://datatracker.ietf.org/doc/html/rfc8446)
 * TMMBN: [Temporary Maximum Media Stream Bit Rate Notification](../06-media-communication/#tmmbr-tmmbn-remb)
 * TMMBR: [Temporary Maximum Media Stream Bit Rate Request](../06-media-communication/#tmmbr-tmmbn-remb)
 * TSN: [Transmission Sequence Number](../07-data-communication/#トランスミッションシーケンス番号)
-* TURN: [Traversal Using Relays around NAT](../03-connecting/#turn) 策定文書 [RFC 5766](https://datatracker.ietf.org/doc/html/rfc5766)
+* TURN: [Traversal Using Relays around NAT](../03-connecting/#turn) 策定文書 [RFC 8656](https://datatracker.ietf.org/doc/html/rfc8656)
 * TWCC: [Transport Wide Congestion Control](../06-media-communication/#トランスポートワイド輻輳制御-transport-wide-congestion-control)
 * UDP: User Datagram Protocol
 * VP8, VP9: Highly-efficient video compression technologies (video "codecs") developed by the WebM Project. 誰もが利用可能なロイヤリティフリーのコーデック

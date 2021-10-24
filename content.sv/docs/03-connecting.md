@@ -97,7 +97,7 @@ Endast IP:t och porten för vilken mappningen skapades för kan använda den. Om
 Det rekommenderas att om en mappningen inte används på 5 minuter ska den förstöras. Detta är helt upp till ISP eller hårdvarutillverkaren.
 
 ## STUN
-STUN (Session Traversal Utilities for NAT) är ett protokoll som skapades för att jobba med NATs. Det är ytterligare en teknik som skapats före WebRTC (och ICE!). Specifikationen hittar du i [RFC 5389](https://tools.ietf.org/html/rfc5389), som också definierar STUN-paketformatet. STUN-protokollet används också av ICE/TURN.
+STUN (Session Traversal Utilities for NAT) är ett protokoll som skapades för att jobba med NATs. Det är ytterligare en teknik som skapats före WebRTC (och ICE!). Specifikationen hittar du i [RFC 8489](https://tools.ietf.org/html/rfc8489), som också definierar STUN-paketformatet. STUN-protokollet används också av ICE/TURN.
 
 STUN är användbart eftersom det tillåter programmering av NAT mappning. Innan STUN kunde vi sätta upp ett NAT, men vi hade ingen aning om vilket IP och port det var! STUN ger dig inte bara möjligheten att skapa en NAT mappning, du får också detaljerna så att du kan dela dem med andra så att de kan skicka trafik till dig via den mappning du just skapade.
 
@@ -169,7 +169,7 @@ Tyvärr kan en "mappad adress" kanske ändå inte vara användbar. Om reglerna �
 [RFC 5780](https://tools.ietf.org/html/rfc5780) definierar en metod för att göra ett test för att lista ut din NAT-typ. Detta är användbart eftersom du kan veta i förväg om direktanslutning var möjlig.
 
 ## TURN
-TURN (Traversal Using Relays around NAT) definieras i [RFC 5766] (https://tools.ietf.org/html/rfc5766) är lösningen när direktanslutning inte är möjlig. Det kan bero på att du har två NAT-typer som är oförenliga eller kanske inte kan tala samma protokoll! TURN kan också användas för sekretessändamål. Genom att köra all din kommunikation genom TURN döljer du klientens faktiska adress.
+TURN (Traversal Using Relays around NAT) definieras i [RFC 8656] (https://tools.ietf.org/html/rfc8656) är lösningen när direktanslutning inte är möjlig. Det kan bero på att du har två NAT-typer som är oförenliga eller kanske inte kan tala samma protokoll! TURN kan också användas för sekretessändamål. Genom att köra all din kommunikation genom TURN döljer du klientens faktiska adress.
 
 TURN använder en dedikerad server. Denna server fungerar som en proxy för en klient. Klienten ansluter till en TURN-server och skapar en allokering (`Allocation`). Genom att skapa en allokering får en klient en tillfällig IP/port/protokoll som kan användas för att skicka trafik tillbaka till klienten. Den här nya lyssnaren kallas en `Relayed Transport Address`. Tänk på det som en vidarebefordringsadress, du använder den så att andra kan skicka dig trafik via TURN! För varje klient du ger din `Relay Transport Address` till måste du skapa ett nytt "tillstånd" (`Permission`) för att tillåta kommunikation med dig.
 
