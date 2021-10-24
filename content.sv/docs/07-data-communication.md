@@ -14,7 +14,7 @@ Den verkliga kraften hos datakanaler är att du kan konfigurera dem så att de b
 Detta är nödvändigt för situationer med låg latens och höga prestanda. Du kan mäta mottrycket och försäkra dig att du bar skickar bara så mycket data som ditt nätverk klarar.
 
 ## Hur fungerar det?
-WebRTC använder Stream Control Transmission Protocol (SCTP), definierat i [RFC 2960](https://tools.ietf.org/html/rfc2960). SCTP är ett
+WebRTC använder Stream Control Transmission Protocol (SCTP), definierat i [RFC 4960](https://tools.ietf.org/html/rfc4960). SCTP är ett
 transportlagerprotokoll som var tänkt som ett alternativ till TCP eller UDP. För WebRTC använder vi det som ett applikationslagerprotokoll via vår DTLS-anslutning.
 
 SCTP ger dig strömmar och varje ström kan konfigureras oberoende. WebRTC-datakanaler är bara tunna abstraktioner kring dem. Inställningarna

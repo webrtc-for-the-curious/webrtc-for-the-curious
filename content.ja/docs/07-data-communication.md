@@ -16,7 +16,7 @@ WebRTCは、データ通信のためのデータチャンネルを提供しま�
 
 ## WebRTCはどのように動作するのですか？
 
-WebRTCは、[RFC 2960](https://tools.ietf.org/html/rfc2960)で定義されているSCTP(Stream Control Transmission Protocol)を使用しています。SCTPはトランスポート層のプロトコルで、TCPやUDPの代替となることを目的としています。WebRTCでは、DTLS接続上で動作するアプリケーション層のプロトコルとして使用しています。
+WebRTCは、[RFC 4960](https://tools.ietf.org/html/rfc4960)で定義されているSCTP(Stream Control Transmission Protocol)を使用しています。SCTPはトランスポート層のプロトコルで、TCPやUDPの代替となることを目的としています。WebRTCでは、DTLS接続上で動作するアプリケーション層のプロトコルとして使用しています。
 
 SCTPはストリームを提供し、各ストリームは独立して設定できます。WebRTCのデータチャネルは、それらを薄く抽象化したものに過ぎません。耐久性や順序に関する設定は、そのままSCTPエージェントに渡されます。
 

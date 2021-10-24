@@ -56,13 +56,13 @@ weight: 13
 * SR: Sender Report
 * SRTP: [Secure Real-time Transport Protocol](../04-securing/#srtp) defined in [RFC 3711](https://datatracker.ietf.org/doc/html/rfc3711)
 * SSRC: Synchronization Source
-* STUN: [Session Traversal Utilities for NAT](../03-connecting/#stun) defined in [RFC 5389](https://datatracker.ietf.org/doc/html/rfc5389)
+* STUN: [Session Traversal Utilities for NAT](../03-connecting/#stun) defined in [RFC 8489](https://datatracker.ietf.org/doc/html/rfc8489)
 * TCP: Transmission Control Protocol
 * TLS: The Transport Layer Security defined in [RFC 8446](https://datatracker.ietf.org/doc/html/rfc8446)
 * TMMBN: [Temporary Maximum Media Stream Bit Rate Notification](../06-media-communication/#tmmbr-tmmbn-and-remb)
 * TMMBR: [Temporary Maximum Media Stream Bit Rate Request](../06-media-communication/#tmmbr-tmmbn-and-remb)
 * TSN: [Transmission Sequence Number](../07-data-communication/#transmission-sequence-number)
-* TURN: [Traversal Using Relays around NAT](../03-connecting/#turn) defined in [RFC 5766](https://datatracker.ietf.org/doc/html/rfc5766)
+* TURN: [Traversal Using Relays around NAT](../03-connecting/#turn) defined in [RFC 8656](https://datatracker.ietf.org/doc/html/rfc8656)
 * TWCC: [Transport Wide Congestion Control](../06-media-communication/#transport-wide-congestion-control)
 * UDP: User Datagram Protocol
 * VP8, VP9: Highly-efficient video compression technologies (video "codecs") developed by the WebM Project. Anyone may use these codecs royalty-free.
