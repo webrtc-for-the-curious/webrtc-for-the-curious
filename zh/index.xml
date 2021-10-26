@@ -18,7 +18,7 @@ ICE成功连接后，WebRTC继续建立加密的传输。此传输用于音频�
 信令消息只是文本。WebRTC Agent并不关心它们的传递方式。信令通常使用Websockets分享，但这不是必需的。
 WebRTC信令如何工作？ # WebRTC使用到一种现有的协议，称为会话描述协议（Session Description Protocol，简称SDP）。两个WebRTC Agent会将建立连接所需的所有状态通过此协议来分享。该协议本身亦易于阅读和理解。 但要理解WebRTC填充于协议中的所有值，将有一定复杂性。
 该协议不是WebRTC特有的。我们将首先学习会话描述协议，这里甚至不用提及WebRTC。WebRTC实际上仅是利用了SDP协议的子集，因此我们将仅介绍我们所需的内容。 理解协议后，我们将继续结合WebRTC来说明其在实际中的应用方法。
-什么是 会话描述协议（SDP）？ # 会话描述协议定义于 RFC 4566 中。它是一个key/value协议，每一行是一个值。看起来类似于INI文件。 一个会话描述包含零个或多个媒体描述。对此模型，可以理解为会话描述包含了一个媒体描述的数组。
+什么是 会话描述协议（SDP）？ # 会话描述协议定义于 RFC 8866 中。它是一个key/value协议，每一行是一个值。看起来类似于INI文件。 一个会话描述包含零个或多个媒体描述。对此模型，可以理解为会话描述包含了一个媒体描述的数组。
 一个媒体描述通常映射到单个媒体流。因此，如果你想描述一个包含三个视频流和两个音轨的呼叫，需要五个媒体描述。
 如何阅读SDP信息 # 会话描述中的每一行都将以一个单字符开始，这是你的key。单字符后面将跟随一个等号。等号后的所有内容都是value。value结束的地方将有一个换行符。
 会话描述协议定义了所有有效的key。对于协议中定义的key，你只能使用字母。这些key都有重要的意义，稍后将对此进行解释。
@@ -98,7 +98,7 @@ I帧 - 一张完整的图片，无需任何其他内容即可解码。 P帧 - �
 RTP # Packet Format（包格式） # 每个RTP数据包都具有以下结构：</description></item><item><title>数据通信</title><link>https://webrtcforthecurious.com/zh/docs/07-data-communication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/zh/docs/07-data-communication/</guid><description>我可以从WebRTC的数据通信中获得什么？ # WebRTC提供用于数据通信的数据通道。在两个peer之间，你可以打开65,534个数据通道。 数据通道基于数据报，并且每个通道都有其自己的持久性设置。默认设置下，每个数据通道都能保证有序交付。
 如果你从传递媒体数据的角度开始接触WebRTC，可能数据通道看起来是一种浪费。当我只使用HTTP或WebSocket就能传递数据的时候，为什么需要整个数据通道子系统呢？
 数据通道的真正强大之处在于，你可以将它们配置为像UDP一样进行无序/有损传递。 对于低延迟和高性能的情况，这是必需的。你可以测量背压，并确保你仅发送网络支持的最大数据量。
-它是如何工作的？ # WebRTC使用RFC 2960中定义的流控制传输协议（SCTP）。SCTP是一种传输层协议，旨在替代TCP或UDP。对于WebRTC，我们将SCTP用作在DTLS连接上运行的应用层协议。
+它是如何工作的？ # WebRTC使用RFC 4960中定义的流控制传输协议（SCTP）。SCTP是一种传输层协议，旨在替代TCP或UDP。对于WebRTC，我们将SCTP用作在DTLS连接上运行的应用层协议。
 SCTP为你提供流，并且每个流都可以独立配置。WebRTC数据通道只是基于流的简单抽象。有关持久性和顺序的设置会被直接传递到SCTP Agent中。
 数据通道具有SCTP无法表达的某些功能，例如通道标签。为了解决该问题，WebRTC使用了RFC 8832中定义的数据通道建立协议（DCEP）。DCEP定义了一条消息，用于传递通道标签和协议。
 DCEP # DCEP只有两个消息DATA_CHANNEL_OPEN和DATA_CHANNEL_ACK。对于打开的每个数据通道，远端必须以ack响应。
