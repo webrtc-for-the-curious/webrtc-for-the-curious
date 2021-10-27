@@ -97,7 +97,7 @@ Common commands:
 
 #### Wireshark
 
-[Wireshark](https://www.wireshark.org) is widely-used network protocol analyzer.
+[Wireshark](https://www.wireshark.org) is a widely-used network protocol analyzer.
 
 #### webrtc-internals
 Chrome comes with a built-in WebRTC statistics page available at [chrome://webrtc-internals](chrome://webrtc-internals).
