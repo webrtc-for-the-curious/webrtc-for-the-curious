@@ -116,7 +116,10 @@ stunserver=stun1.l.google.com;stunport=19302;listenport=20000;echo -ne "\x00\x01
 
   PCAPファイルは、wiresharkのGUIで開くことができます。`wireshark stun.pcap` です。
 
-#### wireshark
+#### Wireshark
+
+[Wireshark](https://www.wireshark.org) は世界中で利用されているプロトコルアナライザーです。
+
 #### webrtc-internals
 
 Chromeには、[chrome://webrtc-internals](chrome://webrtc-internals)で利用できる WebRTC の統計ページが組み込まれています。
