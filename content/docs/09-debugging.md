@@ -95,7 +95,9 @@ Common commands:
 
   The PCAP file can be opened with the Wireshark application: `wireshark stun.pcap`
 
-#### wireshark
+#### Wireshark
+
+[Wireshark](https://www.wireshark.org) is widely-used network protocol analyzer.
 
 #### webrtc-internals
 Chrome comes with a built-in WebRTC statistics page available at [chrome://webrtc-internals](chrome://webrtc-internals).
