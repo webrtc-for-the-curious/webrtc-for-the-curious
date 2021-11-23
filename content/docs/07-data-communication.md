@@ -192,7 +192,7 @@ this.
 identifier for this DATA chunk. After 4,294,967,295 chunks this will wrap around to 0.
 The TSN is incremented for every chunk in a fragmented user message so that the receiver knows how to order the received chunks to reconstruct the original message.
 
-`Stream Identifier` is the unique identifier for the stream this data belongs too.
+`Stream Identifier` is the unique identifier for the stream this data belongs to.
 
 `Stream Sequence Number` is a 16-bit number incremented every user message and included in the DATA message chunk header. After 65535 messages this will wrap around to 0. This number is used to decide the message order of delivery to the receiver if `U` is set to 0. Similar to the TSN, except the Stream Sequence Number is only incremented for each message as a whole and not each individual DATA chunk.
 
