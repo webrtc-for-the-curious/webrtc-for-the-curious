@@ -220,8 +220,7 @@ too could be multicast to others in that region, since a packet loss in
 the middle of the network would tend to mean a bunch of clients
 downstream of that point all missed the same data.
 
-### Why did you have to roll your own video compression. Was nothing else
-available at the time?
+### Why did you have to roll your own video compression. Was nothing else available at the time?
 
 At the time I began to build “nv”, the only systems I know of that did
 videoconferencing were very expensive specialized hardware. For instance,
