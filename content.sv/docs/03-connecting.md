@@ -41,7 +41,7 @@ Nedan är en figur som visar två distinkta nätverk, anslutna via internet. I v
 
 För parterna i samma nätverk är det mycket enkelt att ansluta. Kommunikation mellan `192.168.0.1 -> 192.168.0.2` är lätt att göra! Dessa två parter kan ansluta till varandra utan någon extern hjälp.
 
-En värd som använder `Router B` har dock inget sätt att komma åt något bakom "Router A". Hur kan den se skillnad på `191.168.0.1` bakom `Router A` och samma IP bakom `Router B`? De är privata IP-adresser! En värd som använder `Router B` kan skicka trafik direkt till `Router A`, men anropet slutar där. Hur vet `Router A` vilken värd den ska vidarebefordra meddelandet till?
+En värd som använder `Router B` har dock inget sätt att komma åt något bakom "Router A". Hur kan den se skillnad på `192.168.0.1` bakom `Router A` och samma IP bakom `Router B`? De är privata IP-adresser! En värd som använder `Router B` kan skicka trafik direkt till `Router A`, men anropet slutar där. Hur vet `Router A` vilken värd den ska vidarebefordra meddelandet till?
 
 ### Protokollbegränsningar
 Vissa nätverk tillåter inte UDP-trafik alls, eller kanske tillåter de inte TCP. Vissa nätverk kan ha en mycket låg MTU (Maximum Transmission Unit, storleken på varje paket). Det finns många variabler som nätverksadministratörer kan ändra som kan göra det svårt att kommunicera.

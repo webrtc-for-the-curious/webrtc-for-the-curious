@@ -46,7 +46,7 @@ Below is a graph of two distinct networks, connected over public internet. In ea
 
 For the hosts in the same network it is very easy to connect. Communication between `192.168.0.1 -> 192.168.0.2` is easy to do! These two hosts can connect to each other without any outside help.
 
-However, a host using `Router B` has no way to directly access anything behind `Router A`. How would you tell the difference between `191.168.0.1` behind `Router A` and the same IP behind `Router B`? They are private IPs! A host using `Router B` could send traffic directly to `Router A`, but the request would end there. How does `Router A` know which host it should forward the message to?
+However, a host using `Router B` has no way to directly access anything behind `Router A`. How would you tell the difference between `192.168.0.1` behind `Router A` and the same IP behind `Router B`? They are private IPs! A host using `Router B` could send traffic directly to `Router A`, but the request would end there. How does `Router A` know which host it should forward the message to?
 
 ### Protocol Restrictions
 Some networks don't allow UDP traffic at all, or maybe they don't allow TCP. Some networks may have a very low MTU (Maximum Transmission Unit). There are lots of variables that network administrators can change that can make communication difficult.
