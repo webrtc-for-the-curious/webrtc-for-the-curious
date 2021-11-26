@@ -39,7 +39,7 @@ ICE是一种用来寻找两个ICE Agent之间通信的最佳方式的协议。�
 不在同一个网络中 # 在大多数情况下，两个WebRTC Agent不在同一个网络中。典型的呼叫通常是在没有直接连接的不同网络中的两个WebRTC Agent之间进行的。
 下面是通过公共互联网连接的两个不同网络的示意图。在每个网络中，你拥有两个主机。
 对于同一网络中的主机来说，互相连接非常容易。例如在192.168.0.1 -&amp;gt; 192.168.0.2之间通讯就很容易！这两个主机无需任何外部帮助即可相互连接。
-但是，使用Router B的主机无法直接访问Router A背后的任何主机。你如何区分Router A后面的191.168.0.1主机和Router B后面相同IP的主机之间的区别呢？它们都使用内网IP！使用Router B的主机可以将数据直接发送到Router A，但是请求在那里就结束了。Router A怎么知道它应该将消息转发给哪台主机呢？
+但是，使用Router B的主机无法直接访问Router A背后的任何主机。你如何区分Router A后面的192.168.0.1主机和Router B后面相同IP的主机之间的区别呢？它们都使用内网IP！使用Router B的主机可以将数据直接发送到Router A，但是请求在那里就结束了。Router A怎么知道它应该将消息转发给哪台主机呢？
 协议限制 # 有些网络不允许UDP通信，或者也有可能不允许TCP。有些网络的MTU（Maximum Transmission Unit/最大传输单元）可能非常低。网络管理员可以更改许多变量，这些修改可能会使通信变得困难。
 防火墙/IDS规则 # 另一个问题是深度数据包检查和其他智能过滤方式。某些网络管理员将运行一些软件，这些软件会试图处理每个数据包。很多时候，这些软件无法识别WebRTC的数据包，由于它们不知道如何处理，它们可能会阻拦这些数据包，例如，它们可能将WebRTC数据包视为不在端口白名单上的可疑UDP数据包。
 NAT映射 # NAT（网络地址转换）映射是使得WebRTC连接成为可能的魔法。WebRTC就是使用NAT让处于完全不同的子网中的两个peer进行通信，从而解决了上述&amp;quot;不在同一网络中&amp;quot;的问题。尽管它带来了新的挑战，但让我们先来解释一下NAT映射是如何工作的。</description></item><item><title>安全性</title><link>https://webrtcforthecurious.com/zh/docs/04-securing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/zh/docs/04-securing/</guid><description>WebRTC具有哪些安全性保障？ # 每个WebRTC连接都经过身份验证和加密。你可以确信第三方看不到你发送的内容，也无法插入虚假消息。你还可以确保与你进行通信的WebRTC Agent正是生成会话描述的Agent。
