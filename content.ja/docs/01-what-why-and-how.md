@@ -70,7 +70,7 @@ ICE が接続に成功すると、WebRTC は暗号化トランスポートの確
 
 ### DTLS と SRTP によるトランスポート層のセキュリティ確保
 
-ICE による双方向通信が可能になったところで、安全な通信を確立する必要があります。これには、WebRTC よりも古い 2 つのプロトコルを使用します。1 つ目のプロトコルは DTLS（Datagram Transport Layer Security）で、これは UDP 上の TLS に過ぎません。TLS は、HTTPS での通信を保護するために使用される暗号化プロトコルです。2 つ目のプロトコルは SRTP（Secure Real-time Transport Protocol）です。
+ICE による双方向通信が可能になったところで、安全な通信を確立する必要があります。これには、WebRTC よりも古い 2 つのプロトコルを使用します。1 つ目のプロトコルは DTLS（Datagram Transport Layer Security）で、これは UDP 上の TLS に過ぎません。TLS は、TCP での通信を保護するために使用される暗号化プロトコルです。2 つ目のプロトコルは SRTP（Secure Real-time Transport Protocol）です。
 
 まず、WebRTC は ICE で確立された接続の上で DTLS ハンドシェイクを行って接続します。HTTPS とは異なり、WebRTC は証明書に中央機関を使用しません。代わりに、WebRTC は、DTLS を通じて交換された証明書が、シグナリングによって共有されたフィンガープリントと一致することを表明します。この DTLS 接続は、DataChannel メッセージに使用されます。
 

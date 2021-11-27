@@ -67,7 +67,7 @@ När ICE väl har anslutits går WebRTC vidare till att upprätta en krypterad t
 
 ### Säkra transportskiktet med DTLS och SRTP
 
-Nu när vi har dubbelriktad kommunikation (via ICE) måste vi sätta upp en säker kommunikationskanal. Detta görs genom två protokoll som också är äldre än WebRTC. Det första protokollet är DTLS (Datagram Transport Layer Security) som helt enkelt är TLS över UDP. TLS är det kryptografiska protokollet som används för att säkra kommunikation via HTTPS. Det andra protokollet är SRTP (Secure Real-time Transport Protocol).
+Nu när vi har dubbelriktad kommunikation (via ICE) måste vi sätta upp en säker kommunikationskanal. Detta görs genom två protokoll som också är äldre än WebRTC. Det första protokollet är DTLS (Datagram Transport Layer Security) som helt enkelt är TLS över UDP. TLS är det kryptografiska protokollet som används för att säkra kommunikation via TCP. Det andra protokollet är SRTP (Secure Real-time Transport Protocol).
 
 Först ansluter WebRTC genom att göra en DTLS-handskakning över anslutningen som upprättats av ICE. Till skillnad från HTTPS använder WebRTC inte en vanlig CA (Certificate Authority) för certifikatet. Istället hävdar WebRTC bara att certifikatet som utbyts via DTLS matchar. Denna DTLS-anslutning används sedan för DataChannel-meddelanden.
 
