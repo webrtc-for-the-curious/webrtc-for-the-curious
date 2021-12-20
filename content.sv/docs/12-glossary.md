@@ -18,7 +18,7 @@ weight: 13
 * FIR: [Full INTRA-frame Request](../06-media-communication/#full-intra-frame-request-fir-och-picture-loss-indication-pli)
 * G.711: En smalbandig ljud-kodek
 * H.264: Avancerad video-kodek
-* H.265: Conformance specification for ITU-T H.265 high efficiency video coding
+* H.265: Konkret specifikation för ITU-T H.265 video kodeken
 * HEVC: High Efficiency Video Coding
 * HTTP: Hypertext Transfer Protocol
 * HTTPS: HTTP över TLS, definierat i [RFC 2818](https://datatracker.ietf.org/doc/html/rfc2818)

@@ -1,7 +1,7 @@
 ---
-title: WebRTC For The Curious
+title: WebRTC för nyfikna
 author: https://github.com/webrtc-for-the-curious/webrtc-for-the-curious
 rights: Creative Commons Zero v1.0 Universal
-language: en-US
-cover-image: content/docs/images/epub-cover.png
+language: sv
+cover-image: content.sv/docs/images/epub-cover.png
 ...
