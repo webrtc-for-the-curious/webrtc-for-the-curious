@@ -25,17 +25,17 @@ DefaultContentLanguage = "en"
     languageName = "日本語"
     contentDir = "content.ja"
     weight = 4
+  [languages.fa]
+    title = "WebRTC برای کنجکاوها"
+    languageName = "Persian"
+    languagedirection = "rtl"
+    contentDir = "content.fa"
+    weight = 5
 #  [languages.tr]
 #    title = "WebRTC for the Curious -- TODO Translate to Turkish"
 #    languageName = "Turkish"
 #    contentDir = "content.tr"
 #    weight = 2
-#  [languages.fa]
-#    title = "WebRTC برای کنجکاوها"
-#    languageName = "Persian"
-#    languagedirection = "rtl"
-#    contentDir = "content.fa"
-#    weight = 3
 
 [params]
   # source repository location.
