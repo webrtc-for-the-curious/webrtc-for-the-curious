@@ -188,7 +188,7 @@ Allocations are at the core of TURN. An `allocation` is basically a "TURN Sessio
 
 When creating an allocation, you need to provide the following:
 * Username/Password - Creating TURN allocations require authentication.
-* Allocation Transport - The `Relayed Transport Address`, can be UDP or TCP.
+* Allocation Transport - The transport protocol between the server (`Relayed Transport Address`) and the peers, can be UDP or TCP.
 * Even-Port - You can request sequential ports for multiple allocations, not relevant for WebRTC.
 
 If the request succeeded, you get a response with the TURN Server with the following STUN Attributes in the Data section:
