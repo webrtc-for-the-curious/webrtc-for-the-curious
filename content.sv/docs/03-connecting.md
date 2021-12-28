@@ -183,7 +183,7 @@ Tilldelningar är kärnan i TURN. En "allokering" är i grunden en "TURN Session
 
 När du skapar en tilldelning måste du ange följande:
 * Användarnamn/lösenord - För att skapa TURN-tilldelningar krävs autentisering
-* Allokeringstransport - Den 'vidarebefordrade transportadressen' kan vara UDP eller TCP
+* Allokeringstransport - Transportprotokollet mellan servern (`Relayed Transport Address`) och klienterna. Kan vara UDP eller TCP.
 * Even-Port - Du kan begära sekventiella portar för flera tilldelningar, inte relevanta för WebRTC.
 
 Om begäran lyckades får du svar med TURN-servern med följande STUN-attribut i Data-sektionen:
