@@ -219,7 +219,7 @@ Allocations是TURN的核心。本质上，一个`allocation`就是一个"TURN会
 
 创建allocation时，你需要提供/确定以下内容：
 * 用户名/密码 - 创建TURN allocation时需要身份验证。
-* Allocation传输方式 - `中继传输地址`可以是UDP或TCP方式。
+* Allocation传输方式 - 服务器（`中继传输地址`）与peer之间的传输协议， 可以是UDP或TCP。
 * 连续端口 - 你可以为多个allocation请求顺序排列的一系列端口，这点与WebRTC无关。
 
 如果请求成功，你将在TURN服务器上获得响应，在响应的数据部分，包含以下的STUN属性：
