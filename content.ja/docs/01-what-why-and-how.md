@@ -129,7 +129,7 @@ DTLS セッションが確立された直後に、SCTP アソシエーション�
 
 #### `setRemoteDescription`
 
-`setRemoteDescription` は、リモート候補の状態をローカルエージェントに通知する方法です。これは、JavaScript の API で「シグナリング」という行為を行う方法です。
+`setRemoteDescription` は、リモート候補の状態をローカルエージェントに通知する方法です。これは、JavaScript の API で「シグナリング」をする方法です。
 
 双方で `setRemoteDescription` が呼び出されると、WebRTC エージェントは P2P 通信を開始するのに十分な情報を得ることができます!
 
