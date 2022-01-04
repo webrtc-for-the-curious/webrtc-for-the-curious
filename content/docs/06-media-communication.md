@@ -197,35 +197,59 @@ Heuristics that model the network behavior and tries to predict it is known as B
 
 There is a lot of nuance to this, so let's explore in greater detail.
 
-## Communicating Network Status
-The first roadblock with implementing Congestion Control is that UDP and RTP don't communicate network status. As a sender I have no idea when my packets are arriving or if they are arriving at all!
+## Identifying and Communicating Network Status
+RTP/RTCP runs over all types of different networks, which means that some communication may be
+dropped as it traverses from the sender to the receiver. Being built on top of UDP, there is no
+built-in methodology for retransmission, let alone handling congestion control. In order to provide
+users with a consistent experience, we need to estimate qualities about the network path our
+connection is traversing, as well as how it changes over time. Important qualities include available
+bandwith (in each direction, as it may not be symmetric), round trip time, and jitter. It needs to
+account for packet loss, and communicating changes in these properties as network conditions evolve.
 
-RTP/RTCP has three different solutions to this problem. They all have their pros and cons. What you use will depend on what clients you are working with, the type of topology you are working with, or even just how much development time you have available.
+There are two primary objectives for these protocols:
 
-### Receiver Reports
-Receiver Reports are RTCP messages, the original way to communicate network status. You can find them in [RFC 3550](https://tools.ietf.org/html/rfc3550#section-6.4). They are sent on a schedule for each SSRC and contain the following fields:
+1. Estimate the available bandwidth (in each direction) supported by the network
+2. Communicate network characteristics
+
+RTP/RTCP has three different approaches to address this problem. They all have their pros and cons,
+and have generally been improving over time. Which implementation you use will depend primarily on
+the software stack available to your clients, and the availability of libraries on which to develop
+your application.
+
+### Receiver Reports / Sender Reports
+The first implementation is Receiver Reports (and its partner Sender Reports), a flavor of RTCP
+messages. It is defined in [RFC 3550](https://tools.ietf.org/html/rfc3550#section-6.4), is
+responsible for just one portion of network status communication. Receiver Reports focuses on
+communicating characteristics about the network (such as packet loss, round-trip time, and jitter),
+and it is paired with other algorithms that are then responsible for interpreting those inputs to
+arrive at estimated bandwidth availablilty.
+
+Sender and Receiver reports (SR and RR) together paint a picture of the network quatlity. They are
+sent on a schedule for each SSRC. RR contain the following fields:
 
 * **Fraction Lost** - What percentage of packets have been lost since the last Receiver Report.
 * **Cumulative Number of Packets Lost** - How many packets have been lost during the entire call.
-* **Extended Highest Sequence Number Received** - What was the last Sequence Number received, and how many times has it rolled over.
+* **Extended Highest Sequence Number Received** - What was the last Sequence Number received, and
+  how many times has it rolled over.
 * **Interarrival Jitter** - The rolling Jitter for the entire call.
-* **Last Sender Report Timestamp** - Last known time on sender, used for round-trip time calculation.
+* **Last Sender Report Timestamp** - Last known time on sender, used for round-trip time
+  calculation.
 
-Sender and Receiver reports (SR and RR) work together to compute round-trip time.
+SR and RR work together to compute round-trip time.
 
-The sender includes its local time, `sendertime1` in SR.
-When the receiver gets an SR packet, it sends back RR.
-Among other things, the RR includes `sendertime1` just received from the sender.
-There will be a delay between receiving the SR and sending the RR. Because of that, the RR also includes a "delay since last sender report" time - `DLSR`. 
-The `DLSR` is used to adjust the round-trip time estimate later on in the process.
-Once the sender receives the RR it subtracts `sendertime1` and `DLSR` from the current time `sendertime2`.
-This time delta is called round-trip propagation delay or round-trip time.
+The sender includes its local time, `sendertime1` in SR. When the receiver gets an SR packet, it
+sends back RR. Among other things, the RR includes `sendertime1` just received from the sender.
+There will be a delay between receiving the SR and sending the RR. Because of that, the RR also
+includes a "delay since last sender report" time - `DLSR`. The `DLSR` is used to adjust the
+round-trip time estimate later on in the process. Once the sender receives the RR it subtracts
+`sendertime1` and `DLSR` from the current time `sendertime2`. This time delta is called round-trip
+propagation delay or round-trip time.
 
 `rtt = sendertime2 - sendertime1 - DLSR`
 
-Round-trip time in plain English: 
-- I send you a message with my clock's current reading, say it is 4:20pm, 42 seconds and 420 milliseconds. 
-- You send me this same timestamp back. 
+Round-trip time in plain English:
+- I send you a message with my clock's current reading, say it is 4:20pm, 42 seconds and 420 milliseconds.
+- You send me this same timestamp back.
 - You also include the time elapsed from reading my message to sending the message back, say 5 milliseconds.
 - Once I receive the time back, I look at the clock again.
 - Now my clock says 4:20pm, 42 seconds 690 milliseconds.
@@ -234,8 +258,54 @@ Round-trip time in plain English:
 
 ![Round-trip time](../images/06-rtt.png "Round-trip time")
 
-### TMMBR, TMMBN and REMB
-The next generation of Network Status messages all involve receivers messaging senders via RTCP with explicit bitrate requests.
+<!-- Missing: What is an example congestion-control alg that pairs with RR/SR? -->
+
+### TMMBR, TMMBN and REMB, paired with GCC
+The next generation of network status messages changes up the paradigm. Instead of sending metadata
+about network quality, RTCP receivers instead directly compute an estimate of available incoming
+bandwidth and communicate that maximum bitrate with the sending party.
+
+#### Google Congestion Control (GCC)
+The first step is estimating available incoming bandwidth. Commonly, but not exclusively, clients
+use the Google Congestion Control (GCC) algorithm, outlined in
+[draft-ietf-rmcat-gcc-02](https://tools.ietf.org/html/draft-ietf-rmcat-gcc-02).
+
+GCC focuses on packet loss and fluctuations in arrival time as the two key metrics for its estimates.
+
+The loss-based controller is simple:
+
+* If packet loss is above 10%, the bandwidth estimate is decreased
+* If packet loss is between 2-10%, the bandwidth estimate stays the same
+* If packet loss is below 2%, the bandwidth estimate increases
+
+These packet loss measurements are taking frequently, and rely on metadata inside each packet to be
+able to infer when packets are missing. These percentages are evaluated over time windows of around
+0.5-1.0 seconds.
+
+The second function cooperates with the loss-based controller, and looks at the variations in packet
+arrival time. This delay-based controller aims to identify when network links are becoming
+increasingly congested, and may reduce bandwidth estimates even before packet loss occurs. The
+theory is that the busiest network interface along the path will continue queuing up packets up
+until the interface runs out of buffers. If that interface continues receiving more traffic than it
+is able to send, it will be forced to drop all of the next packets it receives until more space
+opens up. This type of packet loss can be disruptive to all communication over that link, and would
+ideally be avoided. Thus, GCC tries to figure out if network links are getting larger and larger
+queue depths _before_ packet loss actually occurs.
+
+To do so, GCC tries to measure those increases in queue depth. More directly, GCC looks for subtle
+increases in network latency over time. It uses what's called the inter-arrival time, `t(i) -
+t(i-1)`, as the difference in arrival time of two groups of packets. If the inter-arrival time
+increases over time, (as in, the arrival time difference between the first two frames is smaller
+than the arrival time difference between the second and third frame), that is considered evidence of
+increased queues on the connecting network interfaces and presumed to be caused by network
+congestion. GCC uses Kalman filters and takes very many measurements of network round-trip times
+(and its variations) to detect congestion. When congestion is found, it reduces the available
+bitrate. Under steady network conditions, it can slowly increase its bandwidth estimates to test out
+higher load values.
+
+#### TMMBR, TMMBN, and REMB
+After arriving at an estimate for available inbound bandwidth, receivers must communicate these
+values to the remote senders. TMMBR, TMMBN, and REMB facilitate this exchange.
 
 * **Temporary Maximum Media Stream Bit Rate Request** - A mantissa/exponent of a requested bitrate for a single SSRC.
 * **Temporary Maximum Media Stream Bit Rate Notification** - A message to notify that a TMMBR has been received.
@@ -243,11 +313,13 @@ The next generation of Network Status messages all involve receivers messaging s
 
 TMMBR and TMMBN came first and are defined in [RFC 5104](https://tools.ietf.org/html/rfc5104). REMB came later, there was a draft submitted in [draft-alvestrand-rmcat-remb](https://tools.ietf.org/html/draft-alvestrand-rmcat-remb-03), but it was never standardized.
 
-A session that uses REMB would look like the following:
+Both of these iterations of network status messages are focused on _how_ to communicate available bandwidth (and metrics used to estimate it) to the sending side; they do not directly estimate how much bandwidth is available.
+
+An example session that uses REMB might behave like the following:
 
 ![REMB](../images/06-remb.png "REMB")
 
-Browsers use a simple rule of thumb for incoming bandwidth estimation:
+The browser uses one of a variety of different congestion control algorithms. Here's a simple example implementation for estimating available incoming bandwidth:
 1. Tell the encoder to increase bitrate if the current packet loss is less than 2%.
 2. If packet loss is higher than 10%, decrease bitrate by half of the current packet loss percentage.
 ```
