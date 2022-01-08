@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>介绍 on 给好奇者的WebRTC</title><link>https://webrtcforthecurious.com/zh/</link><description>Recent content in 介绍 on 给好奇者的WebRTC</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://webrtcforthecurious.com/zh/index.xml" rel="self" type="application/rss+xml"/><item><title>是什么，为什么，如何使用</title><link>https://webrtcforthecurious.com/zh/docs/01-what-why-and-how/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/zh/docs/01-what-why-and-how/</guid><description>WebRTC是什么？ # WebRTC是Web实时通信（Real-Time Communication）的缩写，它既是API也是协议。WebRTC协议是两个WebRTC Agent协商双向安全实时通信的一组规则。开发人员可以通过WebRTC API使用WebRTC协议。目前WebRTC API仅有JavaScript版本。
 可以用HTTP和Fetch API之间的关系作为类比。WebRTC协议就是HTTP，而WebRTC API就是Fetch API。
 除了JavaScript语言，WebRTC协议也可以在其他API和语言中使用。你还可以找到WebRTC的服务器和特定领域的工具。所有这些实现都使用WebRTC协议，以便它们可以彼此交互。
-WebRTC协议由IETF工作组在rtcweb中维护。WebRTC API的W3C文档在webrtc-pc。
+WebRTC协议由IETF工作组在rtcweb中维护。WebRTC API的W3C文档在webrtc。
 为什么我应该学习WebRTC？ # 下面这些是WebRTC可以带给你的东西。这并不是一份详尽的清单，只是列举一些你在学习中可能感兴趣的点。如果你还不了解所有这些术语，请不要担心，本书将陆续将这些概念教给你。
 开放标准 多种实现 在浏览器中可用 强制加密 NAT穿透 复用现有技术 拥塞控制 亚秒级延迟 WebRTC协议是一组其他技术的集合体 # 这个主题需要整本书来解释。但是，首先，我们将其分为四个步骤。
 信令（Signaling） 连接（Connecting） 安全加密（Securing） 通信（Communicating） 这四个步骤依次发生。上一个步骤必须100％成功，随后的步骤才能开始。
