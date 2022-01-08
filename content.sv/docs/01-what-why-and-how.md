@@ -11,7 +11,7 @@ Ett liknande förhållande skulle vara det mellan HTTP och Fetch API:et. WebRTC 
 
 WebRTC-protokollet finns tillgängligt i andra API:er och språk än JavaScript. Du kan också hitta servrar och domänspecifika verktyg för WebRTC. Alla dessa implementationer använder WebRTC-protokollet så att de kan kommunicera med varandra.
 
-WebRTC-protokollet upprätthålls i IETF i arbetsgruppen [rtcweb](https://datatracker.ietf.org/wg/rtcweb/documents/). WebRTC API:et är dokumenterat i W3C som [webrtc-pc](https://w3c.github.io/webrtc-pc/).
+WebRTC-protokollet upprätthålls i IETF i arbetsgruppen [rtcweb](https://datatracker.ietf.org/wg/rtcweb/documents/). WebRTC API:et är dokumenterat i W3C som [webrtc](https://www.w3.org/TR/webrtc/).
 
 ## Varför ska jag lära mig WebRTC?
 

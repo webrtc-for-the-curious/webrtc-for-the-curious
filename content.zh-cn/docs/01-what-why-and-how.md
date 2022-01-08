@@ -12,7 +12,7 @@ WebRTC是Web实时通信（Real-Time Communication）的缩写，它既是API也
 
 除了JavaScript语言，WebRTC协议也可以在其他API和语言中使用。你还可以找到WebRTC的服务器和特定领域的工具。所有这些实现都使用WebRTC协议，以便它们可以彼此交互。
 
-WebRTC协议由IETF工作组在[rtcweb](https://datatracker.ietf.org/wg/rtcweb/documents/)中维护。WebRTC API的W3C文档在[webrtc-pc](https://w3c.github.io/webrtc-pc/)。
+WebRTC协议由IETF工作组在[rtcweb](https://datatracker.ietf.org/wg/rtcweb/documents/)中维护。WebRTC API的W3C文档在[webrtc](https://www.w3.org/TR/webrtc/)。
 
 ## 为什么我应该学习WebRTC？
 
