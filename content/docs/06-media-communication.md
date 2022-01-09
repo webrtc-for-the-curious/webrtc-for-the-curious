@@ -12,7 +12,7 @@ The WebRTC protocol is codec agnostic. The underlying transport supports everyth
 WebRTC is also designed to handle dynamic network conditions. During a call your bandwidth might increase, or decrease. Maybe you suddenly experience lots of packet loss. The protocol is designed to handle all of this. WebRTC responds to network conditions and tries to give you the best experience possible with the resources available.
 
 ## How does it work?
-WebRTC uses two pre-existing protocols RTP and RTCP, both defined in [RFC 1889](https://tools.ietf.org/html/rfc1889).
+WebRTC uses two preexisting protocols RTP and RTCP, both defined in [RFC 1889](https://tools.ietf.org/html/rfc1889).
 
 RTP (Real-time Transport Protocol) is the protocol that carries the media. It was designed to allow for real-time delivery of video. It does not stipulate any rules around latency or reliability, but gives you the tools to implement them. RTP gives you streams, so you can run multiple media feeds over one connection. It also gives you the timing and ordering information you need to feed a media pipeline.
 
@@ -202,9 +202,9 @@ RTP/RTCP runs over all types of different networks, and as a result, it's common
 communication to be dropped on its way from the sender to the receiver. Being built on top of UDP,
 there is no built-in mechanism for packet retransmission, let alone handling congestion control.
 
-To provide users the best experience, webrtc must estimate qualities about the network path, and
+To provide users the best experience, WebRTC must estimate qualities about the network path, and
 adapt to how those qualities change over time. The key traits to monitor include: available
-bandwith (in each direction, as it may not be symmetric), round trip time, and jitter (fluctuations
+bandwidth (in each direction, as it may not be symmetric), round trip time, and jitter (fluctuations
 in round trip time). It needs to account for packet loss, and communicate changes in these
 properties as network conditions evolve.
 
@@ -214,7 +214,7 @@ There are two primary objectives for these protocols:
 2. Communicate network characteristics between sender and receiver
 
 RTP/RTCP has three different approaches to address this problem. They all have their pros and cons,
-and generally each generation has improved over its precessors. Which implementation you use will
+and generally each generation has improved over its predecessors. Which implementation you use will
 depend primarily on the software stack available to your clients and the libraries available for
 building your application.
 
@@ -223,12 +223,12 @@ The first implementation is the pair of Receiver Reports and its complement, Sen
 RTCP messages are defined in [RFC 3550](https://tools.ietf.org/html/rfc3550#section-6.4), and are
 responsible for communicating network status between endpoints. Receiver Reports focuses on
 communicating qualities about the network (including packet loss, round-trip time, and jitter), and
-it pairs with other algorithms that are then responsible for estimating avilable bandwidth based
-off of these reports.
+it pairs with other algorithms that are then responsible for estimating available bandwidth based
+on these reports.
 
-Sender and Receiver reports (SR and RR) together paint a picture of the network quatlity. They are
+Sender and Receiver reports (SR and RR) together paint a picture of the network quality. They are
 sent on a schedule for each SSRC, and they are the inputs used when estimating available
-bandwidth. Those estimates take place on at the sender after receiving the RR data, containing the
+bandwidth. Those estimates are made by the sender after receiving the RR data, containing the
 following fields:
 
 * **Fraction Lost** - What percentage of packets have been lost since the last Receiver Report.
@@ -283,20 +283,20 @@ The first half, the loss-based controller, is simple:
 * If packet loss is between 2-10%, the bandwidth estimate stays the same
 * If packet loss is below 2%, the bandwidth estimate is increased
 
-Packet loss measurements are taking frequently, and rely on metadata inside each packet to be
-able to infer when packets are missing. These percentages are evaluated over time windows of around
-0.5-1.0 seconds.
+Packet loss measurements are taking frequently, and rely on metadata inside each packet to be able
+to infer when packets are missing. These percentages are evaluated over time windows of around one
+second.
 
 The second function cooperates with the loss-based controller, and looks at the variations in
 packet arrival time. This delay-based controller aims to identify when network links are becoming
 increasingly congested, and may reduce bandwidth estimates even before packet loss occurs. The
 theory is that the busiest network interface along the path will continue queuing up packets up
-until the interface runs out of capacity inside its buffers. If that interface continues receiving
+until the interface runs out of capacity inside its buffers. If that interface continues to receive
 more traffic than it is able to send, it will be forced to drop all of the next packets it receives
-until more buffer spaces become available. This type of packet loss can be disruptive to all
+until more buffer space becomes available. This type of packet loss can be disruptive to all
 communication over that link, and should ideally be avoided. Thus, GCC tries to figure out if
 network links are getting larger and larger queue depths _before_ packet loss actually occurs. It
-will reduce the bandwidth usage if it observes increased queueing delays over time.
+will reduce the bandwidth usage if it observes increased queuing delays over time.
 
 To do so, GCC tries to infer increases in queue depth by measuring subtle increases in in round
 trip time. It records what's called the frame inter-arrival time, `t(i) - t(i-1)`, as the
@@ -305,14 +305,14 @@ inter-arrival time increases over time, (as in, the arrival time difference betw
 frames is smaller than the arrival time difference between the second and third frame), that is
 considered evidence of increased queue depth on the connecting network interfaces and presumed to
 be caused by network congestion. (Note: GCC is smart enough to control these estimates for
-fluctuations in frame byte sizes.) GCC refines its latency measurements using [Kalman
-filter](https://en.wikipedia.org/wiki/Kalman_filter) and takes very many measurements of network
+fluctuations in frame byte sizes.) GCC refines its latency measurements using a [Kalman
+filter](https://en.wikipedia.org/wiki/Kalman_filter) and takes many measurements of network
 round-trip times (and its variations) to flag congestion. When congestion is detected, it reduces
 the available bitrate. Under steady network conditions, it can slowly increase its bandwidth
 estimates to test out higher load values.
 
 #### TMMBR, TMMBN, and REMB
-After identifyign an estimate for available inbound bandwidth, receivers then communicate these
+After identifying an estimate for available inbound bandwidth, receivers then communicate these
 values to the remote senders. TMMBR, TMMBN, and REMB facilitate this exchange.
 
 * **Temporary Maximum Media Stream Bit Rate Request** - A mantissa/exponent of a requested bitrate
