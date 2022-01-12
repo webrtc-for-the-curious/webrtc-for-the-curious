@@ -223,8 +223,8 @@ The first implementation is the pair of Receiver Reports and its complement, Sen
 RTCP messages are defined in [RFC 3550](https://tools.ietf.org/html/rfc3550#section-6.4), and are
 responsible for communicating network status between endpoints. Receiver Reports focuses on
 communicating qualities about the network (including packet loss, round-trip time, and jitter), and
-it pairs with other algorithms that are then responsible for estimating available bandwidth based
-on these reports.
+it pairs with other algorithms that are then responsible for estimating available bandwidth based on
+these reports.
 
 Sender and Receiver reports (SR and RR) together paint a picture of the network quality. They are
 sent on a schedule for each SSRC, and they are the inputs used when estimating available
@@ -264,61 +264,70 @@ Round-trip time in plain English:
 
 <!-- Missing: What is an example congestion-control alg that pairs with RR/SR? -->
 
-### TMMBR, TMMBN and REMB, paired with GCC
-The next generation of network status messages changes the paradigm. Instead of sending metadata
-about network quality, RTCP receivers instead directly compute an estimate of available incoming
-bandwidth and communicate that maximum bitrate with the sending party.
+### TMMBR, TMMBN, REMB and TWCC, paired with GCC
 
 #### Google Congestion Control (GCC)
-The first step is estimating available incoming bandwidth. Commonly, clients use the Google
-Congestion Control (GCC) algorithm, outlined in
-[draft-ietf-rmcat-gcc-02](https://tools.ietf.org/html/draft-ietf-rmcat-gcc-02).
+The Google Congestion Control (GCC) algorithm (outlined in
+[draft-ietf-rmcat-gcc-02](https://tools.ietf.org/html/draft-ietf-rmcat-gcc-02)) addresses the
+challenge of bandwidth estimation. It pairs with a variety of other protocols to facilitate the
+associated communication requirements. Consequently, it is well-suited to run on either the
+receiving side (when run with TMMBR/TMMBN or REMB) or on the sending side (when run with TWCC).
 
-GCC focuses on packet loss and fluctuations in frame arrival time as the two key metrics for its
-bandwidth estimates.
+To arrive at estimates for available bandwidth, GCC focuses on packet loss and fluctuations in frame
+arrival time as its two primary metrics. It runs these metrics through two linked controllers: the
+loss-based controller and the delay-based controller.
 
-The first half, the loss-based controller, is simple:
+GCC's first component, the loss-based controller, is simple:
 
 * If packet loss is above 10%, the bandwidth estimate is reduced
 * If packet loss is between 2-10%, the bandwidth estimate stays the same
 * If packet loss is below 2%, the bandwidth estimate is increased
 
-Packet loss measurements are taking frequently, and rely on metadata inside each packet to be able
-to infer when packets are missing. These percentages are evaluated over time windows of around one
-second.
+Packet loss measurements are taking frequently. Depending on the paired communication protocol,
+packet loss may be either be explicitly communicated (as with TWCC) or inferred (as with TMMBR/TMMBN
+and REMB). These percentages are evaluated over time windows of around one second.
 
-The second function cooperates with the loss-based controller, and looks at the variations in
-packet arrival time. This delay-based controller aims to identify when network links are becoming
+The second function cooperates with the loss-based controller, and looks at the variations in packet
+arrival time. This delay-based controller aims to identify when network links are becoming
 increasingly congested, and may reduce bandwidth estimates even before packet loss occurs. The
 theory is that the busiest network interface along the path will continue queuing up packets up
 until the interface runs out of capacity inside its buffers. If that interface continues to receive
-more traffic than it is able to send, it will be forced to drop all of the next packets it receives
-until more buffer space becomes available. This type of packet loss can be disruptive to all
-communication over that link, and should ideally be avoided. Thus, GCC tries to figure out if
-network links are getting larger and larger queue depths _before_ packet loss actually occurs. It
-will reduce the bandwidth usage if it observes increased queuing delays over time.
+more traffic than it is able to send, it will be forced to drop all packets that it cannot fit into
+its buffer space. This type of packet loss is particularly disruptive for low-latency/real-time
+communication, but it can also degrade throughput for all communication over that link and should
+ideally be avoided. Thus, GCC tries to figure out if network links are growing larger and larger
+queue depths _before_ packet loss actually occurs. It will reduce the bandwidth usage if it observes
+increased queuing delays over time.
 
-To do so, GCC tries to infer increases in queue depth by measuring subtle increases in round trip
-time. It records what's called the frame inter-arrival time, `t(i) - t(i-1)`, as the difference in
-arrival time of two groups of packets (generally, consecutive video frames). These packet groups
-frequently depart at regularly-spaced time intervals (e.g. every 1/24 seconds for a 24 fps
-video). As a result, measuring inter-arrival time is then as simple as recording the time
-difference between the start of the first packet group (i.e. frame) and the first frame of the next
-group.
+To achieve this, GCC tries to infer increases in queue depth by measuring subtle increases in round
+trip time. It records frames' "inter-arrival time", `t(i) - t(i-1)`: the difference in arrival time
+of two groups of packets (generally, consecutive video frames). These packet groups frequently
+depart at regular time intervals (e.g. every 1/24 seconds for a 24 fps video). As a result,
+measuring inter-arrival time is then as simple as recording the time difference between the start of
+the first packet group (i.e. frame) and the first frame of the next.
 
-If the inter-arrival time increases over time, that is considered evidence of increased queue depth
-on the connecting network interfaces and presumed to be caused by network congestion. (Note: GCC is
-smart enough to control these measurements for fluctuations in frame byte sizes.) GCC refines its
-latency measurements using a [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) and takes
-many measurements of network round-trip times (and its variations) to flag congestion. One can
-think of GCC's Kalman filter as taking the place of a linear regression model, helping to make
-accurate predictions even when jitter introduces noise into the timing measurements. Upon detecting
-network congestion, GCC reduces the available bitrate. Alternatively, under steady network
-conditions, it can slowly increase its bandwidth estimates to test out higher load values.
+In the diagram below, the median inter-packet delay increase is +20 msec, a clear indicator of
+network congestion.
+
+![TWCC with delay](../images/06-twcc.png "TWCC with delay")
+
+If inter-arrival time increases over time, that is presumed evidence of increased queue depth on
+connecting network interfaces and considered to be network congestion. (Note: GCC is smart enough to
+control these measurements for fluctuations in frame byte sizes.) GCC refines its latency
+measurements using a [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) and takes many
+measurements of network round-trip times (and its variations) before flagging congestion. One can
+think of GCC's Kalman filter as taking the place of a linear regression: helping to make accurate
+predictions even when jitter adds noise into the timing measurements. Upon flagging congestion, GCC
+will reduce the available bitrate. Alternatively, under steady network conditions, it can slowly
+increase its bandwidth estimates to test out higher load values.
+
 
 #### TMMBR, TMMBN, and REMB
-After identifying an estimate for available inbound bandwidth, receivers then communicate these
-values to the remote senders. TMMBR, TMMBN, and REMB facilitate this exchange.
+For TMMBR/TMMBN and REMB, the receiving side first estimates available inbound bandwidth (using a
+protocol such as GCC), and then communicates these bandwidth estimates to the remote senders. They
+do not need to exchange details about packet loss or other qualities about network congestion
+because operating on the receiving side allows then to measure inter-arrival time and packet loss
+directly. Instead, TMMBR, TMMBN, and REMB exchange just the bandwidth estimates themselves:
 
 * **Temporary Maximum Media Stream Bit Rate Request** - A mantissa/exponent of a requested bitrate
   for a single SSRC.
@@ -327,9 +336,10 @@ values to the remote senders. TMMBR, TMMBN, and REMB facilitate this exchange.
 * **Receiver Estimated Maximum Bitrate** - A mantissa/exponent of a requested bitrate for the
   entire session.
 
-TMMBR and TMMBN came first and are defined in [RFC 5104](https://tools.ietf.org/html/rfc5104). REMB came later, there was a draft submitted in [draft-alvestrand-rmcat-remb](https://tools.ietf.org/html/draft-alvestrand-rmcat-remb-03), but it was never standardized.
-
-Both of these iterations of network status messages are focused on _how_ to communicate available bandwidth (and metrics used to estimate it) to the sending side; they do not directly estimate how much bandwidth is available.
+TMMBR and TMMBN came first and are defined in [RFC 5104](https://tools.ietf.org/html/rfc5104). REMB
+came later, there was a draft submitted in
+[draft-alvestrand-rmcat-remb](https://tools.ietf.org/html/draft-alvestrand-rmcat-remb-03), but it
+was never standardized.
 
 An example session that uses REMB might behave like the following:
 
@@ -355,7 +365,7 @@ For example, using the x264 encoder with `tune=zerolatency` can significantly de
 
 You can see how this would cause heavy encoder parameter tuning, and surprise users with unwatchable video even on a great connection.
 
-### Transport Wide Congestion Control
+#### Transport Wide Congestion Control
 Transport Wide Congestion Control is the latest development in RTCP network status
 communication. It is defined in
 [draft-holmer-rmcat-transport-wide-cc-extensions-01](https://datatracker.ietf.org/doc/html/draft-holmer-rmcat-transport-wide-cc-extensions-01),
@@ -369,25 +379,20 @@ With REMB, the receiver instructs the sending side in the available download bit
 preceise measurements about inferred packet loss and data only it has about inter-packet arrival
 time.
 
-TWCC is almost a hybrid approach between the previous SR/RR and REMB generations. It brings the
-bandwidth estimates back to the sender side (similar to SR/RR), but its bandwidth estimate
-technique more closely resembles the REMB generation.
+TWCC is almost a hybrid approach between the SR/RR and REMB generations of protocols. It brings the
+bandwidth estimates back to the sender side (similar to SR/RR), but its bandwidth estimate technique
+more closely resembles the REMB generation.
 
 With TWCC, the receiver lets the sender know the arrival time of each packet. This is enough
 information for the sender to measure inter-packet arrival delay variation, as well as identifying
-which packets were dropped or arrived too late to be used. With this data being exchanged
-frequently, the sender able to quickly adjust to changing network conditions and vary its output
-bandwidth.
+which packets were dropped or arrived too late to contribute to the audio/video feed. With this data
+being exchanged frequently, the sender able to quickly adjust to changing network conditions and
+vary its output bandwidth using an algorithm such GCC.
 
 The sender keeps track of sent packets, their sequence numbers, sizes and timestamps.  When the
 sender receives RTCP messages from the receiver, it compares the send inter-packet delays with
 receive delays.  If the receive delays increase, it signals network congestion, and the sender must
 take corrective measures.
-
-In the diagram below, the median interpacket delay increase is +20 msec, a clear indicator of
-network congestion.
-
-![TWCC with delay](../images/06-twcc.png "TWCC with delay")
 
 By providing the sender with the raw data, TWCC provides an excellent view into real time network
 conditions:
@@ -406,7 +411,6 @@ control (like the Selective Forwarding Unit, discussed in section 8). In the cas
 mobile devices, this means those clients can benefit from algorithm enhancements without having to
 await standardization or browser updates (which can take quite a long time to be widely available).
 
-<!-- Missing: protocol for estimating bandwidth that accompanies TWCC -->
 
 ## Bandwidth Estimation Alternatives
 The most deployed implementation is "A Google Congestion Control Algorithm for Real-Time
