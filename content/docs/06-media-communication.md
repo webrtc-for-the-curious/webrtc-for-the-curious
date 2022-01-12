@@ -103,7 +103,7 @@ For WebRTC the `Payload Type` is dynamic. VP8 in one call may be different from 
 RTP is designed to be useful over lossy networks. This gives the receiver a way to detect when packets have been lost.
 
 #### Timestamp
-The sampling instant for this packet. This is not a global clock, but how much time has passed in the media stream. Several RTP packages can have the same timestamp if they for example are all part of the same video frame.
+The sampling instant for this packet. This is not a global clock, but how much time has passed in the media stream. Several RTP packets can have the same timestamp if they for example are all part of the same video frame.
 
 #### Synchronization Source (SSRC)
 An `SSRC` is the unique identifier for this stream. This allows you to run multiple streams of media over a single RTP stream.
@@ -298,18 +298,23 @@ communication over that link, and should ideally be avoided. Thus, GCC tries to 
 network links are getting larger and larger queue depths _before_ packet loss actually occurs. It
 will reduce the bandwidth usage if it observes increased queuing delays over time.
 
-To do so, GCC tries to infer increases in queue depth by measuring subtle increases in in round
-trip time. It records what's called the frame inter-arrival time, `t(i) - t(i-1)`, as the
-difference in arrival time of two groups of packets (generally, consecutive video frames). If the
-inter-arrival time increases over time, (as in, the arrival time difference between the first two
-frames is smaller than the arrival time difference between the second and third frame), that is
-considered evidence of increased queue depth on the connecting network interfaces and presumed to
-be caused by network congestion. (Note: GCC is smart enough to control these estimates for
-fluctuations in frame byte sizes.) GCC refines its latency measurements using a [Kalman
-filter](https://en.wikipedia.org/wiki/Kalman_filter) and takes many measurements of network
-round-trip times (and its variations) to flag congestion. When congestion is detected, it reduces
-the available bitrate. Under steady network conditions, it can slowly increase its bandwidth
-estimates to test out higher load values.
+To do so, GCC tries to infer increases in queue depth by measuring subtle increases in round trip
+time. It records what's called the frame inter-arrival time, `t(i) - t(i-1)`, as the difference in
+arrival time of two groups of packets (generally, consecutive video frames). These packet groups
+frequently depart at regularly-spaced time intervals (e.g. every 1/24 seconds for a 24 fps
+video). As a result, measuring inter-arrival time is then as simple as recording the time
+difference between the start of the first packet group (i.e. frame) and the first frame of the next
+group.
+
+If the inter-arrival time increases over time, that is considered evidence of increased queue depth
+on the connecting network interfaces and presumed to be caused by network congestion. (Note: GCC is
+smart enough to control these measurements for fluctuations in frame byte sizes.) GCC refines its
+latency measurements using a [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) and takes
+many measurements of network round-trip times (and its variations) to flag congestion. One can
+think of GCC's Kalman filter as taking the place of a linear regression model, helping to make
+accurate predictions even when jitter introduces noise into the timing measurements. Upon detecting
+network congestion, GCC reduces the available bitrate. Alternatively, under steady network
+conditions, it can slowly increase its bandwidth estimates to test out higher load values.
 
 #### TMMBR, TMMBN, and REMB
 After identifying an estimate for available inbound bandwidth, receivers then communicate these
@@ -370,8 +375,9 @@ technique more closely resembles the REMB generation.
 
 With TWCC, the receiver lets the sender know the arrival time of each packet. This is enough
 information for the sender to measure inter-packet arrival delay variation, as well as identifying
-exactly which packets were dropped. With this data being exchanged frequently, the sender able to
-quickly adjust to changing network conditions and vary its output bandwidth.
+which packets were dropped or arrived too late to be used. With this data being exchanged
+frequently, the sender able to quickly adjust to changing network conditions and vary its output
+bandwidth.
 
 The sender keeps track of sent packets, their sequence numbers, sizes and timestamps.  When the
 sender receives RTCP messages from the receiver, it compares the send inter-packet delays with
