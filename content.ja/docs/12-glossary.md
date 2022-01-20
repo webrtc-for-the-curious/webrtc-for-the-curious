@@ -17,6 +17,7 @@ weight: 13
 * FEC: [Forward Error Correction](../06-media-communication/#前方誤り訂正-forward-error-correction)
 * FIR: [Full INTRA-frame Request](../06-media-communication/#full-intra-frame-request-firとpicture-loss-indication-pli)
 * G.711: A narrowband audio codec
+* GCC: [Google Congestion Control](../06-media-communication/#google輻輳制御gcc) 策定文書 [draft-ietf-rmcat-gcc-02](https://datatracker.ietf.org/doc/html/draft-ietf-rmcat-gcc-02)
 * H.264: Advanced video coding for generic audiovisual services
 * H.265: Conformance specification for ITU-T H.265 high efficiency video coding
 * HEVC: High Efficiency Video Coding
@@ -36,6 +37,7 @@ weight: 13
 * MTU: Maximum Transmission Unit
 * MUX: Multiplexing
 * NACK: Negative Acknowledgment
+* NADA: [network-assisted dynamic adaptation](../06-media-communication/#帯域幅の推定の代替案) 策定文書 [draft-zhu-rmcat-nada-04](https://tools.ietf.org/html/draft-zhu-rmcat-nada-04)
 * NAT: [Network Address Translation](../03-connecting/#natマッピング) 策定文書 [RFC 4787](https://datatracker.ietf.org/doc/html/rfc4787)
 * Opus: A totally open, royalty-free, highly versatile audio codec
 * P-Frame: [Predicted Frame](../06-media-communication/#フレーム間の種類). 部分的な画像で,前の画像を修正したもの
@@ -50,6 +52,7 @@ weight: 13
 * RTP: [Real-time transport protocol](../10-history-of-webrtc/#rtp) 策定文書 [RFC 3550](https://datatracker.ietf.org/doc/html/rfc3550)
 * RTT: Round-trip time
 * SACK: Selective Acknowledgment
+* SCReAM: [Self-Clocked Rate Adaptation for Multimedia defined](../06-media-communication/#帯域幅の推定の代替案) 策定文書 [draft-johansson-rmcat-scream-cc-05](https://tools.ietf.org/html/draft-johansson-rmcat-scream-cc-05)
 * SCTP: [Stream Control Transmission Protocol](../07-data-communication/#sctp) 策定文書 [RFC 4960](https://datatracker.ietf.org/doc/html/rfc4960)
 * SDP: [Session Description Protocol](../02-signaling/#session-description-protocol-sdpとは) 策定文書 [RFC 8866](https://datatracker.ietf.org/doc/html/rfc8866)
 * SFU: [Selective Forwarding Unit](../08-applied-webrtc/#選択的フォワーディングユニット-selective-forwarding-unit)
