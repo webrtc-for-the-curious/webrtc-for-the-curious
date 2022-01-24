@@ -210,8 +210,8 @@ properties as network conditions evolve.
 
 There are two primary objectives for these protocols:
 
-1. Estimate the available bandwidth (in each direction) supported by the network
-2. Communicate network characteristics between sender and receiver
+1. Estimate the available bandwidth (in each direction) supported by the network.
+2. Communicate network characteristics between sender and receiver.
 
 RTP/RTCP has three different approaches to address this problem. They all have their pros and cons,
 and generally each generation has improved over its predecessors. Which implementation you use will
@@ -279,11 +279,11 @@ loss-based controller and the delay-based controller.
 
 GCC's first component, the loss-based controller, is simple:
 
-* If packet loss is above 10%, the bandwidth estimate is reduced
-* If packet loss is between 2-10%, the bandwidth estimate stays the same
-* If packet loss is below 2%, the bandwidth estimate is increased
+* If packet loss is above 10%, the bandwidth estimate is reduced.
+* If packet loss is between 2-10%, the bandwidth estimate stays the same.
+* If packet loss is below 2%, the bandwidth estimate is increased.
 
-Packet loss measurements are taking frequently. Depending on the paired communication protocol,
+Packet loss measurements are taken frequently. Depending on the paired communication protocol,
 packet loss may be either be explicitly communicated (as with TWCC) or inferred (as with TMMBR/TMMBN
 and REMB). These percentages are evaluated over time windows of around one second.
 
@@ -321,12 +321,11 @@ predictions even when jitter adds noise into the timing measurements. Upon flagg
 will reduce the available bitrate. Alternatively, under steady network conditions, it can slowly
 increase its bandwidth estimates to test out higher load values.
 
-
 #### TMMBR, TMMBN, and REMB
 For TMMBR/TMMBN and REMB, the receiving side first estimates available inbound bandwidth (using a
 protocol such as GCC), and then communicates these bandwidth estimates to the remote senders. They
 do not need to exchange details about packet loss or other qualities about network congestion
-because operating on the receiving side allows then to measure inter-arrival time and packet loss
+because operating on the receiving side allows them to measure inter-arrival time and packet loss
 directly. Instead, TMMBR, TMMBN, and REMB exchange just the bandwidth estimates themselves:
 
 * **Temporary Maximum Media Stream Bit Rate Request** - A mantissa/exponent of a requested bitrate
@@ -376,7 +375,7 @@ TWCC uses a quite simple principle:
 ![TWCC](../images/06-twcc-idea.png "TWCC")
 
 With REMB, the receiver instructs the sending side in the available download bitrate. It uses
-preceise measurements about inferred packet loss and data only it has about inter-packet arrival
+precise measurements about inferred packet loss and data only it has about inter-packet arrival
 time.
 
 TWCC is almost a hybrid approach between the SR/RR and REMB generations of protocols. It brings the
@@ -389,10 +388,10 @@ which packets were dropped or arrived too late to contribute to the audio/video 
 being exchanged frequently, the sender able to quickly adjust to changing network conditions and
 vary its output bandwidth using an algorithm such GCC.
 
-The sender keeps track of sent packets, their sequence numbers, sizes and timestamps.  When the
+The sender keeps track of sent packets, their sequence numbers, sizes and timestamps. When the
 sender receives RTCP messages from the receiver, it compares the send inter-packet delays with
-receive delays.  If the receive delays increase, it signals network congestion, and the sender must
-take corrective measures.
+the receive delays. If the receive delays increase, it signals network congestion, and the sender
+must take corrective measures.
 
 By providing the sender with the raw data, TWCC provides an excellent view into real time network
 conditions:
@@ -410,7 +409,6 @@ congestion control algorithms can then be iterated more quickly on the hardware 
 control (like the Selective Forwarding Unit, discussed in section 8). In the case of browsers and
 mobile devices, this means those clients can benefit from algorithm enhancements without having to
 await standardization or browser updates (which can take quite a long time to be widely available).
-
 
 ## Bandwidth Estimation Alternatives
 The most deployed implementation is "A Google Congestion Control Algorithm for Real-Time
