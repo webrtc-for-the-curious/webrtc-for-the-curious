@@ -197,29 +197,53 @@ Heuristik som modellerar nätverksbeteendet och försöker förutsäga det kalla
 
 Det finns mycket nyans i detta, så låt oss utforska det mer i detalj.
 
-## Kommunicera nätverksstatus
-Det första problemet med att implementera trängselskontroll är att UDP och RTP inte kommunicerar nätverksstatus. Som avsändare har jag ingen aning om när mina paket anländer eller om de kom fram över huvud taget!
+## Identifiera och kommunicera nätverksstatus
+RTP/RTCP skickas över alla typer av nätverk, och som ett resultat av det är det vanligt för viss kommunikation 
+försvinner på väg från avsändaren till mottagaren. Eftersom det bygger på UDP finns det ingen inbyggd mekanism 
+för att skicka om paket och inte heller något sätt att hantera överbelastning.
 
-RTP/RTCP har tre olika lösningar på detta problem som alla har sina för- och nackdelar. Vad du använder beror på vilka klienter du arbetar med. Vad är topologin du arbetar med, eller till och med bara hur mycket utvecklingstid du har kvar.
+För att ge användarna den bästa upplevelsen måste WebRTC uppskatta kvaliteten på nätverket och
+anpassa sig till hur dessa egenskaper förändras över tiden. De viktigaste egenskaperna att övervaka inkluderar:
+tillgänglig bandbredd (i varje riktning, eftersom den kanske inte är symmetrisk), tur-och-returtid och jitter.
+WebRTC måste ta hänsyn till paketförluster och kommunicera förändringar i dessa egenskaper allt eftersom
+nätverksförhållandena ändras.
 
-### Mottagarrapporter
-Mottagarrapporter är RTCP-meddelanden, det ursprungliga sättet att kommunicera nätverksstatus. Du hittar dem i [RFC 3550](https://tools.ietf.org/html/rfc3550#section-6.4). De skickas enligt ett schema för varje SSRC och innehåller följande fält:
+Det finns två primära mål för dessa protokoll:
+
+1. Uppskatta den tillgängliga bandbredden (i varje riktning) i nätverket.
+2. Kommunicera nätverksegenskaper mellan avsändare och mottagare.
+
+RTP/RTCP har tre olika tillvägagångssätt för att lösa detta problem. De har alla sina för- och nackdelar,
+och i allmänhet har varje generation förbättrats jämfört med sina föregångare. Vilken implementation du använder beror
+i första hand på vilken mjukvara som är tillgänglig för dina klienter och vilka bibliotek som är tillgängliga för
+dig för att bygga din applikation.
+
+### Avsändar- och Mottagarrapporter
+Den första implementeringen är paret av mottagarrapporter och dess komplement, avsändarrapporter. Dessa
+RTCP-meddelanden definieras i [RFC 3550](https://tools.ietf.org/html/rfc3550#section-6.4) och är
+ansvariga för att kommunicera nätverksstatus mellan ändpunkter. Mottagarrapporter fokuserar på
+kommunikationsegenskaper hos nätverket (inklusive paketförlust, tur-och-returtid och jitter), och det
+paras ihop med andra algoritmer som sedan är ansvariga för att uppskatta tillgänglig bandbredd baserat på
+dessa rapporter.
+
+Avsändar- och mottagarerapporter (SR och RR) målar tillsammans en bild av nätverkskvaliteten. Dom skickas enligt ett
+schema för varje SSRC, och de är den indata som används vid uppskattning av tillgänglig bandbredd. Dessa uppskattningar 
+görs av avsändaren efter att ha mottagit RR-data som innehåller följande fält:
 
 * **Fraktion förlorad** - Hur stor andel av paketen som har gått förlorade sedan den senaste mottagarrapporten.
 * **Kumulativt antal förlorade paket** - Hur många paket som har gått förlorade under hela samtalet.
 * **Utökat högsta mottagna sekvensnummer** - Vad var det senaste mottagna sekvensnumret och hur många gånger har det rullat över.
-* **Interarrival Jitter** - Den rullande jittren för hela samtalet.
+* **Interarrival Jitter** - Det rullande jittret för hela samtalet.
 * **Senaste avsändarrapportens tidsstämpel** - Senast kända tid på avsändaren, används för beräkning av tur och retur-tid.
 
-Avsändar- och mottagarrapporter (SR och RR) används tillsammans för att beräkna tur och retur-tid.
+Avsändar- och mottagarrapporter (SR och RR) används tillsammans för att beräkna tur-och-returtid.
 
-Avsändaren inkluderar sin lokala tid, `sendertime1` i avsändarrapporten (SR).
-När mottagaren får SR-paket skickar den tillbaka mottagarrapporten (RR).
-RR inkluderar bland annat `sendertime1` som just erhållits från avsändaren.
-Det kommer att finnas en fördröjning mellan att ta emot SR och att skicka RR. På grund av detta inkluderar RR också en "fördröjning sedan senaste avsändares rapport" - `DLSR`.
-`DLSR` används för att justera uppskattningen av tur och retur-tiden senare i processen.
-När avsändaren tar emot RR drar den bort `sendertime1` och `DLSR` från aktuell tid som vi kallar `sendertime2`.
-Detta tidsdelta kallas tur-och-retur-fördröjning.
+Avsändaren inkluderar sin lokala tid, `sendertime1` i avsändarrapporten (SR). När mottagaren får SR-paket skickar den
+tillbaka mottagarrapporten (RR). RR inkluderar bland annat `sendertime1` som just erhållits från avsändaren. Det kommer
+att finnas en fördröjning mellan att ta emot SR och att skicka RR. På grund av detta inkluderar RR också en
+"fördröjning sedan senaste avsändares rapport" - `DLSR`. `DLSR` används för att justera uppskattningen av
+tur-och-retur-tiden senare i processen. När avsändaren tar emot RR drar den bort `sendertime1` och `DLSR` från aktuell
+tid som vi kallar `sendertime2`. Detta tidsdelta kallas tur-och-retur-fördröjning.
 
 `rtt = sendertime2 - sendertime1 - DLSR`
 
@@ -234,26 +258,75 @@ Rundturstid på vanlig svenska:
 
 ![Rundturstid](../../images/06-rtt.png "Rundturstid")
 
-### TMMBR, TMMBN och REMB
-Nästa generation av nätverksstatusmeddelanden involverar alla mottagare som skickar meddelanden via RTCP med uttryckliga bittaktförfrågningar.
+### TMMBR, TMMBN, REMB och TWCC, tillsammans med GCC
+
+#### Google Congestion Control (GCC)
+Algoritmen för Google Congestion Control (GCC) som beskrivs i
+[draft-ietf-rmcat-gcc-02](https://tools.ietf.org/html/draft-ietf-rmcat-gcc-02) beskriver ett sätt att hantera
+utmaningarna att uppskatta bandbredd. Den paras ihop med en mängd andra protokoll för att hantera de önskade
+kommunikationskraven. Den går att köra antingen hos mottagaren (när man använder TMMBR/TMMBN eller REMB) 
+eller hos avsändaren (för TWCC).
+
+För att göra uppskattningar av tillgänglig bandbredd fokuserar GCC på paketförlust och fluktuationer i bild-ankomsttid 
+som de primära källorna. Den kör dessa mätvärden genom två länkade kontroller: den förlustbaserad kontrollern och den
+fördröjningsbaserade kontrollern.
+
+GCC:s första komponent, den förlustbaserade kontrollern, är enkel:
+
+* Om paketförlusten är över 10 %, minskas uppskattningen av bandbredden.
+* Om paketförlusten är mellan 2-10 % behåller man bandbreddsuppskattningen densamma.
+* Om paketförlusten är under 2 %, ökas bandbreddsuppskattningen.
+
+Paketförlustmätningar görs ofta. Beroende på vilket kommunikationsprotokoll som används kan paketförlust antingen
+skickas uttryckligen (som med TWCC) eller härledas (som med TMMBR/TMMBN och REMB). Dessa procentsatser utvärderas
+över perioder på cirka en sekund.
+
+Den andra funktionen används tillsammans med den förlustbaserade kontrollern, men kollar istället på variationen
+i ankomsttiderna för paketen. Den här fördröjningsbaserade kontrollern används för att känna av när nätverkslänkar 
+blir alltmer överbelastade, och kan minska bandbredden redan innan paket börjar tappas. Teorin är att det högst
+belastade nätverksgränssnittet längs vägen kommer att fortsätta att köa upp paket tills dess buffertar fylls up.
+Om det gränssnittet fortsätter att ta emot mer trafik än det kan skicka, kommer den att tvingas slänga alla paket
+som den inte får plats dess buffer. Denna typ av paketförlust är särskilt störande för låg latens/realtid
+kommunikation, men kan också försämra kapaciteten för all kommunikation över den länken och bör helst undvikas.
+Således försöker GCC ta reda på om köerna i nätverket växer sig större och större _innan_ paket börjar tappas. 
+Algoritmen kommer att minska bandbreddsanvändningen om den märker att köerna ökar i storlek.
+
+GCC försöker räkna ut ökningar i köstorlek genom att mäta subtila ökningar i tiden det tar att skicka och ta emot
+paket. Den registrerar skillnaden i bildernas ankomsttid, `t(i) - t(i-1)`: skillnaden i ankomsttid mellan två
+grupper av paket (oftast två bilder i ordning). Dessa paketgrupper skickas ofta med regelbundna tidsintervall
+(t.ex. var 1/24:e sekund för en 24 fps video). På grund av det är det lätt att mäta ankomsttiden genom att 
+registrera tidsskillnaden mellan starten av den första paketgruppen (dvs. en bild) och den första bilden i nästa grupp.
+
+I diagrammet nedan är medianökningen mellan paketfördröjningen +20 msek, en tydlig indikator på överbelastning.
+
+![TWCC med fördröjning](../../images/06-twcc.png "TWCC med fördröjning")
+
+Om skillnaden i ankomsttider ökar över tiden, antas det vara bevis på att köerna ökar i storlek och nätverket anses vara
+överbelastat. (Obs: GCC är smart nog att kontrollera dessa mätningar för fluktuationer i bildstorlekar.) GCC förfinar
+sina latens mätningar med hjälp av ett [Kalman-filter](https://en.wikipedia.org/wiki/Kalman_filter) och tar många
+mätningar av nätverkets tur-och-returtid (och dess variationer) innan den rapporterar att det är överbelastat. Man kan
+säga att GCCs Kalman-filter används istället för en linjär regression och hjälper till att göra bättre
+förutsägelser även när jitter gör timingmätningarna lite oberäkneliga. När GCC rapporterar att nätet är överbelastat
+kommer den också att minska den tillgängliga näthastigheten. Alternativt, under stabila nätverksförhållanden, kan den 
+långsamt öka sina bandbreddsuppskattningar för att testa om nätet har mer kapacitet.
+
+#### TMMBR, TMMBN, and REMB
+För TMMBR/TMMBN och REMB uppskattar mottagaren först tillgänglig inkommande bandbredd (med hjälp av ett protokoll som
+GCC), och kommunicerar sedan sina bandbreddsuppskattningar till avsändarna. De behöver inte utbyta information om
+paketförlust eller överbelastning i nätverket eftersom som mottagare kan de mäta intervallet mellan ankomsttiderna och 
+paketförluster direkt. Istället utbyter TMMBR, TMMBN och REMB bara själva bandbreddsuppskattningarna:
 
 * **Tillfällig maximal medieströmförfrågan för bittakt (TMMBR)** - En mantissa/exponent för en begärd bittakt för en enda SSRC.
 * **Tillfällig maximal mediaströmbittaktsmeddelande (TMMBN)** - Ett meddelande om att en förfrågan har mottagits.
 * **Mottagarens beräknade maximala bittakt (REMB)** - En mantissa/exponent för en begärd bithastighet för hela sessionen.
 
-TMMBR och TMMBN kom först och definieras i [RFC 5104](https://tools.ietf.org/html/rfc5104). REMB kom senare, det finns ett utkast i [draft-alvestrand-rmcat-remb](https://tools.ietf.org/html/draft-alvestrand-rmcat-remb-03), men det blev aldrig standardiserat.
+TMMBR och TMMBN kom först och definieras i [RFC 5104](https://tools.ietf.org/html/rfc5104). REMB kom senare, det finns
+ett utkast i [draft-alvestrand-rmcat-remb](https://tools.ietf.org/html/draft-alvestrand-rmcat-remb-03), men det blev
+aldrig standardiserat.
 
 En session som använder REMB skulle se ut enligt följande:
 
 ![REMB](../../images/06-remb.png "REMB")
-
-Webbläsare använder en enkel tumregel för uppskattning av bandbredd:
-1. Be omkodaren att öka bithastigheten om nuvarande paketförlust är mindre än 2%.
-2. Om paketförlusten är högre än 10%, sänk bithastigheten med hälften av den aktuella paketförlustprocenten.
-```
-if (packetLoss < 2%) video_bitrate *= 1.08
-if (packetLoss > 10%) video_bitrate *= (1 - 0.5*lossRate)
-```
 
 Denna metod fungerar bra på papper. Avsändaren tar emot uppskattning från mottagaren, ställer in kodningshastigheten till det mottagna värdet. Allt klart! Vi har anpassat oss till nätverksförhållandena.
 
@@ -274,40 +347,50 @@ Till exempel kan användning av x264-omkodaren med `tune=zerolatency` avsevärt 
 Man kan se hur detta snabbt skulle orsaka en alldeles för låg bittaktsinställning för omkodaren och på så sätt överraska användare med mycket dålig video även över en bra nätverksanslutning.
 
 ### Transport Wide Congestion Control
-Transport Wide Congestion Control är den senaste utvecklingen inom RTCP-nätverksstatuskommunikation.
+Transport Wide Congestion Control är den senaste utvecklingen inom RTCP-nätverksstatuskommunikation. Det definieras i
+[draft-holmer-rmcat-transport-wide-cc-extensions-01](https://datatracker.ietf.org/doc/html/draft-holmer-rmcat-transport-wide-cc-extensions-01),
+men har aldrig standardiserats.
 
 TWCC använder en ganska enkel princip:
 
 ![TWCC](../../images/06-twcc-idea.png "TWCC")
 
-Till skillnad från i REMB försöker en TWCC-mottagare inte uppskatta sin egen inkommande bithastighet. Det låter bara avsändaren veta vilka paket som togs emot och när. Baserat på dessa rapporter har avsändaren en mycket uppdaterad uppfattning om vad som händer i nätverket.
+Med REMB skickar mottagaren hur hög bandbredd den har tillgängligt till avsändaren. Mottagaren använder
+precisa mätningar av uppskattade paketförluster och data som bara den har om ankomsttiden mellan paket.
 
-- Avsändaren skapar ett RTP-paket med en speciell TWCC-header som innehåller en lista över paketsekvensnummer.
-- Mottagaren svarar med ett speciellt RTCP-feedbackmeddelande som meddelar avsändaren om och när varje paket mottogs.
+TWCC är ungefär som en hybrid mellan SR/RR och REMB-generationerna av protokoll. Det ger
+bandbreddsuppskattningar tillbaka till avsändarsidan (som SR/RR), men dess bandbreddsuppskattningsteknik
+påminner mer om REMB-generationen.
 
-Avsändaren håller reda på skickade paket, deras sekvensnummer, storlekar och tidsstämplar.
-När avsändaren tar emot RTCP-meddelanden från mottagaren jämför den sändningsfördröjningarna mellan paket med mottagningsfördröjningar.
-Om mottagningsfördröjningarna ökar betyder det att det finns trängsel i nätverket som avsändaren måste anpassa sig till.
+Med TWCC skickar mottagaren tillbaka ankomsttiden för varje paket till avsändaren. Det är all information
+avsändaren behöver för att mäta variationen mellan paketens ankomstfördröjning, och dessutom identifiera
+vilka paket som tappades eller kom för sent för att kunna bidra till ljud-/videoflödet. Eftersom dessa uppgifter
+utbyts ofta kan avsändaren snabbt anpassa sig till ändrade nätverksförhållanden och variera sin bandbredd med
+hjälp av en algoritm såsom GCC.
 
-I diagrammet nedan är medianfördröjningen mellan paketet +20 msek, en tydlig indikator på att det är trängsel i nätverket.
+Avsändaren håller reda på skickade paket, deras sekvensnummer, storlekar och tidsstämplar. När avsändaren tar 
+emot RTCP-meddelanden från mottagaren, jämför den fördröjningarna mellan paketen som skickats med fördröjningarna
+hos mottagaren. Om mottagningsförseningarna ökar signalerar det att nätverket är överbelastat, och avsändaren måste
+vidta korrigerande åtgärder.
 
-! [TWCC med fördröjning](../../images/06-twcc.png "TWCC med fördröjning")
-
-TWCC tillhandahåller rådata och en utmärkt insikt i nätverksförhållanden i realtid:
+TWCC tillhandahåller rådata och ger en utmärkt insikt i nätverksförhållanden i realtid:
 - Nästan omedelbar statistik över paketförluster, inte bara den procentuella förlusten utan de exakta paketen som förlorades.
 - Exakt skickad bittakt.
 - Exakt mottagningshastighet.
 - En jitter uppskattning.
 - Skillnaden i fördröjningar mellan att skicka och ta emot paket.
+- Beskrivning av hur nätverket tolererade sprängd eller jämn bandbreddsleverans
 
-En trivial överbelastningskontrollalgoritm för att uppskatta den inkommande bitakten hos mottagaren från avsändaren är att summera paketstorlekar som mottagits och dela den med tiden som passerat.
+Ett av de viktigaste bidragen från TWCC är den flexibilitet det ger WebRTC-utvecklare. Att konsolidera algoritmen
+för överbelastningskontroll till sändningssidan gör klientkoden enklare och att den kräver mindre förändringar. 
+Komplexa algoritmer för överbelastningskontroll kan sedan itereras på snabbare direk på hårdvaran de har
+kontroll över (som den selektiva vidarebefordringsenheten, diskuterad i avsnitt 8). När det gäller webbläsare och
+mobila enheter innebär detta att dessa klienter kan dra nytta av algoritmförbättringar utan att behöva vänta på
+standardisering eller webbläsaruppdateringar (vilket kan ta ganska lång tid att bli allmänt tillgänglig).
 
-## Skapa en uppskattning av bandbredd
-Nu när vi har information om tillståndet för nätverket kan vi göra uppskattningar om tillgänglig bandbredd. 2012 startade IETF arbetsgruppen RMCAT (RTP Media Congestion Avoidance Techniques).
-Denna arbetsgrupp innehåller flera inlämnade standarder för algoritmer för överbelastning. Innan dess var alla algoritmer för överbelastningskontroll egna.
+## Alternativ för uppskattning av bandbredd
+Den mest använda implementeringen är "A Google Congestion Control Algorithm for Real-Time Communication" definierad i
+[draft-alvestrand-rmcat-congestion](https://tools.ietf.org/html/draft-alvestrand-rmcat-congestion-02).
 
-Den mest använda implementeringen är "A Google Congestion Control Algorithm for Real-Time Communication" definierad i [draft-alvestrand-rmcat-congestion](https://tools.ietf.org/html/draft-alvestrand-rmcat-congestion-02).
-In kan köra i två iterationer. Först ett "förlustbaserat" pass som bara använder mottagarrapporter. Om TWCC är tillgängligt kommer det också att ta hänsyn till den informationen.
-Den förutspår nuvarande och framtida nätverksbandbredd genom att använda ett [Kalman-filter](https://en.wikipedia.org/wiki/Kalman_filter).
-
-Det finns också flera alternativ till GCC, till exempel [NADA: A Unified Congestion Control Scheme for Real-Time Media](https://tools.ietf.org/html/draft-zhu-rmcat-nada-04) och [SCReAM - Self-Clocked Rate Adaptation for Multimedia](https://tools.ietf.org/html/draft-johansson-rmcat-scream-cc-05).
+Det finns också flera alternativ till GCC, till exempel [NADA: A Unified Congestion Control Scheme for Real-Time Media](https://tools.ietf.org/html/draft-zhu-rmcat-nada-04)
+och [SCReAM - Self-Clocked Rate Adaptation for Multimedia](https://tools.ietf.org/html/draft-johansson-rmcat-scream-cc-05).
