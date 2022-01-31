@@ -310,7 +310,7 @@ förutsägelser även när jitter gör timingmätningarna lite oberäkneliga. N�
 kommer den också att minska den tillgängliga näthastigheten. Alternativt, under stabila nätverksförhållanden, kan den 
 långsamt öka sina bandbreddsuppskattningar för att testa om nätet har mer kapacitet.
 
-#### TMMBR, TMMBN, and REMB
+#### TMMBR, TMMBN, och REMB
 För TMMBR/TMMBN och REMB uppskattar mottagaren först tillgänglig inkommande bandbredd (med hjälp av ett protokoll som
 GCC), och kommunicerar sedan sina bandbreddsuppskattningar till avsändarna. De behöver inte utbyta information om
 paketförlust eller överbelastning i nätverket eftersom som mottagare kan de mäta intervallet mellan ankomsttiderna och 
