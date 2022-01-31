@@ -30,32 +30,32 @@ weight: 13
 * IPv4: Internet Protocol, Version 4
 * IPv6: Internet Protocol, Version 6
 * ITU-T: International Telecommunication Union Telecommunication Standardization Sector
-* JSEP: [JavaScript Session Establishment Protocol](../02-signaling/#vad-ar-session-description-protocol-sdp) definierat i [RFC 8829](https://datatracker.ietf.org/doc/html/rfc8829)
+* JSEP: [JavaScript Session Establishment Protocol](../02-signaling/#vad-är-session-description-protocol-sdp) definierat i [RFC 8829](https://datatracker.ietf.org/doc/html/rfc8829)
 * MCU: [Multi-point Conferencing Unit](../08-applied-webrtc/#mcu)
 * mDNS: [Multicast DNS](../03-connecting/#mdns) definierat i [RFC 6762](https://datatracker.ietf.org/doc/html/rfc6762)
 * MITM: Man-In-The-Middle, avlyssning av trafik
 * MTU: Maximum Transmission Unit, paket storleken
 * MUX: Multiplexing
 * NACK: Kort för Negative Acknowledgment, negativ bekräftelse
-* NADA: [network-assisted dynamic adaptation](../06-media-communication/#alternativ-for-uppskattning-av-bandbredd) definierat i [draft-zhu-rmcat-nada-04](https://tools.ietf.org/html/draft-zhu-rmcat-nada-04)
-* NAT: [Network Address Translation](../03-connecting/#nat-kartlaggning) definierat i [RFC 4787](https://datatracker.ietf.org/doc/html/rfc4787)
+* NADA: [network-assisted dynamic adaptation](../06-media-communication/#alternativ-för-uppskattning-av-bandbredd) definierat i [draft-zhu-rmcat-nada-04](https://tools.ietf.org/html/draft-zhu-rmcat-nada-04)
+* NAT: [Network Address Translation](../03-connecting/#nat-kartläggning) definierat i [RFC 4787](https://datatracker.ietf.org/doc/html/rfc4787)
 * Opus: En helt öppen, royalty-fri och väldigt anpassningsbar ljud-kodek
 * P-Frame: [Predicted Frame](../06-media-communication/#inexakt-videokomprimering). En partiell bild som bara innehåller skillnaden från den föregående bilden.
 * P2P: Peer-to-Peer, kommunikation direkt mellan två klienter
 * PLI: [Picture Loss Indication](../06-media-communication/#full-intra-frame-request-fir-och-picture-loss-indication-pli)
 * PPID: [Payload Protocol Identifier](../07-data-communication/#payload-protocol-identifier)
-* REMB: [Receiver Estimated Maximum Bitrate](../06-media-communication/#tmmbr-tmmbn-and-remb), ett sätt att beräkna bandbredd
+* REMB: [Receiver Estimated Maximum Bitrate](../06-media-communication/#tmmbr-tmmbn-och-remb), ett sätt att beräkna bandbredd
 * RFC: Request for Comments
-* RMCAT: [RTP Media Congestion Avoidance Techniques](../06-media-communication/#generating-a-bandwidth-estimate)
+* RMCAT: [RTP Media Congestion Avoidance Techniques](../06-media-communication/#tmmbr-tmmbn-remb-och-twcc-tillsammans-med-gcc)
 * RR: Receiver Report
 * RTCP: [RTP Control Protocol](../10-history-of-webrtc/#rtp) definierat i [RFC 3550](https://datatracker.ietf.org/doc/html/rfc3550)
 * RTP: [Real-time transport protocol](../10-history-of-webrtc/#rtp) definierat i [RFC 3550](https://datatracker.ietf.org/doc/html/rfc3550)
 * RTT: Round-Trip Time
 * SACK: Selective Acknowledgment
-* SCReAM: [Self-Clocked Rate Adaptation for Multimedia](../06-media-communication/#bandwidth-estimation-alternatives) definierat i [draft-johansson-rmcat-scream-cc-05](https://tools.ietf.org/html/draft-johansson-rmcat-scream-cc-05)
+* SCReAM: [Self-Clocked Rate Adaptation for Multimedia](../06-media-communication/#alternativ-för-uppskattning-av-bandbredds) definierat i [draft-johansson-rmcat-scream-cc-05](https://tools.ietf.org/html/draft-johansson-rmcat-scream-cc-05)
 * SCTP: [Stream Control Transmission Protocol](../07-data-communication/#stream-control-transmission-protocol) definierat i [RFC 4960](https://datatracker.ietf.org/doc/html/rfc4960)
-* SDP: [Session Description Protocol](../02-signaling/#what-is-the-session-description-protocol-sdp) definierat i [RFC 8866](https://datatracker.ietf.org/doc/html/rfc8866)
-* SFU: [Selective Forwarding Unit](../08-applied-webrtc/#selective-forwarding-unit)
+* SDP: [Session Description Protocol](../02-signaling/#vad-är-session-description-protocol-sdp) definierat i [RFC 8866](https://datatracker.ietf.org/doc/html/rfc8866)
+* SFU: [Selective Forwarding Unit](../08-applied-webrtc/#selektiv-vidarebefordringsenhet)
 * SR: Sender Report, avsändarens rapport
 * SRTP: [Secure Real-time Transport Protocol](../04-securing/#srtp) definierat i [RFC 3711](https://datatracker.ietf.org/doc/html/rfc3711)
 * SSRC: Synchronization Source
@@ -63,8 +63,8 @@ weight: 13
 * TCP: Transmission Control Protocol, protokoll med leveransgaranti
 * TLS: Transport Layer Security, definierat i [RFC 8446](https://datatracker.ietf.org/doc/html/rfc8446)
 * TMMBN: [Temporary Maximum Media Stream Bit Rate Notification](../06-media-communication/#tmmbr-tmmbn-and-remb)
-* TMMBR: [Temporary Maximum Media Stream Bit Rate Request](../06-media-communication/#tmmbr-tmmbn-and-remb)
-* TSN: [Transmission Sequence Number](../07-data-communication/#sandningssekvensnummer)
+* TMMBR: [Temporary Maximum Media Stream Bit Rate Request](../06-media-communication/#tmmbr-tmmbn-och-remb)
+* TSN: [Transmission Sequence Number](../07-data-communication/#sändningssekvensnummer)
 * TURN: [Traversal Using Relays around NAT](../03-connecting/#turn) defined in [RFC 8656](https://datatracker.ietf.org/doc/html/rfc8656)
 * TWCC: [Transport Wide Congestion Control](../06-media-communication/#transport-wide-congestion-control)
 * UDP: User Datagram Protocol, protokoll utan leveransgaranti
