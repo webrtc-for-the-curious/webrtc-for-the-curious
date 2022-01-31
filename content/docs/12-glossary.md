@@ -52,7 +52,7 @@ weight: 13
 * RTP: [Real-time transport protocol](../10-history-of-webrtc/#rtp) defined in [RFC 3550](https://datatracker.ietf.org/doc/html/rfc3550)
 * RTT: Round-Trip Time
 * SACK: Selective Acknowledgment
-* SCReAM: [Self-Clocked Rate Adaptation for Multimedia defined](../06-media-communication/#bandwidth-estimation-alternatives) defined in [draft-johansson-rmcat-scream-cc-05](https://tools.ietf.org/html/draft-johansson-rmcat-scream-cc-05)
+* SCReAM: [Self-Clocked Rate Adaptation for Multimedia](../06-media-communication/#bandwidth-estimation-alternatives) defined in [draft-johansson-rmcat-scream-cc-05](https://tools.ietf.org/html/draft-johansson-rmcat-scream-cc-05)
 * SCTP: [Stream Control Transmission Protocol](../07-data-communication/#stream-control-transmission-protocol) defined in [RFC 4960](https://datatracker.ietf.org/doc/html/rfc4960)
 * SDP: [Session Description Protocol](../02-signaling/#what-is-the-session-description-protocol-sdp) defined in [RFC 8866](https://datatracker.ietf.org/doc/html/rfc8866)
 * SFU: [Selective Forwarding Unit](../08-applied-webrtc/#selective-forwarding-unit)

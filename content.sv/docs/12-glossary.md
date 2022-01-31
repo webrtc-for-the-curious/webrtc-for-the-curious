@@ -17,6 +17,7 @@ weight: 13
 * FEC: [Forward Error Correction](../06-media-communication/#vidarekorrigering-av-fel)
 * FIR: [Full INTRA-frame Request](../06-media-communication/#full-intra-frame-request-fir-och-picture-loss-indication-pli)
 * G.711: En smalbandig ljud-kodek
+* GCC: [Google Congestion Control](../06-media-communication/#google-congestion-control-gcc) definierat i [draft-ietf-rmcat-gcc-02](https://datatracker.ietf.org/doc/html/draft-ietf-rmcat-gcc-02)
 * H.264: Avancerad video-kodek
 * H.265: Konkret specifikation för ITU-T H.265 video kodeken
 * HEVC: High Efficiency Video Coding
@@ -36,6 +37,7 @@ weight: 13
 * MTU: Maximum Transmission Unit, paket storleken
 * MUX: Multiplexing
 * NACK: Kort för Negative Acknowledgment, negativ bekräftelse
+* NADA: [network-assisted dynamic adaptation](../06-media-communication/#alternativ-for-uppskattning-av-bandbredd) definierat i [draft-zhu-rmcat-nada-04](https://tools.ietf.org/html/draft-zhu-rmcat-nada-04)
 * NAT: [Network Address Translation](../03-connecting/#nat-kartlaggning) definierat i [RFC 4787](https://datatracker.ietf.org/doc/html/rfc4787)
 * Opus: En helt öppen, royalty-fri och väldigt anpassningsbar ljud-kodek
 * P-Frame: [Predicted Frame](../06-media-communication/#inexakt-videokomprimering). En partiell bild som bara innehåller skillnaden från den föregående bilden.
@@ -50,6 +52,7 @@ weight: 13
 * RTP: [Real-time transport protocol](../10-history-of-webrtc/#rtp) definierat i [RFC 3550](https://datatracker.ietf.org/doc/html/rfc3550)
 * RTT: Round-Trip Time
 * SACK: Selective Acknowledgment
+* SCReAM: [Self-Clocked Rate Adaptation for Multimedia](../06-media-communication/#bandwidth-estimation-alternatives) definierat i [draft-johansson-rmcat-scream-cc-05](https://tools.ietf.org/html/draft-johansson-rmcat-scream-cc-05)
 * SCTP: [Stream Control Transmission Protocol](../07-data-communication/#stream-control-transmission-protocol) definierat i [RFC 4960](https://datatracker.ietf.org/doc/html/rfc4960)
 * SDP: [Session Description Protocol](../02-signaling/#what-is-the-session-description-protocol-sdp) definierat i [RFC 8866](https://datatracker.ietf.org/doc/html/rfc8866)
 * SFU: [Selective Forwarding Unit](../08-applied-webrtc/#selective-forwarding-unit)
