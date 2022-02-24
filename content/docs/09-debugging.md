@@ -10,12 +10,13 @@ Debugging WebRTC can be a daunting task. There are a lot of moving parts, and th
 
 This chapter will get you in the mindset to debug WebRTC. It will show you how to break down the problem. After we know the problem, we will give a quick tour of the popular debugging tools.
 
-### Isolate The Problem
+## Isolate The Problem
+
 When debugging, you need to isolate where the issue is coming from. Start from the beginning of the...
 
-#### Signaling Failure
+### Signaling Failure
 
-#### Networking Failure
+### Networking Failure
 
 Test your STUN server using netcat:
 
@@ -72,16 +73,20 @@ XOR-ing against the dummy magic cookie is idempotent, so the port and address wi
     - `4e 20` is the mapped port, which decodes to 20000 in decimal
     - `5e 24 7a cb` is the IP address, which decodes to `94.36.122.203` in dotted-decimal notation.
 
-#### Security Failure
-#### Media Failure
-#### Data Failure
+### Security Failure
 
-### Tools of the trade
+### Media Failure
 
-#### netcat (nc)
+### Data Failure
+
+## Tools of the trade
+
+### netcat (nc)
+
 [netcat](https://en.wikipedia.org/wiki/Netcat) is command-line networking utility for reading from and writing to network connections using TCP or UDP. It is typically available as the `nc` command.
 
-#### tcpdump
+### tcpdump
+
 [tcpdump](https://en.wikipedia.org/wiki/Tcpdump) is a command-line data-network packet analyzer.
 
 Common commands:
@@ -95,11 +100,12 @@ Common commands:
 
   The PCAP file can be opened with the Wireshark application: `wireshark stun.pcap`
 
-#### Wireshark
+### Wireshark
 
 [Wireshark](https://www.wireshark.org) is a widely-used network protocol analyzer.
 
-#### webrtc-internals
+### webrtc-internals
+
 Chrome comes with a built-in WebRTC statistics page available at [chrome://webrtc-internals](chrome://webrtc-internals).
 
 ## Latency

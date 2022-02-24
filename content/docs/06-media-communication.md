@@ -4,7 +4,10 @@ type: docs
 weight: 7
 ---
 
-# What do I get from WebRTC's media communication?
+# Media Communication
+
+## What do I get from WebRTC's media communication?
+
 WebRTC allows you to send and receive an unlimited amount of audio and video streams. You can add and remove these streams at anytime during a call. These streams could all be independent, or they could be bundled together! You could send a video feed of your desktop, and then include audio and video from your webcam.
 
 The WebRTC protocol is codec agnostic. The underlying transport supports everything, even things that don't exist yet! However, the WebRTC Agent you are communicating with may not have the necessary tools to accept it.

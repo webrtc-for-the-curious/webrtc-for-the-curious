@@ -4,7 +4,10 @@ type: docs
 weight: 3
 ---
 
-# What is WebRTC Signaling?
+# Signaling
+
+## What is WebRTC Signaling?
+
 When you create a WebRTC agent, it knows nothing about the other peer. It has no idea who it is going to connect with or what they are going to send!
 Signaling is the initial bootstrapping that makes a call possible. After these values are exchanged, the WebRTC agents can communicate directly with each other.
 

@@ -4,7 +4,10 @@ type: docs
 weight: 8
 ---
 
-# What do I get from WebRTC's data communication?
+# Data Communication
+
+## What do I get from WebRTC's data communication?
+
 WebRTC provides data channels for data communication. Between two peers you can open 65,534 data channels.
 A data channel is datagram based, and each has its own durability settings. By default, each data channel has guaranteed ordered delivery.
 
