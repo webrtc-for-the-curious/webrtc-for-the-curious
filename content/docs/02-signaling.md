@@ -120,35 +120,35 @@ Each Media Description in WebRTC will have a direction attribute. This allows a 
 
 This is a list of some common attributes that you will see in a Session Description from a WebRTC Agent. Many of these values control the subsystems that we haven't discussed yet.
 
-##### `group:BUNDLE`
+#### `group:BUNDLE`
 Bundling is an act of running multiple types of traffic over one connection. Some WebRTC implementations use a dedicated connection per media stream. Bundling should be preferred.
 
-##### `fingerprint:sha-256`
+#### `fingerprint:sha-256`
 This is a hash of the certificate a peer is using for DTLS. After the DTLS handshake is completed, you compare this to the actual certificate to confirm you are communicating with whom you expect.
 
-##### `setup:`
+#### `setup:`
 This controls the DTLS Agent behavior. This determines if it runs as a client or server after ICE has connected. The possible values are:
 
 * `setup:active` - Run as DTLS Client.
 * `setup:passive` - Run as DTLS Server.
 * `setup:actpass` - Ask the other WebRTC Agent to choose.
 
-##### `ice-ufrag`
+#### `ice-ufrag`
 This is the user fragment value for the ICE Agent. Used for the authentication of ICE Traffic.
 
-##### `ice-pwd`
+#### `ice-pwd`
 This is the password for the ICE Agent. Used for authentication of ICE Traffic.
 
-##### `rtpmap`
+#### `rtpmap`
 This value is used to map a specific codec to an RTP Payload Type. Payload types are not static, so for every call the offerer decides the payload types for each codec.
 
-##### `fmtp`
+#### `fmtp`
 Defines additional values for one Payload Type. This is useful to communicate a specific video profile or encoder setting.
 
-##### `candidate`
+#### `candidate`
 This is an ICE Candidate that comes from the ICE Agent. This is one possible address that the WebRTC Agent is available on. These are fully explained in the next chapter.
 
-##### `ssrc`
+#### `ssrc`
 A Synchronization Source (SSRC) defines a single media stream track.
 
 `label` is the ID for this individual stream. `mslabel` is the ID for a container that can have multiple streams inside it.
