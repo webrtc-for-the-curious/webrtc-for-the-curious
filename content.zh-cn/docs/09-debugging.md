@@ -5,16 +5,18 @@ weight: 10
 ---
 
 # 调试
+
 调试WebRTC可能是一项艰巨的任务。有很多部分都处于运行状态，每一个部分都可能出现问题。如果你不够细心，可能会浪费数周的时间来查看错误的模块。当你最终找到出错的部分时，你还需要学习一些知识才能理解问题的根源。
 
 本章将带你学习WebRTC的调试。它将向你展示如何分析并定位相关问题。确定问题后，我们将快速介绍一下流行的调试工具。
 
-### 分解问题
+## 分解问题
+
 开始调试时，你需要先分解问题的源头。从以下题目开始：
 
-#### 信令故障
+### 信令故障
 
-#### 网络故障
+### 网络故障
 
 使用netcat测试你的STUN服务器：
 
@@ -71,17 +73,19 @@ stunserver=stun1.l.google.com;stunport=19302;listenport=20000;echo -ne "\x00\x01
     - `4e 20` 是映射的端口，解码成十进制就是20000。
     - `5e 24 7a cb` 是IP地址，解码成点分十进制表示法就是`94.36.122.203`。
 
-#### 安全故障
-#### 媒体故障
-#### 数据故障
+### 安全故障
 
-### 用到的工具
+### 媒体故障
 
-#### netcat (nc)
+### 数据故障
+
+## 用到的工具
+
+### netcat (nc)
 
 [netcat](https://en.wikipedia.org/wiki/Netcat) 是用于使用TCP或UDP读取和写入网络连接的命令行网络实用程序。通常它可以用`nc`命令来调用。
 
-#### tcpdump
+### tcpdump
 
 [tcpdump](https://en.wikipedia.org/wiki/Tcpdump)是一个命令行数据网络数据包分析器。
 
@@ -96,11 +100,11 @@ stunserver=stun1.l.google.com;stunport=19302;listenport=20000;echo -ne "\x00\x01
 
   可以使用wireshark GUI打开PCAP文件：`wireshark stun.pcap`
 
-#### wireshark
+### wireshark
 
 [wireshark](https://www.wireshark.org) 是一个使用广泛的网络协议分析器
 
-#### webrtc-internals
+### webrtc-internals
 
 Chrome 内置了一个 WebRTC 指标数据页面 [chrome://webrtc-internals](chrome://webrtc-internals) 。
 

@@ -4,8 +4,9 @@ type: docs
 weight: 2
 ---
 
+# 何を、なぜ、どのように
 
-# WebRTCとは？
+## WebRTCとは？
 
 WebRTC とは、Web Real-Time Communication の略で、API であると同時にプロトコルでもあります。WebRTC プロトコルは、2 つの WebRTC エージェントが双方向の安全なリアルタイム通信をネゴシエートするための一連のルールです。WebRTC API は、開発者が WebRTC プロトコルを使用するためのものです。WebRTC API は、JavaScript のみで規定されています。
 

@@ -4,7 +4,10 @@ type: docs
 weight: 2
 ---
 
-# Vad är WebRTC?
+# Vad, varför och hur
+
+## Vad är WebRTC?
+
 WebRTC, förkortning för Web Real-Time Communication, är både ett API och ett protokoll. WebRTC-protokollet är en uppsättning regler som två WebRTC-agenter använder för att sätta upp en säker tvåvägs realtidskommunikation. WebRTC API:et tillåter sedan utvecklare att använda WebRTC-protokollet. WebRTC API:et är endast specificerat för JavaScript.
 
 Ett liknande förhållande skulle vara det mellan HTTP och Fetch API:et. WebRTC protokollet skulle vara HTTP, och WebRTC API:et motsvarar Fetch API:et.
