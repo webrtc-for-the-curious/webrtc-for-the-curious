@@ -4,7 +4,9 @@ type: docs
 weight: 4
 ---
 
-# Why does WebRTC need a dedicated subsystem for connecting?
+# Connecting
+
+## Why does WebRTC need a dedicated subsystem for connecting?
 
 Most applications deployed today establish client/server connections. A client/server connection requires the server to have a stable well-known transport address. A client contacts a server, and the server responds.
 
@@ -155,7 +157,7 @@ Data will contain a list of STUN attributes. A STUN Attribute has the following 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                         Value (variable)                ....
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- ```
+```
 
 The `STUN Binding Request` uses no attributes. This means a `STUN Binding Request` contains only the header.
 
