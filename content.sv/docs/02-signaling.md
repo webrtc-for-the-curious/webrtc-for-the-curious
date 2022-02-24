@@ -120,35 +120,35 @@ Varje mediebeskrivning i WebRTC har ett riktningsattribut (direction attribute).
 
 Nedan är en lista över några vanliga attribut som du kommer att se i en sessionsbeskrivning från en WebRTC-agent. Många av dessa värden styr delsystem som vi ännu inte har diskuterat.
 
-##### `grupp:BUNDLE`
+#### `grupp:BUNDLE`
 Bundling är när man kör flera typer av trafik över en och samma anslutning. Vissa WebRTC-implementeringar använder en dedikerad anslutning per mediaström. Buntning är att föredra.
 
-##### `fingerprint:sha-256`
+#### `fingerprint:sha-256`
 Detta är en hash av certifikatet som en part använder för DTLS. När DTLS-handskakningen är klar jämför du detta med det faktiska certifikatet för att bekräfta att du kommunicerar med den du har förväntat dig.
 
-##### `setup:`
+#### `setup:`
 Detta kontrollerar beteendet för DTLS-agenten. Detta avgör om det körs som en klient eller server efter att ICE har anslutit. De möjliga värdena är:
 
 * `setup: active` - Kör som DTLS-klient.
 * `setup: passive` - Kör som DTLS-server.
 * `setup: actpass` - Be den andra WebRTC-agenten att välja.
 
-##### `ice-ufrag`
+#### `ice-ufrag`
 Detta är användarfragmentvärdet för ICE-agenten. Används för verifiering av ICE trafik.
 
-##### `ice-pwd`
+#### `ice-pwd`
 Detta är lösenordet för ICE-agenten. Används för autentisering av ICE trafik.
 
-##### `rtpmap`
+#### `rtpmap`
 Detta värde används för att koppla en specifik kodek till en RTP Payload Type. Payload Types är inte statiska, så för varje samtal bestämmer avsändaren typen för varje kodek.
 
-##### `fmtp`
+#### `fmtp`
 Definierar ytterligare värden för en Payload Type. Detta är användbart för att kommunicera en viss videoprofil eller kodekinställning.
 
-##### `candidate`
+#### `candidate`
 Detta är en ICE-kandidat som kommer från ICE-agenten. Det här är en möjlig adress som WebRTC-agenten är tillgänglig på. Dessa förklaras i mer detalj i nästa kapitel.
 
-##### `ssrc`
+#### `ssrc`
 En synkroniseringskälla (SSRC) definierar ett enda mediaströmspår.
 
 `label` är ID:t för den individuella strömmen. `mslabel` är ID:t för en container som kan innehålla flera strömmar.

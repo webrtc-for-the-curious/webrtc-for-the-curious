@@ -98,53 +98,53 @@ Detta gör att vi kan undersöka och lära oss om varje del individuellt, utan a
 Det här avsnittet visar hur JavaScript API:et kopplas till protokollet. Detta är inte tänkt som ett omfattande demo av WebRTC API:et, utan mer för att skapa en mental modell för hur det hela hänger ihop.
 Om du inte känner till någon av dem är det ok. Det här kan vara ett roligt avsnitt att återvända till när du lär dig mer!
 
-#### `new RTCPeerConnection`
+### `new RTCPeerConnection`
 `RTCPeerConnection` är den högsta nivån av en "WebRTC Session". Den innehåller alla ovan nämnda protokoll. Delsystemen är alla allokerade men ingenting händer ännu.
 
-#### `addTrack`
+### `addTrack`
 
 `addTrack` skapar en ny RTP-ström. En slumpmässig synkroniseringskälla (SSRC) kommer att genereras för denna ström. Den här strömmen kommer sedan att finnas i Sessionsbeskrivningen som genereras av `createOffer` inuti en media-sektion. Varje samtal till `addTrack` skapar en ny SSRC och media-sektion.
 
 Omedelbart efter att en SRTP-session har upprättats kommer dessa mediepaket att skickas via ICE efter att ha krypterats med SRTP.
 
-#### `createDataChannel`
+### `createDataChannel`
 
 `createDataChannel` skapar en ny SCTP-ström om det inte finns någon SCTP-koppling. Som standard är SCTP inte aktiverat men startas bara när en sida begär en datakanal.
 
 Omedelbart efter att en DTLS-session har upprättats kommer SCTP-föreningen att skicka paket via ICE och krypteras med DTLS.
 
-#### `createOffer`
+### `createOffer`
 
 `createOffer` genererar en sessionsbeskrivning (Session Description) av det lokala tillståndet som ska delas med den andra parten.
 
 Handlingen att anropa `createOffer` förändrar ingenting för den lokala parten.
 
-#### `setLocalDescription`
+### `setLocalDescription`
 
 `setLocalDescription` gör alla begärda ändringar. `addTrack`, `createDataChannel` och liknande anrop är alla tillfälliga tills detta anrop görs. `setLocalDescription` anropas med det värde som genereras av `createOffer`.
 
 Vanligtvis, efter det här anropet, kommer du att skicka erbjudandet till den andra parten, och de kommer att kalla `setRemoteDescription` med den.
 
-#### `setRemoteDescription`
+### `setRemoteDescription`
 
 `setRemoteDescription` är hur vi informerar den lokala agenten om andra kandidaters tillstånd. Så här görs signalering med JavaScript API:et.
 
 När `setRemoteDescription` har anropats på båda sidor har WebRTC Agenterna nu tillräckligt med information för att börja kommunicera direkt part-till-part (P2P)!
 
-#### `addIceCandidate`
+### `addIceCandidate`
 
 `addIceCandidate` tillåter en WebRTC-agent att lägga till fler ICE-kandidater på avstånd när de vill. Detta API skickar ICE-kandidaten direkt in i ICE-delsystemet och har ingen annan effekt på den större WebRTC-anslutningen.
 
-#### `ontrack`
+### `ontrack`
 
 `ontrack` är ett återanrop som avfyras när ett RTP-paket tas emot från den andra parten. De inkommande paketen skulle ha deklarerats i Sessionsbeskrivningen som skickades till `setRemoteDescription`.
 
 WebRTC använder SSRC för att hitta rätt `MediaStream` och `MediaStreamTrack`, och avfyrar återanropet med dessa detaljer fyllda.
 
-#### `oniceconnectionstatechange`
+### `oniceconnectionstatechange`
 
 `oniceconnectionstatechange` är en återanrop som avfyras för att visa tillståndet hos ICE-agenten. När du har fått en nätverksanslutning eller när du kopplas bort så får du det här meddelandet.
 
-#### `onconnectionstatechange`
+### `onconnectionstatechange`
 
 `onconnectionstatechange` är en kombination av ICE Agenten och DTLS Agentens tillstånd. Du kan lyssna på detta meddelande för att få veta när uppsättningen av både ICE och DTLS har slutförts.
