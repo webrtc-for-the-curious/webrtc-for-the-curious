@@ -4,7 +4,10 @@ type: docs
 weight: 4
 ---
 
-# Varför behöver WebRTC ett särskilt delsystem för anslutning?
+# Anslutning
+
+## Varför behöver WebRTC ett särskilt delsystem för anslutning?
+
 De flesta applikationer som distribueras idag upprättar klient/serveranslutningar. En klient/serveranslutning kräver att servern har en känd och publik adress. En klient ansluter till en server, och servern svarar.
 
 WebRTC använder inte en klient/server-modell utan skapar peer-to-peer (P2P) anslutningar. I en P2P-anslutning fördelas uppgiften att skapa en anslutning lika till båda parterna. Detta beror på att en publik nätverksadress (IP och port) är inget man kan förvänta sig i WebRTC, och den kan till och med ändras mitt under sessionen. WebRTC kommer att samla så mycket information som det går, och sedan göra allt den kan för sätta upp en dubbelriktad kommunikationsväg mellan två WebRTC-agenter.
@@ -150,7 +153,7 @@ Data kommer att innehålla en lista med STUN-attribut. Ett STUN-attribut har fö
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                         Value (variable)                ....
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- ```
+```
 
 Ett `STUN Binding Request` använder inga attribut. Det betyder att en `STUN Binding Request` endast innehåller en header.
 

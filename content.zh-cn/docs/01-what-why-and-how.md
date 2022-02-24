@@ -4,7 +4,9 @@ type: docs
 weight: 2
 ---
 
-# WebRTC是什么？
+# WebRTC是什么，为什么，如何使用
+
+## WebRTC是什么？
 
 WebRTC是Web实时通信（Real-Time Communication）的缩写，它既是API也是协议。WebRTC协议是两个WebRTC Agent协商双向安全实时通信的一组规则。开发人员可以通过WebRTC API使用WebRTC协议。目前WebRTC API仅有JavaScript版本。
 

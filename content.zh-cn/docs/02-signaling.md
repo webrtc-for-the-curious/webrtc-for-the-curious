@@ -4,7 +4,9 @@ type: docs
 weight: 3
 ---
 
-# 什么是WebRTC信令？
+# 信令
+
+## 什么是WebRTC信令？
 
 当一个WebRTC Agent被创建时，它对其他peer一无所知。它不知道它将与谁联系，也不知道它们将发送些什么！
 信令是使呼叫成为可能的初始引导程序。交换信令消息后，WebRTC Agent才可以直接相互通信。

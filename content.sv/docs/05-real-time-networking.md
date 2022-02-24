@@ -4,7 +4,10 @@ type: docs
 weight: 6
 ---
 
-# Varför är nätverket så viktigt i realtidskommunikation?
+# Realtidsnätverk
+
+## Varför är nätverket så viktigt i realtidskommunikation?
+
 Nätverk är den begränsande faktorn i realtidskommunikation. I en idealisk värld skulle vi ha obegränsad bandbredd
 och paket skulle komma omedelbart. Detta är dock inte fallet. Nätverk är begränsade och villkoren
 kan ändras när som helst. Att mäta och observera nätverksförhållanden är också ett svårt problem. Du kan få olika beteenden

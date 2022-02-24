@@ -11,11 +11,13 @@ WebRTCのデバッグは、非常に困難な作業です。たくさんの可�
 
 本章では、WebRTC をデバッグするための心構えを身につけます。問題をどのように分解するかを説明します。問題を把握した後は、一般的なデバッグツールを簡単にご紹介します。
 
-### 問題の切り分け
+## 問題の切り分け
+
 デバッグの際には、問題がどこから発生しているのかを切り分ける必要があります。問題の始まりから始めてみましょう。
 
-#### シグナリングの失敗
-#### ネットワーキングの失敗
+### シグナリングの失敗
+
+### ネットワーキングの失敗
 
 netcatを使ってSTUNサーバーをテストします。
 
@@ -90,17 +92,19 @@ stunserver=stun1.l.google.com;stunport=19302;listenport=20000;echo -ne "\x00\x01
 
     - `5e 24 7a cb` は IP アドレスで，ドット 10 進表記では `94.36.122.203` となります
 
-#### セキュリティの失敗
-#### メディアの障害
-#### データの障害
+### セキュリティの失敗
 
-### Tools of the trade
+### メディアの障害
 
-#### netcat (nc)
+### データの障害
+
+## Tools of the trade
+
+### netcat (nc)
 
 [netcat](https://en.wikipedia.org/wiki/Netcat)は、TCP や UDP を使ったネットワーク接続を読み書きするためのコマンドラインネットワークユーティリティです。主に `nc` コマンドとして利用できます。
 
-#### tcpdump
+### tcpdump
 
 [tcpdump](https://en.wikipedia.org/wiki/Tcpdump) は、コマンドラインのデータネットワークパケットアナライザです。
 
@@ -116,11 +120,11 @@ stunserver=stun1.l.google.com;stunport=19302;listenport=20000;echo -ne "\x00\x01
 
   PCAPファイルは、wiresharkのGUIで開くことができます。`wireshark stun.pcap` です。
 
-#### Wireshark
+### Wireshark
 
 [Wireshark](https://www.wireshark.org) は世界中で利用されているプロトコルアナライザーです。
 
-#### webrtc-internals
+### webrtc-internals
 
 Chromeには、[chrome://webrtc-internals](chrome://webrtc-internals)で利用できる WebRTC の統計ページが組み込まれています。
 

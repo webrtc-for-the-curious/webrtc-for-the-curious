@@ -4,8 +4,10 @@ type: docs
 weight: 5
 ---
 
+# Säkerhet
 
-# Säkerhet och WebRTC
+## Säkerhet och WebRTC
+
 Varje WebRTC-anslutning är autentiserad och krypterad. Du kan vara säker på att en tredje part inte kan se vad du skickar eller infoga falska meddelanden. Du kan också vara säker på att WebRTC-agenten som genererade sessionsbeskrivningen är den du kommunicerar med.
 
 Det är mycket viktigt att ingen kan modifiera dina meddelanden. Det är ok om en tredje part läser sessionsbeskrivningen under transport. WebRTC har dock inget skydd mot att det ändras. En angripare kan utföra en man-i-mitten-attack genom att ändra ICE-kandidaterna och uppdatera certifikatets fingeravtryck.

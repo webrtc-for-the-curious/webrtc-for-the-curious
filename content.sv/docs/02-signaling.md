@@ -4,7 +4,10 @@ type: docs
 weight: 3
 ---
 
-# Vad är WebRTC-signalering?
+# Signalering
+
+## Vad är WebRTC-signalering?
+
 När du skapar en WebRTC-agent vet den ingenting om den andra parten. Den har ingen aning om vem den kommer att ansluta till eller vad för data de ska skicka!
 Signalering är den första konfigureringen som gör ett samtal möjligt. Efter att dessa värden har utbytts kan WebRTC-agenterna kommunicera direkt med varandra.
 

@@ -4,7 +4,10 @@ type: docs
 weight: 8
 ---
 
-# Vad får jag från WebRTCs datakommunikation?
+# Datakommunikation
+
+## Vad får jag från WebRTCs datakommunikation?
+
 WebRTC tillhandahåller datakanaler för datakommunikation. Mellan två klienter kan du öppna 65534 datakanaler.
 En datakanal är UDP-baserad och alla har sina egna hållbarhetsinställningar. Som standard har varje data kanal garanterad leveransordning på skickade paket.
 
