@@ -4,7 +4,7 @@ type: docs
 weight: 2
 ---
 
-# WebRTC是什么，为什么，如何使用
+# 是什么，为什么，如何使用
 
 ## WebRTC是什么？
 
