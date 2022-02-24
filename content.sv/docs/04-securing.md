@@ -25,48 +25,48 @@ För att skapa en SRTP-session initialiserar vi den med hjälp av nycklarna som 
 ## Grundläggande säkerhet
 För att förstå tekniken som presenteras i detta kapitel finns det några termer som är bra att känna till. Kryptografi är ett knepigt ämne så det kan vara värt att konsultera andra källor också.
 
-#### Klartext och Kryptotext
+### Klartext och Kryptotext
 Klartext är originaltexten man skickar in till ett chiffer. Kryptotext är resultatet av en chiffer.
 
-#### Kryptering
+### Kryptering
 Ett chiffer är en serie steg som tar vanlig text till kryptotext. Chiffret kan sedan vändas så att du kan ta din kryptotext tillbaka till klartext. Ett chiffer har vanligtvis en nyckel för att ändra sitt beteende. En annan term för detta är kryptering och dekryptering.
 
 Ett enkelt chiffer är ROT13. Varje bokstav flyttas 13 tecken framåt. För att dekryptera chiffret flyttar du 13 tecken bakåt. Den klara texten `HEJSAN` skulle bli krypteringstexten `URWFNA`. I det här fallet är krypteringen ROT och nyckeln är 13.
 
-#### Hashfunktioner
+### Hashfunktioner
 Hash är en enkelriktad funktion som genererar en kontrollsumma. Från samma meddelande genererar den samma kontrollsumma varje gång. Det är viktigt att funktionen *inte* är reversibel. Om du har en kontrollsumma ska du inte kunna lista ut meddelandet som den genererades från. Hashing är användbart när du vill bekräfta att ett meddelande inte har manipulerats.
 
 En enkel hash funktion skulle vara att bara ta varannan bokstav. `HEJSAN` skulle bli `HJA`. Du kan inte anta att `HEJSAN` var ingången, men du kan bekräfta att `HEJSAN` skulle vara en matcha kontrollsumman.
 
-#### Kryptografi för offentlig / privat nyckel
+### Kryptografi för offentlig / privat nyckel
 Public/Private Key Cryptography beskriver vilken typ av kod som DTLS och SRTP använder. I det här systemet har du två nycklar, en offentlig och en privat nyckel. Den offentliga nyckeln är för kryptering av meddelanden och är säker att dela.
 Den privata nyckeln är för dekryptering och ska aldrig delas. Det är den enda nyckeln som kan dekryptera meddelanden som är krypterade med den offentliga nyckeln.
 
-#### Diffie–Hellmans nyckelöverföring
+### Diffie–Hellmans nyckelöverföring
 Diffie–Hellman nyckelöverföring tillåter två användare som aldrig har träffats tidigare att skapa en delad hemlighet säkert över internet. Användaren `A` kan skicka en hemlighet till användaren `B` utan att oroa sig för avlyssning. Detta beror på svårigheten att bryta det diskreta logaritmproblemet.
 Du behöver inte helt förstå hur det fungerar, men det är bra att veta att det här är tekniken DTLS-handskakningen är baserad på.
 
 Wikipedia har ett exempel på hur det fungerar [här](https://sv.wikipedia.org/wiki/Diffie-Hellmans_nyckel%C3%B6verf%C3%B6ring).
 
-#### Pseudorandom-funktioner
+### Pseudorandom-funktioner
 En Pseudorandom-funktion (PRF) är en fördefinierad funktion för att generera ett värde som verkar slumpmässigt. Det kan ta flera indata och generera en enda utdata.
 
-#### Key Derivation Function
+### Key Derivation Function
 Key Derivation är en typ av pseudorandom-funktion. Key Derivation är en funktion som används för att göra en nyckel starkare. Ett vanligt sätt är nyckelsträckning (key stretching).
 
 Låt oss säga att du får en nyckel som är 8 byte. Du kan använda en KDF för att göra den starkare.
 
-#### Nonce
+### Nonce
 En nonce är ytterligare indata till ett chiffer. Detta är så att du kan få olika utdata från krypteringen, även om du krypterar samma meddelande flera gånger.
 
 Om du krypterar samma meddelande tio gånger kommer krypteringen att ge dig samma kryptotext 10 gånger. Genom att använda ett nonce kan du få olika indata medan du fortfarande använder samma nyckel. Det är viktigt att du använder ett nytt nonce för varje meddelande! Annars ger det ger det inte någon extra säkerhet.
 
-#### Meddelandeautentiseringskod
+### Meddelandeautentiseringskod
 En meddelandeautentiseringskod (Message Authentication Code) är en hash som placeras i slutet av ett meddelande. En MAC visar att meddelandet kommer från den användare du förväntade dig.
 
 Om du inte använder en MAC kan en angripare infoga ogiltiga meddelanden. Efter dekryptering skulle du bara ha skräp eftersom de inte vet nyckeln.
 
-#### Nyckelrotation
+### Nyckelrotation
 Nyckelrotation är praxis att byta ut nyckeln med jämna mellanrum. Detta gör att det inte är lika allvarligt att en nyckel blivit stulen. Om en nyckel blir stulen eller har läckt är det mindre data som kan dekrypteras.
 
 ## DTLS

@@ -127,11 +127,11 @@ WebRTC中的每个媒体描述都包含一个direction属性。这样，WebRTC A
 
 这个列表包含了你将在WebRTC Agent的会话描述中看到的一些常见属性。这些值控制着我们尚未讨论到的子系统。
 
-##### `group:BUNDLE`
+#### `group:BUNDLE`
 
 BUNDLE是一种在单个连接上传输多种类型流量的行为。一些WebRTC实现对每个媒体流会使用专用的连接。但BUNDLE方式应该是首选。
 
-##### `fingerprint:sha-256`
+#### `fingerprint:sha-256`
 
 该属性是peer用于DTLS证书的哈希值。DTLS握手完成后，你可以将其与实际证书进行比较，以确认你正在与预期的对象进行通信。
 
@@ -143,7 +143,7 @@ a=fingerprint:SHA-1 \
 ```
 {{< /hint >}}
 
-##### `setup:`
+#### `setup:`
 
 该属性控制了DTLS Agent的行为。在ICE连接后，该属性将确定DTLS Agent是作为客户端还是服务器来运行。有以下几个可能的值：
 
@@ -151,27 +151,27 @@ a=fingerprint:SHA-1 \
 * `setup:passive` - 作为DTLS服务器运行。
 * `setup:actpass` - 要求另一个WebRTC Agent选择。
 
-##### `ice-ufrag`
+#### `ice-ufrag`
 
 该属性是ICE Agent的用户片段值。用于ICE流量的身份验证。
 
-##### `ice-pwd`
+#### `ice-pwd`
 
 该属性是ICE Agent的密码。用于ICE流量的身份验证。
 
-##### `rtpmap`
+#### `rtpmap`
 
 该属性用于将特定的编解码器映射到RTP有效负载类型。有效负载类型不是静态的，因此对于每次呼叫，发起者都需要确定每个编解码器的有效负载类型。
 
-##### `fmtp`
+#### `fmtp`
 
 该属性为一种有效负载类型定义附加的值。要传递特定的视频配置文件或编码器设置时，这很有用。
 
-##### `candidate`
+#### `candidate`
 
 该属性是来自ICE Agent的ICE候选地址。这是一个可能被WebRTC Agent使用的地址。这些将在下一章中详细说明。
 
-##### `ssrc`
+#### `ssrc`
 
 一个同步源（SSRC）定义了一个单独的媒体流。
 

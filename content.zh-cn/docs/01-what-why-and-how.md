@@ -98,54 +98,54 @@ WebRTC解决了许多问题。初看起来，这似乎是过度设计的。实�
 
 本部分显示JavaScript API是如何跟协议相对应的。这不只是WebRTC API的一个粗略演示，更像是创建了一个思维模型，以此将所有部分联系在一起。如果你对各部分都不熟悉，那也不要紧。当你了解更多信息时，再回头看看这一部分，可能会很有趣！
 
-#### `new RTCPeerConnection`
+### `new RTCPeerConnection`
 
 `RTCPeerConnection`是最顶层的"WebRTC会话"。它包含上述所有协议。所有子系统都已就位，但是什么都还没有发生。
 
-#### `addTrack`
+### `addTrack`
 
 `addTrack`创建一个新的RTP流。并将为这个流生成一个随机的SSRC（Synchronization Source/同步源）。然后，`createOffer`将生成会话描述符，这个流将被加入其中的媒体部分。每次调用`addTrack`都会创建一个新的SSRC和对应的媒体部分。
 
 在建立SRTP会话后，这些媒体数据包将被SRTP加密，然后立即通过ICE开始发送。
 
-#### `createDataChannel`
+### `createDataChannel`
 
 如果没有SCTP关联存在，`createDataChannel`将创建一个新的SCTP流。默认情况下，SCTP是不启用的，只有在一方请求数据通道时才启动。
 
 在DTLS会话建立之后，SCTP关联将立即通过ICE发送数据包，并使用DTLS加密。
 
-#### `createOffer`
+### `createOffer`
 
 `createOffer`生成本地状态的会话描述，以与远端Peer共享。
 
 调用`createOffer`的行为对于本地Peer没有任何改变。
 
-#### `setLocalDescription`
+### `setLocalDescription`
 
 `setLocalDescription`提交所有请求的更改。 在此调用之前，`addTrack`，`createDataChannel`和类似调用都是临时的。 调用`setLocalDescription`时，使用由`createOffer`生成的值。
 
 通常，在此调用之后，你会将offer发送给远端Peer，他们将调用`setRemoteDescription`，将此offer设入。
 
-#### `setRemoteDescription`
+### `setRemoteDescription`
 
 收到远端Peer发来的offer之后，我们通过`setRemoteDescription`通知本地Agent。这就是使用JavaScript API传递“信令”的方式。
 
 双方都调用过`setRemoteDescription`后，WebRTC Agent现在拥有足够的信息来开始进行点对点（P2P）通信！
 
-#### `addIceCandidate`
+### `addIceCandidate`
 
 `addIceCandidate`允许WebRTC Agent随时添加更多的远程ICE候选对象。该API将ICE候选对象发送到ICE子系统，并且对更大的WebRTC连接没有其他影响。
 
-#### `ontrack`
+### `ontrack`
 
 `ontrack`是从远端Peer收到RTP数据包时触发的回调。传入的RTP数据包应该已在传递给`setRemoteDescription`的会话描述中声明。
 
 WebRTC使用SSRC并查找关联的`MediaStream`和`MediaStreamTrack`，并使用填充的这些详细信息触发此回调。
 
-#### `oniceconnectionstatechange`
+### `oniceconnectionstatechange`
 
 `oniceconnectionstatechange`是ICE Agent的状态变化时触发的回调。当网络连接或断开时，你将得到此通知。
 
-#### `onconnectionstatechange`
+### `onconnectionstatechange`
 
 `onconnectionstatechange`是ICE Agent和DTLS Agent状态的组合。当ICE和DTLS都成功完成时，你将得到此通知。
