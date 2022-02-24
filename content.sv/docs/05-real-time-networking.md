@@ -24,11 +24,12 @@ Detta kapitel handlar om de koncept som gäller både data- och mediekommunikati
 Kod som effektivt fungerar i alla nätverk är komplicerad. Du har många olika faktorer, och de
 kan alla påverka varandra på subtila sätt. Här är några av de vanligaste problemen som utvecklare stöter på.
 
-#### Bandbredd
+### Bandbredd
+
 Bandbredd är den maximala datahastigheten som kan uppnås via en viss väg genom nätet. Det är viktigt att komma ihåg
 att värdet kommer att ändras under tiden. Bandbredden ändras längs en rutt (route) beroende på om fler (eller färre) människor använder den.
 
-#### Sändningstid och rundturstid (Round Trip Time)
+### Sändningstid och rundturstid (Round Trip Time)
 Sändningstid är hur lång tid det tar för ett paket att anlända till sitt mål. Precis som bandbredd är den inte konstant utan kan variera när som helst.
 
 `transmission_time = mottagningstid - send_time`
@@ -56,14 +57,14 @@ Du har kanske märkt att uppladdningshastigheter på din telefon nästan alltid 
 
 Tekniken WebRTC använder för att mäta rundturstid beskrivs mer detaljerat i [kapitlet om RTCP Sender and Receiver Reports](../06-media-communication/#senderreceiver-reports).
 
-#### Jitter
+### Jitter
 Jitter är det faktum att "sändningstid" (`Transmission Time`) kan variera för varje paket. Dina paket kan bli fördröjda, men sen kommer alla på en gång.
 
-#### Paketförlust
+### Paketförlust
 Paketförlust är när meddelanden går förlorade vid överföring. Förlusten kan vara jämn, eller så kan den komma i korta perioder.
 Detta kan bero på olika nätverkstyper som satellit eller Wi-Fi, eller introduceras av programvara längs vägen.
 
-#### Maximal överföringsenhet
+### Maximal överföringsenhet
 Maximal paket storlek (MTU) är gränsen för hur stort ett enskilt data-paket kan vara. Nätverk tillåter dig inte att skicka
 hur stora meddelanden som helst. På protokollnivå kan meddelanden behöva delas upp i flera mindre paket.
 
