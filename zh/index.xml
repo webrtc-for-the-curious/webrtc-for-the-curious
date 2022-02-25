@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>介绍 on 给好奇者的WebRTC</title><link>https://webrtcforthecurious.com/zh/</link><description>Recent content in 介绍 on 给好奇者的WebRTC</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://webrtcforthecurious.com/zh/index.xml" rel="self" type="application/rss+xml"/><item><title>是什么，为什么，如何使用</title><link>https://webrtcforthecurious.com/zh/docs/01-what-why-and-how/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/zh/docs/01-what-why-and-how/</guid><description>WebRTC是什么？ # WebRTC是Web实时通信（Real-Time Communication）的缩写，它既是API也是协议。WebRTC协议是两个WebRTC Agent协商双向安全实时通信的一组规则。开发人员可以通过WebRTC API使用WebRTC协议。目前WebRTC API仅有JavaScript版本。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>介绍 on 给好奇者的WebRTC</title><link>https://webrtcforthecurious.com/zh/</link><description>Recent content in 介绍 on 给好奇者的WebRTC</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://webrtcforthecurious.com/zh/index.xml" rel="self" type="application/rss+xml"/><item><title>是什么，为什么，如何使用</title><link>https://webrtcforthecurious.com/zh/docs/01-what-why-and-how/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/zh/docs/01-what-why-and-how/</guid><description>是什么，为什么，如何使用 # WebRTC是什么？ # WebRTC是Web实时通信（Real-Time Communication）的缩写，它既是API也是协议。WebRTC协议是两个WebRTC Agent协商双向安全实时通信的一组规则。开发人员可以通过WebRTC API使用WebRTC协议。目前WebRTC API仅有JavaScript版本。
 可以用HTTP和Fetch API之间的关系作为类比。WebRTC协议就是HTTP，而WebRTC API就是Fetch API。
 除了JavaScript语言，WebRTC协议也可以在其他API和语言中使用。你还可以找到WebRTC的服务器和特定领域的工具。所有这些实现都使用WebRTC协议，以便它们可以彼此交互。
 WebRTC协议由IETF工作组在rtcweb中维护。WebRTC API的W3C文档在webrtc。
@@ -12,9 +12,7 @@ WebRTC协议由IETF工作组在rtcweb中维护。WebRTC API的W3C文档在webrtc
 Agent可供外部访问的（候选的）IP和端口。 Agent希望发送多少路音频和视频流。 Agent支持哪些音频和视频编解码器。 连接时需要用到的值（uFrag/uPwd）。 加密传输时需要用到的值（证书指纹）。 注意，信令通常发生在“out-of-band”。也就是说，应用通常不使用WebRTC本身来交换信令消息。在连接的peer中，任何适合发送消息的架构均可被用于传递SDP信息，许多应用程序都使用其现有的基础设施（例如REST端点，WebSocket连接或身份验证代理）来解决适当客户端之间的SDP传递问题。
 使用STUN/TURN进行连接和NAT穿透 # 现在，两个WebRTC Agent知道足够的详细信息以尝试相互连接。接下来，WebRTC将使用另一种成熟的技术，称为ICE。
 ICE（交互式连接建立）是WebRTC之前的协议。ICE允许在两个Agent之间建立连接。这些Agent可以在同一网络上，也可以在世界的另一端。ICE是无需中央服务器即可建立直接连接的解决方案。
-这里真正的魔法是“ NAT穿透”和STUN/TURN服务器。这两个概念是与另一个子网中的ICE Agent进行通信所需的全部。稍后我们将深入探讨这些主题。
-ICE成功连接后，WebRTC继续建立加密的传输。此传输用于音频，视频和数据。
-使用DTLS和SRTP加密传输层 # 现在我们有了双向通信（通过ICE），我们需要建立安全的通信。这是通过WebRTC之前的两种协议完成的。第一个协议是DTLS（数据报传输层安全性），它只是基于UDP的TLS。TLS是用于保护通过HTTPS进行通信的加密协议。第二种协议是SRTP（安全实时传输协议）。</description></item><item><title>信令</title><link>https://webrtcforthecurious.com/zh/docs/02-signaling/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/zh/docs/02-signaling/</guid><description>什么是WebRTC信令？ # 当一个WebRTC Agent被创建时，它对其他peer一无所知。它不知道它将与谁联系，也不知道它们将发送些什么！ 信令是使呼叫成为可能的初始引导程序。交换信令消息后，WebRTC Agent才可以直接相互通信。
+这里真正的魔法是“ NAT穿透”和STUN/TURN服务器。这两个概念是与另一个子网中的ICE Agent进行通信所需的全部。稍后我们将深入探讨这些主题。</description></item><item><title>信令</title><link>https://webrtcforthecurious.com/zh/docs/02-signaling/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/zh/docs/02-signaling/</guid><description>信令 # 什么是WebRTC信令？ # 当一个WebRTC Agent被创建时，它对其他peer一无所知。它不知道它将与谁联系，也不知道它们将发送些什么！ 信令是使呼叫成为可能的初始引导程序。交换信令消息后，WebRTC Agent才可以直接相互通信。
 信令消息只是文本。WebRTC Agent并不关心它们的传递方式。信令通常使用Websockets分享，但这不是必需的。
 WebRTC信令如何工作？ # WebRTC使用到一种现有的协议，称为会话描述协议（Session Description Protocol，简称SDP）。两个WebRTC Agent会将建立连接所需的所有状态通过此协议来分享。该协议本身亦易于阅读和理解。 但要理解WebRTC填充于协议中的所有值，将有一定复杂性。
 该协议不是WebRTC特有的。我们将首先学习会话描述协议，这里甚至不用提及WebRTC。WebRTC实际上仅是利用了SDP协议的子集，因此我们将仅介绍我们所需的内容。 理解协议后，我们将继续结合WebRTC来说明其在实际中的应用方法。
@@ -25,7 +23,7 @@ WebRTC信令如何工作？ # WebRTC使用到一种现有的协议，称为会�
 作为参考，下面是一个会话描述的部分内容：
 a=my-sdp-value a=second-value 这里有两行。每行的key都是a。第一行的value为my-sdp-value，第二行的value为second-value。
 WebRTC仅使用了部分SDP的key # WebRTC并未使用会话描述协议定义的所有key，只有那些在 JavaScript Session Establishment Protocol (JSEP，协议定义在RFC 8829)中被使用到的key 是重要的。你当前只需要理解下面的7个key。
-v - Version，版本，版本，应等于0。 o - Origin，源，包含一个唯一ID，用于重新协商。 s - Session Name，会话名称，应等于-。 t - Timing，时间，应等于0 0。 m - Media Description(m=&amp;lt;media&amp;gt; &amp;lt;port&amp;gt; &amp;lt;proto&amp;gt; &amp;lt;fmt&amp;gt; .</description></item><item><title>连接</title><link>https://webrtcforthecurious.com/zh/docs/03-connecting/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/zh/docs/03-connecting/</guid><description>为什么WebRTC需要专用的子系统进行连接？ # 目前，大多数部署的应用程序都通过客户端/服务器方式进行连接。客户端/服务器方式连接要求服务器具有稳定且公开可用的传输地址。客户端与服务器联系，然后服务器做出响应。
+v - Version，版本，版本，应等于0。 o - Origin，源，包含一个唯一ID，用于重新协商。 s - Session Name，会话名称，应等于-。 t - Timing，时间，应等于0 0。 m - Media Description(m=&amp;lt;media&amp;gt; &amp;lt;port&amp;gt; &amp;lt;proto&amp;gt; &amp;lt;fmt&amp;gt; .</description></item><item><title>连接</title><link>https://webrtcforthecurious.com/zh/docs/03-connecting/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/zh/docs/03-connecting/</guid><description>连接 # 为什么WebRTC需要专用的子系统进行连接？ # 目前，大多数部署的应用程序都通过客户端/服务器方式进行连接。客户端/服务器方式连接要求服务器具有稳定且公开可用的传输地址。客户端与服务器联系，然后服务器做出响应。
 WebRTC不使用客户端/服务器模型，它建立点对点（P2P）连接。 在P2P连接中，创建连接的任务被平均分配给两个对等方。这是因为无法猜测WebRTC中的传输地址（IP和端口），而且，在会话过程中，传输地址甚至可能会变更。WebRTC将收集所有可能收集的信息，并将尽力实现两个WebRTC Agent之间的双向通信。
 听起来简单，建立点对点连接实际上可能会非常困难。这些Agent可能位于没有直接连接的不同网络中。即使在两个Agent可以直接连接的情况下，你可能还会遇到其他问题。比如在某些情况下，两个客户端使用不同的网络协议（UDP &amp;lt;-&amp;gt; TCP）或使用不同的IP版本（IPv4 &amp;lt;-&amp;gt; IPv6）。
 尽管在建立点对点连接方面存在一些困难，在WebRTC提供的下面这些属性的帮助下，你仍然可以获得相对于传统客户端/服务器技术的一些优势。
@@ -41,8 +39,7 @@ ICE是一种用来寻找两个ICE Agent之间通信的最佳方式的协议。�
 对于同一网络中的主机来说，互相连接非常容易。例如在192.168.0.1 -&amp;gt; 192.168.0.2之间通讯就很容易！这两个主机无需任何外部帮助即可相互连接。
 但是，使用Router B的主机无法直接访问Router A背后的任何主机。你如何区分Router A后面的192.168.0.1主机和Router B后面相同IP的主机之间的区别呢？它们都使用内网IP！使用Router B的主机可以将数据直接发送到Router A，但是请求在那里就结束了。Router A怎么知道它应该将消息转发给哪台主机呢？
 协议限制 # 有些网络不允许UDP通信，或者也有可能不允许TCP。有些网络的MTU（Maximum Transmission Unit/最大传输单元）可能非常低。网络管理员可以更改许多变量，这些修改可能会使通信变得困难。
-防火墙/IDS规则 # 另一个问题是深度数据包检查和其他智能过滤方式。某些网络管理员将运行一些软件，这些软件会试图处理每个数据包。很多时候，这些软件无法识别WebRTC的数据包，由于它们不知道如何处理，它们可能会阻拦这些数据包，例如，它们可能将WebRTC数据包视为不在端口白名单上的可疑UDP数据包。
-NAT映射 # NAT（网络地址转换）映射是使得WebRTC连接成为可能的魔法。WebRTC就是使用NAT让处于完全不同的子网中的两个peer进行通信，从而解决了上述&amp;quot;不在同一网络中&amp;quot;的问题。尽管它带来了新的挑战，但让我们先来解释一下NAT映射是如何工作的。</description></item><item><title>安全性</title><link>https://webrtcforthecurious.com/zh/docs/04-securing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/zh/docs/04-securing/</guid><description>WebRTC具有哪些安全性保障？ # 每个WebRTC连接都经过身份验证和加密。你可以确信第三方看不到你发送的内容，也无法插入虚假消息。你还可以确保与你进行通信的WebRTC Agent正是生成会话描述的Agent。
+防火墙/IDS规则 # 另一个问题是深度数据包检查和其他智能过滤方式。某些网络管理员将运行一些软件，这些软件会试图处理每个数据包。很多时候，这些软件无法识别WebRTC的数据包，由于它们不知道如何处理，它们可能会阻拦这些数据包，例如，它们可能将WebRTC数据包视为不在端口白名单上的可疑UDP数据包。</description></item><item><title>安全性</title><link>https://webrtcforthecurious.com/zh/docs/04-securing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/zh/docs/04-securing/</guid><description>安全性 # WebRTC具有哪些安全性保障？ # 每个WebRTC连接都经过身份验证和加密。你可以确信第三方看不到你发送的内容，也无法插入虚假消息。你还可以确保与你进行通信的WebRTC Agent正是生成会话描述的Agent。
 没有人能够篡改消息这一点非常重要。如果第三方在传输中读取了会话描述，这不会产生什么影响。然而，WebRTC无法防止会话描述被修改。攻击者可以通过更改ICE候选地址和证书指纹来对你进行中间人攻击（man-in-the-middle）。
 译注：这里指的是，P2P连接建立之后，双方之间的通信安全是有保障的。但在连接建立的过程中，攻击者可以通过man-in-the-middle方式伪装中间人同时与通信双方建立连接并通信。 它是如何做到的？ # WebRTC使用两个预先存在的协议，数据报传输层安全（Datagram Transport Layer Security / DTLS）和 安全实时传输协议（Secure Real-time Transport Protocol / SRTP）。
 DTLS使你可以协商会话，然后在两个peer之间安全地交换数据。它是TLS的同类产品，TLS是HTTPS所使用的技术，而DTLS与TLS的区别仅在与其使用UDP而不是TCP作为其传输层。这也意味着DTLS协议必须处理不可靠的数据传输。SRTP是专为安全的交换媒体数据而设计的。相对于DTLS而言，使用SRTP对传输媒体数据有一些优化。
@@ -59,7 +56,7 @@ Cipher # Cipher是将明文转换为密文的一系列步骤。Cipher可以反�
 Diffie-Hellman交换 # Diffie-Hellman交换允许两个以前从未见过的用户通过Internet安全的创建一个共享的秘密信息。用户A可以将秘密信息发送给用户B，而不必担心被窃听。破解该信息的难度将取决于破解离散对数问题的难度。 你不必完全理解该算法是如何工作的，但这可以帮助你了解是什么使得DTLS握手变得可行的。
 Wikipedia在此处中有一个实际的例子。
 伪随机函数（PRF） # 伪随机函数是一个预定义函数，用于生成随机出现的值。它可能需要多个输入并生成一个输出。
-密钥派生（KDF） # 密钥派生是一类伪随机函数。是一种用于增强密钥的安全性的方法。一种常见的模式是密钥扩展。</description></item><item><title>搭建实时网络</title><link>https://webrtcforthecurious.com/zh/docs/05-real-time-networking/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/zh/docs/05-real-time-networking/</guid><description>为什么网络在实时通信中如此重要？ # 网络是实时通信中的限制因素。在理想的世界中，我们将拥有无限的带宽，并且数据包会即时到达。但事实并非如此。网络是受限的，且其限定条件随时可能更改。测量和观察网络状况也是一个难题。根据你所使用的硬件，软件及其配置，你可能看到不同的表现。
+密钥派生（KDF） # 密钥派生是一类伪随机函数。是一种用于增强密钥的安全性的方法。一种常见的模式是密钥扩展。</description></item><item><title>搭建实时网络</title><link>https://webrtcforthecurious.com/zh/docs/05-real-time-networking/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/zh/docs/05-real-time-networking/</guid><description>实时网络 # 为什么网络在实时通信中如此重要？ # 网络是实时通信中的限制因素。在理想的世界中，我们将拥有无限的带宽，并且数据包会即时到达。但事实并非如此。网络是受限的，且其限定条件随时可能更改。测量和观察网络状况也是一个难题。根据你所使用的硬件，软件及其配置，你可能看到不同的表现。
 实时通信也带来了其他大多数领域中不存在的问题。对于网站开发人员来说，如果你的网站在某些网络上运行速度较慢，那不是致命问题。只要所有数据到达，用户都会感到满意。但对于WebRTC，如果你的数据延迟了，那就没用了。没有人在乎5秒钟前的电话会议中所说过的话。因此，在开发一个实时通信系统时，必须作出权衡。我的时间限制是多少，可以发送多少数据？
 本章介绍了适用于数据和媒体通信的概念。在后面的章节中，我们将超出理论范围，讨论一下WebRTC的媒体和数据子系统如何解决这些问题。
 使网络变得困难的有哪些属性？ # 在所有网络上都能有效工作的代码很复杂。你会面对许多不同的因素，它们都可以相互影响。这些是开发人员将遇到的最常见问题。
@@ -78,8 +75,7 @@ rtt（往返时间） = sendertime2 - sendertime1
 最大传输单位（MTU） # 最大传输单位指的是单个数据包大小的限制。网络不允许你发送一个巨大的消息。在协议级别，消息可能必须被拆分为多个较小的数据包。
 根据你采用的网络路径，MTU也将有所不同。你可以使用MTU路径发现之类的协议来确定可以发送的最大数据包大小。
 拥塞 # 拥塞是指网络达到极限时的情况。这通常是因为你已达到当前路由可以处理的峰值带宽。或者可能是运营商对你的ISP配置导致，比如限制了每小时的流量。
-拥塞会以多种不同的方式展现出来。没有标准化的表现。在大多数情况下，当拥塞发生时，网络将丢弃多余的数据包。在其他一些情况下，网络将缓存数据包。这将导致数据包的传输时间增加。随着网络的拥塞，你还会看到更多的抖动。这是一个快速变化的领域，并且还有其他用于拥塞检测的新算法目前仍在编写中。
-动态变化 # 网络是动态的，各种状况可能会迅速变化。在通话过程中，你可能会发送和接收数十万个数据包。 这些数据包可能经过多个跃点。这些跃点可能由数百万其他用户共享。即使在你的本地网络中，你也可能正在下载高清电影，或者可能有设备正要下载软件更新。</description></item><item><title>媒体通信</title><link>https://webrtcforthecurious.com/zh/docs/06-media-communication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/zh/docs/06-media-communication/</guid><description>我可以从WebRTC的媒体通信中得到什么？ # WebRTC允许你发送和接收无限多条音频和视频流。你可以在通话期间随时添加和删除这些流。这些流可以全部独立，也可以捆绑在一起！你甚至可以将网络摄像头的音频和视频放到你桌面的视频中，然后将此视频以feed的形式发送出去。
+拥塞会以多种不同的方式展现出来。没有标准化的表现。在大多数情况下，当拥塞发生时，网络将丢弃多余的数据包。在其他一些情况下，网络将缓存数据包。这将导致数据包的传输时间增加。随着网络的拥塞，你还会看到更多的抖动。这是一个快速变化的领域，并且还有其他用于拥塞检测的新算法目前仍在编写中。</description></item><item><title>媒体通信</title><link>https://webrtcforthecurious.com/zh/docs/06-media-communication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/zh/docs/06-media-communication/</guid><description>媒体通信 # 我可以从WebRTC的媒体通信中得到什么？ # WebRTC允许你发送和接收无限多条音频和视频流。你可以在通话期间随时添加和删除这些流。这些流可以全部独立，也可以捆绑在一起！你甚至可以将网络摄像头的音频和视频放到你桌面的视频中，然后将此视频以feed的形式发送出去。
 WebRTC协议与编解码器无关。底层传输支持所有格式的内容，即使是还不存在的格式！ 但是，你正与之通信的WebRTC Agent可能没有必要的工具来接受它。
 WebRTC针对动态网络状况也有对应的处理方案。在通话过程中，带宽可能会增加或减少。甚至可能突然间大量丢包。该协议对所有这类问题的处理都做了相应的设计。WebRTC根据网络状况作出响应，并尝试利用可用资源为你提供最佳体验。
 它是如何工作的？ # WebRTC使用RFC 1889中定义的两个既有协议RTP和RTCP。
@@ -95,7 +91,7 @@ RTCP（RTP控制协议/RTP Control Protocol）是用于传达有关呼叫的元�
 帧间压缩 # 帧有三种类型：
 I帧 - 一张完整的图片，无需任何其他内容即可解码。 P帧 - 一张图片的一部分，仅包含对之前图片的修改。 B帧 - 一张图片的一部分，包含对之前图片和将来图片的修改。 以下是对这三种类型帧的图解。
 视频很脆弱 # 压缩后的视频是有状态的，（视频解码）非常依赖其上下文，这使得视频很难通过Internet进行传输。想像一下，如果I帧的一部分丢失了会怎样？这样P帧如何知道要修改的内容？ 随着视频压缩变得越来越复杂，这成为一个更大的问题。幸运的是，RTP和RTCP对此都有解决方案。
-RTP # Packet Format（包格式） # 每个RTP数据包都具有以下结构：</description></item><item><title>数据通信</title><link>https://webrtcforthecurious.com/zh/docs/07-data-communication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/zh/docs/07-data-communication/</guid><description>我可以从WebRTC的数据通信中获得什么？ # WebRTC提供用于数据通信的数据通道。在两个peer之间，你可以打开65,534个数据通道。 数据通道基于数据报，并且每个通道都有其自己的持久性设置。默认设置下，每个数据通道都能保证有序交付。
+RTP # Packet Format（包格式） # 每个RTP数据包都具有以下结构：</description></item><item><title>数据通信</title><link>https://webrtcforthecurious.com/zh/docs/07-data-communication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/zh/docs/07-data-communication/</guid><description>数据通信 # 我可以从WebRTC的数据通信中获得什么？ # WebRTC提供用于数据通信的数据通道。在两个peer之间，你可以打开65,534个数据通道。 数据通道基于数据报，并且每个通道都有其自己的持久性设置。默认设置下，每个数据通道都能保证有序交付。
 如果你从传递媒体数据的角度开始接触WebRTC，可能数据通道看起来是一种浪费。当我只使用HTTP或WebSocket就能传递数据的时候，为什么需要整个数据通道子系统呢？
 数据通道的真正强大之处在于，你可以将它们配置为像UDP一样进行无序/有损传递。 对于低延迟和高性能的情况，这是必需的。你可以测量背压，并确保你仅发送网络支持的最大数据量。
 它是如何工作的？ # WebRTC使用RFC 4960中定义的流控制传输协议（SCTP）。SCTP是一种传输层协议，旨在替代TCP或UDP。对于WebRTC，我们将SCTP用作在DTLS连接上运行的应用层协议。
