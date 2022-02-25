@@ -78,7 +78,7 @@ XOR på en magiska kakan med bara nollor ändrar inget, så porten och adressen 
 
 ### Datafel
 
-## Tools of the trade
+## Praktiska verktyg
 
 ### netcat (nc)
 
