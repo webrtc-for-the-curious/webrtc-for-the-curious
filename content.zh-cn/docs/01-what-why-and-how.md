@@ -48,7 +48,7 @@ WebRTC协议由IETF工作组在[rtcweb](https://datatracker.ietf.org/wg/rtcweb/d
 
 当WebRTC Agent启动时，它不知道与谁通信以及他们将要通信的内容。信令解决了这个问题！信令用于引导呼叫，以便两个WebRTC Agent可以开始通信。
 
-信令使用现有的协议SDP（会话描述协议）。SDP是一种纯文本协议。每个SDP消息均由键/值对组成，并包含“media sections（媒体部分）”列表。两个WebRTC Agent交换的SDP所包含一些详细信息，如：
+信令使用一种现有的协议SDP（会话描述协议）。SDP是一种纯文本协议。每个SDP消息均由键/值对组成，并包含“media sections（媒体部分）”列表。两个WebRTC Agent交换的SDP所包含一些详细信息，如：
 
 * Agent可供外部访问的（候选的）IP和端口。
 * Agent希望发送多少路音频和视频流。
@@ -62,33 +62,33 @@ WebRTC协议由IETF工作组在[rtcweb](https://datatracker.ietf.org/wg/rtcweb/d
 
 现在，两个WebRTC Agent知道足够的详细信息以尝试相互连接。接下来，WebRTC将使用另一种成熟的技术，称为ICE。
 
-ICE（交互式连接建立）是WebRTC之前的协议。ICE允许在两个Agent之间建立连接。这些Agent可以在同一网络上，也可以在世界的另一端。ICE是无需中央服务器即可建立直接连接的解决方案。
+ICE（交互式连接建立）是WebRTC前现有的协议。ICE允许在两个Agent之间建立连接。这些Agent可以在同一网络上，也可以在世界的另一端。ICE是无需中央服务器即可建立直接连接的解决方案。
 
 这里真正的魔法是“ NAT穿透”和STUN/TURN服务器。这两个概念是与另一个子网中的ICE Agent进行通信所需的全部。稍后我们将深入探讨这些主题。
 
-ICE成功连接后，WebRTC继续建立加密的传输。此传输用于音频，视频和数据。
+ICE成功连接后，WebRTC就会继续建立加密传输。加密传输用于音频，视频和数据。
 
 ### 使用DTLS和SRTP加密传输层
 
-现在我们有了双向通信（通过ICE），我们需要建立安全的通信。这是通过WebRTC之前的两种协议完成的。第一个协议是DTLS（数据报传输层安全性），它只是基于UDP的TLS。TLS是用于保护通过HTTPS进行通信的加密协议。第二种协议是SRTP（安全实时传输协议）。
+现在我们有了双向通信（基于ICE），我们需要建立安全的通信。这是基于WebRTC前已有的两种协议完成的。第一个协议是DTLS（数据报传输层安全性），即基于UDP的TLS。TLS是一个加密协议，用于保护基于HTTPS的安全通信。第二种协议是SRTP（安全实时传输协议）。
 
 首先，WebRTC通过在ICE建立的连接上进行DTLS握手来进行连接。与HTTPS不同，WebRTC不使用中央授权来颁发证书。相反，WebRTC只是判断通过DTLS交换的证书是否与通过信令共享的签名相符。然后，此DTLS连接可以被用于传输DataChannel消息。
 
 接下来，WebRTC使用RTP协议进行音频/视频的传输。我们使用SRTP来保护我们的RTP数据包。我们从协商的DTLS会话中提取密钥，用来初始化SRTP会话。在后续章节中，我们会讨论为什么媒体传输需要有它自己的协议。
 
-现在我们完成了！你现在可以进行安全的双向通信。如果你的WebRTC Agent之间具有稳定的连接，上面这就是你可能需要解决的所有复杂问题。不幸的是，现实世界中存在数据包丢失和带宽限制等问题，在后续章节中，我们会介绍如何处理这些问题。
+现在我们完成了！你现在可以进行安全的双向通信。如果你的WebRTC Agent之间具有稳定的连接，以上这些就是你可能需要解决的所有复杂问题了。不幸的是，现实世界中存在数据包丢失和带宽限制等问题，下一节我们会介绍如何处理这些问题。
 
 ### 通过RTP和SCTP进行点对点通信
 
-现在，我们有了两个具有安全的双向通信功能的WebRTC Agent。让我们开始通信！跟前面一样，我们使用两个预先存在的协议：RTP（实时传输协议）和SCTP（流控制传输协议）。我们使用RTP来交换用SRTP加密过的媒体数据，使用SCTP发送和接收那些用DTLS加密过的DataChannel消息。
+现在，我们有了两个具有安全的双向通信功能的WebRTC Agent。让我们开始通信！跟前面一样，我们使用两个现有的协议：RTP（实时传输协议）和SCTP（流控制传输协议）。我们使用RTP来交换用SRTP加密过的媒体数据，使用SCTP发送和接收那些用DTLS加密过的DataChannel消息。
 
-RTP很小，但是提供了实现实时流式传输所需的功能。重要的是，RTP为开发人员提供了灵活性，因此他们可以根据需要处理延迟，丢失和拥塞。我们将在媒体章节中对此进行进一步讨论。
+RTP很轻量，但是提供了实现实时流式传输所需的功能。最重要的是，RTP为开发人员提供了灵活性，因此他们可以根据需要来处理延迟，丢失和拥塞。我们将在媒体章节中对此进行进一步讨论。
 
-协议栈中的最后一个协议是SCTP。SCTP支持许多不同的消息传送选项。你可以选择不可靠的无序交付，以便获得实时系统所需的低延迟。
+协议栈中的最后一个协议是SCTP。SCTP支持许多不同的消息传送选项。你可以根据需要开启不可靠传输，无序传输等选项，以便获得实时系统所需的低延迟。
 
 ## WebRTC是一系列协议的集合
 
-WebRTC解决了许多问题。初看起来，这似乎是过度设计的。实际上，WebRTC非常克制。它并未认为它可以更好的解决所有问题。相反，它采纳了许多现有的解决特定领域问题的技术，然后将它们有机地结合起来。
+WebRTC解决了许多问题。初看起来，这似乎是过度设计的。实际上，WebRTC非常克制。它并未认为它可以更好的解决所有问题。相反，它采纳了许多现有的解决某个特定问题的技术，然后将它们有机地结合起来。
 
 这使得我们可以独立的检查和学习每个部分，而不会毫无头绪。实际上，从另一个角度去看“ WebRTC Agent”，它只是许多不同协议的协调器。
 
@@ -96,7 +96,7 @@ WebRTC解决了许多问题。初看起来，这似乎是过度设计的。实�
 
 ## WebRTC（API）如何工作
 
-本部分显示JavaScript API是如何跟协议相对应的。这不是WebRTC API的详细演示，而更像是创建了一个思维模型，将各个模块串联起来。如果你对各个模块都不熟悉，那也不要紧。当你了解更多信息时，再回头看看这一部分，可能会很有趣！
+本部分显示JavaScript API是如何跟协议相对应的。这不是一个WebRTC API的详细演示，更多的是为了创建一个思维模型，展现各个模块是如何串联起来的。如果你对各个模块都还不熟悉，那也不要紧。当你了解更多信息时，再回头看看这一部分，可能会很有趣！
 
 ### `new RTCPeerConnection`
 
@@ -104,25 +104,25 @@ WebRTC解决了许多问题。初看起来，这似乎是过度设计的。实�
 
 ### `addTrack`
 
-`addTrack`创建一个新的RTP流。并将为这个流生成一个随机的SSRC（Synchronization Source/同步源）。然后，`createOffer`将生成会话描述，这个RTP流会被放入一个media section。每次调用`addTrack`都会创建一个新的SSRC和一个对应的media section。
+`addTrack`创建一个新的RTP流。会为这个RTP流生成一个随机的SSRC（Synchronization Source/同步源）。在后续`createOffer`生成会话描述中，这个RTP流会被放入一个media section。每次调用`addTrack`都会创建一个新的SSRC和一个对应的media section。
 
 在建立SRTP会话后，这些媒体数据包将被SRTP加密，然后立即通过ICE开始发送。
 
 ### `createDataChannel`
 
-如果没有SCTP关联存在，`createDataChannel`将创建一个新的SCTP流。默认情况下，SCTP是不启用的，只有在一方请求数据通道时才启动。
+当没有SCTP关联(SCTP Association)存在时，`createDataChannel`将创建一个新的SCTP流。默认情况下，SCTP是不启用的，只有在一方请求数据通道时才启动。
 
 在DTLS会话建立之后，SCTP关联将立即通过ICE发送数据包，并使用DTLS加密。
 
 ### `createOffer`
 
-`createOffer`生成本地状态的会话描述，以与远端Peer共享。
+`createOffer`生成会话描述，里面是需要与远端Peer分享的本地信息。
 
 调用`createOffer`的行为对于本地Peer没有任何改变。
 
 ### `setLocalDescription`
 
-`setLocalDescription`提交所有请求的更改。 在此调用之前，`addTrack`，`createDataChannel`和其他类似的调用都是临时的(未生效的)。 调用`setLocalDescription`时，使用由`createOffer`生成的值。
+`setLocalDescription`提交所有请求的更改。 `addTrack` `createDataChannel`和其他类似的调用都是临时的(调用`setLocalDescription`后生效)。 调用`setLocalDescription`时，使用由`createOffer`生成的值。
 
 通常，在此调用之后，你会将offer发送给远端Peer，他们将调用`setRemoteDescription`，将此offer设入。
 
