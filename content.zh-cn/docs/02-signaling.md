@@ -151,7 +151,7 @@ a=fingerprint:SHA-1 \
 * `setup:passive` - 作为DTLS服务器运行。
 * `setup:actpass` - 要求另一个WebRTC Agent选择。
 
-#### `mid:`
+#### `mid`
 
 该属性是每个Media Description的唯一ID。用于标识媒体。
 
