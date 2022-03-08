@@ -151,6 +151,10 @@ a=fingerprint:SHA-1 \
 * `setup:passive` - 作为DTLS服务器运行。
 * `setup:actpass` - 要求另一个WebRTC Agent选择。
 
+#### `mid:`
+
+该属性是每个Media Description的唯一ID。用于标识媒体。
+
 #### `ice-ufrag`
 
 该属性是ICE Agent的用户片段值。用于ICE流量的身份验证。
