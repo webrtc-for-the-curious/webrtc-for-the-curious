@@ -133,6 +133,9 @@ This controls the DTLS Agent behavior. This determines if it runs as a client or
 * `setup:passive` - Run as DTLS Server.
 * `setup:actpass` - Ask the other WebRTC Agent to choose.
 
+#### `mid`
+The "mid" attribute is used for identifying media streams within a session description.
+
 #### `ice-ufrag`
 This is the user fragment value for the ICE Agent. Used for the authentication of ICE Traffic.
 
