@@ -141,6 +141,10 @@ WebRTCの各メディア記述は、direction属性を持ちます。これに�
 * `setup:passive` - DTLSサーバーとして動作します。
 * `setup:actpass` - 他の WebRTC エージェントに選択を依頼します。
 
+#### `mid:`
+
+`mid` 属性は Session Description 内のメディアストリームを識別するために使われます。
+
 #### `ice-ufrag`
 
 ICEエージェントのユーザーフラグメント値です。ICEトラフィックの認証に使用されます。
