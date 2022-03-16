@@ -55,7 +55,7 @@ You may have noticed that upload speeds on your phone are almost always lower th
 
 `transmission_time = rtt/2`
 
-The technicalities of round-trip time measurement are described in greater detail in [RTCP Sender and Receiver Reports chapter](../06-media-communication/#senderreceiver-reports).
+The technicalities of round-trip time measurement are described in greater detail in [RTCP Sender and Receiver Reports chapter](../06-media-communication/#receiver-reports--sender-reports).
 
 #### Jitter
 Jitter is the fact that `Transmission Time` may vary for each packet. Your packets could be delayed, but then arrive in bursts.
