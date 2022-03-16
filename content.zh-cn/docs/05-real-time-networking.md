@@ -48,7 +48,7 @@ weight: 6
 
 `传输时间 = rtt（往返时间）/2`
 
-关于往返时间测量的技术，在[RTCP的发送方和接收方报告章节](../06-media-communication/#senderreceiver-reports发送方接收方报告)中有更详细的描述。
+关于往返时间测量的技术，在[RTCP的发送方和接收方报告章节](../06-media-communication/#receiver-reports--sender-reports)中有更详细的描述。
 
 ### 抖动
 
