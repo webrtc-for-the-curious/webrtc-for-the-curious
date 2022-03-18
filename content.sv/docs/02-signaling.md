@@ -133,6 +133,9 @@ Detta kontrollerar beteendet för DTLS-agenten. Detta avgör om det körs som en
 * `setup: passive` - Kör som DTLS-server.
 * `setup: actpass` - Be den andra WebRTC-agenten att välja.
 
+#### `mid`
+Attributet "mid" används för att identifiera mediaströmmar i en sessionsbeskrivning.
+
 #### `ice-ufrag`
 Detta är användarfragmentvärdet för ICE-agenten. Används för verifiering av ICE trafik.
 
