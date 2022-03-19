@@ -273,9 +273,9 @@ GCC 的第一个控制器是基于丢失的控制器，原理很简单：
 
 在下图中，数据包间延迟增加的中位数为 +20 毫秒，这是一个明确的指标网络拥塞。
 
-![TWCC with delay](../images/06-twcc.png "TWCC with delay")
+![TWCC with delay](../../images/06-twcc.png "TWCC with delay")
 
-如果到达间隔时间随着时间的推移而增加，则假定连接网络接口上的队列深度增加并被认为是网络拥塞的证据。 （注意：GCC 足够聪明，可以控制这些测量以应对帧字节大小的波动。）GCC 使用 [Kalman 滤波器]（https://en.wikipedia.org/wiki/Kalman_filter）改进其延迟测量，并在标记拥塞之前多次测量网络往返时间（及其变化）。可以将 GCC 的卡尔曼滤波器视为代替线性回归：即使在抖动将噪声添加到时序测量中时，也有助于做出准确的预测。在标记拥塞时，GCC 将降低可用比特率。或者，在稳定的网络条件下，它可以缓慢增加其带宽评估以测试更高的负载值。
+如果到达间隔时间随着时间的推移而增加，则假定连接网络接口上的队列深度增加并被认为是网络拥塞的证据。 （注意：GCC 足够聪明，可以控制这些测量以应对帧字节大小的波动。）GCC 使用 [Kalman 滤波器](https://en.wikipedia.org/wiki/Kalman_filter)改进其延迟测量，并在标记拥塞之前多次测量网络往返时间（及其变化）。可以将 GCC 的卡尔曼滤波器视为代替线性回归：即使在抖动将噪声添加到时序测量中时，也有助于做出准确的预测。在标记拥塞时，GCC 将降低可用比特率。或者，在稳定的网络条件下，它可以缓慢增加其带宽评估以测试更高的负载值。
 
 
 
@@ -316,11 +316,11 @@ TMMBR和TMMBN是先出现的，它们在[RFC 5104](https://tools.ietf.org/html/r
 ### 传输范围内的拥塞控制（TWCC）
 
 Transport Wide Congestion Control 是 RTCP 网络状态的最新发展
-沟通。 它定义在draft-holmer-rmcat-transport-wide-cc-extensions-01](https://datatracker.ietf.org/doc/html/draft-holmer-rmcat-transport-wide-cc-extensions-01), 但一直未被标准化。
+沟通。 它定义在[draft-holmer-rmcat-transport-wide-cc-extensions-01](https://datatracker.ietf.org/doc/html/draft-holmer-rmcat-transport-wide-cc-extensions-01), 但一直未被标准化。
 
 TWCC 使用了一个非常简单的原理：
 
-![TWCC](../images/06-twcc-idea.png "TWCC")
+![TWCC](../../images/06-twcc-idea.png "TWCC")
 
 使用 REMB，接收方以可用的下载比特率指示发送方。它使用关于推断的数据包丢失的精确测量和仅它具有的关于数据包间到达时间的数据。
 
