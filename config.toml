@@ -10,6 +10,11 @@ DefaultContentLanguage = "en"
     title = "WebRTC for the Curious"
     languageName = "English"
     weight = 1
+  [languages.ru]
+    title = "WebRTC для любопытных"
+    languageName = 'Русский'
+    contentDir = "content.ru"
+    weight = 2
   [languages.sv]
     title = "WebRTC för nyfikna"
     languageName = "Svenska"
