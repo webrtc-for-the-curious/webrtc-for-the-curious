@@ -217,7 +217,7 @@ RTP/RTCP 有三种不同的方法来解决这个问题。他们都有自己的�
 
 第一种实现是一对接收者报告及其补充——发送者报告。这些 RTCP 消息在 [RFC 3550](https://tools.ietf.org/html/rfc3550#section-6.4) 中定义，并且是 负责在端点之间传递网络状态。 Receiver Reports 侧重于 关于网络的通信质量（包括丢包、往返时间和抖动），可以配合其他算法，利用这些报告信息进行评估。 
 
-Receiver / Sender Reports（SR 和 RR）共同描绘了网络质量。他们是以每个SSRC为粒度按计划发送，作为评估可用带宽的输入数据。这些评估是由发送者在收到 RR 数据后做出的，其中包含 以下字段：
+Sender / Receiver Reports（SR 和 RR）共同描绘了网络质量。他们是以每个SSRC为粒度按计划发送，作为评估可用带宽的输入数据。这些评估是由发送者在收到 RR 数据后做出的，其中包含 以下字段：
 
 * **Fraction Lost(丢包率)** - 自上次接收者报告以来丢失了数据包的百分比。
 * **Cumulative Number of Packets Lost(累计丢包数)** - 在整个通话过程中丢了多少包。
@@ -256,7 +256,7 @@ Receiver / Sender Reports（SR 和 RR）共同描绘了网络质量。他们是�
 Google 拥塞控制 (GCC) 算法（在[draft-ietf-rmcat-gcc-02](https://tools.ietf.org/html/draft-ietf-rmcat-gcc-02)) 解决了带宽估计的挑战。 它与各种其他协议配合，以应对相应的通信需求。 因此，它非常适合在任一接收端（当使用 TMMBR/TMMBN 或 REMB 运行时）或发送端（当使用 TWCC 运行时）。
 
 为了估算可用带宽，GCC 关注数据包丢失和帧到达时间的波动作为其两个主要指标。 它通过两个链接的控制器运行这些指标：
-基于损失的(loss-bassed)控制器和基于延迟的(delay-based)控制器。
+基于损失的(loss-based)控制器和基于延迟的(delay-based)控制器。
 
 GCC 的第一个控制器是基于丢失的控制器，原理很简单：
 
@@ -273,9 +273,9 @@ GCC 的第一个控制器是基于丢失的控制器，原理很简单：
 
 在下图中，数据包间延迟增加的中位数为 +20 毫秒，这是一个明确的指标网络拥塞。
 
-![TWCC with delay](../images/06-twcc.png "TWCC with delay")
+![TWCC with delay](../../images/06-twcc.png "TWCC with delay")
 
-如果到达间隔时间随着时间的推移而增加，则假定连接网络接口上的队列深度增加并被认为是网络拥塞的证据。 （注意：GCC 足够聪明，可以控制这些测量以应对帧字节大小的波动。）GCC 使用 [Kalman 滤波器]（https://en.wikipedia.org/wiki/Kalman_filter）改进其延迟测量，并在标记拥塞之前多次测量网络往返时间（及其变化）。可以将 GCC 的卡尔曼滤波器视为代替线性回归：即使在抖动将噪声添加到时序测量中时，也有助于做出准确的预测。在标记拥塞时，GCC 将降低可用比特率。或者，在稳定的网络条件下，它可以缓慢增加其带宽评估以测试更高的负载值。
+如果到达间隔时间随着时间的推移而增加，则假定连接网络接口上的队列深度增加并被认为是网络拥塞的证据。 （注意：GCC 足够聪明，可以控制这些测量以应对帧字节大小的波动。）GCC 使用 [Kalman 滤波器](https://en.wikipedia.org/wiki/Kalman_filter)改进其延迟测量，并在标记拥塞之前多次测量网络往返时间（及其变化）。可以将 GCC 的卡尔曼滤波器视为代替线性回归：即使在抖动将噪声添加到时序测量中时，也有助于做出准确的预测。在标记拥塞时，GCC 将降低可用比特率。或者，在稳定的网络条件下，它可以缓慢增加其带宽评估以测试更高的负载值。
 
 
 
@@ -316,17 +316,17 @@ TMMBR和TMMBN是先出现的，它们在[RFC 5104](https://tools.ietf.org/html/r
 ### 传输范围内的拥塞控制（TWCC）
 
 Transport Wide Congestion Control 是 RTCP 网络状态的最新发展
-沟通。 它定义在draft-holmer-rmcat-transport-wide-cc-extensions-01](https://datatracker.ietf.org/doc/html/draft-holmer-rmcat-transport-wide-cc-extensions-01), 但一直未被标准化。
+沟通。 它定义在[draft-holmer-rmcat-transport-wide-cc-extensions-01](https://datatracker.ietf.org/doc/html/draft-holmer-rmcat-transport-wide-cc-extensions-01), 但一直未被标准化。
 
 TWCC 使用了一个非常简单的原理：
 
-![TWCC](../images/06-twcc-idea.png "TWCC")
+![TWCC](../../images/06-twcc-idea.png "TWCC")
 
 使用 REMB，接收方以可用的下载比特率指示发送方。它使用关于推断的数据包丢失的精确测量和仅它具有的关于数据包间到达时间的数据。
 
 TWCC 可以看作是 SR/RR 和 REMB 协议的混合方法。它将带宽估计带回发送方（类似于 SR/RR），但其带宽估计技术更类似于 REMB 生成。
 
-使用 TWCC，接收方让发送方知道每个数据包的到达时间。对于发送者来说，这是足够的信息来测量数据包间到达延迟的变化，以及识别哪些数据包被丢弃或到达太晚而无法为音频/视频馈送做出贡献。随着这些数据的频繁交换，发送方能够快速调整以适应不断变化的网络条件，并使用诸如 GCC 的算法改变其输出带宽。
+使用 TWCC，接收方让发送方知道每个数据包的到达时间。这是足以让发送者测量数据包之间到达延迟的变化，以及识别哪些数据包丢失或到达太晚而不能提供音频/视频源。随着这些数据的频繁交换，发送方能够快速调整以适应不断变化的网络条件，并使用诸如 GCC 的算法改变其输出带宽。
 
 发送者跟踪发送的数据包、它们的序列号、大小和时间戳。当发送方接收到来自接收方的 RTCP 消息时，它会将发送包间延迟与接收延迟进行比较。如果接收延迟增加，则表明网络拥塞，发送方必须采取纠正措施。
 
