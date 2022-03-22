@@ -6,7 +6,7 @@ type: docs
 # WebRTC For The Curious
 
 This book was created by WebRTC implementers to share their hard-earned knowledge with the world.
-*WebRTC For The Curious* is an Open Source book written for those that are always looking for more.
+_WebRTC For The Curious_ is an Open Source book written for those that are always looking for more.
 This book doesn't settle for abstraction.
 
 This book is all about protocols and APIs, and will not be talking about any software in particular.
@@ -16,10 +16,10 @@ WebRTC is a wonderful technology, but it is difficult to use. This book is vendo
 
 ## Who this book is for:
 
-* Developers who don’t even know what WebRTC solves, and want to learn more.
-* Someone who is already building with WebRTC, but wants to know more beyond the APIs.
-* Established developers who need help debugging.
-* WebRTC implementer who needs clarification on a specific part.
+-   Developers who don’t even know what WebRTC solves, and want to learn more.
+-   Someone who is already building with WebRTC, but wants to know more beyond the APIs.
+-   Established developers who need help debugging.
+-   WebRTC implementer who needs clarification on a specific part.
 
 ## Designed for multiple readings
 
@@ -27,9 +27,9 @@ This book is designed to be read multiple times. Each chapter is self-contained,
 
 Each chapter aims to answer a single question, with three levels of information:
 
-* What needs to be solved?
-* How do we solve it? (Including technical details about the solution.)
-* Where to learn more.
+-   What needs to be solved?
+-   How do we solve it? (Including technical details about the solution.)
+-   Where to learn more.
 
 Each chapter doesn't assume prior knowledge. You can start at any point in the book and begin learning. This book will also recommend resources
 to go and learn more. Other books cover individual topics in much greater depth. This book aims to teach you the entire system, at the cost of expert level details.
