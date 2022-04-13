@@ -6,28 +6,28 @@ weight: 8
 
 # 数据通信
 
-## 我可以从WebRTC的数据通信中获得什么？
+## 我可以从 WebRTC 的数据通信中获得什么？
 
-WebRTC提供用于数据通信的数据通道。在两个peer之间，你可以打开65,534个数据通道。
+WebRTC 提供用于数据通信的数据通道。在两个 peer 之间，你可以打开 65,534 个数据通道。
 数据通道基于数据报，并且每个通道都有其自己的持久性设置。默认设置下，每个数据通道都能保证有序交付。
 
-如果你从传递媒体数据的角度开始接触WebRTC，可能数据通道看起来是一种浪费。当我只使用HTTP或WebSocket就能传递数据的时候，为什么需要整个数据通道子系统呢？
+如果你从传递媒体数据的角度开始接触 WebRTC，可能数据通道看起来是一种浪费。当我只使用 HTTP 或 WebSocket 就能传递数据的时候，为什么需要整个数据通道子系统呢？
 
-数据通道的真正强大之处在于，你可以将它们配置为像UDP一样进行无序/有损传递。
+数据通道的真正强大之处在于，你可以将它们配置为像 UDP 一样进行无序 / 有损传递。
 对于低延迟和高性能的情况，这是必需的。你可以测量背压，并确保你仅发送网络支持的最大数据量。
 
 ## 它是如何工作的？
-WebRTC使用[RFC 4960](https://tools.ietf.org/html/rfc4960)中定义的流控制传输协议（SCTP）。SCTP是一种传输层协议，旨在替代TCP或UDP。对于WebRTC，我们将SCTP用作在DTLS连接上运行的应用层协议。
+WebRTC 使用[RFC 4960](https://tools.ietf.org/html/rfc4960)中定义的流控制传输协议（SCTP）。SCTP 是一种传输层协议，旨在替代 TCP 或 UDP。对于 WebRTC，我们将 SCTP 用作在 DTLS 连接上运行的应用层协议。
 
-SCTP为你提供流，并且每个流都可以独立配置。WebRTC数据通道只是基于流的简单抽象。有关持久性和顺序的设置会被直接传递到SCTP Agent中。
+SCTP 为你提供流，并且每个流都可以独立配置。WebRTC 数据通道只是基于流的简单抽象。有关持久性和顺序的设置会被直接传递到 SCTP Agent 中。
 
-数据通道具有SCTP无法表达的某些功能，例如通道标签。为了解决该问题，WebRTC使用了[RFC 8832](https://tools.ietf.org/html/rfc8832)中定义的数据通道建立协议（DCEP）。DCEP定义了一条消息，用于传递通道标签和协议。
+数据通道具有 SCTP 无法表达的某些功能，例如通道标签。为了解决该问题，WebRTC 使用了[RFC 8832](https://tools.ietf.org/html/rfc8832)中定义的数据通道建立协议（DCEP）。DCEP 定义了一条消息，用于传递通道标签和协议。
 
 ## DCEP
-DCEP只有两个消息`DATA_CHANNEL_OPEN`和`DATA_CHANNEL_ACK`。对于打开的每个数据通道，远端必须以ack响应。
+DCEP 只有两个消息 `DATA_CHANNEL_OPEN` 和 `DATA_CHANNEL_ACK`。对于打开的每个数据通道，远端必须以 ack 响应。
 
 ### DATA_CHANNEL_OPEN
-该消息由希望打开数据通道的WebRTC Agent发送。
+该消息由希望打开数据通道的 WebRTC Agent 发送。
 
 #### 封包格式
 ```
@@ -51,11 +51,11 @@ DCEP只有两个消息`DATA_CHANNEL_OPEN`和`DATA_CHANNEL_ACK`。对于打开的
 ```
 
 #### 消息类型（Message Type）
-消息类型是一个静态值`0x03`。
+消息类型是一个静态值 `0x03`。
 
 #### 通道类型（Channel Type）
 Channel Type controls durability/ordering attributes of the channel. It may have the following values:
-通道类型控制通道的持久性/排序属性。它可能具有以下值：
+通道类型控制通道的持久性 / 排序属性。它可能具有以下值：
 
 * `DATA_CHANNEL_RELIABLE` (`0x00`) - 没有消息丢失，消息依序到达。
 * `DATA_CHANNEL_RELIABLE_UNORDERED` (`0x80`) - 没有消息丢失，但消息可能乱序到达。
@@ -68,19 +68,19 @@ Channel Type controls durability/ordering attributes of the channel. It may have
 数据通道的优先级。具有较高优先级的数据通道将首先被调度。较大的低优先级用户消息不会耽误高优先级用户消息的发送。
 
 #### 可靠性参数
-如果数据通道类型的前缀为`DATA_CHANNEL_PARTIAL_RELIABLE`，则不同的后缀对应的参数配置如下：
+如果数据通道类型的前缀为 `DATA_CHANNEL_PARTIAL_RELIABLE`，则不同的后缀对应的参数配置如下：
 
 * `REXMIT` - 定义发送方重试发送消息的次数，超出此次数将放弃尝试。
 * `TIMED` - 定义发送方重试发送消息的时间（以毫秒为单位），超出此时间将放弃尝试。
 
 #### 标签（Label）
-一个包含数据通道名称的UTF-8编码的字符串。可能为空。
+一个包含数据通道名称的 UTF-8 编码的字符串。可能为空。
 
 #### 协议（Protocol）
-如果这里为空字符串，则协议未指定。如果是非空字符串，则这里应指定一个协议，可指定的协议请参考[RFC 6455](https://tools.ietf.org/html/rfc6455#page-61)中定义的"WebSocket子协议名称注册表"中的注册协议。
+如果这里为空字符串，则协议未指定。如果是非空字符串，则这里应指定一个协议，可指定的协议请参考[RFC 6455](https://tools.ietf.org/html/rfc6455#page-61)中定义的 "WebSocket 子协议名称注册表 " 中的注册协议。
 
 ### DATA_CHANNEL_ACK
-WebRTC Agent发送此消息以确认此数据通道已打开。
+WebRTC Agent 发送此消息以确认此数据通道已打开。
 
 #### 封包格式
 ```
@@ -92,66 +92,66 @@ WebRTC Agent发送此消息以确认此数据通道已打开。
 ```
 
 ## 流控传输协议（SCTP）
-SCTP是WebRTC数据通道背后的真正动力。它提供了数据通道的以下所有功能：
+SCTP 是 WebRTC 数据通道背后的真正动力。它提供了数据通道的以下所有功能：
 
 * 多路复用
-* 使用类似TCP的重传机制进行可靠传递
+* 使用类似 TCP 的重传机制进行可靠传递
 * 部分可靠性选项
 * 避免拥塞
 * 流量控制
 
-为了理解SCTP，我们将分三个部分进行探讨。我们的目标是，在本章之后，你将拥有足够的知识来自行调试和学习SCTP的详细信息。
+为了理解 SCTP，我们将分三个部分进行探讨。我们的目标是，在本章之后，你将拥有足够的知识来自行调试和学习 SCTP 的详细信息。
 
 ## 概念
-SCTP协议功能很多。本节仅涵盖WebRTC使用的SCTP部分。
-SCTP中，WebRTC不使用的功能包括多宿主（multi-homing）和路径选择。
+SCTP 协议功能很多。本节仅涵盖 WebRTC 使用的 SCTP 部分。
+SCTP 中，WebRTC 不使用的功能包括多宿主（multi-homing）和路径选择。
 
-经过20多年的发展，SCTP变得难以完全掌握。
+经过 20 多年的发展，SCTP 变得难以完全掌握。
 
 ### 关联（Association）
-关联是用于SCTP会话的术语。这是两个SCTP Agent在通信时共享的状态。
+关联是用于 SCTP 会话的术语。这是两个 SCTP Agent 在通信时共享的状态。
 
 ### 流
-一个流是用户数据的一个双向序列。创建数据通道时，实际上只是在创建一个SCTP流。每个SCTP关联都包含一个流列表。可以为每个流配置不同的可靠性类型。
+一个流是用户数据的一个双向序列。创建数据通道时，实际上只是在创建一个 SCTP 流。每个 SCTP 关联都包含一个流列表。可以为每个流配置不同的可靠性类型。
 
-WebRTC只允许你在创建流时进行配置，而SCTP实际上允许随时更改配置。
+WebRTC 只允许你在创建流时进行配置，而 SCTP 实际上允许随时更改配置。
 
 ### 基于数据报
-SCTP将数据构造为数据报，而不是字节流。发送和接收数据就像是使用UDP而不是TCP。
+SCTP 将数据构造为数据报，而不是字节流。发送和接收数据就像是使用 UDP 而不是 TCP。
 你无需添加任何额外的代码即可通过一个流传输多个文件。
 
-SCTP消息没有像UDP这样的大小限制。单个SCTP消息的大小可以达到几个GB。
+SCTP 消息没有像 UDP 这样的大小限制。单个 SCTP 消息的大小可以达到几个 GB。
 
 ### 块（Chunks）
-SCTP协议由块组成。有许多不同类型的块。这些块用于所有通信。
+SCTP 协议由块组成。有许多不同类型的块。这些块用于所有通信。
 用户数据，连接初始化，拥塞控制等，全部通过块完成。
 
-每个SCTP数据包都包含一个块列表。因此，在一个UDP数据包中，你可以有多个块承载来自不同流的消息。
+每个 SCTP 数据包都包含一个块列表。因此，在一个 UDP 数据包中，你可以有多个块承载来自不同流的消息。
 
 ### 传输序列号
-传输序列号（TSN）是DATA块的全局唯一标识符。DATA块承载用户希望发送的所有消息。TSN很重要，因为它可以帮助接收方确定数据包是否丢失或乱序。
+传输序列号（TSN）是 DATA 块的全局唯一标识符。DATA 块承载用户希望发送的所有消息。TSN 很重要，因为它可以帮助接收方确定数据包是否丢失或乱序。
 
-如果接收方注意到缺少TSN，则在数据完整获取之前，它不应将数据提供给用户。
+如果接收方注意到缺少 TSN，则在数据完整获取之前，它不应将数据提供给用户。
 
 ### 流标识符
-每个流都有一个唯一的标识符。当你创建带有显式ID的数据通道时，实际上是将其作为流标识符直接传递到SCTP中。如果你没有传递ID，则会为你自动选择流标识符。
+每个流都有一个唯一的标识符。当你创建带有显式 ID 的数据通道时，实际上是将其作为流标识符直接传递到 SCTP 中。如果你没有传递 ID，则会为你自动选择流标识符。
 
 ### 有效负载协议标识符
-每个DATA块还具有一个有效负载协议标识符（PPID）。这用于唯一地标识正在交换的数据类型。
-SCTP具有许多PPID，但是WebRTC仅使用以下五种：
+每个 DATA 块还具有一个有效负载协议标识符（PPID）。这用于唯一地标识正在交换的数据类型。
+SCTP 具有许多 PPID，但是 WebRTC 仅使用以下五种：
 
-* `WebRTC DCEP` (`50`) - DCEP消息。
-* `WebRTC String` (`51`) - Datachannel字符串消息。
-* `WebRTC Binary` (`53`) - Datachannel二进制消息。
-* `WebRTC String Empty` (`56`) - 长度为0的Datachannel字符串消息。
-* `WebRTC Binary Empty` (`57`) - 长度为0的Datachannel二进制消息。
+* `WebRTC DCEP` (`50`) - DCEP 消息。
+* `WebRTC String` (`51`) - Datachannel 字符串消息。
+* `WebRTC Binary` (`53`) - Datachannel 二进制消息。
+* `WebRTC String Empty` (`56`) - 长度为 0 的 Datachannel 字符串消息。
+* `WebRTC Binary Empty` (`57`) - 长度为 0 的 Datachannel 二进制消息。
 
 ## 协议
-以下是SCTP协议使用的一些块。这不是一个详尽的演示。只提供了足够的结构让状态机运作起来。
+以下是 SCTP 协议使用的一些块。这不是一个详尽的演示。只提供了足够的结构让状态机运作起来。
 
-每个块均以`type`字段开头。在块列表之前，还有一个头字段。
+每个块均以 `type` 字段开头。在块列表之前，还有一个头字段。
 
-### DATA块
+### DATA 块
 ```
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -169,32 +169,32 @@ SCTP具有许多PPID，但是WebRTC仅使用以下五种：
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
-DATA块是交换所有用户数据的方式。下面是对DATA块更详细的说明，数据就是这样通过数据通道被发送的。
+DATA 块是交换所有用户数据的方式。下面是对 DATA 块更详细的说明，数据就是这样通过数据通道被发送的。
 
-如果是无序数据包，则将`U`位设置为1。我们可以忽略流序列号（Stream Sequence Number）。
+如果是无序数据包，则将 `U` 位设置为 1。我们可以忽略流序列号（Stream Sequence Number）。
 
-`B`和`E`是开始位和结束位。如果要发送的消息对于单个DATA块而言太大，则需要将其分片成多个DATA块发送。
-SCTP使用 比特位`B`和`E` 以及序列号（TSN）来描述消息分包。
+`B` 和 `E` 是开始位和结束位。如果要发送的消息对于单个 DATA 块而言太大，则需要将其分片成多个 DATA 块发送。
+SCTP 使用 比特位 `B` 和 `E` 以及序列号（TSN）来描述消息分包。
 
 * `B=1`, `E=0` - 用户消息的第一个分片。
 * `B=0`, `E=0` - 用户消息的中间的分片。
 * `B=0`, `E=1` - 用户消息的最后一个分片。
 * `B=1`, `E=1` - 未分片的用户消息。
 
-`TSN`是`Transmission Sequence Number`，一个 DATA chunk 的唯一标识符。它是一个递增的32-bit数，在达到最大值4,294,967,295 之后，继续从0开始递增。
+`TSN` 是 `Transmission Sequence Number`，一个 DATA chunk 的唯一标识符。它是一个递增的 32-bit 数，在达到最大值 4,294,967,295 之后，继续从 0 开始递增。
 
 `Stream Identifier`（流标识符）是该数据所属流的唯一标识符。
 
-`Stream Sequence Number` , 标识一个用户消息。它是一个递增的16-bit数，在 达到最大值 65535 之后，继续从0开始递增。
-比特位`U`设置为1时，表示无序消息包，`Stream Sequence Number`可以忽略。
-比特位`U`设置为0时，表示有序消息包，该编号用于确定消息包的顺序。
-与TSN类似，但是 `Stream Sequence Number` 以一个用户消息的粒度递增，TSN以一个Chunk的粒度递增。
+`Stream Sequence Number` , 标识一个用户消息。它是一个递增的 16-bit 数，在 达到最大值 65535 之后，继续从 0 开始递增。
+比特位 `U` 设置为 1 时，表示无序消息包，`Stream Sequence Number` 可以忽略。
+比特位 `U` 设置为 0 时，表示有序消息包，该编号用于确定消息包的顺序。
+与 TSN 类似，但是 `Stream Sequence Number` 以一个用户消息的粒度递增，TSN 以一个 Chunk 的粒度递增。
 
-`Payload Protocol Identifier`（有效负载协议标识符）是流过此流的数据类型。对于WebRTC而言，它可能是DCEP，String或Binary。
+`Payload Protocol Identifier`（有效负载协议标识符）是流过此流的数据类型。对于 WebRTC 而言，它可能是 DCEP，String 或 Binary。
 
-`User Data`（用户数据）就是你要发送的内容。通过WebRTC Data Channel发送的所有数据均通过DATA块传输。
+`User Data`（用户数据）就是你要发送的内容。通过 WebRTC Data Channel 发送的所有数据均通过 DATA 块传输。
 
-### INIT块
+### INIT 块
 ```
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -215,19 +215,19 @@ SCTP使用 比特位`B`和`E` 以及序列号（TSN）来描述消息分包。
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-INIT块开始创建一个关联（association）的过程。
+INIT 块开始创建一个关联（association）的过程。
 
-`Initiate Tag`（启动标签）用于生成Cookie。Cookies技术在中间人攻击和DoS保护中可能会被用到。在状态机章节中对它们进行了更详细的描述。
+`Initiate Tag`（启动标签）用于生成 Cookie。Cookies 技术在中间人攻击和 DoS 保护中可能会被用到。在状态机章节中对它们进行了更详细的描述。
 
-`Advertised Receiver Window Credit`（广播接收者窗口信用值）用于SCTP的拥塞控制。它传达了接收方已为此关联分配了多大的缓冲区。
+`Advertised Receiver Window Credit`（广播接收者窗口信用值）用于 SCTP 的拥塞控制。它传达了接收方已为此关联分配了多大的缓冲区。
 
-`Number of Outbound/Inbound Streams`（出站/入站流的数量）通知该Agent支持多少个流。
+`Number of Outbound/Inbound Streams`（出站 / 入站流的数量）通知该 Agent 支持多少个流。
 
-`Initial TSN`（初始TSN）是随机的`uint32`，本地TSN以这个值开始计数。
+`Initial TSN`（初始 TSN）是随机的 `uint32`，本地 TSN 以这个值开始计数。
 
-`Optional Parameters`（可选参数）允许SCTP向协议引入新功能。
+`Optional Parameters`（可选参数）允许 SCTP 向协议引入新功能。
 
-### SACK块
+### SACK 块
 
 ```
  0                   1                   2                   3
@@ -259,18 +259,18 @@ INIT块开始创建一个关联（association）的过程。
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-SACK（选择性确认）块是接收方通知发送方它已收到数据包信息的方式。在发送方获得针对TSN的SACK之前，它将重新发送有问题的DATA块。然而，SACK的作用不只是更新TSN信息。
+SACK（选择性确认）块是接收方通知发送方它已收到数据包信息的方式。在发送方获得针对 TSN 的 SACK 之前，它将重新发送有问题的 DATA 块。然而，SACK 的作用不只是更新 TSN 信息。
 
-`Cumulative TSN ACK`（累积TSN ACK）是已收到的最高TSN。
+`Cumulative TSN ACK`（累积 TSN ACK）是已收到的最高 TSN。
 
 `Advertised Receiver Window Credit`（广播接收者窗口信用值）是接收方的缓冲区大小。如果可用内存增加，接收方可以在会话期间更改此设置。
 
-在`Cumulative TSN ACK`（累积TSN ACK）后面，是`Ack Blocks`的TSN。
-这个方法用来解决传送的数据包中有缺口的问题。假设我们收到了带有TSN`100`,`102`,`103`和`104`的DATA块。`Cumulative TSN ACK`应该是`100`，但可以使用`Ack Blocks`来告诉发送方不需要重新发送`102`,`103`或`104`。
+在 `Cumulative TSN ACK`（累积 TSN ACK）后面，是 `Ack Blocks` 的 TSN。
+这个方法用来解决传送的数据包中有缺口的问题。假设我们收到了带有 TSN`100`,`102`,`103` 和 `104` 的 DATA 块。`Cumulative TSN ACK` 应该是 `100`，但可以使用 `Ack Blocks` 来告诉发送方不需要重新发送 `102`,`103` 或 `104`。
 
-`Duplicate TSN`（重复TSN）会通知发送方，它已经不止一次的接收了哪些DATA数据块。
+`Duplicate TSN`（重复 TSN）会通知发送方，它已经不止一次的接收了哪些 DATA 数据块。
 
-### HEARTBEAT块
+### HEARTBEAT 块
 ```
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -283,10 +283,10 @@ SACK（选择性确认）块是接收方通知发送方它已收到数据包信�
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-HEARTBEAT块用于断言远端仍能响应。
-当你不发送任何DATA数据块，且需要保持NAT映射打开时，这很有用。
+HEARTBEAT 块用于断言远端仍能响应。
+当你不发送任何 DATA 数据块，且需要保持 NAT 映射打开时，这很有用。
 
-### ABORT块
+### ABORT 块
 ```
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -299,9 +299,9 @@ HEARTBEAT块用于断言远端仍能响应。
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-ABORT块用于关联的突然关闭。当一侧进入错误状态时使用。正常结束连接使用SHUTDOWN块。
+ABORT 块用于关联的突然关闭。当一侧进入错误状态时使用。正常结束连接使用 SHUTDOWN 块。
 
-### SHUTDOWN块
+### SHUTDOWN 块
 ```
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -312,12 +312,12 @@ ABORT块用于关联的突然关闭。当一侧进入错误状态时使用。正
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-SHUTDOWN块将正常关闭SCTP关联。
-每个Agent将其发送的最后一个TSN通知给远端。这样可以确保不会丢失任何数据包。（如果有资源仍在使用中的话，）WebRTC不能正常关闭SCTP关联。你需要自行关闭所有数据通道。
+SHUTDOWN 块将正常关闭 SCTP 关联。
+每个 Agent 将其发送的最后一个 TSN 通知给远端。这样可以确保不会丢失任何数据包。（如果有资源仍在使用中的话，）WebRTC 不能正常关闭 SCTP 关联。你需要自行关闭所有数据通道。
 
-`Cumulative TSN ACK`（累积TSN ACK）是发送的最后一个TSN。双方都知道在接收到此TSN对应的DATA块之前不要终止。
+`Cumulative TSN ACK`（累积 TSN ACK）是发送的最后一个 TSN。双方都知道在接收到此 TSN 对应的 DATA 块之前不要终止。
 
-### ERROR块
+### ERROR 块
 ```
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -330,9 +330,9 @@ SHUTDOWN块将正常关闭SCTP关联。
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-ERROR块用于通知远端SCTP Agent：本端发生了非致命错误。
+ERROR 块用于通知远端 SCTP Agent：本端发生了非致命错误。
 
-### FORWARD TSN块
+### FORWARD TSN 块
 ```
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -350,30 +350,30 @@ ERROR块用于通知远端SCTP Agent：本端发生了非致命错误。
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-`FORWARD TSN`块将全局TSN向前移动。SCTP这样做是为了允许跳过一些你不再关心的数据包。假设你发送了`10 11 12 13 14 15`，这些数据包只有在它们全部到达后才有意义。而这些数据又对实时性很敏感，在这种情况下，如果数据收晚了，它们就没有用了。
+`FORWARD TSN` 块将全局 TSN 向前移动。SCTP 这样做是为了允许跳过一些你不再关心的数据包。假设你发送了 `10 11 12 13 14 15`，这些数据包只有在它们全部到达后才有意义。而这些数据又对实时性很敏感，在这种情况下，如果数据收晚了，它们就没有用了。
 
-如果你丢失了`12`和`13`，则不需要再发送`14`和`15`！
-SCTP使用`FORWARD TSN`块来实现这一点。它告诉接收方，`14`和`15`将不再传递。
+如果你丢失了 `12` 和 `13`，则不需要再发送 `14` 和 `15`！
+SCTP 使用 `FORWARD TSN` 块来实现这一点。它告诉接收方，`14` 和 `15` 将不再传递。
 
-`New Cumulative TSN`（新的累积TSN），是连接的新TSN。此TSN之前的任何数据包都不会被保留。
+`New Cumulative TSN`（新的累积 TSN），是连接的新 TSN。此 TSN 之前的任何数据包都不会被保留。
 
-`Stream`（流）和`Stream Sequence`（流序列）用于将`Stream Sequence Number`的编号向前跳转。请参阅前面的`DATA块`以了解该字段的重要性。
+`Stream`（流）和 `Stream Sequence`（流序列）用于将 `Stream Sequence Number` 的编号向前跳转。请参阅前面的 `DATA 块`以了解该字段的重要性。
 
 ## 状态机
-这里是SCTP状态机中一些有趣的部分。WebRTC并未使用SCTP状态机的所有功能，因此我们将没有用到的部分排除在外。我们还简化了一些组件，使它们更易于理解。
+这里是 SCTP 状态机中一些有趣的部分。WebRTC 并未使用 SCTP 状态机的所有功能，因此我们将没有用到的部分排除在外。我们还简化了一些组件，使它们更易于理解。
 
 ### 连接建立流程
-`INIT`和`INIT ACK`块用于交换peer的能力和配置。SCTP在握手期间使用cookie来验证与之通信的peer。
-这是为了确保握手不会被拦截并防止DoS攻击。
+`INIT` 和 `INIT ACK` 块用于交换 peer 的能力和配置。SCTP 在握手期间使用 cookie 来验证与之通信的 peer。
+这是为了确保握手不会被拦截并防止 DoS 攻击。
 
-`INIT ACK`块包含cookie。然后，使用`COOKIE ECHO`将cookie返回给其创建者。如果cookie验证成功，则发送`COOKIE ACK`，并且准备交换DATA块。
+`INIT ACK` 块包含 cookie。然后，使用 `COOKIE ECHO` 将 cookie 返回给其创建者。如果 cookie 验证成功，则发送 `COOKIE ACK`，并且准备交换 DATA 块。
 
 ![连接的建立](../../images/07-connection-establishment.png "连接的建立")
 
 ### 连接关闭流程
-SCTP使用`SHUTDOWN`块。当Agent收到`SHUTDOWN`块时，它将等待直到收到请求的`Cumulative TSN ACK`。这样，即使连接有损，用户也可以确保传送了所有数据。
+SCTP 使用 `SHUTDOWN` 块。当 Agent 收到 `SHUTDOWN` 块时，它将等待直到收到请求的 `Cumulative TSN ACK`。这样，即使连接有损，用户也可以确保传送了所有数据。
 
 ### Keep-Alive（保持活动）机制
-SCTP使用`HEARTBEAT REQUEST`和`HEARTBEAT ACK`块使连接保持活动状态。它们以固定间隔发送，间隔时间可配置。如果数据包尚未到达，SCTP还会将指数回退。
+SCTP 使用 `HEARTBEAT REQUEST` 和 `HEARTBEAT ACK` 块使连接保持活动状态。它们以固定间隔发送，间隔时间可配置。如果数据包尚未到达，SCTP 还会将指数回退。
 
-`HEARTBEAT`块还包含一个时间值。两个关联可以用此来计算两个Agent之间的数据传递时间。
+`HEARTBEAT` 块还包含一个时间值。两个关联可以用此来计算两个 Agent 之间的数据传递时间。
