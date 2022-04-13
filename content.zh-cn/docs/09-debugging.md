@@ -6,9 +6,9 @@ weight: 10
 
 # 调试
 
-调试WebRTC可能是一项艰巨的任务。有很多部分都处于运行状态，每一个部分都可能出现问题。如果你不够细心，可能会浪费数周的时间来查看错误的模块。当你最终找到出错的部分时，你还需要学习一些知识才能理解问题的根源。
+调试 WebRTC 可能是一项艰巨的任务。有很多部分都处于运行状态，每一个部分都可能出现问题。如果你不够细心，可能会浪费数周的时间来查看错误的模块。当你最终找到出错的部分时，你还需要学习一些知识才能理解问题的根源。
 
-本章将带你学习WebRTC的调试。它将向你展示如何分析并定位相关问题。确定问题后，我们将快速介绍一下流行的调试工具。
+本章将带你学习 WebRTC 的调试。它将向你展示如何分析并定位相关问题。确定问题后，我们将快速介绍一下流行的调试工具。
 
 ## 分解问题
 
@@ -18,9 +18,9 @@ weight: 10
 
 ### 网络故障
 
-使用netcat测试你的STUN服务器：
+使用 netcat 测试你的 STUN 服务器：
 
-1. 准备**20字节**的绑定请求数据包：
+1. 准备 **20 字节**的绑定请求数据包：
 
     ```
     echo -ne "\x00\x01\x00\x00\x21\x12\xA4\x42TESTTESTTEST" | hexdump -C
@@ -32,10 +32,10 @@ weight: 10
     解释：
     - `00 01` 是消息类型。
     - `00 00` 是数据段的长度。
-    - `21 12 a4 42` 是magic cookie。
-    - `54 45 53 54 54 45 53 54 54 45 53 54` （解码成ASCII就是`TESTTESTTEST`） 是12字节的transaction ID。
+    - `21 12 a4 42` 是 magic cookie。
+    - `54 45 53 54 54 45 53 54 54 45 53 54` （解码成 ASCII 就是 `TESTTESTTEST`） 是 12 字节的 transaction ID。
 
-2. 发送请求并等待**32字节**的响应：
+2. 发送请求并等待 **32 字节**的响应：
 
     ```
     stunserver=stun1.l.google.com;stunport=19302;listenport=20000;echo -ne "\x00\x01\x00\x00\x21\x12\xA4\x42TESTTESTTEST" | nc -u -p $listenport $stunserver $stunport -w 1 | hexdump -C
@@ -46,18 +46,18 @@ weight: 10
 
     解释：
     - `01 01` 是消息类型。
-    - `00 0c` 是数据段的长度，解码后是十进制的12。
-    - `21 12 a4 42` 是magic cookie。
-    - `54 45 53 54 54 45 53 54 54 45 53 54` （解码成ASCII就是`TESTTESTTEST`）是12字节的transaction ID。
-    - `00 20 00 08 00 01 6f 32 7f 36 de 89` 是12字节的数据，解释：
+    - `00 0c` 是数据段的长度，解码后是十进制的 12。
+    - `21 12 a4 42` 是 magic cookie。
+    - `54 45 53 54 54 45 53 54 54 45 53 54` （解码成 ASCII 就是 `TESTTESTTEST`）是 12 字节的 transaction ID。
+    - `00 20 00 08 00 01 6f 32 7f 36 de 89` 是 12 字节的数据，解释：
         - `00 20` 是类型：`XOR-MAPPED-ADDRESS`。
-        - `00 08` 是value段的长度，以十进制解码就是8。
+        - `00 08` 是 value 段的长度，以十进制解码就是 8。
         - `00 01 6f 32 7f 36 de 89` 是数据值，解释：
             - `00 01` 是地址类型（IPv4）。
-            - `6f 32` 是经过XOR映射的端口。
-            - `7f 36 de 89` 是经过XOR映射的IP地址。
+            - `6f 32` 是经过 XOR 映射的端口。
+            - `7f 36 de 89` 是经过 XOR 映射的 IP 地址。
 
-解码XOR映射的部分很麻烦，但是我们可以通过提供设置为`00 00 00 00`的（无效）伪magic cookie来诱骗stun服务器执行伪XOR映射：
+解码 XOR 映射的部分很麻烦，但是我们可以通过提供设置为 `00 00 00 00` 的（无效）伪 magic cookie 来诱骗 stun 服务器执行伪 XOR 映射：
 
 ```
 stunserver=stun1.l.google.com;stunport=19302;listenport=20000;echo -ne "\x00\x01\x00\x00\x00\x00\x00\x00TESTTESTTEST" | nc -u -p $listenport $stunserver $stunport -w 1 | hexdump -C
@@ -66,12 +66,12 @@ stunserver=stun1.l.google.com;stunport=19302;listenport=20000;echo -ne "\x00\x01
 00000020
 ```
 
-对伪magic cookie的XOR运算是幂等的，因此响应中的端口和地址将是清楚的。这并非在所有情况下都有效，因为某些路由器会操纵传递的数据包，伪装IP地址。如果我们查看返回的数据值（最后八个字节）：
+对伪 magic cookie 的 XOR 运算是幂等的，因此响应中的端口和地址将是清楚的。这并非在所有情况下都有效，因为某些路由器会操纵传递的数据包，伪装 IP 地址。如果我们查看返回的数据值（最后八个字节）：
 
   - `00 01 4e 20 5e 24 7a cb` 是数据值，解释：
     - `00 01` 是地址类型（IPv4）。
-    - `4e 20` 是映射的端口，解码成十进制就是20000。
-    - `5e 24 7a cb` 是IP地址，解码成点分十进制表示法就是`94.36.122.203`。
+    - `4e 20` 是映射的端口，解码成十进制就是 20000。
+    - `5e 24 7a cb` 是 IP 地址，解码成点分十进制表示法就是 `94.36.122.203`。
 
 ### 安全故障
 
@@ -83,22 +83,22 @@ stunserver=stun1.l.google.com;stunport=19302;listenport=20000;echo -ne "\x00\x01
 
 ### netcat (nc)
 
-[netcat](https://en.wikipedia.org/wiki/Netcat) 是用于使用TCP或UDP读取和写入网络连接的命令行网络实用程序。通常它可以用`nc`命令来调用。
+[netcat](https://en.wikipedia.org/wiki/Netcat) 是用于使用 TCP 或 UDP 读取和写入网络连接的命令行网络实用程序。通常它可以用 `nc` 命令来调用。
 
 ### tcpdump
 
 [tcpdump](https://en.wikipedia.org/wiki/Tcpdump)是一个命令行数据网络数据包分析器。
 
 常用命令：
-- 捕获与端口19302之间的UDP数据包，并打印数据包内容的十六进制转储：
+- 捕获与端口 19302 之间的 UDP 数据包，并打印数据包内容的十六进制转储：
 
     `sudo tcpdump 'udp port 19302' -xx`
 
-- 与上一条相同，但将数据包保存在PCAP（数据包捕获）文件中以供以后检查
+- 与上一条相同，但将数据包保存在 PCAP（数据包捕获）文件中以供以后检查
 
     `sudo tcpdump 'udp port 19302' -w stun.pcap`
 
-  可以使用wireshark GUI打开PCAP文件：`wireshark stun.pcap`
+  可以使用 wireshark GUI 打开 PCAP 文件：`wireshark stun.pcap`
 
 ### wireshark
 
@@ -108,7 +108,7 @@ stunserver=stun1.l.google.com;stunport=19302;listenport=20000;echo -ne "\x00\x01
 
 Chrome 内置了一个 WebRTC 指标数据页面 [chrome://webrtc-internals](chrome://webrtc-internals) 。
 
-## 延迟(Latency)
+## 延迟 (Latency)
 
 我们该如何感知高延迟？你会注意到视频出现延迟了，但你知道它具体延迟了多少吗？
 想要降低延迟，你首先必须知道如何测量延迟。
@@ -122,17 +122,17 @@ Chrome 内置了一个 WebRTC 指标数据页面 [chrome://webrtc-internals](chr
 
 直播系统中每个组件内部的延迟都可能改变并影响下游组件。
 甚至拍摄的内容也会影响延迟。
-例如，与晴朗的蓝天这种低频图像相比，树枝等高频特征需要更多的比特数(*译者注：编码的本质是压缩，压缩的本质是减少数据冗余，复杂的图像编码后需要更多的空间*)。
-开启自动曝光的相机拍摄一帧图像所花费的时间，可能比预期的33ms _多得多_，即使拍摄速度设置为每秒30帧也是如此。
+例如，与晴朗的蓝天这种低频图像相比，树枝等高频特征需要更多的比特数 (*译者注：编码的本质是压缩，压缩的本质是减少数据冗余，复杂的图像编码后需要更多的空间*)。
+开启自动曝光的相机拍摄一帧图像所花费的时间，可能比预期的 33ms _ 多得多 _，即使拍摄速度设置为每秒 30 帧也是如此。
 通过网络（特别是蜂窝网络）的传输，受需求变化的影响，也是动态变化的。
 例如，更多的用户就意味着更多参与的通信者。
 地理位置（特别是某些臭名昭著的低信号区）等其他因素也会增加丢包和延迟。
-当你把数据包发送到网络接口（例如WiFi适配器或者LTE）并请求传送时，会发生些什么呢？
+当你把数据包发送到网络接口（例如 WiFi 适配器或者 LTE）并请求传送时，会发生些什么呢？
 如果数据包无法被立即传送，它将被加入网络接口的队列中，队列越大，网络接口引入的延迟就越大。
 
 ### 端到端延迟——手动测量
 
-当我们谈论 端到端延迟时，指的是从 事件发生 到 事件被看到(即视频帧播放在屏幕上) 的时间间隔。
+当我们谈论 端到端延迟时，指的是从 事件发生 到 事件被看到 (即视频帧播放在屏幕上) 的时间间隔。
 
 ```
 EndToEndLatency = T(observe) - T(happen)
@@ -162,36 +162,36 @@ EndToEndLatency = T(observe) - T(happen)
 
 ### 端到端延迟——自动测量
 
-本文写作时（2021年5月），WebRTC标准中关于端到端延迟的话题正在被积极[讨论中](https://github.com/w3c/webrtc-stats/issues/537)。
-Firefox 实现了一套API，让用户可以在标准WebRTC API之上，创建对延迟的自动测量。
+本文写作时（2021 年 5 月），WebRTC 标准中关于端到端延迟的话题正在被积极[讨论中](https://github.com/w3c/webrtc-stats/issues/537)。
+Firefox 实现了一套 API，让用户可以在标准 WebRTC API 之上，创建对延迟的自动测量。
 不过，在本段落中，我们将讨论进行端到端延迟自动测量的最通用的方法。
 
-![NTP方式的延迟测量](../../images/09-ntp-latency.png "NTP方式的延迟测量")
+![NTP 方式的延迟测量](../../images/09-ntp-latency.png "NTP方式的延迟测量")
 
 Roundtrip，即往返时间，简而言之就是： 我向你发送我的时间 `tR1`, 当我接收到 `tR1` 回来时，时间是 `tR2` ，可得往返时间是 `tR2 - tR1` 。
 
 在给定发送方和接收方之间的通信通道（比如，[DataChannel](https://webrtc.org/getting-started/data-channels)）后，接收方可以通过以下步骤来对发送方的单一时钟建模：
-1. 在时间`tR1`，接收方发送一个消息，包含它本地单一时钟的时间戳`tR1`。
-2. 在发送方一端的时间`tS1`，发送方收到该消息，并发送响应消息，响应消息中包含三个时间：`tR1`和`tS1`，以及发送方的视频轨道时间`tSV1`。
-3. 在接收方一端的时间`tR2`，接收方收到消息，可以用消息的接收时间减去发送时间，计算出往返时间：`RTT = tR2 - tR1`。
-4. 有了往返时间`RTT`和发送方本地时间戳 `tS1`，就可以估算出发送方的单一时钟了。在`tR2`这个时间点，发送方的当前时间近似等于`tS1`加上往返时间`RTT`的一半。
-5. 根据发送方本地时钟的时间戳 `tS1`，以及视频轨道的时间戳`tSV1`，加上往返时间`RTT`，接收方就可以将自己这一端和发送方一端的视频轨道时间进行同步。
+1. 在时间 `tR1`，接收方发送一个消息，包含它本地单一时钟的时间戳 `tR1`。
+2. 在发送方一端的时间 `tS1`，发送方收到该消息，并发送响应消息，响应消息中包含三个时间：`tR1` 和 `tS1`，以及发送方的视频轨道时间 `tSV1`。
+3. 在接收方一端的时间 `tR2`，接收方收到消息，可以用消息的接收时间减去发送时间，计算出往返时间：`RTT = tR2 - tR1`。
+4. 有了往返时间 `RTT` 和发送方本地时间戳 `tS1`，就可以估算出发送方的单一时钟了。在 `tR2` 这个时间点，发送方的当前时间近似等于 `tS1` 加上往返时间 `RTT` 的一半。
+5. 根据发送方本地时钟的时间戳 `tS1`，以及视频轨道的时间戳 `tSV1`，加上往返时间 `RTT`，接收方就可以将自己这一端和发送方一端的视频轨道时间进行同步。
 
-现在我们已经知道了从发送方发出最后一个视频帧时间`tSV1`之后所经过的时间，我们可以这样计算近似的时间延迟，即用 期待的视频时间（'expected_video_time'） 减去 当前播放的视频帧的时间（'actual_video_time'）：
+现在我们已经知道了从发送方发出最后一个视频帧时间 `tSV1` 之后所经过的时间，我们可以这样计算近似的时间延迟，即用 期待的视频时间（'expected_video_time'） 减去 当前播放的视频帧的时间（'actual_video_time'）：
 
 ```
 expected_video_time = tSV1 + time_since(tSV1)
 latency = expected_video_time - actual_video_time
 ```
 
-*译者注：期待的视频时间指的是 没有时延的情况下应该播放到哪个时间，在Sender端，tSV1时间采集tSV1,之后，过了 time_since(tSV1)时间，Sender端当前应该采集的是 tSV1 + time_since(tSV1)，无延迟情况下，期待的视频时间也就是Sender当前应该采集的时间。*
+*译者注：期待的视频时间指的是 没有时延的情况下应该播放到哪个时间，在 Sender 端，tSV1 时间采集 tSV1, 之后，过了 time_since(tSV1) 时间，Sender 端当前应该采集的是 tSV1 + time_since(tSV1)，无延迟情况下，期待的视频时间也就是 Sender 当前应该采集的时间。*
 
 这种方法的缺陷是没有包含相机内部的延迟。
 大多数视频系统一般将相机的帧传送到主内存的时间作为这一帧的拍摄时间戳，但拍摄实际发生的时间会略早于此时间。
 
 #### 延迟测量示例
 
-一个简单实现是在接收方开启一个`latency`数据通道，并定期将接收方的单一时钟时间戳发送到发送方。发送方响应一个JSON消息（消息中包含上面提到的三个时间），然后接收方根据这个消息来计算延迟。
+一个简单实现是在接收方开启一个 `latency` 数据通道，并定期将接收方的单一时钟时间戳发送到发送方。发送方响应一个 JSON 消息（消息中包含上面提到的三个时间），然后接收方根据这个消息来计算延迟。
 
 ```json
 {
@@ -207,13 +207,13 @@ latency = expected_video_time - actual_video_time
 }
 ```
 
-在接收方开启这个`latency`数据通道：
+在接收方开启这个 `latency` 数据通道：
 
 ```javascript
 dataChannel = peerConnection.createDataChannel('latency');
 ```
 
-定期发送接收方的时间`tR1`，示例中使用的周期是2秒：
+定期发送接收方的时间 `tR1`，示例中使用的周期是 2 秒：
 
 ```javascript
 setInterval(() => {
@@ -267,13 +267,13 @@ VIDEO.requestVideoFrameCallback((now, framemeta) => {
 
 #### 浏览器中的视频准确时间
 
-> `<video>.requestVideoFrameCallback()` 允许web开发者在视频帧可以被合成图像时收到通知。
+> `<video>.requestVideoFrameCallback()` 允许 web 开发者在视频帧可以被合成图像时收到通知。
 
-直到最近（2020年5月），我们还基本没有一个可靠的方式在浏览器中获取视频当前播放帧的时间戳 。虽然存在一个基于`video.currentTime` 的变通方法，但得到的结果也不是特别精确。
-Chrome 和 Mozilla 的浏览器开发者都[支持](https://github.com/mozilla/standards-positions/issues/250)引入新的W3C标准，[`HTMLVideoElement.requestVideoFrameCallback()`](https://wicg.github.io/video-rvfc/)，该标准添加了一个API回调来访问当前视频帧的时间。
-尽管这个新API听起来微不足道，但它赋予了应用在Web上进行音视频同步的能力，并已经促进了多个Web上的高级的媒体应用的实现。
-特别是对于WebRTC，回调中将包含`rtpTimestamp`字段，即与当前视频帧的关联的RTP时间戳。
-这个接口理应出现在WebRTC应用中，可惜目前还没有。
+直到最近（2020 年 5 月），我们还基本没有一个可靠的方式在浏览器中获取视频当前播放帧的时间戳 。虽然存在一个基于 `video.currentTime` 的变通方法，但得到的结果也不是特别精确。
+Chrome 和 Mozilla 的浏览器开发者都[支持](https://github.com/mozilla/standards-positions/issues/250)引入新的 W3C 标准，[`HTMLVideoElement.requestVideoFrameCallback()`](https://wicg.github.io/video-rvfc/)，该标准添加了一个 API 回调来访问当前视频帧的时间。
+尽管这个新 API 听起来微不足道，但它赋予了应用在 Web 上进行音视频同步的能力，并已经促进了多个 Web 上的高级的媒体应用的实现。
+特别是对于 WebRTC，回调中将包含 `rtpTimestamp` 字段，即与当前视频帧的关联的 RTP 时间戳。
+这个接口理应出现在 WebRTC 应用中，可惜目前还没有。
 
 ### 延迟的调试技巧
 
@@ -284,9 +284,9 @@ Chrome 和 Mozilla 的浏览器开发者都[支持](https://github.com/mozilla/s
 
 根据相机设置，相机延迟可能会有所不同。
 检查自动曝光、自动对焦和自动白平衡等设置。
-网络摄像头的所有"自动"功能都需要一些额外的时间来分析捕获的图像，然后才能将其提供给WebRTC协议栈。
+网络摄像头的所有 " 自动 " 功能都需要一些额外的时间来分析捕获的图像，然后才能将其提供给 WebRTC 协议栈。
 
-在Linux上，你可以使用`v4l2-ctl`命令行工具来控制相机设置：
+在 Linux 上，你可以使用 `v4l2-ctl` 命令行工具来控制相机设置：
 
 ```bash
 # Disable autofocus:
@@ -295,7 +295,7 @@ v4l2-ctl -d /dev/video0 -c focus_auto=0
 v4l2-ctl -d /dev/video0 -c focus_absolute=0
 ```
 
-你也可以使用图形界面工具`guvcview`来快速检测和调整相机设置。
+你也可以使用图形界面工具 `guvcview` 来快速检测和调整相机设置。
 
 #### 编码延迟
 
@@ -304,9 +304,9 @@ v4l2-ctl -d /dev/video0 -c focus_absolute=0
 多次编码器就是编码器忽略输出时延的一个极端例子。
 在第一次编码过程中，编码器需要获取到完整的视频数据，然后才会开始输出视频帧。
 
-不过，通过适当的调整，我们可以减少sub-frame的延迟（*译者注：这里应该是指 subsequent-frame,避免对后续帧的依赖*）。
-请确保你的编码器不使用过多的参考帧或依赖于B帧。
-每个编解码器的延迟调整设置都不同，但对于x264而言，我们建议使用`tune=zerolatency`和`profile=baseline`以获得最低的帧输出延迟。
+不过，通过适当的调整，我们可以减少 sub-frame 的延迟（*译者注：这里应该是指 subsequent-frame, 避免对后续帧的依赖*）。
+请确保你的编码器不使用过多的参考帧或依赖于 B 帧。
+每个编解码器的延迟调整设置都不同，但对于 x264 而言，我们建议使用 `tune=zerolatency` 和 `profile=baseline` 以获得最低的帧输出延迟。
 
 #### 网络延迟
 
@@ -319,41 +319,41 @@ WebRTC 以毫秒级精度测量网络状态。
 
 **往返时间**
 
-WebRTC协议栈有内建的网络往返时间（round trip time, RTT）[测量机制](https://www.w3.org/TR/webrtc-stats/#dom-rtcremoteinboundrtpstreamstats-roundtriptime) 。
-网络延迟的一个很不错的近似值是`RTT/2`。它假设发送和接收数据包需要同样长的时间，然而情况并非总是如此。
-RTT界定了端到端的时延的下限。
-不管如何优化相机到编码器的处理管道，视频帧都无法在`RTT/2`的时间以内到达接收方。
+WebRTC 协议栈有内建的网络往返时间（round trip time, RTT）[测量机制](https://www.w3.org/TR/webrtc-stats/#dom-rtcremoteinboundrtpstreamstats-roundtriptime) 。
+网络延迟的一个很不错的近似值是 `RTT/2`。它假设发送和接收数据包需要同样长的时间，然而情况并非总是如此。
+RTT 界定了端到端的时延的下限。
+不管如何优化相机到编码器的处理管道，视频帧都无法在 `RTT/2` 的时间以内到达接收方。
 
-内建的RTT机制，基于特殊的RTCP包，也就是发送方/接收方报告。
+内建的 RTT 机制，基于特殊的 RTCP 包，也就是发送方 / 接收方报告。
 发送方发送自己的时间戳给接收方，接收方再将这个时间戳回传给发送方。
 这样，发送方就知道这个数据包从发往接收方到返回一共花了多长时间。
-RTT测量的更多内容，请参阅[发送方和接收方报告](../06-media-communication/#sender-and-receiver-reports%e5%8f%91%e9%80%81%e6%96%b9%e5%92%8c%e6%8e%a5%e6%94%b6%e6%96%b9%e6%8a%a5%e5%91%8a)章节。
+RTT 测量的更多内容，请参阅[发送方和接收方报告](../06-media-communication/#sender-and-receiver-reports%e5%8f%91%e9%80%81%e6%96%b9%e5%92%8c%e6%8e%a5%e6%94%b6%e6%96%b9%e6%8a%a5%e5%91%8a)章节。
 
 **丢包与包重传**
 
-RTP和RTCP协议都是基于UDP，对于数据的顺序、成功送达或者避免重复，UDP不提供任何保障。
-而上面所有这些在现实世界的WebRTC应用中都会发生，也总是在发生。
+RTP 和 RTCP 协议都是基于 UDP，对于数据的顺序、成功送达或者避免重复，UDP 不提供任何保障。
+而上面所有这些在现实世界的 WebRTC 应用中都会发生，也总是在发生。
 一个简单的解码器实现会期望一个视频帧的所有数据包都被完整送达，以便解码器能重新生成图像。
-出现丢包问题时，如果丢失的是[P帧](../06-media-communication/#帧间压缩)的数据包，则可能会解码出错误的图像。
-如果丢失的是I帧的数据包，则所有依赖于此I帧的视频帧要么出现严重的解码错误，要么压根无法被解码。
-这些都很可能会造成视频"卡住"一段时间。
+出现丢包问题时，如果丢失的是[P 帧](../06-media-communication/#帧间压缩)的数据包，则可能会解码出错误的图像。
+如果丢失的是 I 帧的数据包，则所有依赖于此 I 帧的视频帧要么出现严重的解码错误，要么压根无法被解码。
+这些都很可能会造成视频 " 卡住 " 一段时间。
 
-为了避免（当然只是尽量避免）视频卡住或者解码错误，WebRTC使用NACK（[否定确认](../06-media-communication/#negative-acknowledgements否定确认)）。
-当接收方没有收到一个期待的RTP包时，将返回NACK消息，让发送方再次发送这个丢失的包。
-接收方 _等待_ 数据包重传完成。
+为了避免（当然只是尽量避免）视频卡住或者解码错误，WebRTC 使用 NACK（[否定确认](../06-media-communication/#negative-acknowledgements否定确认)）。
+当接收方没有收到一个期待的 RTP 包时，将返回 NACK 消息，让发送方再次发送这个丢失的包。
+接收方 _ 等待 _ 数据包重传完成。
 这样的重传会导致延迟增加。
-NACK包的发送和接收的数量会被记录在WebRTC内建的统计数据中，对应的字段是[outbound stream nackCount](https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-nackcount)和[inbound stream nackCount](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-nackcount) 。
+NACK 包的发送和接收的数量会被记录在 WebRTC 内建的统计数据中，对应的字段是[outbound stream nackCount](https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-nackcount)和[inbound stream nackCount](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-nackcount) 。
 
-在[webrtc internals页面](#webrtc-internals)中，你可以看到展示入站和出站的`nackCount`的漂亮的图表。
-如果你看到`nackCount`正在增加，这意味着网络正处于大量丢包的状态，尽管如此，WebRTC协议栈仍在努力创建流畅的音视频体验。
+在[webrtc internals 页面](#webrtc-internals)中，你可以看到展示入站和出站的 `nackCount` 的漂亮的图表。
+如果你看到 `nackCount` 正在增加，这意味着网络正处于大量丢包的状态，尽管如此，WebRTC 协议栈仍在努力创建流畅的音视频体验。
 
-当丢包率太高，解码器已经无法解码图像或者后续关联帧（例如I帧完全丢失的情况）的时候，所有后续的P帧都将无法解码。
+当丢包率太高，解码器已经无法解码图像或者后续关联帧（例如 I 帧完全丢失的情况）的时候，所有后续的 P 帧都将无法解码。
 在这种情况下，接收方将通过发送图片丢失指示（[PLI](../06-media-communication/#完整的帧内请求fir和图片丢失指示pli)）消息来尝试缓解问题。
-一旦发送方接收到一个`PLI`消息，它将生成一个新的I帧来帮助接收方的解码器生成图像。
-I帧一般比P帧大，这也增加了需要传输的数据包数量。
-和NACK消息一样，接收方需要等待新的I帧，这也引入了额外的延迟。
+一旦发送方接收到一个 `PLI` 消息，它将生成一个新的 I 帧来帮助接收方的解码器生成图像。
+I 帧一般比 P 帧大，这也增加了需要传输的数据包数量。
+和 NACK 消息一样，接收方需要等待新的 I 帧，这也引入了额外的延迟。
 
-你需要关注[webrtc internals页面](#webrtc-internals)中的`pliCount`指标，如果它增加了，你需要调整编码器以减少数据包的输出；或者启用容错度更高的模式。
+你需要关注[webrtc internals 页面](#webrtc-internals)中的 `pliCount` 指标，如果它增加了，你需要调整编码器以减少数据包的输出；或者启用容错度更高的模式。
 
 #### 接收方一侧的延迟
 
