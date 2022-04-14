@@ -113,7 +113,7 @@ WebRTC 使用 Offer/Answer 模型。这指的是，一个 WebRTC Agent 发出 "O
 
 ### 用于发送和接收的收发器（Transceivers）
 
-收发器是 WebRTC 中特有的概念，你将在看到它。它的作用是将 " 媒体描述 " 暴露给 JavaScript API。每个媒体描述都将成为一个收发器。每次创建收发器时，都会将新的媒体描述添加到本地会话描述中。
+收发器是 WebRTC 中特有的概念，你将在 API 中看到它。它的作用是将 " 媒体描述 " 暴露给 JavaScript API。每个媒体描述都将成为一个收发器。每次创建收发器时，都会将新的媒体描述添加到本地会话描述中。
 
 WebRTC 中的每个媒体描述都包含一个 direction 属性。这样，WebRTC Agent 可以声明 " 我将向你发送此编解码器，但我不打算接受任何返回的内容 "。direction 属性有四个有效值：
 
