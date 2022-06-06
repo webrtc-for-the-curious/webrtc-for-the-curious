@@ -36,6 +36,11 @@ DefaultContentLanguage = "en"
     languagedirection = "rtl"
     contentDir = "content.fa"
     weight = 5
+  [languages.fr]
+    title = "WebRTC pour les curieux"
+    languageName = "Français"
+    contentDir = "content.fr"
+    weight = 6
 #  [languages.tr]
 #    title = "WebRTC for the Curious -- TODO Translate to Turkish"
 #    languageName = "Turkish"
