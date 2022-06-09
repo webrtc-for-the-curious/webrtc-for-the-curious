@@ -8,19 +8,19 @@ type: docs
 Ce livre a été créé par des experts  WebRCT afin de partager leurs savoir durement acquis avec le monde.
  Le _WebRTC pour les curieux_ est un livre en OpenSource écrit pour ceux qui veulent toujours en savoir plus. Ce livre ne se contente pas d’abstraction.
 
- Ce livre concerne les protocoles et les APIs, et il ne va pas parler de logiciel en particulier. Nous nous efforçons de résumer les RFCs et de rassembler tout le savoir non documenté en un unique endroit. Ce livre n’est pas un tutoriel, et il ne va contenir beaucoup de code.
+ Ce livre concerne les protocoles et les APIs, et il ne va pas parler de logiciel en particulier. Nous nous efforçons de résumer les RFCs et de rassembler tout le savoir non documenté en un unique endroit. Ce livre n’est pas un tutoriel, et il ne va pas contenir beaucoup de code.
 
  Le WebRTC est une merveilleuse technologie, mais il est difficile à utiliser. Ce livre est indépendant de tout fournisseur, et nous nous sommes efforcés de supprimer tous les conflits d’intérêt.   
 
 ## Pour qui est ce livre :
--   Les développeurs qui ne savent même pas ce que le WebRTC résout comme problème et veulent en connaitre davantage.
+-   Les développeurs qui ne savent même pas ce que le WebRTC résout comme problème et veulent en connaître davantage.
 -   Quelqu’un qui a déjà construit avec le WebRTC, mais souhaite en savoir plus au-delà des APIs.
 -   Des développeurs confirmés qui ont besoin d’aide pour debugger.
 -   Des experts WebRTC qui ont besoin de clarifications sur des parties spécifiques.
 
 ## Construit pour de multiples lectures
 
-Ce livre est construit pour être lu de nombreuse fois. Chacun des chapitres est autonome, donc vous pouvez aller à n’importe quelle partie sans vous perdre.
+Ce livre est construit pour être lu de nombreuses fois. Chacun des chapitres est autonome, donc vous pouvez aller à n’importe quelle partie sans vous perdre.
 
 Chaque chapitre tente de répondre à une unique question, avec trois niveaux d’information.
 -   Qu’est-ce qui doit être résolu ?
@@ -47,4 +47,4 @@ Nous avons besoin de votre aide ! Ce livre est entièrement développé sous [Gi
 
 ## Licence
 
-Ce livre est disponible sous licence CC0. Les auteurs ont renoncé à tous leur copyright et droits associés pour leurs travaux dans la pleine mesure prévue par la loi. Vous pouvez utiliser ce travail comme vous le désirez et aucune attribution n’est demandée.
+Ce livre est disponible sous licence CC0. Les auteurs ont renoncé à tous leurs copyrights et droits associés pour leurs travaux dans la pleine mesure prévue par la loi. Vous pouvez utiliser ce travail comme vous le désirez et aucune attribution n’est demandée.
