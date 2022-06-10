@@ -94,9 +94,9 @@ Cela nous permet d’examiner et d’apprendre chaque partie de façon individue
 
 ![WebRTC Agent](../images/01-webrtc-agent.png "WebRTC Agent Diagram")
 
-## Comment marche le WebRCT (l’API)
+## Comment marche le WebRTC (l’API)
 
-Cette section montre comment l’API Javascript WebRTC se calque sur le protocole. Il ne s’agit pas de montrer une démo détaillée de l’API WebRCT, mais plus de créer une représentation mentale de la manière dont tout cela est lié. Si vous n’êtes pas familier avec cela, tout va bien. Cela pourra être une section intéressante à regarder une fois que vous en aurez appris un peu plus.
+Cette section montre comment l’API Javascript WebRTC se calque sur le protocole. Il ne s’agit pas de montrer une démo détaillée de l’API WebRTC, mais plus de créer une représentation mentale de la manière dont tout cela est lié. Si vous n’êtes pas familier avec cela, tout va bien. Cela pourra être une section intéressante à regarder une fois que vous en aurez appris un peu plus.
 
 ### `new RTCPeerConnection`
 
@@ -137,7 +137,7 @@ Quand `setRemoteDescription` est appelé des deux cotés, les agents WebRTC ont 
 
 ### `addIceCandidate`
 
-`addIceCandidate` permet à un agent WebRCT d’ajouter plus de candidats ICE distants quand il le veut. Cette API envoie le candidat ICE directement dans le sous-système ICE et n’a aucun autre effet dans la grande connexion WebRTC.
+`addIceCandidate` permet à un agent WebRTC d’ajouter plus de candidats ICE distants quand il le veut. Cette API envoie le candidat ICE directement dans le sous-système ICE et n’a aucun autre effet dans la grande connexion WebRTC.
 
 ### `ontrack`
 

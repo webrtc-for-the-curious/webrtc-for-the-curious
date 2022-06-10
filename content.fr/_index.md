@@ -5,7 +5,7 @@ type: docs
 
 # Le WebRTC pour les curieux
 
-Ce livre a été créé par des experts  WebRCT afin de partager leurs savoir durement acquis avec le monde.
+Ce livre a été créé par des experts  WebRTC afin de partager leurs savoir durement acquis avec le monde.
  Le _WebRTC pour les curieux_ est un livre en OpenSource écrit pour ceux qui veulent toujours en savoir plus. Ce livre ne se contente pas d’abstraction.
 
  Ce livre concerne les protocoles et les APIs, et il ne va pas parler de logiciel en particulier. Nous nous efforçons de résumer les RFCs et de rassembler tout le savoir non documenté en un unique endroit. Ce livre n’est pas un tutoriel, et il ne va pas contenir beaucoup de code.
