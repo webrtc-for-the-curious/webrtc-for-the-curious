@@ -33,14 +33,14 @@ This list is not meant to be exhaustive, but rather a range of things you may ap
 
 ## The WebRTC Protocol is a collection of other technologies
 
-The WebRTC Protocol is an immense topic that would take an entire book of its own to explain in full. We can, however, begin an explanation by breaking it into four sequential steps:
+The WebRTC Protocol is an immense topic that would take an entire book of its own to explain in full. We can, however, begin an explanation by breaking it into four steps:
 
-* Signaling
-* Connecting
-* Securing
-* Communicating
+1. Signaling
+2. Connecting
+3. Securing
+4. Communicating
 
-As these steps happen sequentially, the prior step must be 100% successful for the subsequent step to even begin.
+These steps are sequential, which means the prior step must be 100% successful for the subsequent step to begin.
 
 One peculiar fact about WebRTC is that each step is actually made up of many other protocols; to make WebRTC, we stitch together many existing technologies. In that sense, you can think of WebRTC as being more a combination and configuration of well-understood tech dating back to the early 2000s than as a brand-new process in its own right.
 
