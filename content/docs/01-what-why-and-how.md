@@ -60,7 +60,7 @@ Signaling uses an existing, plain-text protocol called SDP (Session Description 
 
 It is important to note that signaling typically happens "out-of-band," which means applications generally don't use WebRTC itself to trade signaling messages. Any architecture suitable for sending messages can relay the SDPs between the connecting peers, and many applications will simply use their existing infrastructure (e.g. REST endpoints, WebSocket connections, or authentication proxies) to facilitate the trading of SDPs between the proper clients.
 
-### Connecting:  Using STUN/TURN to Navigate Connaction and NAT Traversal
+### Connecting:  Using STUN/TURN to Navigate Connection and NAT Traversal
 
 Oncew two WebRTC Agents have traded SDPs, they have enough information to attempt to connect to each other. To make this connection happen, WebRTC uses another established technology called ICE (Interactive Connectivity Establishment).
 
