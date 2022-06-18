@@ -44,7 +44,7 @@ These steps are sequential, which means the prior step must be 100% successful f
 
 One peculiar fact about WebRTC is that each step is actually made up of many other protocols; to make WebRTC, we stitch together many existing technologies. In that sense, you can think of WebRTC as being more a combination and configuration of well-understood tech dating back to the early 2000s than as a brand-new process in its own right.
 
-Each of these steps has its own dedicated chapter but, since each step depends on the one before it, it is helpful to understand them at a high level first. A basic understand of all the steps will help when explaining further the purpose of each individually.
+Each of these steps has its own dedicated chapter but, since each step depends on the one before it, it is helpful to understand them at a high level first. A basic understanding of all the steps will help when explaining further the purpose of each individually.
 
 ### Signaling: How peers find each other in WebRTC
 
@@ -58,21 +58,23 @@ Signaling uses an existing, plain-text protocol called SDP (Session Description 
 * The values used while connecting (`uFrag`/`uPwd`)
 * The values used while securing (certificate fingerprint)
 
-It is important to note that signaling typically happens "out-of-band," which means applications generally don't use WebRTC itself to trade signaling messages. Any architecture suitable for sending messages can relay the SDPs between the connecting peers, and many applications will simply use their existing infrastructure (e.g. REST endpoints, WebSocket connections, or authentication proxies) to facilitate trading of SDPs between the proper clients.
+It is important to note that signaling typically happens "out-of-band," which means applications generally don't use WebRTC itself to trade signaling messages. Any architecture suitable for sending messages can relay the SDPs between the connecting peers, and many applications will simply use their existing infrastructure (e.g. REST endpoints, WebSocket connections, or authentication proxies) to facilitate the trading of SDPs between the proper clients.
 
 ### Connecting:  Using STUN/TURN to Navigate Connaction and NAT Traversal
 
-After trading SDPs, the two WebRTC Agents now have enough information to attempt to connect to each other. To make this happen, WebRTC uses another established technology called ICE (Interactive Connectivity Establishment).
+Oncew two WebRTC Agents have traded SDPs, they have enough information to attempt to connect to each other. To make this connection happen, WebRTC uses another established technology called ICE (Interactive Connectivity Establishment).
 
-ICE is a protocol that pre-dates WebRTC which allows the establishment of a connection between two Agents. These Agents could be on the same network or on the other side of the world. ICE is the solution to establishing a direct connection without a central server.
+ICE is a protocol that pre-dates WebRTC and allows the establishment of a direct connection between two Agents without a central server. These two Agents could be on the same network or on the other side of the world.
 
-The real magic here is 'NAT Traversal' and STUN/TURN Servers. These two concepts are all you need to communicate with an ICE Agent in another subnet. We will explore these topics in depth later.
+ICE enables direct connection, but the real magic of the connecting process involves a concept called 'NAT Traversal' and the use of STUN/TURN Servers. These two concepts, which we will explore in more depth later, are all you need to communicate with an ICE Agent in another subnet.
 
-Once ICE successfully connects, WebRTC then moves on to establishing an encrypted transport. This transport is used for audio, video, and data.
+Once two Agents have succesfully established an ICE connection, WebRTC moves on to the next step: establishing an encrypted transport for sharing audio, video, and data between them.
 
-### Securing the transport layer with DTLS and SRTP
+### Securing: Encrypting the transport layer with DTLS and SRTP
 
-Now that we have bi-directional communication (via ICE) we need to establish secure communication. This is done through two protocols that pre-date WebRTC. The first protocol is DTLS (Datagram Transport Layer Security) which is just TLS over UDP. TLS is the cryptographic protocol used to secure communication over HTTPS. The second protocol is SRTP (Secure Real-time Transport Protocol).
+Now that we have bi-directional communication (via ICE), we need to make sure that communication is secure. This is done through two more protocols that pre-date WebRTC:  DTLS (Datagram Transport Layer Security) and SRTP (Secure Real-Time Transport Protocol). The first protocol, DTLS, is simply TLS over UDP (TLS is the cryptographic protocol used to secure communication over HTTPS). The second protocol, SRTP (Secure Real-time Transport Protocol), is used to ensure encryption of RTP (Real-time Protocol) data packets.
+
+##########stopped here
 
 First, WebRTC connects by doing a DTLS handshake over the connection established by ICE. Unlike HTTPS, WebRTC doesn't use a central authority for certificates. Instead, WebRTC just asserts that the certificate exchanged via DTLS matches the fingerprint shared via signaling. This DTLS connection is then used for DataChannel messages.
 
