@@ -72,35 +72,36 @@ Once two Agents have succesfully established an ICE connection, WebRTC moves on 
 
 ### Securing: Encrypting the transport layer with DTLS and SRTP
 
-Now that we have bi-directional communication (via ICE), we need to make sure that communication is secure. This is done through two more protocols that pre-date WebRTC:  DTLS (Datagram Transport Layer Security) and SRTP (Secure Real-Time Transport Protocol). The first protocol, DTLS, is simply TLS over UDP (TLS is the cryptographic protocol used to secure communication over HTTPS). The second protocol, SRTP (Secure Real-time Transport Protocol), is used to ensure encryption of RTP (Real-time Protocol) data packets.
+Now that we have bi-directional communication (via ICE), we need to make certain our communication is secure. This is done through two more protocols that pre-date WebRTC:  DTLS (Datagram Transport Layer Security) and SRTP (Secure Real-Time Transport Protocol). The first protocol, DTLS, is simply TLS over UDP (TLS is the cryptographic protocol used to secure communication over HTTPS). The second protocol, SRTP (Secure Real-time Transport Protocol), is used to ensure encryption of RTP (Real-time Protocol) data packets.
 
-##########stopped here
+First, WebRTC connects by doing a DTLS handshake over the connection established by ICE. Unlike HTTPS, WebRTC doesn't use a central authority for certificates.  It simply asserts that the certificate exchanged via DTLS matches the fingerprint shared via signaling. This DTLS connection is then used for DataChannel messages.
 
-First, WebRTC connects by doing a DTLS handshake over the connection established by ICE. Unlike HTTPS, WebRTC doesn't use a central authority for certificates. Instead, WebRTC just asserts that the certificate exchanged via DTLS matches the fingerprint shared via signaling. This DTLS connection is then used for DataChannel messages.
+Next, WebRTC uses the RTP protocol- secured using SRTP- for audio/video transmission. We initialize our SRTP session by extracting the keys from the negotiated DTLS session. 
 
-WebRTC then uses a different protocol for audio/video transmission called RTP. We secure our RTP packets using SRTP. We initialize our SRTP session by extracting the keys from the negotiated DTLS session. In a later chapter, we discuss why media transmission has its own protocol.
+We will discuss why media and data transmission have their own protocols in a later chapter, but for now it is enough to know that they are handled separately.
 
-Now we are done! You now have bi-directional and secure communication. If you have a stable connection between your WebRTC Agents, this is all the complexity you may need. Unfortunately, the real world has packet loss and bandwidth limits, and the next section is about how we deal with them.
+Now we are done! We've successfully established bi-directional and secure communication. If you have a stable connection between your WebRTC Agents, this is all the complexity you may need. In the next section, we will discuss how WebRTC deals with the unfortunate real world problems of packet loss and bandwidth limits.
 
-### Communicating with peers via RTP and SCTP
+### Communicating:  Sharing media with peers via RTP and SCTP
 
-We now have two WebRTC Agents with secure bi-directional communication. Let's start communicating! Again, we use two pre-existing protocols: RTP (Real-time Transport Protocol), and SCTP (Stream Control Transmission Protocol). Use RTP to exchange media encrypted with SRTP, and use SCTP to send and receive DataChannel messages encrypted with DTLS.
+Now that we have two WebRTC Agents connected and secure, bi-directional communication established, let's start communicating! Again, WebRTC will use two pre-existing protocols for this process: RTP and SCTP (Stream Control Transmission Protocol). We use RTP to exchange media encrypted with SRTP, and we use SCTP to send and receive DataChannel messages encrypted with DTLS.
 
-RTP is quite minimal but provides what is needed to implement real-time streaming. The important thing is that RTP gives flexibility to the developer, so they can handle latency, loss, and congestion as they please. We will discuss this further in the media chapter.
+RTP is a minimal protocol, but provides the necessary tools to implement real-time streaming. The most important thing about RTP is that it gives flexibility to the developer, allowing them to handle latency, loss, and congestion as they please. We will discuss this further in the media chapter.
 
-The final protocol in the stack is SCTP. SCTP allows many delivery options for messages. You can optionally choose to have unreliable, out of order delivery, so you can get the latency needed for real-time systems.
+The final protocol in the stack is SCTP. The important thing about SCTP is that it allows for unreliable, out of order message delivery (among many different options). This allows developers to ensure the necessary latency for real-time systems.
 
-## WebRTC, a collection of protocols
-WebRTC solves a lot of problems. At first, this may even seem over-engineered. The genius of WebRTC is really the humility. It didn't assume it could solve everything better. Instead, it embraced many existing single purpose technologies and bundled them together.
+## WebRTC: A collection of protocols
+WebRTC is set up to solve a lot of problems. At first glance the technology may seem over-engineered, but the genius of WebRTC is its humility. It wasn't created under the assumption that it could solve everything better. Instead, it embraced many existing single purpose technologies and brought them together into a streamlined, widely applicable bundle.
 
-This allows us to examine and learn each part individually without being overwhelmed. A good way to visualize it is a 'WebRTC Agent' is really just an orchestrator of many different protocols.
+The practical effect of this is that it allows us to examine and learn each part individually without being overwhelmed. A good visualization for a 'WebRTC Agent' is as an orchestrator of many different protocols.
 
 ![WebRTC Agent](../images/01-webrtc-agent.png "WebRTC Agent Diagram")
 
-## How does WebRTC (the API) work
+## WebRTC (the API): How does it work?
 
-This section shows how the JavaScript API maps to the protocol. This isn't meant as an extensive demo of the WebRTC API, but more to create a mental model of how it all ties together.
-If you aren't familiar with either, it is ok. This could be a fun section to return to as you learn more!
+This section outlines how the WebRTC JavaScript API maps to the WebRTC protocol described above. It isn't meant as an extensive demo of the WebRTC API, but to create a mental model of how everything ties together.
+
+If you aren't familiar with either the protocol or the API, don't worry. This could be a fun section to return to as you learn more!
 
 ### `new RTCPeerConnection`
 
@@ -110,45 +111,45 @@ The `RTCPeerConnection` is the top-level "WebRTC Session". It contains all the p
 
 `addTrack` creates a new RTP stream. A random Synchronization Source (SSRC) will be generated for this stream. This stream will then be inside the Session Description generated by `createOffer` inside a media section. Each call to `addTrack` will create a new SSRC and media section.
 
-Immediately after a SRTP Session is established these media packets will start being sent via ICE after being encrypted using SRTP.
+Immediately after an SRTP Session is established, these media packets will start being encrpyted using SRTP and sent via ICE.
 
 ### `createDataChannel`
 
-`createDataChannel` creates a new SCTP stream if no SCTP association exists. By default, SCTP is not enabled but is only started when one side requests a data channel.
+`createDataChannel` creates a new SCTP stream if no SCTP association exists. SCTP is not enabled by default.  It is only started when one side requests a data channel.
 
-Immediately after a DTLS Session is established, the SCTP association will start sending packets via ICE and encrypted with DTLS.
+Immediately after a DTLS Session is established, the SCTP association will start sending packets encrypted with DTLS via ICE.
 
 ### `createOffer`
 
 `createOffer` generates a Session Description of the local state to be shared with the remote peer.
 
-The act of calling `createOffer` doesn't change anything for the local peer.
+The act of calling `createOffer` does not affect the local peer.
 
 ### `setLocalDescription`
 
-`setLocalDescription` commits any requested changes. `addTrack`, `createDataChannel` and similar calls are all temporary until this call. `setLocalDescription` is called with the value generated by `createOffer`.
+`setLocalDescription` commits any requested changes. The calls `addTrack`, `createDataChannel`, and similar calls are temporary until this call. `setLocalDescription` is called with the value generated by `createOffer`.
 
-Usually, after this call, you will send the offer to the remote peer, and they will call `setRemoteDescription` with it.
+Usually, after this call, you will send the offer to the remote peer, who will use it to call `setRemoteDescription`.
 
 ### `setRemoteDescription`
 
-`setRemoteDescription` is how we inform the local agent about the remote candidates' state. This is how the act of 'Signaling' is done with the JavaScript API.
+`setRemoteDescription` is how we inform the local agent about the state of the remote candidates'. This is how the act of 'Signaling' is done with the JavaScript API.
 
 When `setRemoteDescription` has been called on both sides, the WebRTC Agents now have enough info to start communicating Peer-To-Peer (P2P)!
 
 ### `addIceCandidate`
 
-`addIceCandidate` allows a WebRTC agent to add more remote ICE Candidates whenever they want. This API sends the ICE Candidate right into the ICE subsystem and has no other effect on the greater WebRTC connection.
+`addIceCandidate` allows a WebRTC agent to add more remote ICE Candidates at any time. This API sends the ICE Candidate right into the ICE subsystem and has no other effect on the greater WebRTC connection.
 
 ### `ontrack`
 
-`ontrack` is a callback that is fired when an RTP packet is received from the remote peer. The incoming packets would have been declared in the Session Description that was passed to `setRemoteDescription`.
+`ontrack` is a callback fired when an RTP packet is received from the remote peer. The incoming packets would have been declared in the Session Description that was passed to `setRemoteDescription`.
 
 WebRTC uses the SSRC and looks up the associated `MediaStream` and `MediaStreamTrack`, and fires this callback with these details populated.
 
 ### `oniceconnectionstatechange`
 
-`oniceconnectionstatechange` is a callback that is fired that reflects the state of the ICE Agent. When you have network connectivity or when you become disconnected this is how you are notified.
+`oniceconnectionstatechange` is a callback that is fired which reflects a change in the state of an ICE Agent. When you have a change in network connectivity this is how you are notified.
 
 ### `onconnectionstatechange`
 
