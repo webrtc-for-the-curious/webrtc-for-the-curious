@@ -41,7 +41,7 @@ DefaultContentLanguage = "en"
     languageName = "Français"
     contentDir = "content.fr"
     weight = 6
-  [languages.fr]
+  [languages.id]
     title = "WebRTC untuk yang Ingin Tahu"
     languageName = "Bahasa Indonesia"
     contentDir = "content.id"
