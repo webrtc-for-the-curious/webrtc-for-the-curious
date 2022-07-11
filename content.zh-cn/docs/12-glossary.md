@@ -1,5 +1,5 @@
 ---
-title: Glossary
+title: 术语
 type: docs
 weight: 13
 ---
