@@ -47,7 +47,7 @@ weight: 13
 * RMCAT: [RTP Media Congestion Avoidance Techniques](../06-media-communication/#generating-a-bandwidth-estimate)  (RTP 媒体拥塞避免技术)
 * RR: Receiver Report (RCTP 接收者报告)
 * RTCP: [RTP Control Protocol](../10-history-of-webrtc/#rtp) defined in [RFC 3550](https://datatracker.ietf.org/doc/html/rfc3550) (RTP 控制协议)
-* RTP: [Real-time transport protocol](../10-history-of-webrtc/#rtp) defined in [RFC 3550](https://datatracker.ietf.org/doc/html/rfc3550) (实施传输协议)
+* RTP: [Real-time transport protocol](../10-history-of-webrtc/#rtp) defined in [RFC 3550](https://datatracker.ietf.org/doc/html/rfc3550) (实时传输协议)
 * RTT: Round-trip time  (往返时间)
 * SACK: Selective Acknowledgment (选择性确认)
 * SCTP: [Stream Control Transmission Protocol](../07-data-communication/#stream-control-transmission-protocol) defined in [RFC 4960](https://datatracker.ietf.org/doc/html/rfc4960) (流控传输协议)
