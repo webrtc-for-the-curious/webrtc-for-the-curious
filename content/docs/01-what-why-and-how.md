@@ -18,7 +18,7 @@ The WebRTC protocol is maintained in the IETF in the [rtcweb](https://datatracke
 
 ## Why should I learn WebRTC?
 
-These are the things that WebRTC will give you. This list is not exhaustive, just an example of some things you may appreciate during your journey. Don't worry if you don't know all these terms yet, this book will teach them to you along the way.
+These are some of the things that WebRTC will give you:
 
 * Open standard
 * Multiple implementations
@@ -29,40 +29,42 @@ These are the things that WebRTC will give you. This list is not exhaustive, jus
 * Congestion control
 * Sub-second latency
 
+This list is not exhaustive, just an example of some of the things you may appreciate during your journey. Don't worry if you don't know all these terms yet, this book will teach them to you along the way.
+
 ## The WebRTC Protocol is a collection of other technologies
 
-This is a topic that takes an entire book to explain. However, to start off we break it into four steps.
+The WebRTC Protocol is an immense topic that would take an entire book to explain. However, to start off we break it into four steps.
 
-* Signaling
-* Connecting
-* Securing
-* Communicating
+1. Signaling
+2. Connecting
+3. Securing
+4. Communicating
 
-These four steps happen sequentially. The prior step must be 100% successful for the subsequent one to even begin.
+These steps are sequential, which means the prior step must be 100% successful for the subsequent step to begin.
 
-One peculiar fact about WebRTC is that each step is actually made up of many other protocols! To make WebRTC, we stitch together many existing technologies. In that sense, WebRTC is more a combination and configuration of well-understood tech that has been around since the early 2000s.
+One peculiar fact about WebRTC is that each step is actually made up of many other protocols! To make WebRTC, we stitch together many existing technologies. In that sense, you can think of WebRTC as being more a combination and configuration of well-understood tech dating back to the early 2000s than as a brand-new process in its own right.
 
 Each of these steps has dedicated chapters, but it is helpful to understand them at a high level first. Since they depend on each other, it will help when explaining further the purpose of each of these steps.
 
 ### Signaling: How peers find each other in WebRTC
 
-When a WebRTC Agent starts it has no idea who it is going to communicate with and what they are going to communicate about. Signaling solves this issue! Signaling is used to bootstrap the call so that two WebRTC agents can start communicating.
+When a WebRTC Agent starts, it has no idea who it is going to communicate with or what they are going to communicate about. The *Signaling* step solves this issue! Signaling is used to bootstrap the call, allowing two independant WebRTC agents to start communicating.
 
-Signaling uses an existing protocol SDP (Session Description Protocol). SDP is a plain-text protocol. Each SDP message is made up of key/value pairs and contains a list of "media sections". The SDP that the two WebRTC Agents exchange contains details like:
+Signaling uses an existing, plain-text protocol called SDP (Session Description Protocol). Each SDP message is made up of key/value pairs and contains a list of "media sections". The SDP that the two WebRTC Agents exchange contains details like:
 
-* IPs and Ports that the agent is reachable on (candidates).
-* How many audio and video tracks the agent wishes to send.
-* What audio and video codecs each agent supports.
-* Values used while connecting (`uFrag`/`uPwd`).
-* Values used while securing (certificate fingerprint).
+* The IPs and Ports that the agent is reachable on (candidates).
+* The number of audio and video tracks the agent wishes to send.
+* The audio and video codecs each agent supports.
+* The values used while connecting (`uFrag`/`uPwd`).
+* The values used while securing (certificate fingerprint).
 
-Note that signaling typically happens "out-of-band"; that is, applications generally don't use WebRTC itself to trade signaling messages. Any architecture suitable for sending messages can be used to relay the SDPs between the connecting peers, and many applications will use their existing infrastructure (like REST endpoints, WebSocket connections, or authentication proxies) to facilitate easy trading of SDPs between the proper clients.
+It is important to note that signaling typically happens "out-of-band"," which means applications generally don't use WebRTC itself to trade signaling messages. Any architecture suitable for sending messages can relay the SDPs between the connecting peers, and many applications will simply use their existing infrastructure (e.g. REST endpoints, WebSocket connections, or authentication proxies) to facilitate trading of SDPs between the proper clients.
 
 ### Connecting and NAT Traversal with STUN/TURN
 
-The two WebRTC Agents now know enough details to attempt to connect to each other. WebRTC then uses another established technology called ICE.
+After trading SDPs, the two WebRTC Agents now have enough information to attempt to connect to each other. To make this happen, WebRTC uses another established technology called ICE (Interactive Connectivity Establishment).
 
-ICE (Interactive Connectivity Establishment) is a protocol that pre-dates WebRTC. ICE allows the establishment of a connection between two Agents. These Agents could be on the same network, or on the other side of the world. ICE is the solution to establishing a direct connection without a central server.
+ICE is a protocol that pre-dates WebRTC which allows the establishment of a connection between two Agents. These Agents could be on the same network or on the other side of the world. ICE is the solution to establishing a direct connection without a central server.
 
 The real magic here is 'NAT Traversal' and STUN/TURN Servers. These two concepts are all you need to communicate with an ICE Agent in another subnet. We will explore these topics in depth later.
 
