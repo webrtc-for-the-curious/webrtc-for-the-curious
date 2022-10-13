@@ -41,8 +41,7 @@ Otros libros cubren temas específicos en mucho más detalle. Este libro pretend
 ## Disponible de forma gratuita y respetando su privacidad
 
 El libro está disponible en [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious) y [WebRTCforTheCurious.com](https://webrtcforthecurious.com).
-Está licenciado de forma que puedas usarlo como más te apetezca. Puedes descargarlo también en su versión [ePub](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.epub)
-o [PDF](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.pdf).
+Está licenciado de forma que puedas usarlo como más te apetezca. Puedes descargarlo también en su versión [ePub](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.epub) o [PDF](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.pdf).
 
 Este libro está escrito por individuos, para individuos. Es independiente del proveedor, así que
 no haremos recomendaciones que causen algún conflicto de intereses.
