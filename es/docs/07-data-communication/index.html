@@ -1,0 +1,242 @@
+<!doctype html><html lang=es dir=ltr><head><meta name=generator content="Hugo 0.74.3"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Data Communication #  What do I get from WebRTC&rsquo;s data communication? #  WebRTC provides data channels for data communication. Between two peers you can open 65,534 data channels. A data channel is datagram based, and each has its own durability settings. By default, each data channel has guaranteed ordered delivery.
+If you are approaching WebRTC from a media background data channels might seem wasteful. Why do I need this whole subsystem when I could just use HTTP or WebSockets?"><meta name=theme-color content="#FFFFFF"><meta property="og:title" content="Data Communication"><meta property="og:description" content="Data Communication #  What do I get from WebRTC&rsquo;s data communication? #  WebRTC provides data channels for data communication. Between two peers you can open 65,534 data channels. A data channel is datagram based, and each has its own durability settings. By default, each data channel has guaranteed ordered delivery.
+If you are approaching WebRTC from a media background data channels might seem wasteful. Why do I need this whole subsystem when I could just use HTTP or WebSockets?"><meta property="og:type" content="article"><meta property="og:url" content="https://webrtcforthecurious.com/es/docs/07-data-communication/"><meta property="article:modified_time" content="2022-10-13T16:52:43-05:00"><meta property="og:site_name" content="WebRTC para los curiosos"><title>Data Communication | WebRTC para los curiosos</title><link rel=manifest href=/manifest.json><link rel=icon href=/favicon.png type=image/x-icon><link rel=alternate hreflang=en href=https://webrtcforthecurious.com/docs/07-data-communication/ title="Data Communication"><link rel=alternate hreflang=ru href=https://webrtcforthecurious.com/ru/docs/07-data-communication/ title="Data Communication"><link rel=alternate hreflang=sv href=https://webrtcforthecurious.com/sv/docs/07-data-communication/ title=Datakommunikation><link rel=alternate hreflang=zh href=https://webrtcforthecurious.com/zh/docs/07-data-communication/ title=数据通信><link rel=alternate hreflang=ja href=https://webrtcforthecurious.com/ja/docs/07-data-communication/ title=データ・コミュニケーション><link rel=alternate hreflang=fa href=https://webrtcforthecurious.com/fa/docs/07-data-communication/ title="ارتباط داده ای"><link rel=alternate hreflang=fr href=https://webrtcforthecurious.com/fr/docs/07-data-communication/ title="Data Communication"><link rel=alternate hreflang=id href=https://webrtcforthecurious.com/id/docs/07-data-communication/ title="Data Communication"><link rel=stylesheet href=/book.min.6c7c6446dfdee7c8c933e9bbc6e80ee3ed6c913b2a59519f2092c3c6a9d63e55.css integrity="sha256-bHxkRt/e58jJM+m7xugO4+1skTsqWVGfIJLDxqnWPlU="><script defer src=/es.search.min.bdd2fc8d4566d7285565b2dda85c933e6c1d3f13a50d1f2177515bdb1d98bf91.js integrity="sha256-vdL8jUVm1yhVZbLdqFyTPmwdPxOlDR8hd1Fb2x2Yv5E="></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a href=/es><span>WebRTC para los curiosos</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=Buscar aria-label=Buscar maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li><a href=https://webrtcforthecurious.com/es/docs/01-what-why-and-how/>What, Why and How</a></li><li><a href=https://webrtcforthecurious.com/es/docs/02-signaling/>Signaling</a></li><li><a href=https://webrtcforthecurious.com/es/docs/03-connecting/>Connecting</a></li><li><a href=https://webrtcforthecurious.com/es/docs/04-securing/>Securing</a></li><li><a href=https://webrtcforthecurious.com/es/docs/05-real-time-networking/>Real-time Networking</a></li><li><a href=https://webrtcforthecurious.com/es/docs/06-media-communication/>Media Communication</a></li><li><a href=https://webrtcforthecurious.com/es/docs/07-data-communication/ class=active>Data Communication</a></li><li><a href=https://webrtcforthecurious.com/es/docs/08-applied-webrtc/>Applied WebRTC</a></li><li><a href=https://webrtcforthecurious.com/es/docs/09-debugging/>Debugging</a></li><li><a href=https://webrtcforthecurious.com/es/docs/10-history-of-webrtc/>History</a></li><li><a href=https://webrtcforthecurious.com/es/docs/11-faq/>FAQ</a></li><li><a href=https://webrtcforthecurious.com/es/docs/12-glossary/>Glossary</a></li><li><a href=https://webrtcforthecurious.com/es/docs/13-reference/>Reference</a></li></ul></nav><script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label>
+<strong>Data Communication</strong>
+<label for=toc-control><img src=/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#what-do-i-get-from-webrtcs-data-communication>What do I get from WebRTC&rsquo;s data communication?</a></li><li><a href=#how-does-it-work>How does it work?</a></li><li><a href=#dcep>DCEP</a><ul><li><a href=#data_channel_open>DATA_CHANNEL_OPEN</a></li><li><a href=#data_channel_ack>DATA_CHANNEL_ACK</a></li></ul></li><li><a href=#stream-control-transmission-protocol>Stream Control Transmission Protocol</a></li><li><a href=#concepts>Concepts</a><ul><li><a href=#association>Association</a></li><li><a href=#streams>Streams</a></li><li><a href=#datagram-based>Datagram Based</a></li><li><a href=#chunks>Chunks</a></li><li><a href=#transmission-sequence-number>Transmission Sequence Number</a></li><li><a href=#stream-identifier>Stream Identifier</a></li><li><a href=#payload-protocol-identifier>Payload Protocol Identifier</a></li></ul></li><li><a href=#protocol-1>Protocol</a><ul><li><a href=#data-chunk>DATA Chunk</a></li><li><a href=#init-chunk>INIT Chunk</a></li><li><a href=#sack-chunk>SACK Chunk</a></li><li><a href=#heartbeat-chunk>HEARTBEAT Chunk</a></li><li><a href=#abort-chunk>ABORT Chunk</a></li><li><a href=#shutdown-chunk>SHUTDOWN Chunk</a></li><li><a href=#error-chunk>ERROR Chunk</a></li><li><a href=#forward-tsn-chunk>FORWARD TSN Chunk</a></li></ul></li><li><a href=#state-machine>State Machine</a><ul><li><a href=#connection-establishment-flow>Connection Establishment Flow</a></li><li><a href=#connection-teardown-flow>Connection Teardown Flow</a></li><li><a href=#keep-alive-mechanism>Keep-Alive Mechanism</a></li></ul></li></ul></nav></aside></header><article class=markdown><h1 id=data-communication>Data Communication
+<a class=anchor href=#data-communication>#</a></h1><h2 id=what-do-i-get-from-webrtcs-data-communication>What do I get from WebRTC&rsquo;s data communication?
+<a class=anchor href=#what-do-i-get-from-webrtcs-data-communication>#</a></h2><p>WebRTC provides data channels for data communication. Between two peers you can open 65,534 data channels.
+A data channel is datagram based, and each has its own durability settings. By default, each data channel has guaranteed ordered delivery.</p><p>If you are approaching WebRTC from a media background data channels might seem wasteful. Why do I need this whole subsystem when I could just use HTTP or WebSockets?</p><p>The real power with data channels is that you can configure them to behave like UDP with unordered/lossy delivery.
+This is necessary for low latency and high performance situations. You can measure the backpressure and ensure you are only sending as much as your network supports.</p><h2 id=how-does-it-work>How does it work?
+<a class=anchor href=#how-does-it-work>#</a></h2><p>WebRTC uses the Stream Control Transmission Protocol (SCTP), defined in <a href=https://tools.ietf.org/html/rfc4960>RFC 4960</a>. SCTP is a
+transport layer protocol that was intended as an alternative to TCP or UDP. For WebRTC we use it as an application layer protocol which runs over our DTLS connection.</p><p>SCTP gives you streams and each stream can be configured independently. WebRTC data channels are just thin abstractions around them. The settings
+around durability and ordering are just passed right into the SCTP Agent.</p><p>Data channels have some features that SCTP can&rsquo;t express, like channel labels. To solve that WebRTC uses the Data Channel Establishment Protocol (DCEP)
+which is defined in <a href=https://tools.ietf.org/html/rfc8832>RFC 8832</a>. DCEP defines a message to communicate the channel label and protocol.</p><h2 id=dcep>DCEP
+<a class=anchor href=#dcep>#</a></h2><p>DCEP only has two messages <code>DATA_CHANNEL_OPEN</code> and <code>DATA_CHANNEL_ACK</code>. For each data channel that is opened the remote must respond with an ack.</p><h3 id=data_channel_open>DATA_CHANNEL_OPEN
+<a class=anchor href=#data_channel_open>#</a></h3><p>This message is sent by the WebRTC Agent that wishes to open a channel.</p><h4 id=packet-format>Packet Format
+<a class=anchor href=#packet-format>#</a></h4><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Message Type |  Channel Type |            Priority           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    Reliability Parameter                      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Label Length          |       Protocol Length         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/                             Label                             /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/                            Protocol                           /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><h4 id=message-type>Message Type
+<a class=anchor href=#message-type>#</a></h4><p>Message Type is a static value of <code>0x03</code>.</p><h4 id=channel-type>Channel Type
+<a class=anchor href=#channel-type>#</a></h4><p>Channel Type controls durability/ordering attributes of the channel. It may have the following values:</p><ul><li><code>DATA_CHANNEL_RELIABLE</code> (<code>0x00</code>) - No messages are lost and will arrive in order</li><li><code>DATA_CHANNEL_RELIABLE_UNORDERED</code> (<code>0x80</code>) - No messages are lost, but they may arrive out of order.</li><li><code>DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT</code> (<code>0x01</code>) - Messages may be lost after trying the requested amount of times, but they will arrive in order.</li><li><code>DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT_UNORDERED</code> (<code>0x81</code>) - Messages may be lost after trying the requested amount of times and may arrive out of order.</li><li><code>DATA_CHANNEL_PARTIAL_RELIABLE_TIMED</code> (<code>0x02</code>) - Messages may be lost if they don&rsquo;t arrive in the requested amount of time, but they will arrive in order.</li><li><code>DATA_CHANNEL_PARTIAL_RELIABLE_TIMED_UNORDERED</code> (<code>0x82</code>) - Messages may be lost if they don&rsquo;t arrive in the requested amount of time and may arrive out of order.</li></ul><h4 id=priority>Priority
+<a class=anchor href=#priority>#</a></h4><p>The priority of the data channel. Data channels having a higher priority will be scheduled first. Large lower-priority user messages will not delay the sending of higher-priority user messages.</p><h4 id=reliability-parameter>Reliability Parameter
+<a class=anchor href=#reliability-parameter>#</a></h4><p>If the data channel type is <code>DATA_CHANNEL_PARTIAL_RELIABLE</code>, the suffixes configures the behavior:</p><ul><li><code>REXMIT</code> - Defines how many times the sender will re-send the message before giving up.</li><li><code>TIMED</code> - Defines for how long time (in ms) the sender will re-send the message before giving up.</li></ul><h4 id=label>Label
+<a class=anchor href=#label>#</a></h4><p>A UTF-8-encoded string containing the name of the data channel. This string may be empty.</p><h4 id=protocol>Protocol
+<a class=anchor href=#protocol>#</a></h4><p>If this is an empty string, the protocol is unspecified. If it is a non-empty string, it should specify a protocol registered in the &ldquo;WebSocket Subprotocol Name Registry&rdquo;, defined in <a href=https://tools.ietf.org/html/rfc6455#page-61>RFC 6455</a>.</p><h3 id=data_channel_ack>DATA_CHANNEL_ACK
+<a class=anchor href=#data_channel_ack>#</a></h3><p>This message is sent by the WebRTC Agent to acknowledge that this data channel has been opened.</p><h4 id=packet-format-1>Packet Format
+<a class=anchor href=#packet-format-1>#</a></h4><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Message Type |
++-+-+-+-+-+-+-+-+
+</code></pre><h2 id=stream-control-transmission-protocol>Stream Control Transmission Protocol
+<a class=anchor href=#stream-control-transmission-protocol>#</a></h2><p>SCTP is the real power behind WebRTC data channels. It provides all these features of the data channel:</p><ul><li>Multiplexing</li><li>Reliable delivery using a TCP-like retransmission mechanism</li><li>Partial-reliability options</li><li>Congestion Avoidance</li><li>Flow Control</li></ul><p>To understand SCTP we will explore it in three parts. The goal is that you will know enough to debug and learn the deep details of SCTP on your own after this chapter.</p><h2 id=concepts>Concepts
+<a class=anchor href=#concepts>#</a></h2><p>SCTP is a feature rich protocol. This section is only going to cover the parts of SCTP that are used by WebRTC.
+Features in SCTP that are not used by WebRTC include multi-homing and path selection.</p><p>With over twenty years of development SCTP can be hard to fully grasp.</p><h3 id=association>Association
+<a class=anchor href=#association>#</a></h3><p>Association is the term used for an SCTP Session. It is the state that is shared
+between two SCTP Agents while they communicate.</p><h3 id=streams>Streams
+<a class=anchor href=#streams>#</a></h3><p>A stream is one bi-directional sequence of user data. When you create a data channel you are actually just creating a SCTP stream. Each SCTP Association contains a list of streams. Each stream can be configured with different reliability types.</p><p>WebRTC only allows you to configure on stream creation, but SCTP actually allows changing the configuration at anytime.</p><h3 id=datagram-based>Datagram Based
+<a class=anchor href=#datagram-based>#</a></h3><p>SCTP frames data as datagrams and not as a byte stream. Sending and receiving data feels like using UDP instead of TCP.
+You don&rsquo;t need to add any extra code to transfer multiple files over one stream.</p><p>SCTP messages don&rsquo;t have size limits like UDP. A single SCTP message can be multiple gigabytes in size.</p><h3 id=chunks>Chunks
+<a class=anchor href=#chunks>#</a></h3><p>The SCTP protocol is made up of chunks. There are many different types of chunks. These chunks are used for all communication.
+User data, connection initialization, congestion control, and more are all done via chunks.</p><p>Each SCTP packet contains a list of chunks. So in one UDP packet you can have multiple chunks carrying messages from different streams.</p><h3 id=transmission-sequence-number>Transmission Sequence Number
+<a class=anchor href=#transmission-sequence-number>#</a></h3><p>The Transmission Sequence Number (TSN) is a global unique identifier for DATA chunks. A DATA chunk is what carries all the messages a user wishes to send. The TSN is important because it helps a receiver determine if packets are lost or out of order.</p><p>If the receiver notices a missing TSN, it doesn&rsquo;t give the data to the user until it is fulfilled.</p><h3 id=stream-identifier>Stream Identifier
+<a class=anchor href=#stream-identifier>#</a></h3><p>Each stream has a unique identifier. When you create a data channel with an explicit ID, it is actually just passed right into SCTP as the stream identifier. If you don&rsquo;t pass an ID the stream identifier is chosen for you.</p><h3 id=payload-protocol-identifier>Payload Protocol Identifier
+<a class=anchor href=#payload-protocol-identifier>#</a></h3><p>Each DATA chunk also has a Payload Protocol Identifier (PPID). This is used to uniquely identify what type of data is being exchanged.
+SCTP has many PPIDs, but WebRTC is only using the following five:</p><ul><li><code>WebRTC DCEP</code> (<code>50</code>) - DCEP messages.</li><li><code>WebRTC String</code> (<code>51</code>) - DataChannel string messages.</li><li><code>WebRTC Binary</code> (<code>53</code>) - DataChannel binary messages.</li><li><code>WebRTC String Empty</code> (<code>56</code>) - DataChannel string messages with 0 length.</li><li><code>WebRTC Binary Empty</code> (<code>57</code>) - DataChannel binary messages with 0 length.</li></ul><h2 id=protocol-1>Protocol
+<a class=anchor href=#protocol-1>#</a></h2><p>The following are some of the chunks used by the SCTP protocol. This is
+not an exhaustive demonstration. This provides enough structures for the
+state machine to make sense.</p><p>Each Chunk starts with a <code>type</code> field. Before a list of chunks, you will
+also have a header.</p><h3 id=data-chunk>DATA Chunk
+<a class=anchor href=#data-chunk>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 0    | Reserved|U|B|E|    Length                     |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                              TSN                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|      Stream Identifier        |   Stream Sequence Number      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                  Payload Protocol Identifier                  |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/                            User Data                          /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>The DATA chunk is how all user data is exchanged. When you send
+anything over the data channel, this is how it is exchanged.</p><p><code>U</code> bit is set if this is an unordered packet. We can ignore the
+Stream Sequence Number.</p><p><code>B</code> and <code>E</code> are the beginning and end bits. If you want to send a
+message that is too large for one DATA chunk it needs to be fragmented into multiple DATA chunks sent in separate packets.
+With the <code>B</code> and <code>E</code> bit and Sequence Numbers SCTP is able to express
+this.</p><ul><li><code>B=1</code>, <code>E=0</code> - First piece of a fragmented user message.</li><li><code>B=0</code>, <code>E=0</code> - Middle piece of a fragmented user message.</li><li><code>B=0</code>, <code>E=1</code> - Last piece of a fragmented user message.</li><li><code>B=1</code>, <code>E=1</code> - Unfragmented message.</li></ul><p><code>TSN</code> is the Transmission Sequence Number. It is the global unique
+identifier for this DATA chunk. After 4,294,967,295 chunks this will wrap around to 0.
+The TSN is incremented for every chunk in a fragmented user message so that the receiver knows how to order the received chunks to reconstruct the original message.</p><p><code>Stream Identifier</code> is the unique identifier for the stream this data belongs to.</p><p><code>Stream Sequence Number</code> is a 16-bit number incremented every user message and included in the DATA message chunk header. After 65535 messages this will wrap around to 0. This number is used to decide the message order of delivery to the receiver if <code>U</code> is set to 0. Similar to the TSN, except the Stream Sequence Number is only incremented for each message as a whole and not each individual DATA chunk.</p><p><code>Payload Protocol Identifier</code> is the type of data that is flowing through
+this stream. For WebRTC, it is going to be DCEP, String or Binary.</p><p><code>User Data</code> is what you are sending. All data you send via a WebRTC data channel
+is transmitted via a DATA chunk.</p><h3 id=init-chunk>INIT Chunk
+<a class=anchor href=#init-chunk>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 1    |  Chunk Flags  |      Chunk Length             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         Initiate Tag                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|           Advertised Receiver Window Credit (a_rwnd)          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Number of Outbound Streams   |  Number of Inbound Streams    |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                          Initial TSN                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/              Optional/Variable-Length Parameters              /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>The INIT chunk starts the process of creating an association.</p><p><code>Initiate Tag</code> is used for cookie generation. Cookies are used for Man-In-The-Middle
+and Denial of Service protection. They are described in greater detail in the state
+machine section.</p><p><code>Advertised Receiver Window Credit</code> is used for SCTP&rsquo;s Congestion Control. This
+communicates how large of a buffer the receiver has allocated for this association.</p><p><code>Number of Outbound/Inbound Streams</code> notifies the remote of how many streams this
+agent supports.</p><p><code>Initial TSN</code> is a random <code>uint32</code> to start the local TSN at.</p><p><code>Optional Parameters</code> allows SCTP to introduce new features to the protocol.</p><h3 id=sack-chunk>SACK Chunk
+<a class=anchor href=#sack-chunk>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 3    |Chunk  Flags   |      Chunk Length             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      Cumulative TSN Ack                       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|          Advertised Receiver Window Credit (a_rwnd)           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+| Number of Gap Ack Blocks = N  |  Number of Duplicate TSNs = X |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Gap Ack Block #1 Start       |   Gap Ack Block #1 End        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+/                                                               /
+\                              ...                              \
+/                                                               /
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Gap Ack Block #N Start      |  Gap Ack Block #N End         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       Duplicate TSN 1                         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+/                                                               /
+\                              ...                              \
+/                                                               /
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       Duplicate TSN X                         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>The SACK (Selective Acknowledgment) Chunk is how a receiver notifies
+a sender it has gotten a packet. Until a sender gets a SACK for a TSN
+it will re-send the DATA chunk in question. A SACK does more than just
+update the TSN though.</p><p><code>Cumulative TSN ACK</code> the highest TSN that has been received.</p><p><code>Advertised Receiver Window Credit</code> receiver buffer size. The receiver
+may change this during the session if more memory becomes available.</p><p><code>Ack Blocks</code> TSNs that have been received after the <code>Cumulative TSN ACK</code>.
+This is used if there is a gap in packets delivered. Let&rsquo;s say DATA chunks with TSNs
+<code>100</code>, <code>102</code>, <code>103</code> and <code>104</code> are delivered. The <code>Cumulative TSN ACK</code> would be <code>100</code>, but
+<code>Ack Blocks</code> could be used to tell the sender it doesn&rsquo;t need to resend <code>102</code>, <code>103</code> or <code>104</code>.</p><p><code>Duplicate TSN</code> informs the sender that it has received the following DATA chunks more than once.</p><h3 id=heartbeat-chunk>HEARTBEAT Chunk
+<a class=anchor href=#heartbeat-chunk>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 4    | Chunk  Flags  |      Heartbeat Length         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/            Heartbeat Information TLV (Variable-Length)        /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>The HEARTBEAT Chunk is used to assert the remote is still responding.
+Useful if you aren&rsquo;t sending any DATA chunks and need to keep a NAT
+mapping open.</p><h3 id=abort-chunk>ABORT Chunk
+<a class=anchor href=#abort-chunk>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 6    |Reserved     |T|           Length              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+/                                                               /
+\               Zero or more Error Causes                       \
+/                                                               /
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>An ABORT chunk abruptly shuts down the association. Used when
+one side enters an error state. Gracefully ending the connection uses
+the SHUTDOWN chunk.</p><h3 id=shutdown-chunk>SHUTDOWN Chunk
+<a class=anchor href=#shutdown-chunk>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 7    | Chunk  Flags  |      Length = 8               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      Cumulative TSN Ack                       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>The SHUTDOWN Chunk starts a graceful shutdown of the SCTP association.
+Each agent informs the remote of the last TSN it sent. This ensures
+that no packets are lost. WebRTC doesn&rsquo;t do a graceful shutdown of
+the SCTP association. You need to tear down each data channel yourself
+to handle it gracefully.</p><p><code>Cumulative TSN ACK</code> is the last TSN that was sent. Each side knows
+not to terminate until they have received the DATA chunk with this TSN.</p><h3 id=error-chunk>ERROR Chunk
+<a class=anchor href=#error-chunk>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 9    | Chunk  Flags  |           Length              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/                    One or more Error Causes                   /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>An ERROR chunk is used to notify the remote SCTP Agent that a non-fatal
+error has occurred.</p><h3 id=forward-tsn-chunk>FORWARD TSN Chunk
+<a class=anchor href=#forward-tsn-chunk>#</a></h3><pre><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 192  |  Flags = 0x00 |        Length = Variable      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      New Cumulative TSN                       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Stream-1              |       Stream Sequence-1       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               /
+/                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Stream-N              |       Stream Sequence-N       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre><p>The <code>FORWARD TSN</code> chunk moves the global TSN forward. SCTP does this,
+so you can skip some packets you don&rsquo;t care about anymore. Let&rsquo;s say
+you send <code>10 11 12 13 14 15</code> and these packets are only valid if they
+all arrive. This data is also real-time sensitive, so if it arrives
+late it isn&rsquo;t useful.</p><p>If you lose <code>12</code> and <code>13</code> there is no reason to send <code>14</code> and <code>15</code>!
+SCTP uses the <code>FORWARD TSN</code> chunk to achieve that. It tells the receiver
+that <code>14</code> and <code>15</code> aren&rsquo;t going to be delivered anymore.</p><p><code>New Cumulative TSN</code> this is the new TSN of the connection. Any packets
+before this TSN will not be retained.</p><p><code>Stream</code> and <code>Stream Sequence</code> are used to jump the <code>Stream Sequence Number</code>
+number ahead. Refer back to the DATA Chunk for the significance of this field.</p><h2 id=state-machine>State Machine
+<a class=anchor href=#state-machine>#</a></h2><p>These are some interesting parts of the SCTP state machine. WebRTC doesn&rsquo;t use all
+the features of the SCTP state machine, so we have excluded those parts. We also have simplified some components to make them understandable on their own.</p><h3 id=connection-establishment-flow>Connection Establishment Flow
+<a class=anchor href=#connection-establishment-flow>#</a></h3><p>The <code>INIT</code> and <code>INIT ACK</code> chunks are used to exchange the capabilities and configurations
+of each peer. SCTP uses a cookie during the handshake to validate the peer it is communicating with.
+This is to ensure that the handshake is not intercepted and to prevent DoS attacks.</p><p>The <code>INIT ACK</code> chunk contains the cookie. The cookie is then returned to its creator
+using the <code>COOKIE ECHO</code>. If cookie verification is successful the <code>COOKIE ACK</code> is
+sent and DATA chunks are ready to be exchanged.</p><p><img src=../images/07-connection-establishment.png alt="Connection establishment" title="Connection establishment"></p><h3 id=connection-teardown-flow>Connection Teardown Flow
+<a class=anchor href=#connection-teardown-flow>#</a></h3><p>SCTP uses the <code>SHUTDOWN</code> chunk. When an agent receives a <code>SHUTDOWN</code> chunk it will wait until it
+receives the requested <code>Cumulative TSN ACK</code>. This allows a user to ensure that all data
+is delivered even if the connection is lossy.</p><h3 id=keep-alive-mechanism>Keep-Alive Mechanism
+<a class=anchor href=#keep-alive-mechanism>#</a></h3><p>SCTP uses the <code>HEARTBEAT REQUEST</code> and <code>HEARTBEAT ACK</code> Chunks to keep the connection alive. These are sent
+on a configurable interval. SCTP also performs an exponential backoff if the packet hasn&rsquo;t arrived.</p><p>The <code>HEARTBEAT</code> chunk also contains a time value. This allows two associations to compute trip time between two agents.</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div class=book-languages tabindex=0 aria-haspopup=true><ul><li class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Español</li></ul><ul class=book-languages-list><li><a href=https://webrtcforthecurious.com/docs/07-data-communication/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+English</a></li><li><a href=https://webrtcforthecurious.com/ru/docs/07-data-communication/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Русский</a></li><li><a href=https://webrtcforthecurious.com/sv/docs/07-data-communication/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Svenska</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/07-data-communication/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+简体中文</a></li><li><a href=https://webrtcforthecurious.com/ja/docs/07-data-communication/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+日本語</a></li><li><a href=https://webrtcforthecurious.com/fa/docs/07-data-communication/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Persian</a></li><li><a href=https://webrtcforthecurious.com/fr/docs/07-data-communication/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Français</a></li><li><a href=https://webrtcforthecurious.com/id/docs/07-data-communication/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Bahasa Indonesia</a></li><li class=active><a href=https://webrtcforthecurious.com/es/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Español</a></li></ul></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/commit/d229c648fe5ab89cddd7a7b46a96de7db6f1d815 title="Última modificación por zackfall | October 13, 2022" target=_blank rel=noopener><img src=/svg/calendar.svg class=book-icon alt=Calendar>
+<span>October 13, 2022</span></a></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content.es/docs/07-data-communication.md target=_blank rel=noopener><img src=/svg/edit.svg class=book-icon alt=Edit>
+<span>Editar esta página</span></a></div></div></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#what-do-i-get-from-webrtcs-data-communication>What do I get from WebRTC&rsquo;s data communication?</a></li><li><a href=#how-does-it-work>How does it work?</a></li><li><a href=#dcep>DCEP</a><ul><li><a href=#data_channel_open>DATA_CHANNEL_OPEN</a></li><li><a href=#data_channel_ack>DATA_CHANNEL_ACK</a></li></ul></li><li><a href=#stream-control-transmission-protocol>Stream Control Transmission Protocol</a></li><li><a href=#concepts>Concepts</a><ul><li><a href=#association>Association</a></li><li><a href=#streams>Streams</a></li><li><a href=#datagram-based>Datagram Based</a></li><li><a href=#chunks>Chunks</a></li><li><a href=#transmission-sequence-number>Transmission Sequence Number</a></li><li><a href=#stream-identifier>Stream Identifier</a></li><li><a href=#payload-protocol-identifier>Payload Protocol Identifier</a></li></ul></li><li><a href=#protocol-1>Protocol</a><ul><li><a href=#data-chunk>DATA Chunk</a></li><li><a href=#init-chunk>INIT Chunk</a></li><li><a href=#sack-chunk>SACK Chunk</a></li><li><a href=#heartbeat-chunk>HEARTBEAT Chunk</a></li><li><a href=#abort-chunk>ABORT Chunk</a></li><li><a href=#shutdown-chunk>SHUTDOWN Chunk</a></li><li><a href=#error-chunk>ERROR Chunk</a></li><li><a href=#forward-tsn-chunk>FORWARD TSN Chunk</a></li></ul></li><li><a href=#state-machine>State Machine</a><ul><li><a href=#connection-establishment-flow>Connection Establishment Flow</a></li><li><a href=#connection-teardown-flow>Connection Teardown Flow</a></li><li><a href=#keep-alive-mechanism>Keep-Alive Mechanism</a></li></ul></li></ul></nav></div></aside></main></body></html>

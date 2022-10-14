@@ -1,0 +1,271 @@
+<!doctype html><html lang=es dir=ltr><head><meta name=generator content="Hugo 0.74.3"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="History #  When learning WebRTC developers often feel frustrated by the complexity. They see WebRTC features irrelevant to their current project and wish WebRTC was simpler. The issue is that everyone has a different set of use cases. Real-time communications has a rich history with lots of different people building many different things.
+This chapter contains interviews with the authors of the protocols that make up WebRTC. It gives insight into the designs made when building each protocol, and finishes with an interview about WebRTC itself."><meta name=theme-color content="#FFFFFF"><meta property="og:title" content="History"><meta property="og:description" content="History #  When learning WebRTC developers often feel frustrated by the complexity. They see WebRTC features irrelevant to their current project and wish WebRTC was simpler. The issue is that everyone has a different set of use cases. Real-time communications has a rich history with lots of different people building many different things.
+This chapter contains interviews with the authors of the protocols that make up WebRTC. It gives insight into the designs made when building each protocol, and finishes with an interview about WebRTC itself."><meta property="og:type" content="article"><meta property="og:url" content="https://webrtcforthecurious.com/es/docs/10-history-of-webrtc/"><meta property="article:modified_time" content="2022-10-13T16:52:43-05:00"><meta property="og:site_name" content="WebRTC para los curiosos"><title>History | WebRTC para los curiosos</title><link rel=manifest href=/manifest.json><link rel=icon href=/favicon.png type=image/x-icon><link rel=alternate hreflang=en href=https://webrtcforthecurious.com/docs/10-history-of-webrtc/ title=History><link rel=alternate hreflang=sv href=https://webrtcforthecurious.com/sv/docs/10-history-of-webrtc/ title=Historia><link rel=alternate hreflang=ru href=https://webrtcforthecurious.com/ru/docs/10-history-of-webrtc/ title=History><link rel=alternate hreflang=zh href=https://webrtcforthecurious.com/zh/docs/10-history-of-webrtc/ title=历史><link rel=alternate hreflang=ja href=https://webrtcforthecurious.com/ja/docs/10-history-of-webrtc/ title=歴史><link rel=alternate hreflang=fa href=https://webrtcforthecurious.com/fa/docs/10-history-of-webrtc/ title=تاریخچه><link rel=alternate hreflang=fr href=https://webrtcforthecurious.com/fr/docs/10-history-of-webrtc/ title=History><link rel=alternate hreflang=id href=https://webrtcforthecurious.com/id/docs/10-history-of-webrtc/ title=History><link rel=stylesheet href=/book.min.6c7c6446dfdee7c8c933e9bbc6e80ee3ed6c913b2a59519f2092c3c6a9d63e55.css integrity="sha256-bHxkRt/e58jJM+m7xugO4+1skTsqWVGfIJLDxqnWPlU="><script defer src=/es.search.min.bdd2fc8d4566d7285565b2dda85c933e6c1d3f13a50d1f2177515bdb1d98bf91.js integrity="sha256-vdL8jUVm1yhVZbLdqFyTPmwdPxOlDR8hd1Fb2x2Yv5E="></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a href=/es><span>WebRTC para los curiosos</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=Buscar aria-label=Buscar maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li><a href=https://webrtcforthecurious.com/es/docs/01-what-why-and-how/>What, Why and How</a></li><li><a href=https://webrtcforthecurious.com/es/docs/02-signaling/>Signaling</a></li><li><a href=https://webrtcforthecurious.com/es/docs/03-connecting/>Connecting</a></li><li><a href=https://webrtcforthecurious.com/es/docs/04-securing/>Securing</a></li><li><a href=https://webrtcforthecurious.com/es/docs/05-real-time-networking/>Real-time Networking</a></li><li><a href=https://webrtcforthecurious.com/es/docs/06-media-communication/>Media Communication</a></li><li><a href=https://webrtcforthecurious.com/es/docs/07-data-communication/>Data Communication</a></li><li><a href=https://webrtcforthecurious.com/es/docs/08-applied-webrtc/>Applied WebRTC</a></li><li><a href=https://webrtcforthecurious.com/es/docs/09-debugging/>Debugging</a></li><li><a href=https://webrtcforthecurious.com/es/docs/10-history-of-webrtc/ class=active>History</a></li><li><a href=https://webrtcforthecurious.com/es/docs/11-faq/>FAQ</a></li><li><a href=https://webrtcforthecurious.com/es/docs/12-glossary/>Glossary</a></li><li><a href=https://webrtcforthecurious.com/es/docs/13-reference/>Reference</a></li></ul></nav><script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label>
+<strong>History</strong>
+<label for=toc-control><img src=/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#rtp>RTP</a><ul><li><a href=#in-his-own-words>In his own words</a></li><li><a href=#do-you-remember-the-motivationsideas-of-the-other-people-on-the-draft>Do you remember the motivations/ideas of the other people on the draft?</a></li><li><a href=#multicast-is-super-fascinating-webrtc-is-entirely-unicast-mind-expanding-on-that>Multicast is super fascinating. WebRTC is entirely unicast, mind expanding on that?</a></li><li><a href=#anything-that-got-left-out-of-the-protocol-that-you-wish-you-had-added-anything-in-the-protocol-you-regret>Anything that got left out of the protocol that you wish you had added? Anything in the protocol you regret?</a></li><li><a href=#what-things-did-you-imagine-being-built-with-rtp-do-have-any-cool-rtp-projectsideas-that-got-lost-to-time>What things did you imagine being built with RTP? Do have any cool RTP projects/ideas that got lost to time?</a></li><li><a href=#why-did-you-have-to-roll-your-own-video-compression-was-nothing-else-available-at-the-time>Why did you have to roll your own video compression. Was nothing else available at the time?</a></li></ul></li><li><a href=#webrtc>WebRTC</a><ul><li><a href=#what-led-you-to-work-on-webrtc>What led you to work on WebRTC?</a></li><li><a href=#the-first-google-project>The first Google project</a></li><li><a href=#chrome>Chrome</a></li><li><a href=#webrtc-is-born>WebRTC is born</a></li><li><a href=#standardization>Standardization</a></li><li><a href=#standing-on-the-shoulders-of-giants>Standing on the shoulders of giants</a></li><li><a href=#the-future>The future</a></li></ul></li></ul></nav></aside></header><article class=markdown><h1 id=history>History
+<a class=anchor href=#history>#</a></h1><p>When learning WebRTC developers often feel frustrated by the complexity. They
+see
+WebRTC features irrelevant to their current project and wish WebRTC was
+simpler. The issue
+is that everyone has a different set of use cases. Real-time communications has
+a rich
+history with lots of different people building many different things.</p><p>This chapter contains interviews with the authors of the protocols that make up
+WebRTC.
+It gives insight into the designs made when building each protocol, and
+finishes with an
+interview about WebRTC itself. If you understand the intentions and designs of
+the software
+you can build more effective systems with it.</p><h2 id=rtp>RTP
+<a class=anchor href=#rtp>#</a></h2><p>RTP and RTCP is the protocol that handles all media transport for WebRTC. It
+was defined in <a href=https://tools.ietf.org/html/rfc1889>RFC 1889</a> in January 1996.
+We are very lucky to have one of the authors <a href=https://github.com/ronf>Ron
+Frederick</a> talk about it himself. Ron recently uploaded
+<a href=https://github.com/ronf/nv>Network Video tool</a> to GitHub, a project that
+informed RTP.</p><h3 id=in-his-own-words>In his own words
+<a class=anchor href=#in-his-own-words>#</a></h3><p>In October of 1992, I began to experiment with the Sun VideoPix frame grabber
+card, with the idea of writing a network videoconferencing tool based upon IP
+multicast. It was modeled after &ldquo;vat&rdquo; &ndash; an audioconferencing tool developed
+at LBL, in that it used a similar lightweight session protocol for users
+joining into conferences, where you simply sent data to a particular
+multicast group and watched that group for any traffic from other group
+members.</p><p>In order for the program to really be successful, it needed to compress the
+video data before putting it out on the network. My goal was to make an
+acceptable looking stream of data that would fit in about 128 kbps, or the
+bandwidth available on a standard home ISDN line. I also hoped to produce
+something that was still watchable that fit in half this bandwidth. This
+meant I needed approximately a factor of 20 in compression for the particular
+image size and frame rate I was working with. I was able to achieve this
+compression and filed for a patent on the techniques I used, later granted
+as patent <a href=https://patents.google.com/patent/US5485212A>US5485212A</a>: Software video compression for teleconferencing.</p><p>In early November of 1992, I released the videoconferencing tool &ldquo;nv&rdquo; (in
+binary form) to the Internet community. After some initial testing, it was used
+to videocast parts of the November Internet Engineering Task Force all around
+the world. Approximately 200 subnets in 15 countries were capable of
+receiving this broadcast, and approximately 50-100 people received video using
+&ldquo;nv&rdquo; at some point in the week.</p><p>Over the next couple of months, three other workshops and some smaller
+meetings used &ldquo;nv&rdquo; to broadcast to the Internet at large, including the
+Australian NetWorkshop, the MCNC Packet Audio and Video workshop, and the
+MultiG workshop on distributed virtual realities in Sweden.</p><p>A source code release of &ldquo;nv&rdquo; followed in February of 1993, and in March I
+released a version of the tool where I introduced a new wavelet-based
+compression scheme. In May of 1993, I added support for color video.</p><p>The network protocol used for &ldquo;nv&rdquo; and other Internet conferencing tools
+became the basis of the Realtime Transport Protocol (RTP), standardized
+through the Internet Engineering Task Force (IETF), first published in
+RFCs <a href=https://tools.ietf.org/html/rfc1889>1889</a>-<a href=https://tools.ietf.org/html/rfc1890>1890</a> and later revised in RFCs <a href=https://tools.ietf.org/html/rfc3550>3550</a>-<a href=https://tools.ietf.org/html/rfc3551>3551</a>
+along with various other RFCs that covered profiles for carrying specific
+formats of audio and video.</p><p>Over the next couple of years, work continued on &ldquo;nv&rdquo;, porting the tool
+to a number of additional hardware platforms and video capture devices.
+It continued to be used as one of the primary tools for broadcasting
+conferences on the Internet at the time, including being selected by NASA
+to broadcast live coverage of shuttle missions online.</p><p>In 1994, I added support in &ldquo;nv&rdquo; for supporting video compression algorithms
+developed by others, including some hardware compression schemes such as
+the CellB format supported by the SunVideo video capture card. This also
+allowed &ldquo;nv&rdquo; to send video in CUSeeMe format, to send video to users
+running CUSeeMe on Macs and PCs.</p><p>The last publicly released version of &ldquo;nv&rdquo; was version 3.3beta, released
+in July of 1994. I was working on a &ldquo;4.0alpha&rdquo; release that was intended
+to migrate &ldquo;nv&rdquo; over to version 2 of the RTP protocol, but this work was
+never completed due to my moving on to other projects. A copy of the 4.0
+alpha code is included in the <a href=https://github.com/ronf/nv>Network Video tool</a>
+archive for completeness, but it is unfinished and there are known issues
+with it, particularly in the incomplete RTPv2 support.</p><p>The framework provided in &ldquo;nv&rdquo; later went on to become the basis of video
+conferencing in the &ldquo;Jupiter multi-media MOO&rdquo; project at Xerox PARC, which
+eventually became the basis for a spin-off company &ldquo;PlaceWare&rdquo;, later
+acquired by Microsoft. It was also used as the basis for a number of
+hardware video conferencing projects that allowed sending of full NTSC
+broadcast quality video over high-bandwidth Ethernet and ATM networks.
+I also later used some of this code as the basis for &ldquo;Mediastore&rdquo;, which
+was a network-based video recording and playback service.</p><h3 id=do-you-remember-the-motivationsideas-of-the-other-people-on-the-draft>Do you remember the motivations/ideas of the other people on the draft?
+<a class=anchor href=#do-you-remember-the-motivationsideas-of-the-other-people-on-the-draft>#</a></h3><p>We were all researchers working on IP multicast, and helping to create
+the Internet multicast backbone (aka MBONE). The MBONE was created by
+Steve Deering (who first developed IP multicast), Van Jacobson, and Steve
+Casner. Steve Deering and I had the same advisor at Stanford, and Steve
+ended up going to work at Xerox PARC when he left Stanford, I spent a
+summer at Xerox PARC as an intern working on IP multicast-related projects
+and continued to work for them part time while at Stanford and later full
+time. Van Jacobson and Steve Casner were two of the four authors on
+the initial RTP RFCs, along with Henning Schulzrinne and myself. We all
+had MBONE tools that we were working on that allowed for various forms of
+online collaboration, and trying to come up with a common base protocol
+all these tools could use was what led to RTP.</p><h3 id=multicast-is-super-fascinating-webrtc-is-entirely-unicast-mind-expanding-on-that>Multicast is super fascinating. WebRTC is entirely unicast, mind expanding on that?
+<a class=anchor href=#multicast-is-super-fascinating-webrtc-is-entirely-unicast-mind-expanding-on-that>#</a></h3><p>Before getting to Stanford and learning about IP multicast, I had a
+long history working on ways to use computers as a way for people to
+communicate with one another. This started in the early 80s for me
+where I ran a dial-up bulletin board system where people could log on
+and leave messages for one another, both private (sort of the equivalent
+of e-mail) and public (discussion groups). Around the same time, I also
+learned about the online service provider CompuServe. One of the cool
+features on CompuServe was something called a “CB Simulator” where people
+could talk to one another in real-time. It was all text-based, but it
+had a notion of “channels” like a real CB radio, and multiple people
+could see what others typed, as long as they were in the same channel.
+I built my own version of CB which ran on a timesharing system I had
+access to which let users on that system send messages to one another
+in real-time, and over the next few years I worked with friends to
+develop more sophisticated versions of real-time communication tools
+on several different computer systems and networks. In fact, one of those
+systems is still operational, and I use it talk every day to folks I went
+to college with 30+ years ago!</p><p>All of those tools were text based, since computers at the time generally
+didn&rsquo;t have any audio/video capabilities, but when I got to Stanford and
+learned about IP multicast, I was intrigued by the notion of using multicast
+to get something more like a true “radio” where you could send a signal
+out onto the network that wasn&rsquo;t directed at anyone in particular, but
+everyone who tuned to that “channel” could receive it. As it happened, the
+computer I was porting the IP multicast code to what was the first generation
+SPARC-station from Sun, and it actually had built-in telephone-quality audio
+hardware! You could digitize sound from a microphone and play it back over
+built-in speakers (or via a headphone output). So, my first thought was to
+figure out how to send that audio out onto the network in real-time using
+IP multicast, and see if I could build a “CB radio” equivalent with actual
+audio instead of text.</p><p>There were some tricky things to work out, like the fact that the computer
+could only play one audio stream at a time, so if multiple people were talking
+you needed to mathematically “mix” multiple audio streams into one before
+you could play it, but that could all be done in software once you understood
+how the audio sampling worked. That audio application led me to working on
+the MBONE and eventually moving from audio to video with “nv”.</p><h3 id=anything-that-got-left-out-of-the-protocol-that-you-wish-you-had-added-anything-in-the-protocol-you-regret>Anything that got left out of the protocol that you wish you had added? Anything in the protocol you regret?
+<a class=anchor href=#anything-that-got-left-out-of-the-protocol-that-you-wish-you-had-added-anything-in-the-protocol-you-regret>#</a></h3><p>I wouldn&rsquo;t say I regret it, but one of the big complaints people ended up
+having about RTP was the complexity of implementing RTCP, the control protocol
+that ran in parallel with the main RTP data traffic. I think that complexity
+was a large part of why RTP wasn&rsquo;t more widely adopted, particularly in the
+unicast case where there wasn&rsquo;t as much need for some of RTCP&rsquo;s features.
+As network bandwidth became less scarce and congestion wasn&rsquo;t as big a
+problem, a lot of people just ended up streaming audio & video over plain
+TCP (and later HTTP), and generally speaking it worked “well enough” that
+it wasn&rsquo;t worth dealing with RTP.</p><p>Unfortunately, using TCP or HTTP meant that multi-party audio and video
+applications had to send the same data over the network multiple times,
+to each of the peers that needed to receive it, making it much less
+efficient from a bandwidth perspective. I sometimes wish we had pushed
+harder to get IP multicast adopted beyond just the research community.
+I think we could have seen the transition from cable and broadcast
+television to Internet-based audio and video much sooner if we had.</p><h3 id=what-things-did-you-imagine-being-built-with-rtp-do-have-any-cool-rtp-projectsideas-that-got-lost-to-time>What things did you imagine being built with RTP? Do have any cool RTP projects/ideas that got lost to time?
+<a class=anchor href=#what-things-did-you-imagine-being-built-with-rtp-do-have-any-cool-rtp-projectsideas-that-got-lost-to-time>#</a></h3><p>One of the fun things I built was a version of the classic “Spacewar” game
+which used IP multicast. Without having any kind of central server, multiple
+clients could each run the spacewar binary and start broadcasting their
+ship&rsquo;s location, velocity, the direction it was facing, and similar
+information for any “bullets” it had fired, and all of the other instances
+would pick up that information and render it locally, allowing users to all
+see each other&rsquo;s ships and bullets, with ships “exploding” if they crashed
+into each other or bullets hit them. I even made the “debris” from the
+explosion a live object that could take out other ships, sometimes leading
+to fun chain reactions!</p><p>In the spirit of the original game, I rendered it using simulated vector
+graphics, so you could do things like zooming your view in & out and
+everything would scale up/down. The ships themselves were a bunch of
+line segments in vector form that I had some of my colleagues at PARC
+helped me to design, so everyone&rsquo;s ship had a unique look to it.</p><p>Basically, anything that could benefit from a real-time data stream that
+didn&rsquo;t need perfect in-order delivery could benefit from RTP. So, in addition
+to audio & video we could build things like a shared whiteboard. Even file
+transfers could benefit from RTP, especially in conjunction with IP multicast.</p><p>Imagine something like BitTorrent but where you didn&rsquo;t need all the data
+going point-to-point between peers. The original seeder could send a multicast
+stream to all of the leeches at once, and any packet losses along the way
+could be quickly cleaned up by a retransmission from any peer that
+successfully received the data. You could even scope your retransmission
+requests so that some peer nearby delivered the copy of the data, and that
+too could be multicast to others in that region, since a packet loss in
+the middle of the network would tend to mean a bunch of clients
+downstream of that point all missed the same data.</p><h3 id=why-did-you-have-to-roll-your-own-video-compression-was-nothing-else-available-at-the-time>Why did you have to roll your own video compression. Was nothing else available at the time?
+<a class=anchor href=#why-did-you-have-to-roll-your-own-video-compression-was-nothing-else-available-at-the-time>#</a></h3><p>At the time I began to build “nv”, the only systems I know of that did
+videoconferencing were very expensive specialized hardware. For instance,
+Steve Casner had access to a system from BBN that was called &ldquo;DVC&rdquo; (and
+later commercialized as “PictureWindow”). The compression required
+specialized hardware, but the decompression could be done in software.
+What made “nv” somewhat unique was that both compression and decompression
+was being done in software, with the only hardware requirement being
+something to digitize an incoming analog video signal.</p><p>Many of the basic concepts about how to compress video existed by then, with
+things like the MPEG-1 standard appearing right around the same time “nv”
+did, but real-time encoding with MPEG-1 was definitely NOT possible at
+the time. The changes I made were all about taking those basic concepts and
+approximating them with much cheaper algorithms, where I avoided things like
+cosine transforms and floating point, and even avoided integer multiplications
+since those were very slow on SPARC-stations. I tried to do everything I could
+with just additions/subtractions and bit masking and shifting, and that got
+back enough speed to still feel somewhat like video.</p><p>Within a year or two of the release of &ldquo;nv&rdquo;, there were many different audio
+and video tools to choose from, not only on the MBONE but in other places
+like the CU-SeeMe tool built on the Mac. So, it was clearly an idea whose
+time had come. I actually ended up making “nv” interoperate with many of
+these tools, and in a few cases other tools picked up my “nv” codecs, so
+they could interoperate when using my compression scheme.</p><h2 id=webrtc>WebRTC
+<a class=anchor href=#webrtc>#</a></h2><p>WebRTC required a standardization effort that dwarfs all of the other efforts
+described in this chapter. It required cooperation across two different
+standards bodies (IETF and W3C) and hundreds of individuals across many
+companies and countries. To give us a look inside the motivations and
+monumental effort it took to make WebRTC happen we have
+<a href=https://twitter.com/slac>Serge Lachapelle</a>.</p><p>Serge is a product manager at Google, currently serving as a product manager
+for Google Workspace. This is my summary of the interview.</p><h3 id=what-led-you-to-work-on-webrtc>What led you to work on WebRTC?
+<a class=anchor href=#what-led-you-to-work-on-webrtc>#</a></h3><p>I have been passionate about building communications software since I was in
+college. In the 90s the technology like <a href=https://github.com/ronf/nv>nv</a>
+started to appear, but was difficult to use. I created a project that allowed
+you to join a video call right from your browser. I also ported it to Windows.</p><p>I took this experience to Marratech, a company I co-founded. We created
+software for group video conferencing. Technologically the landscape
+was so different. The cutting edge in video was based on multicast networking.
+A user could depend on the network to deliver to a video packet to everyone in
+the call. This meant that we had very simple servers. This had a big downside
+though, networks had to be designed to accommodate it. The industry moved away
+from multicast to packet shufflers, more commonly known as SFUs.</p><p>Marratech was acquired by Google in 2007. I would then go on to work on the
+project that would inform WebRTC.</p><h3 id=the-first-google-project>The first Google project
+<a class=anchor href=#the-first-google-project>#</a></h3><p>The first project that the future WebRTC team worked on was Gmail voice and
+video chat. Getting audio and video into the browser was no easy task. It
+required specialty components that we had to license from different companies.
+Audio was licensed from GIPs, video was licensed for Vidyo and the networking
+was libjingle. The magic was then making all of them work together.</p><p>Each subsystem has completely different APIs, and assumed you were solving
+different problems. To make it all work together you need working knowledge
+of networking, cryptography, media and more.
+<a href=https://juberti.com>Justin Uberti</a> was the person that took on this work.
+He brought these components together to make a usable product.</p><p>Rendering real-time in the browser was also really hard. We had to use the
+NPAPI (Netscape Plugin API) and do lots of clever things to make it work.
+The lessons we learned from this project greatly influenced WebRTC.</p><h3 id=chrome>Chrome
+<a class=anchor href=#chrome>#</a></h3><p>At the same time the Chrome project started inside of Google. There was
+so much excitement, and this project had huge goals. There was talk about
+WebGL, Offline, Database capabilities, low latency input for gaming just
+to name a few.</p><p>Moving away from NPAPI became a big focus. It is a powerful API, but comes with
+big security consequences. Chrome uses a sandbox design to keep users safe.
+Operations that can be potentially unsafe are run in different processes.
+Even if something goes wrong an attacker still doesn&rsquo;t have access to the
+user data.</p><h3 id=webrtc-is-born>WebRTC is born
+<a class=anchor href=#webrtc-is-born>#</a></h3><p>For me WebRTC was born with a few motivations. Combined they gave birth to the
+effort.</p><p>It shouldn&rsquo;t be this hard to build RTC experiences. So much effort is wasted
+re-implementing the same thing by different developers. We should solve these
+frustrating integration problems once, and focus on other things.</p><p>Human communication should be unhampered and should be open. How is it ok for
+text and HTML to be open, but my voice and my image in real-time not to be?</p><p>Security is a priority. Using the NPAPI wasn&rsquo;t best for users. This was also
+a chance to make a protocol that was secure by default.</p><p>To make WebRTC happen Google acquired and Open Sourced the components we had
+used before. <a href=https://en.wikipedia.org/wiki/On2_Technologies>On2</a> was
+acquired for it’s video technology and
+<a href=https://en.wikipedia.org/wiki/Global_IP_Solutions>Global IP Solutions</a>
+for its RTC technology. I was in charge of the effort of acquiring GIPS.
+We got to work combining these and making them easy to use in and outside
+the browser.</p><h3 id=standardization>Standardization
+<a class=anchor href=#standardization>#</a></h3><p>Standardizing WebRTC was something we really wanted to do, but not something I
+had done before nor anyone on our immediate team. For this we were really
+fortunate to have Harald Alvestrand at Google. He had done extensive work in
+the IETF already and started the WebRTC standardization process.</p><p>In summer 2010 an informal lunch was scheduled in Maastricht. Developers from
+many companies came together to discuss what WebRTC should be. The lunch had
+engineers from Google, Cisco, Ericsson, Skype, Mozilla, Linden Labs and more.
+You can find the full attendance and presenter slides on
+<a href=http://rtc-web.alvestrand.com>rtc-web.alvestrand.com</a>.</p><p>Skype also provided some great guidance because of the work they had done with
+Opus in the IETF.</p><h3 id=standing-on-the-shoulders-of-giants>Standing on the shoulders of giants
+<a class=anchor href=#standing-on-the-shoulders-of-giants>#</a></h3><p>When working in the IETF you are extending the work that has come before you.
+With WebRTC we were lucky that so many things existed. We didn&rsquo;t have to take
+on every problem because they already were solved. If you don&rsquo;t like the
+pre-existing technology it can be frustrating though. There has to be a pretty
+big reason to disregard existing work, so rolling your own isn&rsquo;t an option.</p><p>We also consciously didn&rsquo;t attempt to re-standardize things like signaling.
+This had already been solved with SIP and other non-IETF efforts, and it
+felt like it could end up being very political. In the end it just didn&rsquo;t
+feel like there was much value to add to the space.</p><p>I didn&rsquo;t stay as involved in standardization as Justin and Harald, but I
+enjoyed my time doing it. I was more excited about returning to building
+things for users.</p><h3 id=the-future>The future
+<a class=anchor href=#the-future>#</a></h3><p>WebRTC is in a great place today. There are lots of iterative changes
+happening, but nothing in particular I have been working on.</p><p>I am most excited about what cloud computing can do for communication. Using
+advanced algorithms we can remove background noise from a call and make
+communication possible where it wasn&rsquo;t before. We are also seeing WebRTC
+extend far beyond communications… Who knew that it would be powering cloud
+based gaming 9 years later? All of this wouldn&rsquo;t be possible without the
+foundation of WebRTC.</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div class=book-languages tabindex=0 aria-haspopup=true><ul><li class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Español</li></ul><ul class=book-languages-list><li><a href=https://webrtcforthecurious.com/docs/10-history-of-webrtc/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+English</a></li><li><a href=https://webrtcforthecurious.com/ru/docs/10-history-of-webrtc/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Русский</a></li><li><a href=https://webrtcforthecurious.com/sv/docs/10-history-of-webrtc/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Svenska</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/10-history-of-webrtc/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+简体中文</a></li><li><a href=https://webrtcforthecurious.com/ja/docs/10-history-of-webrtc/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+日本語</a></li><li><a href=https://webrtcforthecurious.com/fa/docs/10-history-of-webrtc/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Persian</a></li><li><a href=https://webrtcforthecurious.com/fr/docs/10-history-of-webrtc/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Français</a></li><li><a href=https://webrtcforthecurious.com/id/docs/10-history-of-webrtc/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Bahasa Indonesia</a></li><li class=active><a href=https://webrtcforthecurious.com/es/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Español</a></li></ul></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/commit/d229c648fe5ab89cddd7a7b46a96de7db6f1d815 title="Última modificación por zackfall | October 13, 2022" target=_blank rel=noopener><img src=/svg/calendar.svg class=book-icon alt=Calendar>
+<span>October 13, 2022</span></a></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content.es/docs/10-history-of-webrtc.md target=_blank rel=noopener><img src=/svg/edit.svg class=book-icon alt=Edit>
+<span>Editar esta página</span></a></div></div></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#rtp>RTP</a><ul><li><a href=#in-his-own-words>In his own words</a></li><li><a href=#do-you-remember-the-motivationsideas-of-the-other-people-on-the-draft>Do you remember the motivations/ideas of the other people on the draft?</a></li><li><a href=#multicast-is-super-fascinating-webrtc-is-entirely-unicast-mind-expanding-on-that>Multicast is super fascinating. WebRTC is entirely unicast, mind expanding on that?</a></li><li><a href=#anything-that-got-left-out-of-the-protocol-that-you-wish-you-had-added-anything-in-the-protocol-you-regret>Anything that got left out of the protocol that you wish you had added? Anything in the protocol you regret?</a></li><li><a href=#what-things-did-you-imagine-being-built-with-rtp-do-have-any-cool-rtp-projectsideas-that-got-lost-to-time>What things did you imagine being built with RTP? Do have any cool RTP projects/ideas that got lost to time?</a></li><li><a href=#why-did-you-have-to-roll-your-own-video-compression-was-nothing-else-available-at-the-time>Why did you have to roll your own video compression. Was nothing else available at the time?</a></li></ul></li><li><a href=#webrtc>WebRTC</a><ul><li><a href=#what-led-you-to-work-on-webrtc>What led you to work on WebRTC?</a></li><li><a href=#the-first-google-project>The first Google project</a></li><li><a href=#chrome>Chrome</a></li><li><a href=#webrtc-is-born>WebRTC is born</a></li><li><a href=#standardization>Standardization</a></li><li><a href=#standing-on-the-shoulders-of-giants>Standing on the shoulders of giants</a></li><li><a href=#the-future>The future</a></li></ul></li></ul></nav></div></aside></main></body></html>
