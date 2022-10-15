@@ -25,8 +25,8 @@ Este libro es independiente del proveedor y hemos tratado de eliminar cualquier 
 
 ## Diseñado para múltiples lecturas
 
-Este libro está diseñado para que lo lea más de una vez.
-Cada capítulo es independiente, así que puede ir a cualquier parte del libro sin perderse.
+Este libro está diseñado para que lo leas más de una vez.
+Cada capítulo es independiente, así que puedes ir a cualquier parte del libro sin perderte.
 
 Cada capítulo se enfoca en responer una pregunta con tres niveles de información:
 
@@ -34,14 +34,14 @@ Cada capítulo se enfoca en responer una pregunta con tres niveles de informaci�
 -   ¿Cómo lo resolvemos? (Incluye detalles técnicos sobre la solución.)
 -   ¿Dónde aprender más?
 
-Ningún capítulo asume algún conocimiento previo. Puede comenzar en cualquier punto del libro y empezar a aprender.
-Este libro también le recomendará recursos donde puede aprender más sobre el tema hablado.
-Otros libros cubren temas específicos en mucho más detalle. Este libro pretende enseñarle todo el sistema, a costa de detalles de nivel experto.
+Ningún capítulo asume algún conocimiento previo. Puedes comenzar en cualquier punto del libro y empezar a aprender.
+Este libro también te recomendará recursos donde puedes aprender más sobre el tema hablado.
+Otros libros cubren temas específicos en mucho más detalle. Este libro pretende enseñarte todo el sistema, a costa de detalles de nivel experto.
 
 ## Disponible de forma gratuita y respetando su privacidad
 
 El libro está disponible en [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious) y [WebRTCforTheCurious.com](https://webrtcforthecurious.com).
-Está licenciado de forma que pueda usarlo como más le guste. Puede descargarlo también en su versión [ePub](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.epub)
+Está licenciado de forma que puedas usarlo como más te apetezca. Puedes descargarlo también en su versión [ePub](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.epub)
 o [PDF](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.pdf).
 
 Este libro está escrito por individuos, para individuos. Es independiente del proveedor, así que
@@ -49,9 +49,9 @@ no haremos recomendaciones que causen algún conflicto de intereses.
 
 La página web no usará analytics o tracking.
 
-## ¡Ayúdenos!
+## ¡Ayúdanos!
 
-¡Necesitamos su ayuda! Este libro está siendo desarrollado en [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious).
+¡Necesitamos tu ayuda! Este libro está siendo desarrollado en [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious).
 Alentamos a los lectores a abrir issues con preguntas en cosas que no hemos cubierto adecuadamente.
 
 ## Licencia
