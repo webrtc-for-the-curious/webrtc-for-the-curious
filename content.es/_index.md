@@ -28,7 +28,7 @@ Este libro es independiente del proveedor y hemos tratado de eliminar cualquier 
 Este libro está diseñado para que lo leas más de una vez.
 Cada capítulo es independiente, así que puedes ir a cualquier parte del libro sin perderte.
 
-Cada capítulo se enfoca en responer una pregunta con tres niveles de información:
+Cada capítulo se enfoca en responder una pregunta con tres niveles de información:
 
 -   ¿Qué necesita ser resuelto?
 -   ¿Cómo lo resolvemos? (Incluye detalles técnicos sobre la solución.)
