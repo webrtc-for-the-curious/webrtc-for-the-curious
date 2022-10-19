@@ -48,9 +48,9 @@ Each of these steps has dedicated chapters, but it is helpful to understand them
 
 ### Signaling: How peers find each other in WebRTC
 
-When a WebRTC Agent starts, it has no idea who it is going to communicate with or what they are going to communicate about. The *Signaling* step solves this issue! Signaling is used to bootstrap the call, allowing two independant WebRTC agents to start communicating.
+When a WebRTC Agent starts, it has no idea who it is going to communicate with or what they are going to communicate about. The *Signaling* step solves this issue! Signaling is used to bootstrap the call, allowing two independent WebRTC agents to start communicating.
 
-Signaling uses an existing, plain-text protocol called SDP (Session Description Protocol). Each SDP message is made up of key/value pairs and contains a list of "media sections". The SDP that the two WebRTC Agents exchange contains details like:
+Signaling uses an existing, plain-text protocol called SDP (Session Description Protocol). Each SDP message is made up of key/value pairs and contains a list of "media sections". The SDP that the two WebRTC agents exchange contains details like:
 
 * The IPs and Ports that the agent is reachable on (candidates).
 * The number of audio and video tracks the agent wishes to send.
@@ -62,17 +62,17 @@ It is important to note that signaling typically happens "out-of-band", which me
 
 ### Connecting and NAT Traversal with STUN/TURN
 
-Once two WebRTC Agents have exchanged SDPs, they have enough information to attempt to connect to each other. To make this connection happen, WebRTC uses another established technology called ICE (Interactive Connectivity Establishment).
+Once two WebRTC agents have exchanged SDPs, they have enough information to attempt to connect to each other. To make this connection happen, WebRTC uses another established technology called ICE (Interactive Connectivity Establishment).
 
-ICE is a protocol that pre-dates WebRTC and allows the establishment of a direct connection between two Agents without a central server. These two Agents could be on the same network or on the other side of the world.
+ICE is a protocol that pre-dates WebRTC and allows the establishment of a direct connection between two agents without a central server. These two agents could be on the same network or on the other side of the world.
 
 ICE enables direct connection, but the real magic of the connecting process involves a concept called 'NAT Traversal' and the use of STUN/TURN Servers. These two concepts, which we will explore in more depth later, are all you need to communicate with an ICE Agent in another subnet.
 
-Once two Agents have successfully established an ICE connection, WebRTC moves on to the next step: establishing an encrypted transport for sharing audio, video, and data between them.
+When the two agents have successfully established an ICE connection, WebRTC moves on to the next step; establishing an encrypted transport for sharing audio, video, and data between them.
 
 ### Securing the transport layer with DTLS and SRTP
 
-Now that we have bi-directional communication (via ICE), we need to make our communication secure! This is done through two more protocols that also pre-date WebRTC; DTLS (Datagram Transport Layer Security) and SRTP (Secure Real-Time Transport Protocol). The first protocol, DTLS, is simply TLS over UDP (TLS is the cryptographic protocol used to secure communication over HTTPS). The second protocol, SRTP (Secure Real-time Transport Protocol), is used to ensure encryption of RTP (Real-time Protocol) data packets.
+Now that we have bi-directional communication (via ICE), we need to make our communication secure! This is done through two more protocols that also pre-date WebRTC; DTLS (Datagram Transport Layer Security) and SRTP (Secure Real-Time Transport Protocol). The first protocol, DTLS, is simply TLS over UDP (TLS is the cryptographic protocol used to secure communication over HTTPS). The second protocol, SRTP, is used to ensure encryption of RTP (Real-time Protocol) data packets.
 
 First, WebRTC connects by doing a DTLS handshake over the connection established by ICE. Unlike HTTPS, WebRTC doesn't use a central authority for certificates. It simply asserts that the certificate exchanged via DTLS matches the fingerprint shared via signaling. This DTLS connection is then used for DataChannel messages.
 
@@ -80,24 +80,25 @@ Next, WebRTC uses the RTP protocol, secured using SRTP, for audio/video transmis
 
 We will discuss why media and data transmission have their own protocols in a later chapter, but for now it is enough to know that they are handled separately.
 
-Now we are done! We have successfully established bi-directional and secure communication. If you have a stable connection between your WebRTC Agents, this is all the complexity you need. In the next section, we will discuss how WebRTC deals with the unfortunate real world problems of packet loss and bandwidth limits.
+Now we are done! We have successfully established bi-directional and secure communication. If you have a stable connection between your WebRTC agents, this is all the complexity you need. In the next section, we will discuss how WebRTC deals with the unfortunate real world problems of packet loss and bandwidth limits.
 
 ### Communicating with peers via RTP and SCTP
 
-Now that we have two WebRTC Agents connected and secure, bi-directional communication established, let's start communicating! Again, WebRTC will use two pre-existing protocols: RTP (Real-time Transport Protocol), and SCTP (Stream Control Transmission Protocol). We use RTP to exchange media encrypted with SRTP, and we use SCTP to send and receive DataChannel messages encrypted with DTLS.
+Now that we have two WebRTC agents connected and secure, bi-directional communication established, let's start communicating! Again, WebRTC will use two pre-existing protocols: RTP (Real-time Transport Protocol), and SCTP (Stream Control Transmission Protocol). We use RTP to exchange media encrypted with SRTP, and we use SCTP to send and receive DataChannel messages encrypted with DTLS.
 
 RTP is quite a minimal protocol, but it provides the necessary tools to implement real-time streaming. The most important thing about RTP is that it gives flexibility to the developer, allowing them to handle latency, package loss, and congestion as they please. We will discuss this further in the media chapter.
 
 The final protocol in the stack is SCTP. The important thing about SCTP is that it allows for unreliable, out of order message delivery (among many different options). This allows developers to ensure the necessary latency for real-time systems.
 
 ## WebRTC, a collection of protocols
+
 WebRTC solves a lot of problems. At first glance the technology may seem over-engineered, but the genius of WebRTC is its humility. It wasn't created under the assumption that it could solve everything better. Instead, it embraced many existing single purpose technologies and brought them together into a streamlined, widely applicable bundle.
 
 This allows us to examine and learn each part individually without being overwhelmed. A good way to visualize it is a 'WebRTC Agent' is really just an orchestrator of many different protocols.
 
 ![WebRTC Agent](../images/01-webrtc-agent.png "WebRTC Agent Diagram")
 
-## How does WebRTC (the API) work?
+## How does the WebRTC API work?
 
 This section outlines how the WebRTC JavaScript API maps to the WebRTC protocol described above. It isn't meant as an extensive demo of the WebRTC API, but more to create a mental model of how everything ties together.
 If you aren't familiar with either the protocol or the API, don't worry. This could be a fun section to return to as you learn more!
@@ -110,7 +111,7 @@ The `RTCPeerConnection` is the top-level "WebRTC Session". It contains all the p
 
 `addTrack` creates a new RTP stream. A random Synchronization Source (SSRC) will be generated for this stream. This stream will then be inside the Session Description generated by `createOffer` inside a media section. Each call to `addTrack` will create a new SSRC and media section.
 
-Immediately after an SRTP Session is established, these media packets will start being encrpyted using SRTP and sent via ICE.
+Immediately after an SRTP Session is established, these media packets will start being encrypted using SRTP and sent via ICE.
 
 ### `createDataChannel`
 
@@ -134,7 +135,7 @@ Usually, after this call, you will send the offer to the remote peer, who will u
 
 `setRemoteDescription` is how we inform the local agent about the state of the remote candidates'. This is how the act of 'Signaling' is done with the JavaScript API.
 
-When `setRemoteDescription` has been called on both sides, the WebRTC Agents now have enough info to start communicating Peer-To-Peer (P2P)!
+When `setRemoteDescription` has been called on both sides, the WebRTC agents now have enough info to start communicating Peer-To-Peer (P2P)!
 
 ### `addIceCandidate`
 
@@ -148,7 +149,8 @@ WebRTC uses the SSRC and looks up the associated `MediaStream` and `MediaStreamT
 
 ### `oniceconnectionstatechange`
 
-`oniceconnectionstatechange` is a callback that is fired which reflects a change in the state of an ICE Agent. When you have a change in network connectivity this is how you are notified.
+`oniceconnectionstatechange` is a callback that is fired which reflects a change in the state of an ICE agent. When you have a change in network connectivity this is how you are notified.
+
 ### `onconnectionstatechange`
 
-`onconnectionstatechange` is a combination of ICE Agent and DTLS Agent state. You can watch this to be notified when ICE and DTLS have both completed successfully.
+`onconnectionstatechange` is a combination of ICE agent and DTLS agent state. You can watch this to be notified when ICE and DTLS have both completed successfully.
