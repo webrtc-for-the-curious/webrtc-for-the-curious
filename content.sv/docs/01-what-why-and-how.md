@@ -18,7 +18,7 @@ WebRTC-protokollet upprätthålls i IETF i arbetsgruppen [rtcweb](https://datatr
 
 ## Varför ska jag lära mig WebRTC?
 
-Det här är en lista på några saker som WebRTC kommer att ge dig. Listan är inte komplett, bara exempel på saker. Oroa dig inte om du inte känner till alla dessa termer ännu, den här boken kommer att lära dig dem på vägen.
+Det här är en lista på några saker som WebRTC kommer att ge dig:
 
 * Öppen standard
 * Flera implementeringar
@@ -29,18 +29,20 @@ Det här är en lista på några saker som WebRTC kommer att ge dig. Listan är 
 * Trängselkontroll
 * Latens som kan mätas i bråkdelar av en sekund
 
+Listan är inte komplett, bara exempel på saker som är bra att känna till. Oroa dig inte om du inte känner till alla dessa termer ännu, den här boken kommer att lära dig dem på vägen.
+
 ## WebRTC Protokollet är en samling av andra tekniker
 
 Detta är ett ämne som kan ta en hel bok att förklara, men till att börja med delar vi upp det i fyra steg.
 
-* Signalering
-* Anslutning
-* Säkerhet
-* Kommunikation
+1. Signalering
+2. Anslutning
+3. Säkerhet
+4. Kommunikation
 
-Dessa fyra steg sker alltid i den här ordningen. Varje steg måste vara helt klart utan problem för att det efterföljande steget ska kunna börja.
+Dessa fyra steg sker alltid i den här ordningen. Varje steg måste vara helt klart, utan problem, innan nästa steg kan påbörjas.
 
-En intressant sak med WebRTC är att varje steg faktiskt består av många andra protokoll och befintliga tekniker. I den meningen är WebRTC egentligen bara en kombination av beprövad teknik som har funnits sedan början av 2000-talet.
+En intressant sak med WebRTC är att varje steg faktiskt består av många andra protokoll! WebRTC är en samling av många befintliga tekniker. I den meningen är WebRTC egentligen bara en kombination av beprövad teknik som har funnits sedan början av 2000-talet och inte något helt nytt.
 
 Vi kommer att gå igenom alla dessa steg i detalj senare, men det är bra att först förstå dem på en hög nivå. Eftersom de är beroende av varandra kommer det att hjälpa dig när vi senare förklarar syftet med vart och ett av dessa steg.
 
@@ -60,34 +62,37 @@ Observera att signalering vanligtvis sker i en separat kanal (out-of-band); appl
 
 ### Anslutning och NAT Traversal med STUN/TURN
 
-De två WebRTC-agenterna vet nu tillräckligt med detaljer för att försöka ansluta till varandra. WebRTC använder sedan en annan etablerad teknik som kallas ICE.
+När de två WebRTC-agenterna utbytt SDP:er har de nu tillräckligt med detaljer för att försöka ansluta till varandra. För att göra det använder WebRTC en annan etablerad teknik som kallas ICE (Interactive Connectivity Establishment).
 
-ICE (Interactive Connectivity Establishment) är ett protokoll som skapades före WebRTC. ICE används för att upprätt av en anslutning mellan två agenter. Dessa agenter kan vara i samma nätverk eller på andra sidan världen. ICE är används för att skapa en direktanslutning utan att gå via en central server.
+ICE är ett protokoll som skapades före WebRTC och. ICE används för att upprätta en anslutning mellan två agenter. Dessa agenter kan vara i samma nätverk eller på andra sidan världen.
 
-Den verkliga magin här är "NAT Traversal" och STUN/TURN-servrar. Dessa två begrepp är allt du behöver för att kommunicera med en ICE-agent i ett annat sub-nät. Vi kommer att utforska dessa ämnen djupare senare.
+ICE är används för att skapa en direktanslutning utan att gå via en central server. Den verkliga magin här är "NAT Traversal" och STUN/TURN-servrar. Dessa två begrepp, som vi kommer att utforska djupare senare, är allt du behöver för att kommunicera med en ICE-agent i ett annat sub-nät.
 
-När ICE väl har anslutits går WebRTC vidare till att upprätta en krypterad transport. Denna kommunikationskanal används för ljud, video och data.
+När de två agenterna väl har anslutits går WebRTC vidare till nästa steg; att upprätta en krypterad kommunikationskanal för att utbyta ljud, video och data.
 
 ### Säkra transportskiktet med DTLS och SRTP
 
-Nu när vi har dubbelriktad kommunikation (via ICE) måste vi sätta upp en säker kommunikationskanal. Detta görs genom två protokoll som också är äldre än WebRTC. Det första protokollet är DTLS (Datagram Transport Layer Security) som helt enkelt är TLS över UDP. TLS är det kryptografiska protokollet som används för att säkra kommunikation via HTTPS. Det andra protokollet är SRTP (Secure Real-time Transport Protocol).
+Nu när vi har dubbelriktad kommunikation (via ICE) måste vi sätta upp en säker kommunikationskanal. Detta görs genom två andra protokoll som också är äldre än WebRTC; DTLS (Datagram Transport Layer Security) och SRTP (Secure Real-time Transport Protocol). Det första protokollet, DTLS är helt enkelt TLS över UDP. (TLS är det kryptografiska protokollet som används för att säkra kommunikation via HTTPS). Det andra protokollet, SRTP, används för att kryptera RTP (Real-time Protocol) data paket.
 
-Först ansluter WebRTC genom att göra en DTLS-handskakning över anslutningen som upprättats av ICE. Till skillnad från HTTPS använder WebRTC inte en vanlig CA (Certificate Authority) för certifikatet. Istället hävdar WebRTC bara att certifikatet som utbyts via DTLS matchar. Denna DTLS-anslutning används sedan för DataChannel-meddelanden.
+Först ansluter WebRTC genom att göra en DTLS-handskakning över anslutningen som upprättats av ICE. Till skillnad från HTTPS använder WebRTC inte en centraliserad Certificate Authority för certifikatet. Istället verifierar WebRTC bara att certifikatet som utbyts via DTLS matchar. Denna DTLS-anslutning används sedan för DataChannel-meddelanden.
 
-WebRTC använder sedan ett annat protokoll för ljud- och video-överföring som heter RTP. Vi skyddar våra RTP-paket med SRTP. Vi initierar vår SRTP-session genom att extrahera nycklarna från den förhandlade DTLS-sessionen. Vi kommer att gå igenom varför medieöverföring har ett eget protokoll i ett senare kapitel.
+WebRTC använder sedan ett annat protokoll för ljud- och video-överföring som heter RTP. Vi skyddar våra RTP-paket med SRTP. Vi initierar vår SRTP-session genom att extrahera nycklarna från den förhandlade DTLS-sessionen. 
 
-Nu är vi klara! Du har nu dubbelriktad och säker kommunikation. Om du har en stabil anslutning mellan dina WebRTC-agenter är det här all komplexitet du behöver. Tyvärr har den verkliga världen andra problem som paketförlust och brist på bandbredd. Nästa avsnitt handlar om hur vi hanterar dem.
+Vi kommer att gå igenom varför medieöverföring har ett eget protokoll i ett senare kapitel, men just nu räcker det att veta add de hanteras separat.
+
+Nu är vi klara! Vi har nu satt upp dubbelriktad och säker kommunikation. Om du har en stabil anslutning mellan dina WebRTC-agenter är det här all komplexitet du behöver. Tyvärr har den verkliga världen andra problem som paketförlust och brist på bandbredd. Nästa avsnitt handlar om hur vi hanterar dem.
 
 ### Kommunicera med parter via RTP och SCTP
 
-Vi har nu två WebRTC-agenter med säker dubbelriktad kommunikation. Låt oss börja kommunicera! Återigen använder vi två befintliga protokoll: RTP (Real-time Transport Protocol) och SCTP (Stream Control Transmission Protocol). Använd RTP för att utbyta media krypterat med SRTP och använd SCTP för att skicka och ta emot DataChannel-meddelanden krypterade med DTLS.
+Nu när vi har nu två WebRTC-agenter med säker dubbelriktad uppkoppling, låt oss börja kommunicera! Återigen använder vi två befintliga protokoll: RTP (Real-time Transport Protocol) och SCTP (Stream Control Transmission Protocol). Vi använder RTP för att utbyta media krypterat med SRTP och vi använder SCTP för att skicka och ta emot DataChannel-meddelanden krypterade med DTLS.
 
-RTP är ganska minimalt, men ger oss allt vi behöver för att implementera realtidsströmning. Det viktiga är att RTP ger utvecklaren flexibilitet, så att de kan hantera latens, förlust och trängsel som de vill. Vi kommer att gå igenom detta ytterligare i mediekapitlet.
+RTP är ganska minimalt, men ger oss allt vi behöver för att implementera realtidsströmning. Det viktiga är att RTP ger utvecklaren flexibilitet, så att de kan hantera latens, förlust och trängsel som de vill. Vi kommer att gå igenom detta i detalj i mediekapitlet.
 
 Det slutliga protokollet i stacken är SCTP. SCTP tillåter många leveransalternativ för meddelanden. Du kan till exempel välja att ha opålitlig leverans utan ordning, så att du kan få den latens som behövs för realtidssystem.
 
 ## WebRTC, en samling protokoll
-WebRTC löser väldigt många problem åt oss. Först kan detta verka väldigt ambitiöst, men det smarta med WebRTCs är att man inte försökte lösa allt själva. Istället återanvände man många befintliga tekniker för enskilda ändamål och kombinerade dem.
+
+WebRTC löser väldigt många problem åt oss. Först kan detta verka väldigt ambitiöst, men det smarta med WebRTCs är att man inte försökte lösa allt själva. Istället återanvände man många befintliga tekniker för enskilda ändamål och kombinerade dem till ett paket som är lättare att använda.
 
 Detta gör att vi kan undersöka och lära oss om varje del individuellt, utan att bli överväldigade. Ett bra sätt att visualisera det hela är att en "WebRTC Agent" egentligen bara är en samordnare av många olika protokoll.
 
@@ -99,6 +104,7 @@ Det här avsnittet visar hur JavaScript API:et kopplas till protokollet. Detta �
 Om du inte känner till någon av dem är det ok. Det här kan vara ett roligt avsnitt att återvända till när du lär dig mer!
 
 ### `new RTCPeerConnection`
+
 `RTCPeerConnection` är den högsta nivån av en "WebRTC Session". Den innehåller alla ovan nämnda protokoll. Delsystemen är alla allokerade men ingenting händer ännu.
 
 ### `addTrack`
@@ -129,11 +135,11 @@ Vanligtvis, efter det här anropet, kommer du att skicka erbjudandet till den an
 
 `setRemoteDescription` är hur vi informerar den lokala agenten om andra kandidaters tillstånd. Så här görs signalering med JavaScript API:et.
 
-När `setRemoteDescription` har anropats på båda sidor har WebRTC Agenterna nu tillräckligt med information för att börja kommunicera direkt part-till-part (P2P)!
+När `setRemoteDescription` har anropats på båda sidor har WebRTC agenterna tillräckligt med information för att börja kommunicera direkt part-till-part (P2P)!
 
 ### `addIceCandidate`
 
-`addIceCandidate` tillåter en WebRTC-agent att lägga till fler ICE-kandidater på avstånd när de vill. Detta API skickar ICE-kandidaten direkt in i ICE-delsystemet och har ingen annan effekt på den större WebRTC-anslutningen.
+`addIceCandidate` tillåter en WebRTC-agent att lägga till fler ICE-kandidater på när som helst. Detta API skickar ICE-kandidaten direkt in i ICE-delsystemet och har ingen annan effekt på själva WebRTC-anslutningen.
 
 ### `ontrack`
 
@@ -147,4 +153,4 @@ WebRTC använder SSRC för att hitta rätt `MediaStream` och `MediaStreamTrack`,
 
 ### `onconnectionstatechange`
 
-`onconnectionstatechange` är en kombination av ICE Agenten och DTLS Agentens tillstånd. Du kan lyssna på detta meddelande för att få veta när uppsättningen av både ICE och DTLS har slutförts.
+`onconnectionstatechange` är en kombination av ICE agenten och DTLS agentens tillstånd. Du kan lyssna på detta meddelande för att få veta när uppsättningen av både ICE och DTLS har slutförts.
