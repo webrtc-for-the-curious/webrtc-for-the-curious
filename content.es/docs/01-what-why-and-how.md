@@ -1,54 +1,63 @@
 ---
-title: What, Why and How
+title: ¿Qué, Por qué y Cómo?
 type: docs
 weight: 2
 ---
 
-# What, Why and How
+# ¿Qué, Por qué y Cómo?
 
-## What is WebRTC?
+## ¿Qué es WebRTC?
 
-WebRTC, short for Web Real-Time Communication, is both an API and a Protocol. The WebRTC protocol is a set of rules for two WebRTC agents to negotiate bi-directional secure real-time communication. The WebRTC API then allows developers to use the WebRTC protocol. The WebRTC API is specified only for JavaScript.
+WebRTC, es la abreviatura de Web Real-Time Communication, es una API como un Protocolo. El protocolo WebRTC es un conjunto de reglas para que dos agentes WebRTC
+negocien una comunicación bidireccional segura en tiempo real. Mientras que la WebRTC API permite a los desarrolladores usar el protocolo WebRTC.
+La WebRTC API es solo para JavaScript.
 
-A similar relationship would be the one between HTTP and the Fetch API. WebRTC the protocol would be HTTP, and WebRTC the API would be the Fetch API.
+Una relación similar sería entre HTTP y la Fetch API. El protocolo WebRTC sería HTTP, y la WebRTC API sería la Fetch API.
 
-The WebRTC protocol is available in other APIs and languages besides JavaScript. You can find servers and domain-specific tools as well for WebRTC. All of these implementations use the WebRTC protocol so that they can interact with each other.
+El protocolo WebRTC está disponible en otros lenguajes además de JavaScript. Puedes encontrar servidores y herramientas de dominio específico para WebRTC.
+Todas estas implementaciones usan el protocolo WebRTC, así que pueden interactuar entre ellos.
 
-The WebRTC protocol is maintained in the IETF in the [rtcweb](https://datatracker.ietf.org/wg/rtcweb/documents/) working group. The WebRTC API is documented in the W3C as [webrtc](https://www.w3.org/TR/webrtc/).
+El protocolo WebRTC es mantenido en el IETF (Grupo de Trabajo de Ingeniería de Internet) en el grupo de trabajo [rtcweb](https://datatracker.ietf.org/wg/rtcweb/documents).
+La WebRTC API es documentada en [W3C](https://www.w3.org/TR/webrtc).
 
-## Why should I learn WebRTC?
+## ¿Por qué debería aprender WebRTC?
 
-These are some of the things that WebRTC will give you:
+Estas son algunas cosas que WebRTC te proporcionará:
 
-* Open standard
-* Multiple implementations
-* Available in browsers
-* Mandatory encryption
-* NAT Traversal
-* Repurposed existing technology
-* Congestion control
-* Sub-second latency
+* Estándar abierto
+* Implementaciones Múltiples
+* Disponibilidad en navegadores web
+* Cifrado obligatorio
+* NAT transversal
+* Reuso de tecnología existente
+* Control de congestión
+* Latencia de menos de un segundo
 
-This list is not exhaustive, just an example of some of the things you may appreciate during your journey. Don't worry if you don't know all these terms yet, this book will teach them to you along the way.
+Esta lista no es exhaustiva, solo un ejemplo de algunas de las cosas que podrás apreciar durante el recorrido. No te preocupes si no sabes todos estos términos aún,
+este libro te enseñará su significado con el tiempo.
 
-## The WebRTC Protocol is a collection of other technologies
+## El protocolo WebRTC es una colección de otras tecnologías
 
-The WebRTC Protocol is an immense topic that would take an entire book to explain. However, to start off we break it into four steps.
+El protocolo WebRTC es un tema inmenso que tomaría un libro entero para explicarlo. Sin embargo, para empezar lo dividiremos en cuatro pasos.
 
-1. Signaling
-2. Connecting
-3. Securing
-4. Communicating
+1. Señalización (Signaling)
+2. Conexión (Connecting)
+3. Asegurar (Securing)
+4. Comunicando (Communication)
 
-These steps are sequential, which means the prior step must be 100% successful for the subsequent step to begin.
+Estos pasos son secuenciales, lo que significa que el paso anterior debe haber sido entendido al 100% para dar comienzo con el siguiente paso.
 
-One peculiar fact about WebRTC is that each step is actually made up of many other protocols! To make WebRTC, we stitch together many existing technologies. In that sense, you can think of WebRTC as being more a combination and configuration of well-understood tech dating back to the early 2000s than as a brand-new process in its own right.
+Un hecho peculiar de WebRTC es que cada uno de los pasos ¡está hecho de muchos otros protocolos! Para crear WebRTC, nosotros juntamos varias tecnologías ya existentes.
+En ese sentido, puedes pensar en WebRTC como una combinación y configuración de tecnología bien entendida, que se remonta a principios de la década del 2000
+que como un proceso completamente nuevo por derecho propio.
 
-Each of these steps has dedicated chapters, but it is helpful to understand them at a high level first. Since they depend on each other, it will help when explaining further the purpose of each of these steps.
+Cada uno de estos pasos tiene un capítulo dedicado, pero ayuda mucho el primero entenderlos a un alto nivel. Ya que dependen del uno al otro, ayudará cuando se explique más el propósito
+de cada uno de estos pasos.
 
-### Signaling: How peers find each other in WebRTC
+### Señalización: ¿Cómo se encuentran los usuarios entre ellos en WebRTC?
 
-When a WebRTC Agent starts, it has no idea who it is going to communicate with or what they are going to communicate about. The *Signaling* step solves this issue! Signaling is used to bootstrap the call, allowing two independant WebRTC agents to start communicating.
+Cuando un agente de WebRTC es iniciado, no tiene ni idea de con quién se va a comunicar o que es lo que van a comunicar. ¡La *Señalización* resuelve este problema!
+La señalización es usada para arrancar la llamada, permitiendo dos agentes independientes de WebRTC empezar a comunicarse.
 
 Signaling uses an existing, plain-text protocol called SDP (Session Description Protocol). Each SDP message is made up of key/value pairs and contains a list of "media sections". The SDP that the two WebRTC Agents exchange contains details like:
 
