@@ -62,7 +62,7 @@ Observera att signalering vanligtvis sker i en separat kanal (out-of-band); appl
 
 ### Anslutning och NAT Traversal med STUN/TURN
 
-När de två WebRTC-agenterna utbytt SDPÖer har de nu tillräckligt med detaljer för att försöka ansluta till varandra. För att göra det använder WebRTC en annan etablerad teknik som kallas ICE (Interactive Connectivity Establishment).
+När de två WebRTC-agenterna utbytt SDP:er har de nu tillräckligt med detaljer för att försöka ansluta till varandra. För att göra det använder WebRTC en annan etablerad teknik som kallas ICE (Interactive Connectivity Establishment).
 
 ICE är ett protokoll som skapades före WebRTC och. ICE används för att upprätta en anslutning mellan två agenter. Dessa agenter kan vara i samma nätverk eller på andra sidan världen.
 
@@ -72,7 +72,7 @@ När de två agenterna väl har anslutits går WebRTC vidare till nästa steg; a
 
 ### Säkra transportskiktet med DTLS och SRTP
 
-Nu när vi har dubbelriktad kommunikation (via ICE) måste vi sätta upp en säker kommunikationskanal. Detta görs genom två andra protokoll som också är äldre än WebRTCö DTLS (Datagram Transport Layer Security) och SRTP (Secure Real-time Transport Protocol). Det första protokollet, DTLS är helt enkelt TLS över UDP. (TLS är det kryptografiska protokollet som används för att säkra kommunikation via HTTPS). Det andra protokollet, SRTP, används för att kryptera RTP (Real-time Protocol) data paket.
+Nu när vi har dubbelriktad kommunikation (via ICE) måste vi sätta upp en säker kommunikationskanal. Detta görs genom två andra protokoll som också är äldre än WebRTC; DTLS (Datagram Transport Layer Security) och SRTP (Secure Real-time Transport Protocol). Det första protokollet, DTLS är helt enkelt TLS över UDP. (TLS är det kryptografiska protokollet som används för att säkra kommunikation via HTTPS). Det andra protokollet, SRTP, används för att kryptera RTP (Real-time Protocol) data paket.
 
 Först ansluter WebRTC genom att göra en DTLS-handskakning över anslutningen som upprättats av ICE. Till skillnad från HTTPS använder WebRTC inte en centraliserad Certificate Authority för certifikatet. Istället verifierar WebRTC bara att certifikatet som utbyts via DTLS matchar. Denna DTLS-anslutning används sedan för DataChannel-meddelanden.
 
