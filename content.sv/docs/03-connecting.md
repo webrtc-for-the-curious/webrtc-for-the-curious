@@ -17,15 +17,19 @@ Det kan dock vara svårt att skapa peer-to-peer-anslutning. Dessa agenter kan fi
 Trots dessa svårigheter med att skapa en P2P-anslutning får du fördelar jämfört med traditionell klient/server-teknik på grund av följande funktioner WebRTC erbjuder.
 
 ### Reducerade bandbreddskostnader
+
 Eftersom mediekommunikation sker direkt mellan klienterna behöver du inte betala för eller drifta en egen server för att vidarebefordra media.
 
 ### Lägre latens
+
 Kommunikationen går snabbare när den är direkt! När en användare måste köra allt via din server gör det överföringarna långsammare.
 
 ### Säker E2E-kommunikation
+
 Direkt kommunikation är säkrare. Eftersom användarnas trafik inte går via din server, behöver de inte ens lita på att du inte dekrypterar den.
 
 ## Hur fungerar det?
+
 Processen som beskrivs ovan kallas Interactive Connectivity Establishment ([ICE](https://tools.ietf.org/html/rfc8445)). Ytterligare ett protokoll som är äldre än WebRTC.
 
 ICE är ett protokoll som försöker hitta det bästa sättet att kommunicera mellan två ICE-agenter. Varje ICE-agent publicerar hur den kan nås, dessa kallas kandidater. En kandidat är i huvudsak en nätverksadress för agenten som den tror att den andra klienten kan nå. ICE bestämmer sedan det bästa hopkopplingen av klienterna.
@@ -277,7 +281,7 @@ Visuellt ser det ut så här:
 ### Kandidatval
 Den kontrollerande och kontrollerade agenten skickar a trafik över varje par. Detta behövs om en agent står bakom en "adressberoende mappning" (`Address Dependent Mapping`). Detta kommer att skapa en ny "peer reflexive kandidat".
 
-Varje "kandidatpar" som lyckades skicka nätverkstrafik befordras till ett "giltigt kandidatpar". Den kontrollerande agenten nominerar sedan ett giltigt kandidatpart. Detta blir det "nominerade paret". Den kontrollerande och kontrollerade agenten försöker sedan ytterligare en runda dubbelriktad kommunikation. Om det lyckas blir det "nominerade paret" det "utvalda kandidatparet" (`Selected Candidate Pair`)! Detta par används sedan under resten av sessionen.
+Varje "kandidatpar" (`Candidate Pair`) som lyckades skicka nätverkstrafik befordras till ett "giltigt kandidatpar". Den kontrollerande agenten nominerar sedan ett giltigt kandidatpart. Detta blir det "nominerade paret". Den kontrollerande och kontrollerade agenten försöker sedan ytterligare en runda dubbelriktad kommunikation. Om det lyckas blir det "nominerade paret" det "utvalda kandidatparet" (`Selected Candidate Pair`)! Detta par används sedan under resten av sessionen.
 
 ### Startar om
 Om ditt `Selected Candidate Pair` slutar fungera av någon anledning (NAT-mappning upphör att gälla, TURN-server kraschar) kommer ICE-agenten att få status `Failed`. Båda agenterna kan startas om och kommer att göra hela processen om igen.

@@ -221,7 +221,7 @@ och i allmänhet har varje generation förbättrats jämfört med sina föregån
 i första hand på vilken mjukvara som är tillgänglig för dina klienter och vilka bibliotek som är tillgängliga för
 dig för att bygga din applikation.
 
-### Avsändar- och Mottagarrapporter
+### Mottagar- och Avsändarrapporter
 Den första implementeringen är paret av mottagarrapporter och dess komplement, avsändarrapporter. Dessa
 RTCP-meddelanden definieras i [RFC 3550](https://tools.ietf.org/html/rfc3550#section-6.4) och är
 ansvariga för att kommunicera nätverksstatus mellan ändpunkter. Mottagarrapporter fokuserar på

@@ -55,7 +55,7 @@ Du har kanske märkt att uppladdningshastigheter på din telefon nästan alltid 
 
 `transmission_time = rtt/2`
 
-Tekniken WebRTC använder för att mäta rundturstid beskrivs mer detaljerat i [kapitlet om RTCP Sender and Receiver Reports](../06-media-communication/#senderreceiver-reports).
+Tekniken WebRTC använder för att mäta rundturstid beskrivs mer detaljerat i [kapitlet om RTCP Sender and Receiver Reports](../06-media-communication/#mottagar--och-avsändarrapporter).
 
 ### Jitter
 Jitter är det faktum att "sändningstid" (`Transmission Time`) kan variera för varje paket. Dina paket kan bli fördröjda, men sen kommer alla på en gång.
