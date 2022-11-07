@@ -6,16 +6,16 @@ weight: 12
 
 # FAQ
 
-{{<details "Why does WebRTC use UDP?">}}
-NAT Traversal requires UDP. Without NAT Traversal establishing a P2P connection
-wouldn't be possible.  UDP doesn't provide "guaranteed delivery" like TCP, so WebRTC provides it at the
-user level.
+{{<details "¿Por qué WebRTC usa UDP?">}}
+La NAT Transversal requiere UDP. Sin la NAT Transversal, establecer una conexión P2P
+no sería posible. UDP no provee una "entrega garantizada" como TCP, así que WebRTC lo hace a nivel de
+usuario.
 
-See [Connecting]({{< ref "03-connecting" >}}) for more info.
+Mira [Conexión]({{< ref "03-connecting" >}}) para más información.
 {{</details>}}
 
-{{<details "How many DataChannels can I have?">}}
-65534 channels as stream identifier has 16 bits. You can close and open a new one at any time.
+{{<details "¿Qué tantos DataChannel puedo tener?">}}
+65534 canales como identificador de flujo tiene 16 bits. Puedes cerrar y abrir uno nuevo cuando quieras
 {{</details>}}
 
 {{<details "Does WebRTC impose bandwidth limits?">}}
