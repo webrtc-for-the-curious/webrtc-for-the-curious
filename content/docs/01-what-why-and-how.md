@@ -58,7 +58,7 @@ Signaling uses an existing, plain-text protocol called SDP (Session Description 
 * The values used while connecting (`uFrag`/`uPwd`).
 * The values used while securing (certificate fingerprint).
 
-It is important to note that signaling typically happens "out-of-band", which means applications generally don't use WebRTC itself to exchange signaling messages. Any architecture suitable for sending messages can relay the SDPs between the connecting peers, and many applications will simply use their existing infrastructure (e.g. REST endpoints, WebSocket connections, or authentication proxies) to facilitate trading of SDPs between the proper clients.
+It is extremely important to note that signaling typically happens "out-of-band", which means applications generally don't use WebRTC itself to exchange signaling messages. There needs to be another communication channel between the two parties before they can initiate a WebRTC connection. What kind of channel it is is not a concern of WebRTC. Any architecture suitable for sending messages can relay the SDPs between the connecting peers, and many applications will simply use their existing infrastructure (e.g. REST endpoints, WebSocket connections, or authentication proxies) to facilitate trading of SDPs between the proper clients.
 
 ### Connecting and NAT Traversal with STUN/TURN
 
