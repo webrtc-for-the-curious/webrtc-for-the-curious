@@ -26,7 +26,7 @@ Communication is faster when it is direct! When a user has to run everything thr
 
 ### Secure E2E Communication
 
-Direct Communication is more secure. Since users aren't routing data through your server, they don't even need to trust you won't decrypt it.
+Not only is the data end-to-end encrypted between the users, it never enters your server in the first place.
 
 ## How does it work?
 
