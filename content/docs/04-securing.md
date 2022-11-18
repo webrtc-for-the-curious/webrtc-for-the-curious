@@ -37,9 +37,9 @@ A simple cipher is ROT13. Each letter is moved 13 characters forward. To undo th
 
 ### Hash functions
 
-A hash function is a one-way process that generates a digest. Given an input, it generates the same output every time. It is important that the output is *not* reversible. If you have an output, you should not be able to determine its input. Hashing is useful when you want to confirm that a message hasn't been tampered with.
+A cryptographic hash function is a one-way process that generates a digest. Given an input, it generates the same output every time. It is important that the output is *not* reversible. If you have an output, you should not be able to determine its input. Hashing is useful when you want to confirm that a message hasn't been tampered with.
 
-A simple hash function would be to only take every other letter. `HELLO` would become `HLO`. You can't assume `HELLO` was the input, but you can confirm that `HELLO` would be a match to the hash digest.
+A simple (although certainly not suitable for real cryptography) hash function would be to only take every other letter. `HELLO` would become `HLO`. You can't assume `HELLO` was the input, but you can confirm that `HELLO` would be a match to the hash digest.
 
 ### Public/Private Key Cryptography
 
