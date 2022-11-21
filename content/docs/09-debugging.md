@@ -104,9 +104,9 @@ Common commands:
 
 [Wireshark](https://www.wireshark.org) is a widely-used network protocol analyzer.
 
-### webrtc-internals
+### Browsers' developer tools
 
-Chrome comes with a built-in WebRTC statistics page available at [chrome://webrtc-internals](chrome://webrtc-internals).
+Browsers come with built-in pages where you can closer inspect the connections you make. Chromium (Chrome): [`chrome://webrtc-internals`](chrome://webrtc-internals), [`chrome://webrtc-logs`](chrome://webrtc-logs); Gecko (Firefox): [`about:webrtc`](about:webrtc).
 
 ## Latency
 How do you know you have high latency? You may have noticed that your video is lagging, but do you know precisely how much it is lagging? 
