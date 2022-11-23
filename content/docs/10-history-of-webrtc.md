@@ -321,7 +321,7 @@ a chance to make a protocol that was secure by default.
 
 To make WebRTC happen Google acquired and Open Sourced the components we had
 used before. [On2](https://en.wikipedia.org/wiki/On2_Technologies) was
-acquired for it’s video technology and
+acquired for its video technology and
 [Global IP Solutions](https://en.wikipedia.org/wiki/Global_IP_Solutions)
 for its RTC technology. I was in charge of the effort of acquiring GIPS.
 We got to work combining these and making them easy to use in and outside
