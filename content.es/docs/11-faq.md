@@ -6,44 +6,45 @@ weight: 12
 
 # FAQ
 
-{{<details "Why does WebRTC use UDP?">}}
-NAT Traversal requires UDP. Without NAT Traversal establishing a P2P connection
-wouldn't be possible.  UDP doesn't provide "guaranteed delivery" like TCP, so WebRTC provides it at the
-user level.
+{{<details "¿Por qué WebRTC usa UDP?">}}
+La NAT Transversal requiere UDP. Sin la NAT Transversal, establecer una conexión P2P
+no sería posible. UDP no provee una "entrega garantizada" como TCP, así que WebRTC lo hace a nivel de
+usuario.
 
-See [Connecting]({{< ref "03-connecting" >}}) for more info.
+Mira [Conexión]({{< ref "03-connecting" >}}) para más información.
 {{</details>}}
 
-{{<details "How many DataChannels can I have?">}}
-65534 channels as stream identifier has 16 bits. You can close and open a new one at any time.
+{{<details "¿Qué tantos DataChannel puedo tener?">}}
+65534 canales como identificador de flujo tiene 16 bits. Puedes cerrar y abrir uno nuevo cuando quieras
 {{</details>}}
 
-{{<details "Does WebRTC impose bandwidth limits?">}}
-Both DataChannels and RTP use congestion control. This means that WebRTC actively measures
-your bandwidth and attempts to use the optimal amount. It is a balance between sending as much
-as possible, without overwhelming the connection.
+{{<details "¿WebRTC tiene limites en el ancho de banda?">}}
+Tanto los DataChannels y RTP usan un control de congestión. Esto significa que WebRTC mide activamente
+tu ancho de banda e intenta usar la cantidad óptima. Es un balance entre mandar cuanto más se pueda,
+sin sobrecargar la conexión.
 {{</details>}}
 
-{{<details "Can I send binary data?">}}
-Yes, you can send both text and binary data via DataChannels.
+{{<details "¿Puedo mandar datos binarios?">}}
+Si, puedes mandar tanto datos en texto o binario vía DataChannels.
 {{</details>}}
 
-{{<details "What latency can I expect with WebRTC?">}}
-For un-tuned media, you can expect sub-500 milliseconds. If you are willing to tune or sacrifice quality
-for latency, developers have gotten sub-100ms latency.
+{{<details "¿Qué latencia puedo esperar con WebRTC?">}}
+Para medios no sintonizados, puedes esperar menos de 500 milisegundos. Si esperar sintonizar o sacrificar
+la calidad por latencia, los desarrolladores han conseguido menos de 100 milisegundos de latencia.
 
-DataChannels support "Partial-reliability" option which can reduce latency caused by
-data retransmissions over a lossy connection. If configured properly, it has been shown to beat TCP TLS connections.
+Los DataChannels soportan la opción de "Confiabilidad parcial" la cual puede reducir la latencia
+causada por los datos retransmitidos por una perdida de conexión. Si la propiedad está configurada,
+se ha demostrado que que supera las conexiones TCP y TLS.
 {{</details>}}
 
-{{<details "Why would I want unordered delivery for DataChannels?">}}
-When newer information obsoletes the old such as positional information of an
-object, or each message is independent from the others and need to avoid
-head-of-line blocking delay.
+{{<details "¿¿Por qué querría una entrega desordenada de DataChannels??">}}
+Cuando la nueva información deja obsoleta a la vieja, como la información posicional
+de un objeto, o cada mensaje es independiente del otro y necesita evitar
+el retraso del bloqueo de cabecera de línea.
 {{</details>}}
 
-{{<details "Can I send audio or video over a DataChannel?">}}
-Yes, you can send any data over a DataChannel. In the browser case, it will be your
-responsibility to decode the data and pass it to a media player for rendering,
-while all of that is done automatically if you use media channels.
+{{<details "¿Puedo mandar audio o vídeo a través de un DataChannel?">}}
+Si, puedes mandar cualquier dato a través de un DataChannel. En el casos del navegador,
+será tu responsabilidad descifrar los datos y pasarlos a un reproductor multimedia para renderizar,
+mientras que todo eso se hace automáticamente si se usa canales multimedia.
 {{</details>}}

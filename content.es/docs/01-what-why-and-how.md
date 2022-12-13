@@ -42,8 +42,8 @@ El protocolo WebRTC es un tema inmenso que tomaría un libro entero para explica
 
 1. Señalización (Signaling)
 2. Conexión (Connecting)
-3. Asegurar (Securing)
-4. Comunicando (Communication)
+3. Seguridad (Securing)
+4. Comunicación (Communication)
 
 Estos pasos son secuenciales, lo que significa que el paso anterior debe haber sido entendido al 100% para dar comienzo con el siguiente paso.
 
@@ -62,7 +62,7 @@ La señalización es usada para arrancar la llamada, permitiendo dos Agentes ind
 La señalización usa un protocolo de texto plano, llamado SDP (Protocolo de descripción de Sesión). Cada mensaje SDP está hecho de una llave y un valor,
 y contiene una lista de "sección de medios". El SDP que intercambian los dos Agentes WebRTC contiene detalles como:
 
-* Las IPs y Puertos que el agente accesible (es candidato).
+* Las IPs y Puertos que el agente es accesible (es candidato).
 * El número de pistas de audio y vídeo que el agente desea mandar.
 * Los códecs de audio y vídeo que cada agente soporta.
 * Los valores usados mientras se conectaban (`uFrag`/`uPwd`).
@@ -94,7 +94,7 @@ también son más antiguos que WebRTC; DTLS (Seguridad de la capa de transporte 
 El primer protocolo, DTLS, es simplemente TSL sobre UDP (TLS es el protocolo de cifrado que se usa para asegurar una comunicación segura vía HTTP).
 El segundo protocolo, SRTP, se utiliza para garantizar el cifrado de paquetes de datos RTP (Protocolo en Tiempo Real)
 
-Primero, WebRTC se conecta haciendo un apretón de manos DTLS sobre la conexión establecida por ICE. Diferente a HTTPS, WebRTC no usa una autoridad central para certificados.
+Primero, WebRTC se conecta haciendo uso de DTLS sobre la conexión establecida por ICE. Diferente a HTTPS, WebRTC no usa una autoridad central para certificados.
 Simplemente afirma que el certificado intercambiado vía DTLS coincide con la huella digital, compartida por medio de la señalización. Esta conexión DTLS
 se usa luego para los mensajes de DataChannel.
 
@@ -111,7 +111,7 @@ En la siguiente sección, hablaremos sobre como WebRTC trata con los desafortuna
 
 Ahora que tenemos dos Agentes WebRTC conectados y asegurados y con una comunicación bidireccional establecida, ¡Vamos a comenzar a comunicarnos! Para esto, WebRTC usará dos protocolos
 ya existentes: RTP (Protocolo de Transport de Tiempo Real), y SCTP (Protocolo de Transmisión de Control de Flujo). Usamos RTP para intercambiar multimedia cifrada con SRTP, y usamos
-SCTP para mandar y recibir mensajes de DataChannel cifrada con DTLS.
+SCTP para mandar y recibir mensajes de DataChannel cifrados con DTLS.
 
 RTP es casi un protocolo pequeño, pero provee las herramientas necesarias para implementar transmisión en tiempo real. Lo más importante acerca de RTP es que le da flexibilidad a el
 desarrollador, permitiéndoles manejar la latencia, la perdida de paquetes, y la congestión como ellos gusten. Discutiremos acerca de esto en el capítulo de multimedia.
@@ -126,7 +126,7 @@ resolver todo mejor. En cambio, abarcó muchas tecnologías existentes de un sol
 Esto nos permite examinar y aprender cada parte individualmente sin abrumarse. Una buena manera de visualizarlo es que un 'Agente WebRTC' es solamente un intermediario de muchos
 protocolos diferentes.
 
-![Agente WebRTC](../images/01-webrtc-agent.png "WebRTC Agent Diagram")
+![Agente WebRTC](../images/01-webrtc-agent.png "Diagrama de Agente WebRTC")
 
 ## ¿Cómo funciona WebRTC (la API)?
 
