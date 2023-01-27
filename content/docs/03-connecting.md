@@ -95,10 +95,10 @@ Mapping filtering is the rules around who is allowed to use the mapping. They fa
 Anyone can use the mapping. You can share the mapping with multiple other peers, and they could all send traffic to it.
 
 #### Address Dependent Filtering
-Only the host the mapping was created for can use the mapping. If you send a packet to host `A` it can respond with as many packets as it wants. If host `B` attempts to send a packet to that mapping, it will be ignored.
+Only the host the mapping was created for can use the mapping. If you send a packet to host `A` you can only get a response from that same host. If host `B` attempts to send a packet to that mapping, it will be ignored.
 
 #### Address and Port Dependent Filtering
-Only the host and port for which the mapping was created for can use that mapping. If you send a packet to host `A:5000` it can respond with as many packets as it wants. If host `A:5001` attempts to send a packet to that mapping, it will be ignored.
+Only the host and port for which the mapping was created for can use that mapping. If you send a packet to `A:5000` you can only get a response from that same host and port. If `A:5001` attempts to send a packet to that mapping, it will be ignored.
 
 ### Mapping Refresh
 It is recommended that if a mapping is unused for 5 minutes it should be destroyed. This is entirely up to the ISP or hardware manufacturer.
