@@ -88,7 +88,7 @@ Now that we have two WebRTC agents connected and secure, bi-directional communic
 
 RTP is quite a minimal protocol, but it provides the necessary tools to implement real-time streaming. The most important thing about RTP is that it gives flexibility to the developer, allowing them to handle latency, package loss, and congestion as they please. We will discuss this further in the media chapter.
 
-The final protocol in the stack is SCTP. The important thing about SCTP is that it allows for unreliable, out of order message delivery (among many different options). This allows developers to ensure the necessary latency for real-time systems.
+The final protocol in the stack is SCTP. The important thing about SCTP is that you can turn off reliable and in order message delivery (among many different options). This allows developers to ensure the necessary latency for real-time systems.
 
 ## WebRTC, a collection of protocols
 
