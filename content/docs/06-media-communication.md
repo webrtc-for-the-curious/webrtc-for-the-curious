@@ -290,10 +290,10 @@ Packet loss measurements are taken frequently. Depending on the paired communica
 packet loss may be either be explicitly communicated (as with TWCC) or inferred (as with TMMBR/TMMBN
 and REMB). These percentages are evaluated over time windows of around one second.
 
-The second function cooperates with the loss-based controller, and looks at the variations in packet
+The second function cooperates with the delay-based controller, and looks at the variations in packet
 arrival time. This delay-based controller aims to identify when network links are becoming
 increasingly congested, and may reduce bandwidth estimates even before packet loss occurs. The
-theory is that the busiest network interface along the path will continue queuing up packets up
+theory is that the busiest network interface along the path will continue queuing up packets
 until the interface runs out of capacity inside its buffers. If that interface continues to receive
 more traffic than it is able to send, it will be forced to drop all packets that it cannot fit into
 its buffer space. This type of packet loss is particularly disruptive for low-latency/real-time
