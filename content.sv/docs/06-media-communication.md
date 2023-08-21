@@ -284,8 +284,8 @@ Paketförlustmätningar görs ofta. Beroende på vilket kommunikationsprotokoll 
 skickas uttryckligen (som med TWCC) eller härledas (som med TMMBR/TMMBN och REMB). Dessa procentsatser utvärderas
 över perioder på cirka en sekund.
 
-Den andra funktionen används tillsammans med den förlustbaserade kontrollern, men kollar istället på variationen
-i ankomsttiderna för paketen. Den här fördröjningsbaserade kontrollern används för att känna av när nätverkslänkar 
+Den fördröjningsbaserade kontrollern samarbetar med den förlustbaserade kontrollern, men kollar istället på 
+variationen i ankomsttiderna för paketen. Den fördröjningsbaserade kontrollern kan känna av när nätverkslänkar 
 blir alltmer överbelastade, och kan minska bandbredden redan innan paket börjar tappas. Teorin är att det högst
 belastade nätverksgränssnittet längs vägen kommer att fortsätta att köa upp paket tills dess buffertar fylls up.
 Om det gränssnittet fortsätter att ta emot mer trafik än det kan skicka, kommer den att tvingas slänga alla paket
