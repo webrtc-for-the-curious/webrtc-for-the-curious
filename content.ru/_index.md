@@ -37,7 +37,7 @@ WebRTC является прекрасной технологией, но она
 ## В свободном доступе и с соблюдением конфиденциальности
 
 Книга доступна на [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious) и [WebRTCforTheCurious.com](https://webrtcforthecurious.com).
-Лиценция книги дает вам свободу использовать ее как вы считаете нужным. Вы также можете скачать текущию версию книги как [ePub](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.epub)
+Лицензия книги дает вам свободу использовать ее как вы считаете нужным. Вы также можете скачать текущию версию книги как [ePub](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.epub)
 или [PDF](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.pdf) файл.
 
 Книга написана обычными людьми для обычных людей. Она не несет в себе конфликт интересов(vendor agnostic).
