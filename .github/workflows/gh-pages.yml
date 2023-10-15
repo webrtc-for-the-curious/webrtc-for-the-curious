@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     name: Publish Website
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -22,7 +22,7 @@ jobs:
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: '0.74.3'
+          hugo-version: '0.119.0'
           extended: true
 
       - name: Build
