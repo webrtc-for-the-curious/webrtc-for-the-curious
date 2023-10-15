@@ -104,7 +104,7 @@ Common commands:
 
 [Wireshark](https://www.wireshark.org) is a widely-used network protocol analyzer.
 
-### Browsers' developer tools
+### WebRTC browser tools
 
 Browsers come with built-in pages where you can closer inspect the connections you make. Chromium (Chrome): [`chrome://webrtc-internals`](chrome://webrtc-internals), [`chrome://webrtc-logs`](chrome://webrtc-logs); Gecko (Firefox): [`about:webrtc`](about:webrtc).
 
