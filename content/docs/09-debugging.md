@@ -106,7 +106,7 @@ Common commands:
 
 ### WebRTC browser tools
 
-Browsers come with built-in pages where you can closer inspect the connections you make. Chromium (Chrome): [`chrome://webrtc-internals`](chrome://webrtc-internals), [`chrome://webrtc-logs`](chrome://webrtc-logs); Gecko (Firefox): [`about:webrtc`](about:webrtc).
+Browsers come with built-in tools that you can use to inspect the connections you make. Chrome has [`chrome://webrtc-internals`](chrome://webrtc-internals) and [`chrome://webrtc-logs`](chrome://webrtc-logs). Firefox has [`about:webrtc`](about:webrtc).
 
 ## Latency
 How do you know you have high latency? You may have noticed that your video is lagging, but do you know precisely how much it is lagging? 
