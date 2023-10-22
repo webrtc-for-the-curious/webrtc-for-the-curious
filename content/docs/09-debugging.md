@@ -328,7 +328,7 @@ The receiver _waits_ for the retransmission of the packet.
 Such retransmissions cause increased latency.
 The number of NACK packets sent and received is recorded in WebRTC's built-in stats fields [outbound stream nackCount](https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-nackcount) and [inbound stream nackCount](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-nackcount).
 
-You can see nice graphs of inbound and outbound `nackCount` on the [webrtc internals page](#webrtc-internals). 
+You can see nice graphs of inbound and outbound `nackCount` on the [webrtc internals page](#webrtc-browser-tools). 
 If you see the `nackCount` increasing, it means the network is experiencing high packet loss, and the WebRTC stack is doing its best to create a smooth video/audio experience despite that.
 
 When packet loss is so high that the decoder is unable to produce an image, or subsequent dependent images like in the case of a fully lost I-frame, all future P-frames will not be decoded. 
@@ -337,11 +337,11 @@ Once the sender receives a `PLI`, it will produce a new I-frame to help the rece
 I-frames are normally larger in size than P-frames. This increases the number of packets that need to be transmitted.
 Like with NACK messages, the receiver will need to wait for the new I-frame, introducing additional latency.
 
-Watch for `pliCount` on the [webrtc internals page](#webrtc-internals). If it increases, tweak your encoder to produce less packets or enable a more error resilient mode.
+Watch for `pliCount` on the [webrtc internals page](#webrtc-browser-tools). If it increases, tweak your encoder to produce less packets or enable a more error resilient mode.
 
 #### Receiver side latency
 Latency will be affected by packets arriving out of order.
 If the bottom half of the image packet comes before the top you would have to wait for the top before decoding.
-This is explained in the [Solving Jitter](05-real-time-networking/#solving-jitter) chapter in great detail.
+This is explained in the [Solving Jitter](../05-real-time-networking/#solving-jitter) chapter in great detail.
 
 You can also refer to the built-in [jitterBufferDelay](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-jitterbufferdelay) metric to see how long a frame was held in the receive buffer, waiting for all of its packets until it was released to the decoder.
