@@ -475,7 +475,7 @@ Same, but save packets in a PCAP (packet capture) file for later inspection:
 sudo tcpdump 'udp port 19302' -w stun.pcap
 The PCAP file can be opened with the Wireshark application: wireshark stun.pcap
 Wireshark # Wireshark is a widely-used network protocol analyzer.
-webrtc-internals # Chrome comes with a built-in WebRTC statistics page available at chrome://webrtc-internals.
+WebRTC browser tools # Browsers come with built-in tools that you can use to inspect the connections you make. Chrome has chrome://webrtc-internals and chrome://webrtc-logs. Firefox has about:webrtc.
 Latency # How do you know you have high latency? You may have noticed that your video is lagging, but do you know precisely how much it is lagging? To be able to reduce this latency, you have to start by measuring it first.
 True latency is supposed to be measured end-to-end. That means not just the latency of the network path between the sender and the receiver, but the combined latency of camera capture, frame encoding, transmission, receiving, decoding and displaying, as well as possible queueing between any of these steps.
 End-to-end latency is not a simple sum of latencies of each component.
