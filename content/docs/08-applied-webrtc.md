@@ -147,7 +147,7 @@ Hybrid Mesh is an alternative to Full Mesh that can alleviate some of the Full M
 between every user. Instead, media is relayed through peers in the network. This means that the creator of the media doesn't have to use as
 much bandwidth to distribute media.
 
-This does have some downsides. In this set up, the original creator of the media has no idea who its video is being sent too, and if
+This does have some downsides. In this set up, the original creator of the media has no idea who its video is being sent to, nor if
 it arrived successfully. You also will have an increase in latency with every hop in your Hybrid Mesh network.
 
 ![Hybrid mesh](../images/08-hybrid-mesh.png "Hybrid mesh")
