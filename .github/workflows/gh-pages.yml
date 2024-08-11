@@ -28,15 +28,15 @@ jobs:
       - name: Build
         run: hugo --minify
 
-      - uses: docker://pandoc/latex:2.16.2
+      - uses: docker://pandoc/latex:3.3
         with:
           args: --output=public/docs/webrtc-for-the-curious.pdf --resource-path=.:./content:./content/docs/images --toc ${{ env.FILELIST }} .pandoc/metadata_en.txt
 
-      - uses: docker://pandoc/latex:2.16.2
+      - uses: docker://pandoc/latex:3.3
         with:
           args: --output=public/docs/webrtc-for-the-curious-sv.pdf --resource-path=.:./content.sv:./content.sv/docs/images --toc ${{ env.FILELIST_SV }} .pandoc/metadata_sv.txt
 
-      - uses: docker://pandoc/latex:2.16.2
+      - uses: docker://pandoc/latex:3.3
         with:
           args: --output=public/docs/webrtc-for-the-curious.epub --resource-path=.:./content:./content/images --toc ${{ env.FILELIST }} .pandoc/metadata_en.txt
 
@@ -44,7 +44,7 @@ jobs:
         run: cp -r ./content/docs/images public/docs/
         
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
