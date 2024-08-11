@@ -1,0 +1,7 @@
+---
+title: |
+  ![](content/docs/images/epub-cover.png)
+author: https://github.com/webrtc-for-the-curious/webrtc-for-the-curious
+rights: Creative Commons Zero v1.0 Universal
+language: en-US
+...

@@ -3,6 +3,8 @@ title: Introduction
 type: docs
 ---
 
+\newpage{}
+
 # WebRTC For The Curious
 
 This book was created by WebRTC implementers to share their hard-earned knowledge with the world.

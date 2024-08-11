@@ -3,6 +3,8 @@ title: Introduktion
 type: docs
 ---
 
+\newpage{}
+
 # WebRTC för nyfikna
 
 Den här boken har skrivits av WebRTC-utvecklare för att dela med sig av sina erfarenheter och kunskaper med världen.
@@ -36,8 +38,8 @@ Inget kapitel kräver några förkunskaper. Du kan börja var som helst i boken 
 ## Fritt tillgängligt och respekterar integritet
 
 Denna bok finns på [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious) och [WebRTCforTheCurious.com](https://webrtcforthecurious.com).
-Den är licensierad så att du kan använda den på det sätt du tycker är bäst. Du kan också ladda ner boken i sin nuvarande version som en [ePub](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.epub)
-eller [PDF på Svenska](https://webrtcforthecurious.com/docs/webrtc-for-the-curious-sv.pdf).
+Den är licensierad så att du kan använda den på det sätt du tycker är bäst. Du kan också ladda ner boken i sin nuvarande version på svenska som en [ePub](https://webrtcforthecurious.com/docs/webrtc-for-the-curious-sv.epub)
+eller [PDF](https://webrtcforthecurious.com/docs/webrtc-for-the-curious-sv.pdf).
 
 Denna bok är skriven av individer, för individer. Den är helt oberoende av leverantörer, så den kommer vi inte att ge några rekommendationer som kan vara en intressekonflikt.
 

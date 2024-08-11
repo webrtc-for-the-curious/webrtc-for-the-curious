@@ -34,9 +34,8 @@ best = authors_by_contrib[0]
 
 convert_command="""magick \"content/images/epub-cover clean notitle.png\"\
  -font Free-Sans-Bold -fill black\
- -pointsize 160 -draw "text 480,340 'WebRTC'"\
- -pointsize 80 -draw "text 730,440 'for the'"\
- -pointsize 120 -draw "text 660,560 'Curious'"\
+ -pointsize 160 -draw "text 480,350 'WebRTC'"\
+ -pointsize 120 -draw "text 540,470 'för nyfikna'"\
 """
 
 convert_command+=f" -pointsize 60 -draw \"text 120,1770 '{best[0]}'\""
@@ -46,8 +45,8 @@ for i in range(1,min(3, len(authors_by_contrib))):
     convert_command+=f" -pointsize 40 -draw \"text 120,{ypos} '{authors_by_contrib[i][0]}'\""
 
 ypos = ypos + i*26
-convert_command+=f" -pointsize 30 -draw \"text 120,{ypos} 'and the webrtcforthecurious.com team'\""
+convert_command+=f" -pointsize 30 -draw \"text 120,{ypos} 'och webrtcforthecurious.com teamet'\""
 
-convert_command+=" \"content/images/epub-cover.png\""
+convert_command+=" \"content.sv/images/epub-cover.png\""
 print(convert_command)
 subprocess.check_output(convert_command, shell=True, text=True)
