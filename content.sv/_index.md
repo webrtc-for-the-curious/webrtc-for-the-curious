@@ -7,49 +7,67 @@ type: docs
 
 # WebRTC för nyfikna
 
-Den här boken har skrivits av WebRTC-utvecklare för att dela med sig av sina erfarenheter och kunskaper med världen.
-*WebRTC For The Curious* är en öppen källkodsbok skriven för de som alltid letar efter mer.
-Denna bok nöjer sig inte med abstraktioner.
+## Introduktion
 
-Den här boken handlar om protokoll och API:er och inte om någon speciell programvara.
-Vi försöker sammanfatta RFC:er och få all odokumenterad kunskap samlad på ett ställe. Den här boken är ingen handledning och innehåller inte mycket kod.
+_WebRTC för nyfikna_ är en open source-bok skapad av WebRTC-utvecklare för att dela med sig av sina erfarenheter och 
+kunskaper. Den är skriven för de som alltid söker mer och inte nöjer sig med abstraktioner.
 
-WebRTC är en underbar teknik, men det är svår att använda. Denna bok är leverantörsagnostisk, och vi har försökt ta bort alla intressekonflikter.
+### Huvudfunktioner
 
-## Vem är den här boken för.
+- Fokus på protokoll och API:er, inte specifik programvara.
+- Sammanfattar RFC:er och samlar odokumenterad kunskap.
+- Leverantörsoberoende tillvägagångssätt.
+- Inte en handledning - innehåller minimal kod.
 
-* Utvecklare som inte ens vet vad WebRTC löser och vill lära sig mer.
-* Någon som redan använder WebRTC, men vill veta mer utöver API: erna.
-* Etablerade utvecklare som behöver hjälp med felsökning.
-* WebRTC-implementerare som behöver förstå mer om en specifik del.
+WebRTC är en kraftfull teknologi, men den kan vara utmanande att använda. Denna bok syftar till att ge en omfattande, 
+opartisk resurs för att förstå WebRTC.
 
-## Skriven för att läsas flera gånger
 
-Denna bok är utformad för att läsas flera gånger. Varje kapitel är fristående, så du kan hoppa till vilken del av boken som helst utan att känna dig vilsen.
+## Vem är den här boken för?
 
-Varje kapitel syftar till att besvara en enda fråga med tre informationsnivåer.
+- Utvecklare som är nya inom WebRTC och vill lära sig mer.
+- Nuvarande WebRTC-utvecklare som vill veta mer utöver API: erna.
+- Erfarna utvecklare som behöver hjälp med felsökning.
+- WebRTC-utvecklare som behöver förstå mer om specifika delar.
 
-* Vad behöver lösas?
-* Hur löser vi det? Med tekniska detaljer om lösningen.
-* Vart ska du lära dig mer?
+## Bokens struktur
 
-Inget kapitel kräver några förkunskaper. Du kan börja var som helst i boken och börja lära dig. Denna bok kommer också att rekommendera resurser där man kan lära sig mer. Andra böcker täcker enskilda ämnen i mycket större djup. Denna bok syftar till att lära dig hela systemet, på bekostnad av expertkunskaper om de olika delarna.
+### Utformad för flera läsningar
 
-## Fritt tillgängligt och respekterar integritet
+Varje kapitel är fristående, vilket låter dig börja var som helst i boken utan att gå vilse.
 
-Denna bok finns på [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious) och [WebRTCforTheCurious.com](https://webrtcforthecurious.com).
-Den är licensierad så att du kan använda den på det sätt du tycker är bäst. Du kan också ladda ner boken i sin nuvarande version på svenska som en [ePub](https://webrtcforthecurious.com/docs/webrtc-for-the-curious-sv.epub)
-eller [PDF](https://webrtcforthecurious.com/docs/webrtc-for-the-curious-sv.pdf).
+### Kapitelformat
 
-Denna bok är skriven av individer, för individer. Den är helt oberoende av leverantörer, så den kommer vi inte att ge några rekommendationer som kan vara en intressekonflikt.
+Varje kapitel besvarar en enskild fråga med tre informationsnivåer:
 
-Webbplatsen använder inte analys eller spårning.
+1. Vad behöver lösas?
+2. Hur löser vi det? (Inklusive tekniska detaljer)
+3. Var kan man lära sig mer?
 
-## Bli involverad!
+### Inga förkunskaper krävs
+Du kan börja lära dig var som helst i boken. Vi tillhandahåller också resurser för vidare studier om enskilda ämnen.
+Andra böcker täcker enskilda ämnen mer djupgående. Denna bok syftar till att lära dig hela systemet, på bekostnad av 
+lågnivådetaljer.
 
-Vi behöver din hjälp! Denna bok är helt utvecklad på [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious)
-och skrivs fortfarande. Vi uppmuntrar läsarna att öppna issues med frågor om saker som vi ännu inte gjort ett bra jobb med att beskriva.
+## Tillgänglighet och licens
+
+- Tillgänglig på [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious) och [WebRTCforTheCurious.com](https://webrtcforthecurious.com/sv/)
+- Nedladdningsbar på svenska som [ePub](https://webrtcforthecurious.com/docs/webrtc-for-the-curious-sv.epub) och [PDF](https://webrtcforthecurious.com/docs/webrtc-for-the-curious-sv.pdf)
+- Licensierad under CC0 (ingen attribution krävs)
+
+### Integritetsåtagande
+- Skriven av individer, för individer.
+- Leverantörsoberoende utan intressekonflikter.
+- Ingen analys eller spårning på webbplatsen.
+
+## Engagera dig!
+
+Vi välkomnar dina bidrag! Besök vår [GitHub-sida](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious) för att:
+- Öppna ärenden för frågor.
+- Föreslå förbättringar.
+- Bidra till den pågående utvecklingen av denna bok.
 
 ## Licens
 
-Denna bok är tillgänglig under CC0-licensen. Författarna har avstått från alla sina upphovsrätts krav till det de bidragit med, enligt lagen. Du kan använda det här verket hur du vill och ingen attribution krävs.
+Denna bok är tillgänglig under CC0-licensen. Författarna har avsagt sig all sin upphovsrätt och relaterade rättigheter 
+i sina verk i den utsträckning som lagen tillåter. Du kan använda detta verk hur du vill och ingen attribution krävs.
