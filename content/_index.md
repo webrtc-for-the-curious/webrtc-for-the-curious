@@ -5,52 +5,64 @@ type: docs
 
 # WebRTC For The Curious
 
-This book was created by WebRTC implementers to share their hard-earned knowledge with the world.
-_WebRTC For The Curious_ is an Open Source book written for those that are always looking for more.
-This book doesn't settle for abstraction.
+## Introduction
 
-This book is all about protocols and APIs, and will not be talking about any software in particular.
-We attempt to summarize RFCs and get all undocumented knowledge into one place. This book is not a tutorial, and will not contain much code.
+_WebRTC For The Curious_ is an open-source book created by WebRTC implementers to share their hard-earned knowledge 
+with the world. It's written for those who are always looking for more and don't settle for abstraction.
 
-WebRTC is a wonderful technology, but it is difficult to use. This book is vendor agnostic, and we have tried to remove any conflicts of interest.
+### Key features
 
-## Who this book is for:
+- Focus on protocols and APIs, not specific software.
+- Summarizes RFCs and collects undocumented knowledge.
+- Vendor-agnostic approach.
+- Not a tutorial - contains minimal code.
 
--   Developers who don’t even know what WebRTC solves, and want to learn more.
--   Someone who is already building with WebRTC, but wants to know more beyond the APIs.
--   Established developers who need help debugging.
--   WebRTC implementer who needs clarification on a specific part.
+WebRTC is a powerful technology, but it can be challenging to use. This book aims to provide a comprehensive, unbiased 
+resource for understanding WebRTC.
 
-## Designed for multiple readings
+## Who this book is for
 
-This book is designed to be read multiple times. Each chapter is self-contained, so you can jump to any part of the book and not be lost.
+- Developers new to WebRTC, wanting to learn more.
+- Current WebRTC developers seeking deeper understanding beyond APIs.
+- Established developers needing debugging help.
+- WebRTC implementers requiring clarification on specific parts.
 
-Each chapter aims to answer a single question, with three levels of information:
+## Book structure
 
--   What needs to be solved?
--   How do we solve it? (Including technical details about the solution.)
--   Where to learn more.
+### Designed for multiple readings
 
-Each chapter doesn't assume prior knowledge. You can start at any point in the book and begin learning. This book will also recommend resources
-to go and learn more. Other books cover individual topics in much greater depth. This book aims to teach you the entire system, at the cost of expert level details.
+Each chapter is self-contained, allowing you to start anywhere in the book without getting lost.
 
-## Freely available and privacy respecting
+### Chapter format
+Each chapter answers a single question with three levels of information:
+1. What needs to be solved?
+2. How do we solve it? (Including technical details)
+3. Where to learn more.
 
-This book is available on [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious) and [WebRTCforTheCurious.com](https://webrtcforthecurious.com).
-It is licensed in a way that you can use it however you think is best. You can also download the book in its current version as an [ePub](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.epub)
-or [PDF](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.pdf) file.
+### No prior knowledge required
+You can begin learning at any point in the book. We also provide resources for further study on individual topics.
+Other books cover individual topics in much greater depth. This book aims to teach you the entire system, at the cost 
+of expert level details.
 
-This book is written by individuals, for individuals. It is vendor agnostic, so we will not
-make recommendations that could be a conflict of interest.
+## Availability and License
 
-The website will not use analytics or tracking.
+- Available on [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious) and [WebRTCforTheCurious.com](https://webrtcforthecurious.com)
+- Downloadable as [ePub](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.epub) and [PDF](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.pdf)
+- Licensed under CC0 (no attribution required)
+
+### Privacy Commitment
+- Written by individuals, for individuals.
+- Vendor-agnostic with no conflicts of interest.
+- No analytics or tracking on the website.
 
 ## Get involved!
 
-We need your help! This book is entirely developed on [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious)
-and is still being written. We encourage readers to open issues with questions on things we didn't do a good job of covering yet.
+We welcome your contributions! Visit our [GitHub page](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious) to:
+- Open issues for questions.
+- Suggest improvements.
+- Contribute to the ongoing development of this book.
 
 ## License
 
-This book is available under the CC0 license. The authors have waived all their copyright and related rights in their works to the fullest
-extent allowed by law. You may use this work however you want and no attribution is required.
+This book is available under the CC0 license. The authors have waived all their copyright and related rights in their 
+works to the fullest extent allowed by law. You may use this work however you want and no attribution is required.
