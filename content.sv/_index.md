@@ -3,6 +3,8 @@ title: Introduktion
 type: docs
 ---
 
+\newpage{}
+
 # WebRTC för nyfikna
 
 ## Introduktion
@@ -50,7 +52,7 @@ lågnivådetaljer.
 ## Tillgänglighet och licens
 
 - Tillgänglig på [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious) och [WebRTCforTheCurious.com](https://webrtcforthecurious.com/sv/)
-- Nedladdningsbar som [ePub](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.epub) och [PDF](https://webrtcforthecurious.com/docs/webrtc-for-the-curious-sv.pdf)
+- Nedladdningsbar på svenska som [ePub](https://webrtcforthecurious.com/docs/webrtc-for-the-curious-sv.epub) och [PDF](https://webrtcforthecurious.com/docs/webrtc-for-the-curious-sv.pdf)
 - Licensierad under CC0 (ingen attribution krävs)
 
 ### Integritetsåtagande
