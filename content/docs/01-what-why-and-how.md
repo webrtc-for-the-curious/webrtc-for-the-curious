@@ -50,6 +50,10 @@ Each of these steps has dedicated chapters, but it is helpful to understand them
 
 When a WebRTC Agent starts, it has no idea who it is going to communicate with or what they are going to communicate about. The *Signaling* step solves this issue! Signaling is used to bootstrap the call, allowing two independent WebRTC agents to start communicating.
 
+<!-- Source code of the diagram:
+https://mermaid.live/edit#pako:eNq9U7FOwzAQ_ZWTF5a0A2OEKgFlYECKCBISynKxL4lFcg62U6iq_jvnpCBUsUIm-51z7z373UFpZ0jlKtDbRKxpa7H1OFQM8qGOzsN1bzUtwIg-Wm1H5AilbRl7y21JfkceMMDdhw1RENBuGCa2GqN1fFX7je6QmfoMaN2uE4AQ7DD2BDXq1xWxgTC3yVJRSGlHDDSg7X9KuXH1sp01rTabMxH5UrgIUG4LcE0jUGrYib77YoXGeAoBUOhG5-NMJq79fkxCQZPYa5JsShVopDH50VuOojzq9UJ-RioyRNf_UAvRb64FPhEjh_eEzNQ2_Knr2fD_kJ_ee77nrfWkIzxT_fh0C8VlIXGTcOnUr2KVqYG8BMdIqg_p70rFjgaqVC5LQw1OfaxUxUc5ilN05Z61yqOfKFPeTW2n8gb7ILtpNKLrNBLfKBkrWXxY5mYen0zJRLw493Xm-AnVWCmE -->
+![Signaling sequence overview](../images/01-signaling-sequence-overview.png "Signaling sequence overview")
+
 Signaling uses an existing, plain-text protocol called SDP (Session Description Protocol). Each SDP message is made up of key/value pairs and contains a list of "media sections". The SDP that the two WebRTC agents exchange contains details like:
 
 * The IPs and Ports that the agent is reachable on (candidates).
