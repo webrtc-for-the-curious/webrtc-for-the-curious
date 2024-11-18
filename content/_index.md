@@ -3,8 +3,6 @@ title: Introduction
 type: docs
 ---
 
-\newpage{}
-
 # WebRTC For The Curious
 
 ## Introduction
