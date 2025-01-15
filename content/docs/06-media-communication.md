@@ -287,7 +287,7 @@ GCC's first component, the loss-based controller, is simple:
 * If packet loss is below 2%, the bandwidth estimate is increased.
 
 Packet loss measurements are taken frequently. Depending on the paired communication protocol,
-packet loss may be either be explicitly communicated (as with TWCC) or inferred (as with TMMBR/TMMBN
+packet loss may either be explicitly communicated (as with TWCC) or inferred (as with TMMBR/TMMBN
 and REMB). These percentages are evaluated over time windows of around one second.
 
 The delay-based controller cooperates with the loss-based controller, and looks at the variations in 
