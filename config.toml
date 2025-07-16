@@ -51,11 +51,11 @@ DefaultContentLanguage = "en"
     languageName = "Español"
     contentDir = "content.es"
     weight = 8
-#  [languages.tr]
-#    title = "WebRTC for the Curious -- TODO Translate to Turkish"
-#    languageName = "Turkish"
-#    contentDir = "content.tr"
-#    weight = 2
+  [languages.tr]
+    title = "WebRTC Meraklıları İçin"
+    languageName = "Türkçe"
+    contentDir = "content.tr"
+    weight = 9
 
 [params]
   # source repository location.
