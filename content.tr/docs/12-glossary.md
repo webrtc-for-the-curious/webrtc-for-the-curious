@@ -1,0 +1,73 @@
+---
+title: Sözlük
+type: docs
+weight: 13
+---
+
+# Sözlük
+
+- ACK: Onay (Acknowledgment)
+- AVP: Ses ve Video profili (Audio and Video profile)
+- B-Frame: [Çift Yönlü Tahminli Çerçeve](../06-media-communication/#intra-and-inter-frame-compression). Kısmi bir resim, önceki ve gelecekteki resimlerin modifikasyonudur.
+- DCEP: [Veri Kanalı Kurma Protokolü](../07-data-communication/#dcep) [RFC 8832](https://datatracker.ietf.org/doc/html/rfc8832)'de tanımlanmıştır
+- DeMux: Çoklayıcı çözücü (Demultiplexer)
+- DLSR: Son gönderen raporundan beri gecikme (Delay since last sender report)
+- DTLS: [Datagram Aktarım Katmanı Güvenliği](../04-securing/#dtls) [RFC 6347](https://datatracker.ietf.org/doc/html/rfc6347)'de tanımlanmıştır
+- E2E: Uçtan Uca (End-to-End)
+- FEC: [İleri Hata Düzeltme](../06-media-communication/#forward-error-correction)
+- FIR: [Tam INTRA-çerçeve İsteği](../06-media-communication/#full-intra-frame-request-fir-and-picture-loss-indication-pli)
+- G.711: Dar bant ses codec'i
+- GCC: [Google Tıkanıklık Kontrolü](../06-media-communication/#google-congestion-control-gcc) [draft-ietf-rmcat-gcc-02](https://datatracker.ietf.org/doc/html/draft-ietf-rmcat-gcc-02)'de tanımlanmıştır
+- H.264: Genel görsel-işitsel hizmetler için gelişmiş video kodlama
+- H.265: ITU-T H.265 yüksek verimli video kodlama için uygunluk spesifikasyonu
+- HEVC: Yüksek Verimli Video Kodlama (High Efficiency Video Coding)
+- HTTP: Hipermetin Aktarım Protokolü (Hypertext Transfer Protocol)
+- HTTPS: TLS Üzerinden HTTP, [RFC 2818](https://datatracker.ietf.org/doc/html/rfc2818)'de tanımlanmıştır
+- I-Frame: [Çerçeve içi Kodlanmış Çerçeve](../06-media-communication/#intra-and-inter-frame-compression). Tam bir resim, başka hiçbir şey olmadan dekod edilebilir.
+- ICE: [Etkileşimli Bağlantı Kurma](../03-connecting/#ice) [RFC 8445](https://datatracker.ietf.org/doc/html/rfc8445)'te tanımlanmıştır
+- INIT: Başlat (Initiate)
+- IoT: Nesnelerin İnterneti (Internet of Things)
+- IPv4: İnternet Protokolü, Sürüm 4
+- IPv6: İnternet Protokolü, Sürüm 6
+- ITU-T: Uluslararası Telekomünikasyon Birliği Telekomünikasyon Standardizasyon Sektörü
+- JSEP: [JavaScript Oturum Kurma Protokolü](../02-signaling/#what-is-the-session-description-protocol-sdp) [RFC 8829](https://datatracker.ietf.org/doc/html/rfc8829)'da tanımlanmıştır
+- MCU: [Çok Nokta Konferans Birimi](../08-applied-webrtc/#mcu)
+- mDNS: [Multicast DNS](../03-connecting/#mdns) [RFC 6762](https://datatracker.ietf.org/doc/html/rfc6762)'de tanımlanmıştır
+- MITM: Ortadaki Adam (Man-In-The-Middle)
+- MTU: Maksimum İletim Birimi, paket boyutu
+- MUX: Çoklama (Multiplexing)
+- NACK: Negatif Onay (Negative Acknowledgment)
+- NADA: [ağ destekli dinamik adaptasyon](../06-media-communication/#bandwidth-estimation-alternatives) [draft-zhu-rmcat-nada-04](https://tools.ietf.org/html/draft-zhu-rmcat-nada-04)'te tanımlanmıştır
+- NAT: [Ağ Adresi Çevirisi](../03-connecting/#nat-mapping) [RFC 4787](https://datatracker.ietf.org/doc/html/rfc4787)'de tanımlanmıştır
+- Opus: Tamamen açık, telif hakkı ücretsiz, son derece çok yönlü ses codec'i
+- P-Frame: [Tahminli Çerçeve](../06-media-communication/#intra-and-inter-frame-compression). Kısmi bir resim, sadece önceki resimden değişiklikleri içerir.
+- P2P: Eşten-Eşe (Peer-to-Peer)
+- PLI: [Resim Kaybı Göstergesi](../06-media-communication/#full-intra-frame-request-fir-and-picture-loss-indication-pli)
+- PPID: [Yük Protokolü Tanımlayıcısı](../07-data-communication/#payload-protocol-identifier)
+- REMB: [Alıcı Tahmini Maksimum Bit Hızı](../06-media-communication/#tmmbr-tmmbn-and-remb)
+- RFC: Yorum İsteği (Request for Comments)
+- RMCAT: [RTP Medya Tıkanıklık Önleme Teknikleri](../06-media-communication/#generating-a-bandwidth-estimate)
+- RR: Alıcı Raporu (Receiver Report)
+- RTCP: [RTP Kontrol Protokolü](../10-history-of-webrtc/#rtp) [RFC 3550](https://datatracker.ietf.org/doc/html/rfc3550)'de tanımlanmıştır
+- RTP: [Gerçek zamanlı aktarım protokolü](../10-history-of-webrtc/#rtp) [RFC 3550](https://datatracker.ietf.org/doc/html/rfc3550)'de tanımlanmıştır
+- RTT: Gidiş-Geliş Süresi (Round-Trip Time)
+- SACK: Seçici Onay (Selective Acknowledgment)
+- SCReAM: [Multimedya için Kendinden Saatli Hız Adaptasyonu](../06-media-communication/#bandwidth-estimation-alternatives) [draft-johansson-rmcat-scream-cc-05](https://tools.ietf.org/html/draft-johansson-rmcat-scream-cc-05)'te tanımlanmıştır
+- SCTP: [Akış Kontrol İletim Protokolü](../07-data-communication/#stream-control-transmission-protocol) [RFC 4960](https://datatracker.ietf.org/doc/html/rfc4960)'ta tanımlanmıştır
+- SDP: [Oturum Tanımlama Protokolü](../02-signaling/#what-is-the-session-description-protocol-sdp) [RFC 8866](https://datatracker.ietf.org/doc/html/rfc8866)'da tanımlanmıştır
+- SFU: [Seçici Yönlendirme Birimi](../08-applied-webrtc/#selective-forwarding-unit)
+- SR: Gönderen Raporu (Sender Report)
+- SRTP: [Güvenli Gerçek zamanlı Aktarım Protokolü](../04-securing/#srtp) [RFC 3711](https://datatracker.ietf.org/doc/html/rfc3711)'de tanımlanmıştır
+- SSRC: Senkronizasyon Kaynağı (Synchronization Source)
+- STUN: [NAT için Oturum Geçiş Yardımcı Programları](../03-connecting/#stun) [RFC 8489](https://datatracker.ietf.org/doc/html/rfc8489)'da tanımlanmıştır
+- TCP: İletim Kontrol Protokolü (Transmission Control Protocol)
+- TLS: [RFC 8446](https://datatracker.ietf.org/doc/html/rfc8446)'da tanımlanan Aktarım Katmanı Güvenliği
+- TMMBN: [Geçici Maksimum Medya Akışı Bit Hızı Bildirimi](../06-media-communication/#tmmbr-tmmbn-and-remb)
+- TMMBR: [Geçici Maksimum Medya Akışı Bit Hızı İsteği](../06-media-communication/#tmmbr-tmmbn-and-remb)
+- TSN: [İletim Sıra Numarası](../07-data-communication/#transmission-sequence-number)
+- TURN: [NAT Etrafında Röle Kullanarak Geçiş](../03-connecting/#turn) [RFC 8656](https://datatracker.ietf.org/doc/html/rfc8656)'da tanımlanmıştır
+- TWCC: [Aktarım Genişliği Tıkanıklık Kontrolü](../06-media-communication/#transport-wide-congestion-control)
+- UDP: Kullanıcı Datagram Protokolü (User Datagram Protocol)
+- VP8, VP9: WebM Projesi tarafından geliştirilen son derece verimli video sıkıştırma teknolojileri (video "codec'leri"). Herkes bu codec'leri telif hakkı ücreti ödemeden kullanabilir.
+- WebM: Web için tasarlanmış açık medya dosya formatı.
+- WebRTC: Web Gerçek Zamanlı İletişimleri. [W3C WebRTC 1.0: Tarayıcılar Arası Gerçek Zamanlı İletişim](https://www.w3.org/TR/webrtc/)
