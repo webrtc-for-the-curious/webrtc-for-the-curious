@@ -1,0 +1,218 @@
+<!doctype html><html lang=tr dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Tarihçe # WebRTC öğrenirken geliştiriciler genellikle karmaşıklık nedeniyle hayal kırıklığı yaşarlar. Mevcut projelerine alakasız WebRTC özelliklerini görür ve WebRTC&rsquo;nin daha basit olmasını dilerler. Sorun herkesin farklı bir kullanım durumu setine sahip olmasıdır. Gerçek zamanlı iletişimin zengin bir geçmişi vardır ve birçok farklı insan birçok farklı şey inşa eder.
+Bu bölüm WebRTC&rsquo;yi oluşturan protokollerin yazarlarıyla yapılan röportajları içerir. Her protokolü inşa ederken yapılan tasarımlara dair içgörü verir ve WebRTC&rsquo;nin kendisi hakkında bir röportajla biter."><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://webrtcforthecurious.com/tr/docs/10-history-of-webrtc/"><meta property="og:site_name" content="WebRTC Meraklıları İçin"><meta property="og:title" content="Tarihçe"><meta property="og:description" content="Tarihçe # WebRTC öğrenirken geliştiriciler genellikle karmaşıklık nedeniyle hayal kırıklığı yaşarlar. Mevcut projelerine alakasız WebRTC özelliklerini görür ve WebRTC’nin daha basit olmasını dilerler. Sorun herkesin farklı bir kullanım durumu setine sahip olmasıdır. Gerçek zamanlı iletişimin zengin bir geçmişi vardır ve birçok farklı insan birçok farklı şey inşa eder.
+Bu bölüm WebRTC’yi oluşturan protokollerin yazarlarıyla yapılan röportajları içerir. Her protokolü inşa ederken yapılan tasarımlara dair içgörü verir ve WebRTC’nin kendisi hakkında bir röportajla biter."><meta property="og:locale" content="tr"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:modified_time" content="2025-07-16T20:46:44+03:00"><title>Tarihçe | WebRTC Meraklıları İçin</title>
+<link rel=manifest href=/manifest.json><link rel=icon href=/favicon.png><link rel=canonical href=https://webrtcforthecurious.com/tr/docs/10-history-of-webrtc/><link rel=alternate hreflang=en href=https://webrtcforthecurious.com/docs/10-history-of-webrtc/ title=History><link rel=alternate hreflang=sv href=https://webrtcforthecurious.com/sv/docs/10-history-of-webrtc/ title=Historia><link rel=alternate hreflang=ru href=https://webrtcforthecurious.com/ru/docs/10-history-of-webrtc/ title=History><link rel=alternate hreflang=zh href=https://webrtcforthecurious.com/zh/docs/10-history-of-webrtc/ title=历史><link rel=alternate hreflang=ja href=https://webrtcforthecurious.com/ja/docs/10-history-of-webrtc/ title=歴史><link rel=alternate hreflang=fa href=https://webrtcforthecurious.com/fa/docs/10-history-of-webrtc/ title=تاریخچه><link rel=alternate hreflang=fr href=https://webrtcforthecurious.com/fr/docs/10-history-of-webrtc/ title=History><link rel=alternate hreflang=id href=https://webrtcforthecurious.com/id/docs/10-history-of-webrtc/ title=History><link rel=alternate hreflang=es href=https://webrtcforthecurious.com/es/docs/10-history-of-webrtc/ title=History><link rel=stylesheet href=/book.min.309b7ed028807cdb68d8d61e26d609f48369c098dbf5e4d8c0dcf4cdf49feafc.css integrity="sha256-MJt+0CiAfNto2NYeJtYJ9INpwJjb9eTYwNz0zfSf6vw=" crossorigin=anonymous><script defer src=/fuse.min.js></script><script defer src=/tr.search.min.0e513a3507f051bf655d831577c7dbbf888331f24101f7ab2d356e175710b4d8.js integrity="sha256-DlE6NQfwUb9lXYMVd8fbv4iDMfJBAferLTVuF1cQtNg=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/tr/><span>WebRTC Meraklıları İçin</span></a></h2><div class="book-search hidden"><input type=text id=book-search-input placeholder=Arama aria-label=Arama maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul class=book-languages><li><input type=checkbox id=languages class=toggle>
+<label for=languages class="flex justify-between"><a role=button class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Türkçe</a></label><ul><li><a href=https://webrtcforthecurious.com/docs/10-history-of-webrtc/>English</a></li><li><a href=https://webrtcforthecurious.com/ru/docs/10-history-of-webrtc/>Русский</a></li><li><a href=https://webrtcforthecurious.com/sv/docs/10-history-of-webrtc/>Svenska</a></li><li><a href=https://webrtcforthecurious.com/zh/docs/10-history-of-webrtc/>简体中文</a></li><li><a href=https://webrtcforthecurious.com/ja/docs/10-history-of-webrtc/>日本語</a></li><li><a href=https://webrtcforthecurious.com/fa/docs/10-history-of-webrtc/>Persian</a></li><li><a href=https://webrtcforthecurious.com/fr/docs/10-history-of-webrtc/>Français</a></li><li><a href=https://webrtcforthecurious.com/id/docs/10-history-of-webrtc/>Bahasa Indonesia</a></li><li><a href=https://webrtcforthecurious.com/es/docs/10-history-of-webrtc/>Español</a></li></ul></li></ul><ul><li><a href=/tr/docs/01-what-why-and-how/>Ne, Neden ve Nasıl</a></li><li><a href=/tr/docs/02-signaling/>Sinyalleşme</a></li><li><a href=/tr/docs/03-connecting/>Bağlanma</a></li><li><a href=/tr/docs/04-securing/>Güvenlik</a></li><li><a href=/tr/docs/05-real-time-networking/>Gerçek Zamanlı Ağ İletişimi</a></li><li><a href=/tr/docs/06-media-communication/>Medya İletişimi</a></li><li><a href=/tr/docs/07-data-communication/>Veri İletişimi</a></li><li><a href=/tr/docs/08-applied-webrtc/>Uygulamalı WebRTC</a></li><li><a href=/tr/docs/09-debugging/>Hata Ayıklama</a></li><li><a href=/tr/docs/10-history-of-webrtc/ class=active>Tarihçe</a></li><li><a href=/tr/docs/11-faq/>SSS</a></li><li><a href=/tr/docs/12-glossary/>Sözlük</a></li><li><a href=/tr/docs/13-reference/>Referans</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu>
+</label><strong>Tarihçe</strong>
+<label for=toc-control><img src=/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#rtp>RTP</a><ul><li><a href=#kendi-sözleriyle>Kendi Sözleriyle</a></li><li><a href=#neden-paket-başına-zaman-damgası>Neden paket başına zaman damgası?</a></li><li><a href=#rtprtcpnin-geleceği>RTP/RTCP&rsquo;nin geleceği</a></li></ul></li><li><a href=#ice>ICE</a><ul><li><a href=#kendi-sözleriyle-1>Kendi Sözleriyle</a></li><li><a href=#iceın-geleceği>ICE&rsquo;ın geleceği</a></li></ul></li><li><a href=#mdns>mDNS</a><ul><li><a href=#neden-mdns>Neden mDNS?</a></li><li><a href=#mdnsin-webrtcdeki-kullanımı>mDNS&rsquo;in WebRTC&rsquo;deki kullanımı</a></li></ul></li><li><a href=#webrtc-kendisi>WebRTC kendisi</a><ul><li><a href=#kendi-sözleriyle-2>Kendi Sözleriyle</a></li><li><a href=#neden-browser-tabanlı>Neden browser-tabanlı?</a></li><li><a href=#teknik-zorluklar>Teknik zorluklar</a></li><li><a href=#açık-kaynak-yaklaşımı>Açık kaynak yaklaşımı</a></li><li><a href=#npapiden-uzaklaşma>NPAPI&rsquo;den uzaklaşma</a></li><li><a href=#webrtcnin-doğuşu>WebRTC&rsquo;nin doğuşu</a></li><li><a href=#standardizasyon>Standardizasyon</a></li><li><a href=#devlerin-omuzlarında-durmak>Devlerin omuzlarında durmak</a></li><li><a href=#gelecek>Gelecek</a></li></ul></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=tarihçe>Tarihçe
+<a class=anchor href=#tarih%c3%a7e>#</a></h1><p>WebRTC öğrenirken geliştiriciler genellikle karmaşıklık nedeniyle hayal kırıklığı yaşarlar.
+Mevcut projelerine alakasız WebRTC özelliklerini görür ve WebRTC&rsquo;nin
+daha basit olmasını dilerler. Sorun
+herkesin farklı bir kullanım durumu setine sahip olmasıdır. Gerçek zamanlı iletişimin zengin
+bir geçmişi vardır ve birçok farklı insan birçok farklı şey inşa eder.</p><p>Bu bölüm WebRTC&rsquo;yi oluşturan protokollerin yazarlarıyla yapılan röportajları içerir.
+Her protokolü inşa ederken yapılan tasarımlara dair içgörü verir ve
+WebRTC&rsquo;nin kendisi hakkında bir röportajla biter. Yazılımın
+niyetlerini ve tasarımlarını anlarsanız onunla daha etkili sistemler inşa edebilirsiniz.</p><h2 id=rtp>RTP
+<a class=anchor href=#rtp>#</a></h2><p>RTP ve RTCP WebRTC için tüm medya aktarımını yöneten protokoldür.
+Ocak 1996&rsquo;da <a href=https://tools.ietf.org/html/rfc1889>RFC 1889</a>&lsquo;da tanımlandı.
+Yazarlarından biri olan <a href=https://github.com/ronf>Ron Frederick</a>&lsquo;in bunu kendisinin anlatma
+şansımız olduğu için çok şanslıyız. Ron yakın zamanda
+RTP&rsquo;yi bilgilendiren bir proje olan <a href=https://github.com/ronf/nv>Network Video tool</a>&lsquo;u GitHub&rsquo;a yükledi.</p><h3 id=kendi-sözleriyle>Kendi Sözleriyle
+<a class=anchor href=#kendi-s%c3%b6zleriyle>#</a></h3><p>Ekim 1992&rsquo;de, IP multicast tabanlı bir ağ video konferans aracı yazma
+fikriyle Sun VideoPix çerçeve yakalayıcı kartıyla deneyler yapmaya başladım.
+LBL&rsquo;de geliştirilen bir ses konferans aracı olan &ldquo;vat"ı model aldı,
+çünkü kullanıcıların konferanslara katılması için benzer hafif oturum protokolü kullanıyordu,
+burada sadece belirli bir multicast grubuna veri gönderiyordunuz ve diğer grup
+üyelerinden gelen herhangi bir trafik için o grubu izliyordunuz.</p><p>Programın gerçekten başarılı olması için video verilerini ağa koymadan önce
+sıkıştırması gerekiyordu. Hedefim yaklaşık 128 kbps&rsquo;ye sığacak kabul edilebilir
+görünümlü bir veri akışı yapmaktı, veya standart ev ISDN hattında mevcut
+bant genişliği. Ayrıca bu bant genişliğinin yarısına sığan hala izlenebilir
+bir şey üretmeyi umuyordum. Bu, çalıştığım belirli görüntü boyutu ve kare hızı
+için yaklaşık 20 kat sıkıştırma faktörüne ihtiyacım olduğu anlamına geliyordu.
+Bu sıkıştırmayı başardım ve kullandığım teknikler için patent başvurusunda bulundum,
+daha sonra verildi, ancak bu tamamen farklı bir hikaye.</p><p>1993 yazının başında, San Francisco&rsquo;daki Multimedia Computing and Networking
+konferansında kendim yazıp &ldquo;Network Video (nv)&rdquo; diye adlandırdığım bu programı gösterdim.
+Bu gösterim &ldquo;vat"ın yaratıcısı Van Jacobson&rsquo;dan iyi gözüktü
+ve ondan bu proje üzerinde birlikte çalışmak isteyip istemediğimi sordu.
+Elinden geldiğince bana yardım etmeyi kabul etti.</p><p>Van ile çalışırken öğrendiğim ilk şeylerden biri bu tür gerçek zamanlı uygulamalar
+için yayın kontrolü ve kalite kontrolünün önemiydi. vat&rsquo;ta yaptıkları şey
+herkesin trafiğini dinlemekti ve eğer network tıkanıklığına dair işaretler görürlerse
+transmisyon kalitelerini azaltırlardı.</p><p>nv için, bu birkaç şeyle gerçekleştirildi. İlk olarak, biz diğer gönderenlerden
+gelen farklı veri hızlarını ölçtük. Network&rsquo;e çok fazla trafik gönderdiğimizi
+fark edersek, kare hızını ve kaliteyi azaltırdık. İkinci olarak, herhangi
+bir alıcıya gönderenin kalitesini azaltmasını isteyebileceğini söylememize
+izin veren &ldquo;komutu gönder&rdquo; mesajları gönderdik. Bunu, özellikle bant genişliği
+gereksinimlerimizi kendi ağ kapasitesine uydurmak isteyen alıcılar için
+yaptık.</p><p>nv, Mart 1993&rsquo;te Sun&rsquo;dan halka yayınlandı ve hızla çok popüler oldu.
+Bu konuyla ilgili çok sayıda email aldığım hatırlıyorum. İnsanlar bunu
+dünya çapında Mbone üzerinden üniversiteler arası video konferanslar için
+kullanıyorlardı, ve birçok insan kendi video konferans araçlarını bu kod
+üzerine inşa etti.</p><p>nv&rsquo;de kullandığımız formatın artık RTP diye bilinen şeyin ilk versiyonu
+olduğunu söyleyebilirim. Video verilerinin başında, kare hızı ve kalite
+hakkında alıcılara bilgi veren küçük bir başlık vardı. Bu başlık ayrıca
+gönderenin bir parçası olduğu farklı oturumları, hangi kullanıcıdan
+geldiğini ve benzer şeyleri tanımlamaya yardımcı olacak alanlar içeriyordu.</p><p>Aslında başlık formatını tasarlarken, vat&rsquo;ta kullanılan basit yaklaşımdan
+sonra modellendirdi. Ancak, nv o zamanlar daha karmaşık bir medya türü
+olduğundan daha fazla bilgiye ihtiyacı vardı. Daha sonra, RTP komitesinde
+çalıştığımızda, nv&rsquo;de kullandığımız format, daha sonra RTP&rsquo;nin standardı
+haline gelecek şeyin temelini oluşturdu.</p><p>Nitekim, nv&rsquo;de kullandığımız format ile RTP v1 RFC&rsquo;si arasında doğrudan
+bir çizgi vardır. Bu o zamandan beri evrildi, ancak temel konseptler
+aynı kalıyor.</p><p>Vat&rsquo;ta Van&rsquo;ın yaptığı işin gerçekten akıllıcaydı. Ağ tıkanıklığıyla
+nasıl başa çıkılacağı konusunda öncü bir iş yaptı ve bu RTP ve daha sonra
+RTCP&rsquo;nin gelişiminde gerçekten önemliydi.</p><h3 id=neden-paket-başına-zaman-damgası>Neden paket başına zaman damgası?
+<a class=anchor href=#neden-paket-ba%c5%9f%c4%b1na-zaman-damgas%c4%b1>#</a></h3><p>Bu günlerde, paket başına zaman damgası oldukça açık görünüyor,
+ancak o zamanlar bunun böyle açık olup olmadığından emin değildim.
+Ben bu işe başladığımda, çerçeveleri düşünce alışkanlığındaydım,
+paketleri değil.</p><p>Her pakette zaman damgası bulunmasının nedenlerinden biri ses ve
+video arasında yeterince senkronizasyon sağlayabilmekti. Bu,
+özellikle genellikle çerçeveler arasında dağıtılan ve genellikle
+düşük bir kare hızından dolayı çerçeveler arasında önemli miktarda
+zaman olan video için önemliydi.</p><p>Diğer nedeni ise bant genişliği yönetimi içindi. Bir çerçeve içinde
+farklı bölümlere farklı öncelikler atayabilsek, alıcıların network
+koşulları kötüleştiğinde hangi paketleri düşüreceğini bilmelerine
+izin verseydik yardımcı olacaktı. Bu, çerçeve düzeyinde değil paket
+düzeyinde öncelik bilgilerine sahip olmayı gerektirdi.</p><h3 id=rtprtcpnin-geleceği>RTP/RTCP&rsquo;nin geleceği
+<a class=anchor href=#rtprtcpnin-gelece%c4%9fi>#</a></h3><p>RTP, ilk oluşturulduğundan bu yana oldukça başarılı olduğunu düşünüyorum.
+Bu, İnternet&rsquo;teki gerçek zamanlı uygulamaların çoğunun temelini oluşturuyor
+ve çok geniş bir alanda kullanılıyor.</p><p>RTP&rsquo;nin en başarılı kısımlarından biri esnekliği olmuştur. Genelleştirilmiş
+bir çerçeve olacak şekilde tasarlandı, bu da belirli medya türleri için
+özelleştirilebileceği anlamına geliyordu. Bu, RTP&rsquo;nin başlangıçta tasarlandığından
+çok daha fazla uygulama alanında kullanılmasına izin verdi.</p><p>WebRTC ile ilgili özellikle heyecanlandıran şey, RTP&rsquo;yi sadece nokta-nokta
+konferans çağrıları için değil, çok daha karmaşık uygulamalar için de
+kullanıyor olmasıdır. Bu benim başlangıçta hayal ettiğim türden kullanımın
+ötesinde.</p><h2 id=ice>ICE
+<a class=anchor href=#ice>#</a></h2><p>ICE, internet bağlantısı kurma (Internet Connection Establishment) anlamına gelir.
+ICE, WebRTC&rsquo;nin NAT geçişi nasıl yaptığıdır. Birden fazla ağda NAT&rsquo;ların arkasındaki
+iki WebRTC ajanının birbirlerini nasıl bulduğudur.</p><p>ICE <a href=https://tools.ietf.org/html/rfc8445>RFC 8445</a>&rsquo;te tanımlanmıştır ve
+<a href=https://www.linkedin.com/in/jdrosen/>Jonathan Rosenberg</a> tarafından yazılmıştır.
+İCANN&rsquo;ın eski CTO&rsquo;su ve şu anda <a href=http://five9.com/>Five9</a>&lsquo;un CTO&rsquo;sudur.</p><h3 id=kendi-sözleriyle-1>Kendi Sözleriyle
+<a class=anchor href=#kendi-s%c3%b6zleriyle-1>#</a></h3><p>Ben şirketimde video konferans teknolojileri üzerinde çalışıyordum.
+1999 gibi erken bir tarihte enterprise video konferans sistemleri
+inşa ediyorduk. Bu sistemler, ağ içinde iki nokta arasında çağrılar
+yapmak için tasarlanmıştı.</p><p>Sorun, kullanıcılar bu sistemleri iş yerlerinin dışında kullanmaya
+başladığında ortaya çıktı. Evdeki kullanıcıların çoğu NAT&rsquo;ın arkasındaydı
+ve bizim sistemimiz çalışmıyordu. O zamanlar NAT geçişi bu kadar yaygın
+değildi - aslında hiç yoktu.</p><p>Insanların internet üzerinden ses ve video konferansı yapabilmesi için
+NAT geçişi problemini çözmemiz gerekiyordu. Bu problemin birçok farklı
+parçası vardı: NAT tespiti, NAT tipi belirleme, NAT geçişi, ve bağlantı
+kurma.</p><p>Bunu çözmek için birkaç farklı yöntem denedik. Bunlardan biri UPnP&rsquo;yi
+kullanmaktı, ancak bu yeterince yaygın değildi. Diğeri de STUN ve TURN
+kullanmaktı, ancak bunlar her durumda çalışmıyordu.</p><p>ICE, tüm bu farklı yöntemleri birleştirmeye çalışan bir yaklaşımdı.
+Temel fikir şuydu: bağlantı kurmaya çalışırken mümkün olan tüm yöntemleri
+deneyin ve hangisi çalışırsa onu kullanın.</p><p>ICE&rsquo;ın ilk versiyonu oldukça karmaşıktı. Birçok farklı bağlantı yöntemini
+koordine etmeye çalışıyordu ve implementasyon oldukça zordu. Zamanla
+protokol basitleşti ve daha pratik hale geldi.</p><p>ICE&rsquo;ın en büyük katkısı, farklı NAT geçiş yöntemlerini standart bir
+şekilde birleştirmesi oldu. Bu, geliştiricilerin her durum için özel
+çözümler yazmak zorunda kalmaması anlamına geldi.</p><p>ICE bugün WebRTC&rsquo;nin temel bir parçası. NAT&rsquo;ların arkasındaki aygıtların
+birbirleriyle güvenilir bir şekilde bağlantı kurmasını sağlıyor. Bu olmadan,
+WebRTC bugünkü kadar yaygın bir şekilde kullanılamazdı.</p><h3 id=iceın-geleceği>ICE&rsquo;ın geleceği
+<a class=anchor href=#ice%c4%b1n-gelece%c4%9fi>#</a></h3><p>ICE teknolojisi olarak oldukça olgun. Temel protokol iyi çalışıyor ve
+büyük değişikliklere ihtiyaç duymuyoru. Gelecekteki gelişmelerin çoğu
+performans optimizasyonları ve belirli kullanım durumları için iyileştirmeler
+olacak.</p><p>Özellikle mobile cihazlar için pil ömrünü iyileştirme üzerine çok çalışma
+yapılıyor. ICE süreçlerinin daha verimli olması ve daha az enerji tüketmesi
+için yöntemler araştırılıyor.</p><h2 id=mdns>mDNS
+<a class=anchor href=#mdns>#</a></h2><p>mDNS (multicast DNS), WebRTC&rsquo;nin yerel ağda eş keşfi için kullandığı
+teknolojilerden biridir. Bu, WebRTC ajanlarının aynı yerel ağdaki
+diğer ajanları bulmasına olanak tanır.</p><p>mDNS, <a href=https://tools.ietf.org/html/rfc6763>RFC 6763</a>&rsquo;te tanımlanmıştır
+ve Apple tarafından geliştirilmiştir. Bonjour teknolojisinin bir parçasıdır.</p><h3 id=neden-mdns>Neden mDNS?
+<a class=anchor href=#neden-mdns>#</a></h3><p>WebRTC&rsquo;de gizlilik giderek daha önemli hale geldi. Kullanıcıların IP
+adreslerinin gereksiz yere ifşa edilmemesi önemli. mDNS, yerel ağdaki
+eş keşfi için IP adreslerini ifşa etmeyen bir yöntem sağlar.</p><p>Geleneksel ICE sürecinde, WebRTC ajanları kendi IP adreslerini ICE
+adayları olarak paylaşır. Bu, kullanıcının ağ topolojisi hakkında
+bilgi verebilir ve gizlilik endişeleri yaratabilir.</p><p>mDNS kullanarak, WebRTC ajanları gerçek IP adresleri yerine
+.local etki alanı adları kullanabilir. Bu adlar sadece yerel ağ
+içinde çözülebilir ve dış ağlara bilgi sızdırmaz.</p><h3 id=mdnsin-webrtcdeki-kullanımı>mDNS&rsquo;in WebRTC&rsquo;deki kullanımı
+<a class=anchor href=#mdnsin-webrtcdeki-kullan%c4%b1m%c4%b1>#</a></h3><p>WebRTC&rsquo;de mDNS öncelikle aynı yerel ağdaki eşler arasında bağlantı
+kurmak için kullanılır. Bu özellikle aynı WiFi ağındaki cihazlar
+arasında doğrudan bağlantı kurmak için yararlıdır.</p><p>mDNS kullanımı, WebRTC&rsquo;nin gizlilik özelliklerini artırırken aynı
+zamanda yerel ağ performansını da iyileştirir. Yerel bağlantılar
+genellikle internet üzerinden gelen bağlantılardan daha hızlı ve
+daha düşük gecikmeye sahiptir.</p><h2 id=webrtc-kendisi>WebRTC kendisi
+<a class=anchor href=#webrtc-kendisi>#</a></h2><p>WebRTC&rsquo;nin hikayesini anlatmak için <a href=https://www.linkedin.com/in/juberti/>Justin Uberti</a>&lsquo;yi
+davet ettik. Justin Google&rsquo;da WebRTC&rsquo;nin temel kurucularından biriydi ve
+standardizasyon sürecinin büyük bir parçasıydı. Şu anda
+<a href=https://www.clubhouse.com/>Clubhouse</a>&lsquo;da çalışıyor.</p><h3 id=kendi-sözleriyle-2>Kendi Sözleriyle
+<a class=anchor href=#kendi-s%c3%b6zleriyle-2>#</a></h3><p>WebRTC&rsquo;ye giden yol uzundu. 2003&rsquo;te Google&rsquo;a katıldığımda, şirket
+gerçek zamanlı iletişim alanında henüz aktif değildi. Ancak zaman
+geçtikçe, bu alanın gelecekte önemli olacağını gördük.</p><p>2005 civarında Google Talk&rsquo;ı piyasaya sürdük. Bu bizim ilk gerçek
+zamanlı iletişim ürünümüzdü ve Jabber/XMPP tabanlıydı. Bu ürünü
+geliştirirken, mevcut teknolojilerin sınırlarını gördük.</p><p>O zamanlar, web tarayıcılarında gerçek zamanlı iletişim yapmak çok zordu.
+Flash veya Java gibi eklentiler kullanmanız gerekiyordu. Bu hem güvenlik
+hem de kullanılabilirlik açısından sorunluydu.</p><p>2009&rsquo;da HTML5 ortaya çıktığında, web&rsquo;in yerel olarak gerçek zamanlı
+iletişimi destekleyebileceği fikri daha gerçekçi hale geldi. Ancak
+bu için browserlara önemli yeni API&rsquo;ler eklenmesi gerekiyordu.</p><h3 id=neden-browser-tabanlı>Neden browser-tabanlı?
+<a class=anchor href=#neden-browser-tabanl%c4%b1>#</a></h3><p>Browser-tabanlı gerçek zamanlı iletişim yapmanın birçok avantajı vardı:</p><p>Öncelikle, platform bağımsızlığı. Aynı kod Windows, Mac, Linux ve
+mobile platformlarda çalışabilirdi. Bu, geliştiriciler için büyük
+bir kolaylıktı.</p><p>İkincisi, güvenlik. Browser&rsquo;lar zaten güvenlik odaklı tasarlanmıştı
+ve sandbox modeli vardı. Bu, gerçek zamanlı iletişimin de güvenli
+olmasını sağlardı.</p><p>Üçüncüsü, kolay dağıtım. Kullanıcılar herhangi bir yazılım indirmek
+zorunda kalmadan uygulamaları kullanabilirdi. Bu, adapsiyon için
+kritikti.</p><h3 id=teknik-zorluklar>Teknik zorluklar
+<a class=anchor href=#teknik-zorluklar>#</a></h3><p>WebRTC&rsquo;yi geliştirirken karşılaştığımız birçok teknik zorluk vardı:</p><p>NAT geçişi büyük bir sorundu. Internet&rsquo;teki cihazların çoğu NAT&rsquo;ların
+arkasındaydı ve birbirleriyle doğrudan iletişim kuramazlardı. ICE
+protokolü bu sorunu çözmek için geliştirildi.</p><p>Codec seçimi başka bir zorlukhti. Farklı platformlar farklı audio/video
+codec&rsquo;lerini destekliyordu. WebRTC için ortak bir set belirlemek
+zordu.</p><p>Echo cancellation ve noise reduction gibi ses işleme algoritmaları
+da zordu. Bunların web browserlarında gerçek zamanlı çalışması
+gerekiyordu.</p><h3 id=açık-kaynak-yaklaşımı>Açık kaynak yaklaşımı
+<a class=anchor href=#a%c3%a7%c4%b1k-kaynak-yakla%c5%9f%c4%b1m%c4%b1>#</a></h3><p>WebRTC&rsquo;yi açık kaynak yapmak stratejik bir karardı. Bunun birkaç
+nedeni vardı:</p><p>İlk olarak, standardizasyon. Açık kaynak olmayan bir teknoloji
+internet standardı olmaya uygun değildi.</p><p>İkincisi, güven. Güvenlik açısından kritik bir teknoloji için
+kod şeffaflığı önemliydi.</p><p>Üçüncüsü, ekosistem. Geniş bir geliştirici ekosistemi yaratmak
+için açık kaynak gerekliyde.</p><h3 id=npapiden-uzaklaşma>NPAPI&rsquo;den uzaklaşma
+<a class=anchor href=#npapiden-uzakla%c5%9fma>#</a></h3><p>NPAPI&rsquo;den uzaklaşma büyük bir odak noktası haline geldi. Bu güçlü
+bir API&rsquo;ydi, ancak büyük güvenlik sonuçları vardı. Chrome kullanıcıları
+güvende tutmak için sandbox tasarımı kullanır. Potansiyel olarak
+güvenli olmayan işlemler farklı süreçlerde çalışır. Bir şeyler
+ters gitse bile, saldırgan hala kullanıcı verilerine erişime sahip olmaz.</p><h3 id=webrtcnin-doğuşu>WebRTC&rsquo;nin doğuşu
+<a class=anchor href=#webrtcnin-do%c4%9fu%c5%9fu>#</a></h3><p>Benim için WebRTC birkaç motivasyonla doğdu. Bunlar birleşerek
+bu çabayı doğurdu.</p><p>RTC deneyimleri inşa etmek bu kadar zor olmamalıydı. Çok fazla çaba
+farklı geliştiricilerin aynı şeyi yeniden uygulamasıyla harcandı.
+Bu sinir bozucu entegrasyon problemlerini bir kez çözmeli ve diğer
+şeylere odaklanmalıydık.</p><p>İnsan iletişimi engellenmemeli ve açık olmalıydı. Metin ve HTML&rsquo;nin
+açık olması tamam da, sesim ve gerçek zamanlı görüntümün açık olmaması
+nasıl kabul edilebilir?</p><p>Güvenlik bir önceliktir. NPAPI kullanmak kullanıcılar için en iyisi
+değildi. Bu aynı zamanda varsayılan olarak güvenli bir protokol
+yapma şansıydı.</p><p>WebRTC&rsquo;yi gerçekleştirmek için Google daha önce kullandığımız bileşenleri
+satın aldı ve Açık Kaynak yaptı. Video teknolojisi için
+<a href=https://en.wikipedia.org/wiki/On2_Technologies>On2</a> satın alındı ve
+RTC teknolojisi için
+<a href=https://en.wikipedia.org/wiki/Global_IP_Solutions>Global IP Solutions</a>.
+GIPS&rsquo;i satın alma çabasının sorumlusu bendim. Bunları birleştirme
+ve browser içinde ve dışında kullanımı kolay hale getirme işine
+koyulduk.</p><h3 id=standardizasyon>Standardizasyon
+<a class=anchor href=#standardizasyon>#</a></h3><p>WebRTC&rsquo;yi standardize etmek gerçekten yapmak istediğimiz bir şeydi,
+ancak daha önce yaptığım bir şey değildi, yakın ekibimizden hiç
+kimse de yapmamıştı. Bunun için Google&rsquo;da Harald Alvestrand&rsquo;a
+sahip olmak gerçekten şanslıydık. IETF&rsquo;te zaten kapsamlı çalışmalar
+yapmıştı ve WebRTC standardizasyon sürecini başlattı.</p><p>2010 yazında Maastricht&rsquo;te gayri resmi bir öğle yemeği planlandı.
+Birçok şirketten geliştiriciler WebRTC&rsquo;nin ne olması gerektiğini
+tartışmak için bir araya geldi. Öğle yemeğinde Google, Cisco,
+Ericsson, Skype, Mozilla, Linden Labs ve daha fazlasından mühendisler
+vardı. Tam katılım ve sunucu slaytlarını
+<a href=http://rtc-web.alvestrand.com>rtc-web.alvestrand.com</a>&lsquo;da bulabilirsiniz.</p><p>Skype ayrıca IETF&rsquo;te Opus ile yaptıkları çalışma nedeniyle harika
+rehberlik sağladı.</p><h3 id=devlerin-omuzlarında-durmak>Devlerin omuzlarında durmak
+<a class=anchor href=#devlerin-omuzlar%c4%b1nda-durmak>#</a></h3><p>IETF&rsquo;te çalışırken sizden önce gelen çalışmaları genişletiyorsunuz.
+WebRTC ile çok fazla şeyin mevcut olması şansımıza oldu. Her problemi
+üstlenmek zorunda değildik çünkü zaten çözülmüşlerdi. Önceden var olan
+teknolojiyi sevmiyorsanız bu sinir bozucu olabilir. Mevcut çalışmayı
+yok saymak için oldukça büyük bir nedene sahip olmanız gerekir, bu
+yüzden kendi başınıza yapmak bir seçenek değil.</p><p>Ayrıca sinyalleşme gibi şeyleri yeniden standardize etmeye bilinçli
+olarak girişmedik. Bu zaten SIP ve diğer IETF dışı çabalarla çözülmüştü
+ve çok politik olabileceği hissiyatı vardı. Sonunda bu alana
+eklecek çok fazla değer olmadığı hissiyatı vardı.</p><p>Standardizasyon konusunda Justin ve Harald kadar dahil olmadım, ancak
+yaptığım süreyi sevdim. Kullanıcılar için bir şeyler inşa etmeye
+geri dönme konusunda daha heyecanlıydım.</p><h3 id=gelecek>Gelecek
+<a class=anchor href=#gelecek>#</a></h3><p>WebRTC bugün harika bir yerde. Birçok yinelemeli değişiklik oluyor,
+ancak özellikle üzerinde çalıştığım bir şey yok.</p><p>İletişim için bulut bilişimin yapabilecekleri konusunda en çok
+heyecanlıyım. Gelişmiş algoritmalar kullanarak bir çağrıdan arka
+plan gürültüsünü kaldırabilir ve daha önce mümkün olmayan yerlerde
+iletişimi mümkün kılabiliyoruz. Ayrıca WebRTC&rsquo;nin iletişimin çok
+ötesine geçtiğini görüyoruz&mldr; 9 yıl sonra bulut tabanlı oyunları
+destekleyeceğini kim bilebilirdi? Bunların hiçbiri WebRTC&rsquo;nin
+temeli olmadan mümkün olmazdı.</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/commit/30cec2bd1fa8fc839dca83e8a73daa7afd98de9e title='Son düzenleyen fatihsen-dev | Temmuz 16, 2025' target=_blank rel=noopener><img src=/svg/calendar.svg class=book-icon alt>
+<span>Temmuz 16, 2025</span></a></div><div><a class="flex align-center" href=https://github.com/webrtc-for-the-curious/webrtc-for-the-curious/edit/master/content/docs/10-history-of-webrtc.md target=_blank rel=noopener><img src=/svg/edit.svg class=book-icon alt>
+<span>Bu sayfayı düzenle</span></a></div></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#rtp>RTP</a><ul><li><a href=#kendi-sözleriyle>Kendi Sözleriyle</a></li><li><a href=#neden-paket-başına-zaman-damgası>Neden paket başına zaman damgası?</a></li><li><a href=#rtprtcpnin-geleceği>RTP/RTCP&rsquo;nin geleceği</a></li></ul></li><li><a href=#ice>ICE</a><ul><li><a href=#kendi-sözleriyle-1>Kendi Sözleriyle</a></li><li><a href=#iceın-geleceği>ICE&rsquo;ın geleceği</a></li></ul></li><li><a href=#mdns>mDNS</a><ul><li><a href=#neden-mdns>Neden mDNS?</a></li><li><a href=#mdnsin-webrtcdeki-kullanımı>mDNS&rsquo;in WebRTC&rsquo;deki kullanımı</a></li></ul></li><li><a href=#webrtc-kendisi>WebRTC kendisi</a><ul><li><a href=#kendi-sözleriyle-2>Kendi Sözleriyle</a></li><li><a href=#neden-browser-tabanlı>Neden browser-tabanlı?</a></li><li><a href=#teknik-zorluklar>Teknik zorluklar</a></li><li><a href=#açık-kaynak-yaklaşımı>Açık kaynak yaklaşımı</a></li><li><a href=#npapiden-uzaklaşma>NPAPI&rsquo;den uzaklaşma</a></li><li><a href=#webrtcnin-doğuşu>WebRTC&rsquo;nin doğuşu</a></li><li><a href=#standardizasyon>Standardizasyon</a></li><li><a href=#devlerin-omuzlarında-durmak>Devlerin omuzlarında durmak</a></li><li><a href=#gelecek>Gelecek</a></li></ul></li></ul></nav></div></aside></main></body></html>
