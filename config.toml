@@ -10,6 +10,11 @@ DefaultContentLanguage = "en"
     title = "WebRTC for the Curious"
     languageName = "English"
     weight = 1
+  [languages.ko]
+    title = "호기심 많은 이를 위한 WebRTC"
+    languageName = "한국어"
+    contentDir = "content.kr"
+    weight = 10
   [languages.ru]
     title = "WebRTC для любопытных"
     languageName = 'Русский'
@@ -64,3 +69,8 @@ DefaultContentLanguage = "en"
 
   # 'Edit this page' links
   BookEditPath = 'edit/master'
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
