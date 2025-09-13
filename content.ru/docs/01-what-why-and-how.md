@@ -1,152 +1,156 @@
 ---
-title: Что, Зачем и как ?
+title: Что, Зачем и Как
 type: docs
 weight: 2
 ---
 
-# Что, Зачем и как ?
+# Что, Зачем и Как
 
-## What is WebRTC?
+## Что такое WebRTC?
 
-WebRTC, short for Web Real-Time Communication, is both an API and a Protocol. The WebRTC protocol is a set of rules for two WebRTC agents to negotiate bi-directional secure real-time communication. The WebRTC API then allows developers to use the WebRTC protocol. The WebRTC API is specified only for JavaScript.
+WebRTC, сокращение от Web Real-Time Communication, это одновременно и API, и Протокол. Протокол WebRTC - это набор правил для двух агентов WebRTC для согласования двунаправленной безопасной связи в реальном времени. API WebRTC позволяет разработчикам использовать протокол WebRTC. API WebRTC определен только для JavaScript.
 
-A similar relationship would be the one between HTTP and the Fetch API. WebRTC the protocol would be HTTP, and WebRTC the API would be the Fetch API.
+Похожие отношения можно провести между HTTP и Fetch API. WebRTC как протокол будет HTTP, а WebRTC как API будет Fetch API.
 
-The WebRTC protocol is available in other APIs and languages besides JavaScript. You can find servers and domain-specific tools as well for WebRTC. All of these implementations use the WebRTC protocol so that they can interact with each other.
+Протокол WebRTC доступен в других API и языках помимо JavaScript. Вы также можете найти серверы и специализированные инструменты для WebRTC. Все эти реализации используют протокол WebRTC, чтобы они могли взаимодействовать друг с другом.
 
-The WebRTC protocol is maintained in the IETF in the [rtcweb](https://datatracker.ietf.org/wg/rtcweb/documents/) working group. The WebRTC API is documented in the W3C as [webrtc](https://www.w3.org/TR/webrtc/).
+Протокол WebRTC поддерживается в IETF в рабочей группе [rtcweb](https://datatracker.ietf.org/wg/rtcweb/documents/). API WebRTC документирован в W3C как [webrtc](https://www.w3.org/TR/webrtc/).
 
-## Why should I learn WebRTC?
+## Почему я должен изучать WebRTC?
 
-These are the things that WebRTC will give you. This list is not exhaustive, just an example of some things you may appreciate during your journey. Don't worry if you don't know all these terms yet, this book will teach them to you along the way.
+Вот некоторые вещи, которые даст вам WebRTC:
 
--   Open standard
--   Multiple implementations
--   Available in browsers
--   Mandatory encryption
--   NAT Traversal
--   Repurposed existing technology
--   Congestion control
--   Sub-second latency
+* Открытый стандарт
+* Множество реализаций
+* Доступность в браузерах
+* Обязательное шифрование
+* Обход NAT
+* Повторное использование существующих технологий
+* Контроль перегрузки
+* Задержка менее секунды
 
-## The WebRTC Protocol is a collection of other technologies
+Этот список не исчерпывающий, а всего лишь пример некоторых вещей, которые вы можете оценить в процессе изучения. Не волнуйтесь, если вы пока не знаете всех этих терминов, эта книга научит вас им по мере прочтения.
 
-This is a topic that takes an entire book to explain. However, to start off we break it into four steps.
+## Протокол WebRTC - это набор других технологий
 
--   Signaling
--   Connecting
--   Securing
--   Communicating
+Протокол WebRTC - это огромная тема, которая потребовала бы целой книги для объяснения. Однако, для начала мы разделим его на четыре шага:
 
-These four steps happen sequentially. The prior step must be 100% successful for the subsequent one to even begin.
+1. Сигнализация
+2. Подключение
+3. Защита
+4. Коммуникация
 
-One peculiar fact about WebRTC is that each step is actually made up of many other protocols! To make WebRTC, we stitch together many existing technologies. In that sense, WebRTC is more a combination and configuration of well-understood tech that has been around since the early 2000s.
+Эти шаги последовательны, что означает, что предыдущий шаг должен быть на 100% успешным, прежде чем начнется следующий.
 
-Each of these steps has dedicated chapters, but it is helpful to understand them at a high level first. Since they depend on each other, it will help when explaining further the purpose of each of these steps.
+Любопытный факт о WebRTC заключается в том, что каждый шаг на самом деле состоит из многих других протоколов! Чтобы создать WebRTC, мы объединяем многие существующие технологии. В этом смысле, вы можете думать о WebRTC скорее как о комбинации и конфигурации хорошо понятных технологий, восходящих к началу 2000-х, чем как о совершенно новом процессе.
 
-### Signaling: How peers find each other in WebRTC
+Каждому из этих шагов посвящена отдельная глава, но сначала полезно понять их на высоком уровне. Поскольку они зависят друг от друга, это поможет объяснить далее цель каждого из этих шагов.
 
-When a WebRTC Agent starts it has no idea who it is going to communicate with and what they are going to communicate about. Signaling solves this issue! Signaling is used to bootstrap the call so that two WebRTC agents can start communicating.
+### Сигнализация: Как пиры находят друг друга в WebRTC
 
-Signaling uses an existing protocol SDP (Session Description Protocol). SDP is a plain-text protocol. Each SDP message is made up of key/value pairs and contains a list of "media sections". The SDP that the two WebRTC Agents exchange contains details like:
+Когда агент WebRTC начинает работу, он не знает, с кем будет общаться и о чем. Шаг *Сигнализации* решает эту проблему! Сигнализация используется для начальной загрузки вызова, позволяя двум независимым агентам WebRTC начать общение.
 
--   IPs and Ports that the agent is reachable on (candidates).
--   How many audio and video tracks the agent wishes to send.
--   What audio and video codecs each agent supports.
--   Values used while connecting (`uFrag`/`uPwd`).
--   Values used while securing (certificate fingerprint).
+Сигнализация использует существующий текстовый протокол SDP (Session Description Protocol). Каждое SDP-сообщение состоит из пар "ключ-значение" и содержит список "медиа-секций". SDP, который обмениваются два агента WebRTC, содержит такие детали как:
 
-Note that signaling typically happens "out-of-band"; that is, applications generally don't use WebRTC itself to trade signaling messages. Any architecture suitable for sending messages can be used to relay the SDPs between the connecting peers, and many applications will use their existing infrastructure (like REST endpoints, WebSocket connections, or authentication proxies) to facilitate easy trading of SDPs between the proper clients.
+* IP-адреса и порты, на которых агент доступен (кандидаты).
+* Количество аудио- и видеотреков, которые агент хочет отправить.
+* Аудио- и видеокодеки, поддерживаемые каждым агентом.
+* Значения, используемые при подключении (`uFrag`/`uPwd`).
+* Значения, используемые при защите (отпечаток сертификата).
 
-### Connecting and NAT Traversal with STUN/TURN
+Очень важно отметить, что сигнализация обычно происходит "вне полосы", что означает, что приложения обычно не используют сам WebRTC для обмена сигнальными сообщениями. Должен существовать другой канал связи между двумя сторонами перед началом подключения WebRTC. Тип используемого канала не является заботой WebRTC. Любая архитектура, подходящая для отправки сообщений, может передавать SDP между подключающимися пирами, и многие приложения просто используют свою существующую инфраструктуру (например, REST-эндпоинты, WebSocket-соединения или прокси-серверы аутентификации) для обмена SDP между соответствующими клиентами.
 
-The two WebRTC Agents now know enough details to attempt to connect to each other. WebRTC then uses another established technology called ICE.
+### Подключение и обход NAT с помощью STUN/TURN
 
-ICE (Interactive Connectivity Establishment) is a protocol that pre-dates WebRTC. ICE allows the establishment of a connection between two Agents. These Agents could be on the same network, or on the other side of the world. ICE is the solution to establishing a direct connection without a central server.
+После того, как два агента WebRTC обменялись SDP, у них есть достаточно информации для попытки подключения друг к другу. Для осуществления этого подключения WebRTC использует другую устоявшуюся технологию, называемую ICE (Interactive Connectivity Establishment).
 
-The real magic here is 'NAT Traversal' and STUN/TURN Servers. These two concepts are all you need to communicate with an ICE Agent in another subnet. We will explore these topics in depth later.
+ICE - это протокол, который существует до WebRTC и позволяет установить прямое соединение между двумя агентами без центрального сервера. Эти два агента могут находиться в одной сети или на противоположных концах земного шара.
 
-Once ICE successfully connects, WebRTC then moves on to establishing an encrypted transport. This transport is used for audio, video, and data.
+ICE обеспечивает прямое подключение, но настоящая магия процесса подключения заключается в концепции "обхода NAT" и использовании STUN/TURN-серверов. Эти две концепции, которые мы подробнее исследуем позже, - все, что вам нужно для связи с ICE-агентом в другой подсети.
 
-### Securing the transport layer with DTLS and SRTP
+Когда два агента успешно установили ICE-соединение, WebRTC переходит к следующему шагу: установлению зашифрованного транспорта для обмена аудио, видео и данными между ними.
 
-Now that we have bi-directional communication (via ICE) we need to establish secure communication. This is done through two protocols that pre-date WebRTC. The first protocol is DTLS (Datagram Transport Layer Security) which is just TLS over UDP. TLS is the cryptographic protocol used to secure communication over HTTPS. The second protocol is SRTP (Secure Real-time Transport Protocol).
+### Защита транспортного уровня с помощью DTLS и SRTP
 
-First, WebRTC connects by doing a DTLS handshake over the connection established by ICE. Unlike HTTPS, WebRTC doesn't use a central authority for certificates. Instead, WebRTC just asserts that the certificate exchanged via DTLS matches the fingerprint shared via signaling. This DTLS connection is then used for DataChannel messages.
+Теперь, когда у нас есть двунаправленная связь (через ICE), нам нужно сделать нашу коммуникацию безопасной! Это делается с помощью еще двух протоколов, которые также существовали до WebRTC: DTLS (Datagram Transport Layer Security) и SRTP (Secure Real-Time Transport Protocol). Первый протокол, DTLS, - это просто TLS поверх UDP (TLS - криптографический протокол, используемый для защиты связи через HTTPS). Второй протокол, SRTP, используется для обеспечения шифрования пакетов данных RTP (Real-time Transport Protocol).
 
-WebRTC then uses a different protocol for audio/video transmission called RTP. We secure our RTP packets using SRTP. We initialize our SRTP session by extracting the keys from the negotiated DTLS session. In a later chapter, we discuss why media transmission has its own protocol.
+Сначала WebRTC подключается, выполняя DTLS-рукопожатие поверх соединения, установленного ICE. В отличие от HTTPS, WebRTC не использует центральный орган для сертификатов. Он просто утверждает, что сертификат, обмененный через DTLS, соответствует отпечатку, предоставленному через сигнализацию. Это DTLS-соединение затем используется для сообщений DataChannel.
 
-Now we are done! You now have bi-directional and secure communication. If you have a stable connection between your WebRTC Agents, this is all the complexity you may need. Unfortunately, the real world has packet loss and bandwidth limits, and the next section is about how we deal with them.
+Далее, WebRTC использует протокол RTP, защищенный с помощью SRTP, для передачи аудио/видео. Мы инициализируем нашу SRTP-сессию, извлекая ключи из согласованной DTLS-сессии.
 
-### Communicating with peers via RTP and SCTP
+Мы обсудим, почему передача медиа и данных имеют свои собственные протоколы, в следующей главе, но пока достаточно знать, что они обрабатываются отдельно.
 
-We now have two WebRTC Agents with secure bi-directional communication. Let's start communicating! Again, we use two pre-existing protocols: RTP (Real-time Transport Protocol), and SCTP (Stream Control Transmission Protocol). Use RTP to exchange media encrypted with SRTP, and use SCTP to send and receive DataChannel messages encrypted with DTLS.
+### Коммуникация с пирами через RTP и SCTP
 
-RTP is quite minimal but provides what is needed to implement real-time streaming. The important thing is that RTP gives flexibility to the developer, so they can handle latency, loss, and congestion as they please. We will discuss this further in the media chapter.
+Теперь, когда у нас есть два WebRTC-агента, подключенные и защищенные, с установленной двунаправленной связью, давайте начнем общаться! Снова WebRTC будет использовать два существующих протокола: RTP (Real-time Transport Protocol) и SCTP (Stream Control Transmission Protocol). Мы используем RTP для обмена медиа, зашифрованными с помощью SRTP, и SCTP для отправки и получения сообщений DataChannel, зашифрованных с помощью DTLS.
 
-The final protocol in the stack is SCTP. SCTP allows many delivery options for messages. You can optionally choose to have unreliable, out of order delivery, so you can get the latency needed for real-time systems.
+RTP - это довольно минимальный протокол, но он предоставляет необходимые инструменты для реализации потоковой передачи в реальном времени. Самое важное в RTP - это гибкость для разработчика, позволяющая обрабатывать задержку, потерю пакетов и перегрузки по своему усмотрению. Мы обсудим это подробнее в главе о медиа.
 
-## WebRTC, a collection of protocols
+Последний протокол в стеке - SCTP. Важная особенность SCTP заключается в том, что вы можете отключить надежную и упорядоченную доставку сообщений (среди многих других опций). Это позволяет разработчикам обеспечить необходимую задержку для систем реального времени.
 
-WebRTC solves a lot of problems. At first, this may even seem over-engineered. The genius of WebRTC is really the humility. It didn't assume it could solve everything better. Instead, it embraced many existing single purpose technologies and bundled them together.
+Теперь мы закончили! Мы успешно установили двунаправленную и безопасную связь. Если у вас есть стабильное соединение между вашими WebRTC-агентами, это вся сложность, которая вам нужна. В следующем разделе мы обсудим, как WebRTC справляется с реальными проблемами потери пакетов и ограничениями пропускной способности.
 
-This allows us to examine and learn each part individually without being overwhelmed. A good way to visualize it is a 'WebRTC Agent' is really just an orchestrator of many different protocols.
+## WebRTC - набор протоколов
 
-![WebRTC Agent](../images/01-webrtc-agent.png "WebRTC Agent Diagram")
+WebRTC решает множество проблем. На первый взгляд технология может показаться чрезмерно сложной, но гениальность WebRTC заключается в его скромности. Он был создан не с предположением, что сможет решить все лучше. Вместо этого он объединил многие существующие технологии с единственной целью в единый, широко применимый пакет.
 
-## How does WebRTC (the API) work
+Это позволяет нам изучать и исследовать каждую часть индивидуально, не испытывая перегрузки. Хороший способ визуализировать это - 'WebRTC-агент' на самом деле является просто оркестратором многих различных протоколов.
 
-This section shows how the JavaScript API maps to the protocol. This isn't meant as an extensive demo of the WebRTC API, but more to create a mental model of how it all ties together.
-If you aren't familiar with either, it is ok. This could be a fun section to return to as you learn more!
+![WebRTC Agent](../images/01-webrtc-agent.png "Диаграмма WebRTC Agent")
+
+## Как работает API WebRTC?
+
+Этот раздел описывает, как JavaScript API WebRTC соотносится с протоколом WebRTC, описанным выше. Он не предназначен для подробной демонстрации API WebRTC, а скорее для создания ментальной модели того, как все связано.
+Если вы не знакомы ни с протоколом, ни с API, не волнуйтесь. Этот раздел будет интересно перечитать, когда вы узнаете больше!
 
 ### `new RTCPeerConnection`
 
-The `RTCPeerConnection` is the top-level "WebRTC Session". It contains all the protocols mentioned above. The subsystems are all allocated but nothing happens yet.
+`RTCPeerConnection` - это верхнеуровневый "сеанс WebRTC". Он содержит все упомянутые выше протоколы. Подсистемы все выделены, но пока ничего не происходит.
 
 ### `addTrack`
 
-`addTrack` creates a new RTP stream. A random Synchronization Source (SSRC) will be generated for this stream. This stream will then be inside the Session Description generated by `createOffer` inside a media section. Each call to `addTrack` will create a new SSRC and media section.
+`addTrack` создает новый RTP-поток. Для этого потока будет сгенерирован случайный Synchronization Source (SSRC). Этот поток будет находиться внутри Session Description, сгенерированной `createOffer` в медиа-секции. Каждый вызов `addTrack` создаст новый SSRC и медиа-секцию.
 
-Immediately after a SRTP Session is established these media packets will start being sent via ICE after being encrypted using SRTP.
+Сразу после установления SRTP-сессии эти медиа-пакеты начнут шифроваться с помощью SRTP и отправляться через ICE.
 
 ### `createDataChannel`
 
-`createDataChannel` creates a new SCTP stream if no SCTP association exists. By default, SCTP is not enabled but is only started when one side requests a data channel.
+`createDataChannel` создает новый SCTP-поток, если SCTP-ассоциация не существует. SCTP не включен по умолчанию. Он запускается только когда одна сторона запрашивает канал данных.
 
-Immediately after a DTLS Session is established, the SCTP association will start sending packets via ICE and encrypted with DTLS.
+Сразу после установления DTLS-сессии SCTP-ассоциация начнет отправлять пакеты, зашифрованные с помощью DTLS через ICE.
 
 ### `createOffer`
 
-`createOffer` generates a Session Description of the local state to be shared with the remote peer.
+`createOffer` генерирует Session Description локального состояния для обмена с удаленным пиром.
 
-The act of calling `createOffer` doesn't change anything for the local peer.
+Акт вызова `createOffer` не меняет ничего для локального пира.
 
 ### `setLocalDescription`
 
-`setLocalDescription` commits any requested changes. `addTrack`, `createDataChannel` and similar calls are all temporary until this call. `setLocalDescription` is called with the value generated by `createOffer`.
+`setLocalDescription` фиксирует все запрошенные изменения. Вызовы `addTrack`, `createDataChannel` и подобные являются временными до этого вызова. `setLocalDescription` вызывается со значением, сгенерированным `createOffer`.
 
-Usually, after this call, you will send the offer to the remote peer, and they will call `setRemoteDescription` with it.
+Обычно после этого вызова вы отправите предложение удаленному пиру, который будет использовать его для вызова `setRemoteDescription`.
 
 ### `setRemoteDescription`
 
-`setRemoteDescription` is how we inform the local agent about the remote candidates' state. This is how the act of 'Signaling' is done with the JavaScript API.
+`setRemoteDescription` - это способ информирования локального агента о состоянии удаленных кандидатов. Так акт 'Сигнализации' выполняется с помощью JavaScript API.
 
-When `setRemoteDescription` has been called on both sides, the WebRTC Agents now have enough info to start communicating Peer-To-Peer (P2P)!
+Когда `setRemoteDescription` был вызван на обеих сторонах, WebRTC-агенты теперь имеют достаточно информации для начала связи "Peer-To-Peer" (P2P)!
 
 ### `addIceCandidate`
 
-`addIceCandidate` allows a WebRTC agent to add more remote ICE Candidates whenever they want. This API sends the ICE Candidate right into the ICE subsystem and has no other effect on the greater WebRTC connection.
+`addIceCandidate` позволяет WebRTC-агенту добавлять дополнительные удаленные ICE-кандидаты в любое время. Этот API отправляет ICE-кандидата прямо в подсистему ICE и не имеет другого эффекта для большего WebRTC-соединения.
 
 ### `ontrack`
 
-`ontrack` is a callback that is fired when an RTP packet is received from the remote peer. The incoming packets would have been declared in the Session Description that was passed to `setRemoteDescription`.
+`ontrack` - это обратный вызов, срабатывающий при получении RTP-пакета от удаленного пира. Входящие пакеты были объявлены в Session Description, переданном через `setRemoteDescription`.
 
-WebRTC uses the SSRC and looks up the associated `MediaStream` and `MediaStreamTrack`, and fires this callback with these details populated.
+WebRTC использует SSRC и ищет связанный `MediaStream` и `MediaStreamTrack`, и вызывает этот обратный вызов с этими деталями.
 
 ### `oniceconnectionstatechange`
 
-`oniceconnectionstatechange` is a callback that is fired that reflects the state of the ICE Agent. When you have network connectivity or when you become disconnected this is how you are notified.
+`oniceconnectionstatechange` - это обратный вызов, который срабатывает при изменении состояния ICE-агента. Когда происходит изменение сетевой связности, вы получаете об этом уведомление.
 
 ### `onconnectionstatechange`
 
-`onconnectionstatechange` is a combination of ICE Agent and DTLS Agent state. You can watch this to be notified when ICE and DTLS have both completed successfully.
+`onconnectionstatechange` - это комбинация состояний ICE-агента и DTLS-агента. Вы можете наблюдать за этим, чтобы быть уведомленным, когда ICE и DTLS успешно завершены.
