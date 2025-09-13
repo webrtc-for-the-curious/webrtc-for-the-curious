@@ -1,370 +1,127 @@
 ---
-title: History
+title: История
 type: docs
 weight: 11
 ---
 
 
-# History
-When learning WebRTC developers often feel frustrated by the complexity. They
-see
-WebRTC features irrelevant to their current project and wish WebRTC was
-simpler. The issue
-is that everyone has a different set of use cases. Real-time communications has
-a rich
-history with lots of different people building many different things.
+# История
+При изучении WebRTC разработчики часто чувствуют разочарование из-за сложности. Они видят функции WebRTC, не относящиеся к их текущему проекту, и хотят, чтобы WebRTC был проще. Проблема заключается в том, что у каждого свой набор вариантов использования. Коммуникации в реальном времени имеют богатую историю с множеством людей, создающих различные вещи.
 
-This chapter contains interviews with the authors of the protocols that make up
-WebRTC.
-It gives insight into the designs made when building each protocol, and
-finishes with an
-interview about WebRTC itself. If you understand the intentions and designs of
-the software
-you can build more effective systems with it.
+Эта глава содержит интервью с авторами протоколов, составляющих WebRTC. Она дает представление о проектных решениях при создании каждого протокола и заканчивается интервью о самом WebRTC. Если вы понимаете намерения и проектные решения программного обеспечения, вы можете создавать более эффективные системы.
 
 ## RTP
-RTP and RTCP is the protocol that handles all media transport for WebRTC. It
-was defined in [RFC 1889](https://tools.ietf.org/html/rfc1889) in January 1996.
-We are very lucky to have one of the authors [Ron
-Frederick](https://github.com/ronf) talk about it himself. Ron recently uploaded
-[Network Video tool](https://github.com/ronf/nv) to GitHub, a project that
-informed RTP.
+RTP и RTCP - это протокол, который обрабатывает весь медиа-транспорт для WebRTC. Он был определен в [RFC 1889](https://tools.ietf.org/html/rfc1889) в январе 1996 года. Нам очень повезло, что один из авторов [Рон Фредерик](https://github.com/ronf) рассказывает о нем сам. Рон недавно загрузил [Network Video tool](https://github.com/ronf/nv) на GitHub, проект, который повлиял на RTP.
 
-### In his own words
+### Своими словами
 
-In October of 1992, I began to experiment with the Sun VideoPix frame grabber
-card, with the idea of writing a network videoconferencing tool based upon IP
-multicast. It was modeled after "vat" -- an audioconferencing tool developed
-at LBL, in that it used a similar lightweight session protocol for users
-joining into conferences, where you simply sent data to a particular
-multicast group and watched that group for any traffic from other group
-members.
+В октябре 1992 года я начал экспериментировать с платой захвата кадров Sun VideoPix, с идеей написать сетевой инструмент видеоконференцсвязи на основе IP-многоадресной рассылки. Он был смоделирован по образцу "vat" - инструмента аудиоконференцсвязи, разработанного в LBL, в котором использовался аналогичный легковесный протокол сеанса для пользователей, присоединяющихся к конференциям, где вы просто отправляете данные в определенную многоадресную группу и следите за трафиком от других членов группы.
 
-In order for the program to really be successful, it needed to compress the
-video data before putting it out on the network. My goal was to make an
-acceptable looking stream of data that would fit in about 128 kbps, or the
-bandwidth available on a standard home ISDN line. I also hoped to produce
-something that was still watchable that fit in half this bandwidth. This
-meant I needed approximately a factor of 20 in compression for the particular
-image size and frame rate I was working with. I was able to achieve this
-compression and filed for a patent on the techniques I used, later granted
-as patent [US5485212A][1]: Software video compression for teleconferencing.
+В программе для того, чтобы она была действительно успешной, ей нужно было сжимать видеоданные перед отправкой в сеть. Моя цель состояла в том, чтобы создать приемлемый по виду поток данных, который мог бы поместиться в 128 кбит/с, или доступную полосу пропускания стандартной домашней линии ISDN. Я также надеялся создать что-то, что все еще можно было бы смотреть, которое помещалось бы в половину этой полосы пропускания. Это означало, что мне нужно было приблизительно в 20 раз сжимать видео для конкретного размера изображения и частоты кадров, с которыми я работал. Я смог достичь этого сжатия и подал заявку на патент на методы, которые я использовал, позже выданный патент [US5485212A][1]: Software video compression for teleconferencing.
 
 [1]: https://patents.google.com/patent/US5485212A
 
-In early November of 1992, I released the videoconferencing tool "nv" (in
-binary form) to the Internet community. After some initial testing, it was used
-to videocast parts of the November Internet Engineering Task Force all around
-the world. Approximately 200 subnets in 15 countries were capable of
-receiving this broadcast, and approximately 50-100 people received video using
-"nv" at some point in the week.
+В начале ноября 1992 года я выпустил инструмент видеоконференцсвязи "nv" (в бинарном формате) в интернет-сообщество. После некоторых начальных тестов он использовался для видеоконференцсвязи частей ноябрьского Интернет-Инженерного Задания по задачам (IETF) по всему миру. Примерно 200 подсетей в 15 странах были способны принимать эту трансляцию, и примерно 50-100 человек получали видео, используя "nv" в течение недели.
 
-Over the next couple of months, three other workshops and some smaller
-meetings used "nv" to broadcast to the Internet at large, including the
-Australian NetWorkshop, the MCNC Packet Audio and Video workshop, and the
-MultiG workshop on distributed virtual realities in Sweden.
+В течение следующих нескольких месяцев три других встречи и некоторые меньшие встречи использовали "nv" для трансляции в интернет на большой шкале, включая Австралийскую Сеть-Встречу, Рабочую встречу по аудио- и видеоконференцсвязи CU-SeeMe и встречу MultiG о распределенных виртуальных реальностях в Швеции.
 
-A source code release of "nv" followed in February of 1993, and in March I
-released a version of the tool where I introduced a new wavelet-based
-compression scheme. In May of 1993, I added support for color video.
+Выпуск исходного кода "nv" последовал в феврале 1993 года, и в марте я выпустил версию инструмента, в которой я ввел новую схему сжатия на основе вейвлетов. В мае 1993 года я добавил поддержку цветного видео.
 
-The network protocol used for "nv" and other Internet conferencing tools
-became the basis of the Realtime Transport Protocol (RTP), standardized
-through the Internet Engineering Task Force (IETF), first published in
-RFCs [1889][2]-[1890][3] and later revised in RFCs [3550][4]-[3551][5]
-along with various other RFCs that covered profiles for carrying specific
-formats of audio and video.
+Сетевой протокол, используемый для "nv" и других интернет-инструментов конференцсвязи, стал основой Реалтайм-Транспортного Протокола (RTP), стандартизированного через Интернет-Инженерный Задание по задачам (IETF), первоначально опубликованного в RFCs [1889][2]-[1890][3] и затем пересмотренного в RFCs [3550][4]-[3551][5] вместе с различными другими RFCs, которые охватывали профили для переноса конкретных форматов аудио и видео.
 
 [2]: https://tools.ietf.org/html/rfc1889
 [3]: https://tools.ietf.org/html/rfc1890
 [4]: https://tools.ietf.org/html/rfc3550
 [5]: https://tools.ietf.org/html/rfc3551
 
-Over the next couple of years, work continued on "nv", porting the tool
-to a number of additional hardware platforms and video capture devices.
-It continued to be used as one of the primary tools for broadcasting
-conferences on the Internet at the time, including being selected by NASA
-to broadcast live coverage of shuttle missions online.
+В течение следующих нескольких лет работа продолжалась над "nv", портируя инструмент на множество дополнительных аппаратных платформ и устройства захвата видео. Он продолжал использоваться как один из основных инструментов для трансляции конференций в интернет в то время, включая был выбран NASA для трансляции онлайн-покрытия миссий шаттла.
 
-In 1994, I added support in "nv" for supporting video compression algorithms
-developed by others, including some hardware compression schemes such as
-the CellB format supported by the SunVideo video capture card. This also
-allowed "nv" to send video in CUSeeMe format, to send video to users
-running CUSeeMe on Macs and PCs.
+В 1994 году я добавил поддержку в "nv" для поддержки алгоритмов сжатия видео, разработанных другими, включая некоторые схемы аппаратного сжатия, такие как формат CellB, поддерживаемый картой захвата видео SunVideo. Это также позволило "nv" отправлять видео в формате CUSeeMe, отправлять видео пользователям, запустившим CUSeeMe на Mac и PC.
 
-The last publicly released version of "nv" was version 3.3beta, released
-in July of 1994. I was working on a "4.0alpha" release that was intended
-to migrate "nv" over to version 2 of the RTP protocol, but this work was
-never completed due to my moving on to other projects. A copy of the 4.0
-alpha code is included in the [Network Video tool](https://github.com/ronf/nv)
-archive for completeness, but it is unfinished and there are known issues
-with it, particularly in the incomplete RTPv2 support.
+Последняя публично выпущенная версия "nv" была версией 3.3beta, выпущенной в июле 1994 года. Я работал над выпуском "4.0alpha", который был предназначен для миграции "nv" на версию 2 RTP-протокола, но эта работа никогда не была завершена из-за моего перехода к другим проектам. Копия 4.0 альфа-кода включена в архив [Network Video tool](https://github.com/ronf/nv) для полноты, но он не завершен и имеет известные проблемы, особенно в неполной поддержке RTPv2.
 
-The framework provided in "nv" later went on to become the basis of video
-conferencing in the "Jupiter multi-media MOO" project at Xerox PARC, which
-eventually became the basis for a spin-off company "PlaceWare", later
-acquired by Microsoft. It was also used as the basis for a number of
-hardware video conferencing projects that allowed sending of full NTSC
-broadcast quality video over high-bandwidth Ethernet and ATM networks.
-I also later used some of this code as the basis for "Mediastore", which
-was a network-based video recording and playback service.
+Фреймворк, предоставленный в "nv", позже стал основой для видеоконференцсвязи в проекте "Jupiter multi-media MOO" в Xerox PARC, который, в конечном итоге, стал основой для компании-разработчика "PlaceWare", позже приобретенной Microsoft. Он также использовался как основа для нескольких проектов аппаратного видеоконференцсвязи, которые позволяли отправлять полное качество NTSC видео по высокоскоростным Ethernet и сетям ATM. Я также позже использовал некоторый из этого кода как основу для "Mediastore", который был сетевым сервисом записи и воспроизведения видео.
 
-### Do you remember the motivations/ideas of the other people on the draft?
+### Помните ли вы мотивации/идеи других участников черновика?
 
-We were all researchers working on IP multicast, and helping to create
-the Internet multicast backbone (aka MBONE). The MBONE was created by
-Steve Deering (who first developed IP multicast), Van Jacobson, and Steve
-Casner. Steve Deering and I had the same advisor at Stanford, and Steve
-ended up going to work at Xerox PARC when he left Stanford, I spent a
-summer at Xerox PARC as an intern working on IP multicast-related projects
-and continued to work for them part time while at Stanford and later full
-time. Van Jacobson and Steve Casner were two of the four authors on
-the initial RTP RFCs, along with Henning Schulzrinne and myself. We all
-had MBONE tools that we were working on that allowed for various forms of
-online collaboration, and trying to come up with a common base protocol
-all these tools could use was what led to RTP.
+Мы все были исследователями, работающими над IP-многоадресной рассылкой и помогающими создавать магистраль интернет-многоадресной рассылки (aka MBONE). MBONE был создан Стивом Дирингом (который первым разработал IP-многоадресную рассылку), Ваном Джекобсоном и Стивом Касснером. У Стива Дирринга и меня был один научный руководитель в Стэнфорде, и Стив закончил работать в Xerox PARC, когда покинул Стэнфорд, я провел лето в Xerox PARC стажером, работая над проектами, связанными с IP-многоадресной рассылкой, и продолжал работать на них неполный день, будучи в Стэнфорде, а позже - полный день. Ван Джекобсон и Стив Касснер были двумя из четырех авторов первоначальных RTP RFCs, вместе с Хеннингом Шульцринном и мной. У нас всех были инструменты MBONE, над которыми мы работали и которые позволяли различные формы онлайн-сотрудничества, и попытка создать общий базовый протокол, который могли бы использовать все эти инструменты, и привела к RTP.
 
-### Multicast is super fascinating. WebRTC is entirely unicast, mind expanding on that?
+### Многоадресная рассылка очень интересна. WebRTC полностью использует одноадресную рассылку, не могли бы вы рассказать об этом подробнее?
 
-Before getting to Stanford and learning about IP multicast, I had a
-long history working on ways to use computers as a way for people to
-communicate with one another. This started in the early 80s for me
-where I ran a dial-up bulletin board system where people could log on
-and leave messages for one another, both private (sort of the equivalent
-of e-mail) and public (discussion groups). Around the same time, I also
-learned about the online service provider CompuServe. One of the cool
-features on CompuServe was something called a “CB Simulator” where people
-could talk to one another in real-time. It was all text-based, but it
-had a notion of “channels” like a real CB radio, and multiple people
-could see what others typed, as long as they were in the same channel.
-I built my own version of CB which ran on a timesharing system I had
-access to which let users on that system send messages to one another
-in real-time, and over the next few years I worked with friends to
-develop more sophisticated versions of real-time communication tools
-on several different computer systems and networks. In fact, one of those
-systems is still operational, and I use it talk every day to folks I went
-to college with 30+ years ago!
+Перед тем, как попасть в Стэнфорд и узнать о IP-многоадресной рассылке, у меня была длинная история работы над способами использования компьютеров для общения людей друг с другом. Для меня это началось в начале 80-х, когда я запустил систему доски объявлений с набором номеров, где люди могли войти и оставлять друг другу сообщения, как частные (что-то вроде электронной почты), так и публичные (группы обсуждений). Примерно в то же время я узнал об онлайн-провайдере CompuServe. Одной из крутых функций на CompuServe был так называемый "CB Simulator", где люди могли общаться друг с другом в реальном времени. Это было полностью текстовое, но с понятием "каналов", как в настоящей радиосвязи CB, и несколько человек могли видеть, что печатают другие, если они находились в одном канале. Я построил свою собственную версию CB, которая работала на системе разделения времени, к которой у меня был доступ и которая позволяла пользователям этой системы отправлять друг другу сообщения в реальном времени, и в течение следующих нескольких лет я работал с друзьями над разработкой более сложных инструментов реального времени на нескольких различных компьютерных системах и сетях. На самом деле, одна из этих систем до сих пор работает, и я использую ее, чтобы каждый день общаться с людьми, с которыми учился в колледже 30+ лет назад!
 
-All of those tools were text based, since computers at the time generally
-didn't have any audio/video capabilities, but when I got to Stanford and
-learned about IP multicast, I was intrigued by the notion of using multicast
-to get something more like a true “radio” where you could send a signal
-out onto the network that wasn't directed at anyone in particular, but
-everyone who tuned to that “channel” could receive it. As it happened, the
-computer I was porting the IP multicast code to what was the first generation
-SPARC-station from Sun, and it actually had built-in telephone-quality audio
-hardware! You could digitize sound from a microphone and play it back over
-built-in speakers (or via a headphone output). So, my first thought was to
-figure out how to send that audio out onto the network in real-time using
-IP multicast, and see if I could build a “CB radio” equivalent with actual
-audio instead of text.
+Все эти инструменты были текстовыми, так как компьютеры того времени в основном не имели никаких аудио/видео возможностей, но когда я попал в Стэнфорд и узнал о IP-многоадресной рассылке, я был заинтригован идеей использования многоадресной рассылки, чтобы получить что-то вроде настоящего "радио", где вы могли бы отправить сигнал в сеть, не направляя его никому конкретно, но все, кто настроился на этот "канал", могли бы его получить. Как оказалось, компьютер, на который я портировал код IP-многоадресной рассылки, был первым поколением SPARC-станции от Sun, и у него действительно было встроенное аппаратное обеспечение телефонного качества! Вы могли оцифровать звук с микрофона и воспроизводить его через встроенные динамики (или через выход для наушников). Поэтому моей первой мыслью было понять, как отправить этот аудио в сеть в реальном времени, используя IP-многоадресную рассылку, и посмотреть, смогу ли я построить эквивалент "CB-радио" с реальным аудио вместо текста.
 
-There were some tricky things to work out, like the fact that the computer
-could only play one audio stream at a time, so if multiple people were talking
-you needed to mathematically “mix” multiple audio streams into one before
-you could play it, but that could all be done in software once you understood
-how the audio sampling worked. That audio application led me to working on
-the MBONE and eventually moving from audio to video with “nv”.
+Были некоторые сложные вещи, которые нужно было решить, например, тот факт, что компьютер мог воспроизводить только один аудиопоток за раз, поэтому, если несколько человек говорили, вам нужно было математически "смешивать" несколько аудиопотоков в один перед тем, как его можно было воспроизвести, но это все можно было сделать в программном обеспечении, как только вы поняли, как работает аудиосемплирование. Этот аудиоприложение привел меня к работе над MBONE и, в конечном итоге, к переходу от аудио к видео с "nv".
 
-### Anything that got left out of the protocol that you wish you had added? Anything in the protocol you regret?
+### Что было упущено в протоколе, что вы хотели бы добавить? Есть ли что-то в протоколе, о чем вы жалеете?
 
-I wouldn't say I regret it, but one of the big complaints people ended up
-having about RTP was the complexity of implementing RTCP, the control protocol
-that ran in parallel with the main RTP data traffic. I think that complexity
-was a large part of why RTP wasn't more widely adopted, particularly in the
-unicast case where there wasn't as much need for some of RTCP's features.
-As network bandwidth became less scarce and congestion wasn't as big a
-problem, a lot of people just ended up streaming audio & video over plain
-TCP (and later HTTP), and generally speaking it worked “well enough” that
-it wasn't worth dealing with RTP.
+Я не сказал бы, что жалею, но одной из больших жалоб, которые у людей в конце концов появились на RTP, была сложность реализации RTCP, контрольного протокола, который работал параллельно с основным трафиком данных RTP. Я думаю, что эта сложность была большой частью того, почему RTP не был более широко принят, особенно в случае одноадресной рассылки, где не было такой большой необходимости в некоторых функциях RTCP. По мере того, как пропускная способность сети становилась менее дефицитной, а перегрузка не была такой большой проблемой, многие люди просто стали передавать аудио и видео по обычному TCP (и позже HTTP), и в целом это работало "достаточно хорошо", чтобы не заниматься RTP.
 
-Unfortunately, using TCP or HTTP meant that multi-party audio and video
-applications had to send the same data over the network multiple times,
-to each of the peers that needed to receive it, making it much less
-efficient from a bandwidth perspective. I sometimes wish we had pushed
-harder to get IP multicast adopted beyond just the research community.
-I think we could have seen the transition from cable and broadcast
-television to Internet-based audio and video much sooner if we had.
+### Что вы себе представляли, создавая RTP? Есть ли какие-то интересные проекты/идеи с RTP, которые были утеряны во времени?
 
-### What things did you imagine being built with RTP? Do have any cool RTP projects/ideas that got lost to time?
+Одной из забавных вещей, которые я создал, была версия классической игры "Spacewar", которая использовала IP-многоадресную рассылку. Без какого-либо центрального сервера несколько клиентов могли запустить двоичный файл spacewar и начать трансляцию расположения своего корабля, его скорости, направления, в котором он был обращен, и подобной информации о любых "пулях", которые он выпустил, и все другие экземпляры могли бы перехватить эту информацию и отобразить ее локально, позволяя пользователям видеть корабли и пули друг друга, с "взрывающимися" кораблями при столкновении или попадании в них пуль. Я даже сделал "обломки" от взрыва живым объектом, который мог уничтожать другие корабли, иногда приводя к забавным цепным реакциям!
 
-One of the fun things I built was a version of the classic “Spacewar” game
-which used IP multicast. Without having any kind of central server, multiple
-clients could each run the spacewar binary and start broadcasting their
-ship's location, velocity, the direction it was facing, and similar
-information for any “bullets” it had fired, and all of the other instances
-would pick up that information and render it locally, allowing users to all
-see each other's ships and bullets, with ships “exploding” if they crashed
-into each other or bullets hit them. I even made the “debris” from the
-explosion a live object that could take out other ships, sometimes leading
-to fun chain reactions!
+В духе оригинальной игры я визуализировал ее с использованием симулированной векторной графики, так что можно было делать такие вещи, как масштабирование вида, и все будет масштабироваться вверх/вниз. Сами корабли представляли собой набор линейных сегментов в векторной форме, которые помогли мне разработать некоторые из моих коллег в PARC, так что у каждого корабля был свой уникальный вид.
 
-In the spirit of the original game, I rendered it using simulated vector
-graphics, so you could do things like zooming your view in & out and
-everything would scale up/down. The ships themselves were a bunch of
-line segments in vector form that I had some of my colleagues at PARC
-helped me to design, so everyone's ship had a unique look to it.
+В основном, любая технология, которая могла бы извлечь пользу из потока данных в реальном времени, не требующего идеальной последовательной доставки, могла бы извлечь пользу из RTP. Так что, помимо аудио и видео, мы могли бы создавать такие вещи, как общая электронная доска. Даже передача файлов могла бы извлечь пользу из RTP, особенно в сочетании с IP-многоадресной рассылкой.
 
-Basically, anything that could benefit from a real-time data stream that
-didn't need perfect in-order delivery could benefit from RTP. So, in addition
-to audio & video we could build things like a shared whiteboard. Even file
-transfers could benefit from RTP, especially in conjunction with IP multicast.
+Представьте что-то вроде BitTorrent, но где вам не нужны все данные, идущие точка-точка между узлами. Изначальный сидер мог бы отправить многоадресный поток всем личинкам одновременно, и любые потери пакетов по пути могли бы быстро очищаться повторной передачей от любого узла, который успешно получил данные. Вы даже могли бы ограничить запросы повторной передачи так, чтобы какой-нибудь близлежащий узел доставил копию данных, и это также могло бы быть передано многоадресной рассылкой другим в этом регионе, так как потеря пакета в середине сети, как правило, означала бы, что все клиенты ниже этой точки пропустили одни и те же данные.
 
-Imagine something like BitTorrent but where you didn't need all the data
-going point-to-point between peers. The original seeder could send a multicast
-stream to all of the leeches at once, and any packet losses along the way
-could be quickly cleaned up by a retransmission from any peer that
-successfully received the data. You could even scope your retransmission
-requests so that some peer nearby delivered the copy of the data, and that
-too could be multicast to others in that region, since a packet loss in
-the middle of the network would tend to mean a bunch of clients
-downstream of that point all missed the same data.
+### Почему вам пришлось самостоятельно заниматься сжатием видео? Не было ли чего-либо доступного в то время?
 
-### Why did you have to roll your own video compression. Was nothing else available at the time?
+К тому времени существовали основные концепции сжатия видео, с появлением стандарта MPEG-1 примерно в то же время, когда появился "nv", но реального времени кодирования с MPEG-1 определенно не было. Изменения, которые я внес, были связаны с тем, чтобы взять эти базовые концепции и аппроксимировать их более дешевыми алгоритмами, где я избегал таких вещей, как косинусные преобразования и операции с плавающей точкой, и даже избегал целочисленных умножений, так как они были очень медленными на SPARC-станциях. Я старался делать все, что мог, только с помощью сложения/вычитания и побитового маскирования и сдвига, и это давало достаточно скорости, чтобы все еще ощущать что-то, похожее на видео.
 
-At the time I began to build “nv”, the only systems I know of that did
-videoconferencing were very expensive specialized hardware. For instance,
-Steve Casner had access to a system from BBN that was called "DVC" (and
-later commercialized as “PictureWindow”). The compression required
-specialized hardware, but the decompression could be done in software.
-What made “nv” somewhat unique was that both compression and decompression
-was being done in software, with the only hardware requirement being
-something to digitize an incoming analog video signal.
-
-Many of the basic concepts about how to compress video existed by then, with
-things like the MPEG-1 standard appearing right around the same time “nv”
-did, but real-time encoding with MPEG-1 was definitely NOT possible at
-the time. The changes I made were all about taking those basic concepts and
-approximating them with much cheaper algorithms, where I avoided things like
-cosine transforms and floating point, and even avoided integer multiplications
-since those were very slow on SPARC-stations. I tried to do everything I could
-with just additions/subtractions and bit masking and shifting, and that got
-back enough speed to still feel somewhat like video.
-
-Within a year or two of the release of "nv", there were many different audio
-and video tools to choose from, not only on the MBONE but in other places
-like the CU-SeeMe tool built on the Mac. So, it was clearly an idea whose
-time had come. I actually ended up making “nv” interoperate with many of
-these tools, and in a few cases other tools picked up my “nv” codecs, so
-they could interoperate when using my compression scheme.
+В течение года или двух после выпуска "nv" появилось много различных аудио- и видеоинструментов, не только на MBONE, но и в других местах, таких как инструмент CU-SeeMe, созданный на Mac. Было очевидно, что это идея, время которой пришло. Я действительно закончил тем, что сделал "nv" совместимым с многими из этих инструментов, и в нескольких случаях другие инструменты перенимали мои кодеки "nv", чтобы они могли взаимодействовать при использовании моей схемы сжатия.
 
 ## WebRTC
-WebRTC required a standardization effort that dwarfs all of the other efforts
-described in this chapter. It required cooperation across two different
-standards bodies (IETF and W3C) and hundreds of individuals across many
-companies and countries. To give us a look inside the motivations and
-monumental effort it took to make WebRTC happen we have
-[Serge Lachapelle](https://twitter.com/slac).
+WebRTC потребовал усилий по стандартизации, которые превосходят все остальные усилия, описанные в этой главе. Он потребовал сотрудничества между двумя различными организациями по стандартизации (IETF и W3C) и сотен отдельных лиц из многих компаний и стран. Чтобы дать нам взглянуть на мотивации и колоссальные усилия, потребовавшиеся для создания WebRTC, у нас есть [Серж Лашапель](https://twitter.com/slac).
 
-Serge is a product manager at Google, currently serving as a product manager
-for Google Workspace. This is my summary of the interview.
+Серж - продукт-менеджер в Google, в настоящее время работающий продукт-менеджером для Google Workspace. Это мое резюме интервью.
 
-### What led you to work on WebRTC?
-I have been passionate about building communications software since I was in
-college. In the 90s the technology like [nv](https://github.com/ronf/nv)
-started to appear, but was difficult to use. I created a project that allowed
-you to join a video call right from your browser. I also ported it to Windows.
+### Что привело вас к работе над WebRTC?
+Я был увлечен созданием коммуникационного программного обеспечения с тех пор, как учился в колледже. В 90-х годах начала появляться технология, подобная [nv](https://github.com/ronf/nv), но ее было сложно использовать. Я создал проект, который позволял присоединиться к видеозвонку прямо из браузера. Я также портировал его на Windows.
 
-I took this experience to Marratech, a company I co-founded. We created
-software for group video conferencing. Technologically the landscape
-was so different. The cutting edge in video was based on multicast networking.
-A user could depend on the network to deliver to a video packet to everyone in
-the call. This meant that we had very simple servers. This had a big downside
-though, networks had to be designed to accommodate it. The industry moved away
-from multicast to packet shufflers, more commonly known as SFUs.
+Я взял этот опыт в Marratech, компанию, которую я сооснователь. Мы создали программное обеспечение для групповых видеоконференций. Технологический ландшафт был совершенно иным. Передовым в видео был многоадресный режим сети. Пользователь мог полагаться на сеть для доставки видеопакета всем участникам звонка. Это означало, что у нас были очень простые серверы. Однако это имело большой недостаток - сети должны были быть разработаны для его поддержки. Индустрия отошла от многоадресной рассылки к пакетным коммутаторам, более известным как SFU.
 
-Marratech was acquired by Google in 2007. I would then go on to work on the
-project that would inform WebRTC.
+### Первый проект Google
+Первый проект, над которым работала будущая команда WebRTC, был голосовой и видеочат Gmail. Внедрение аудио и видео в браузер было непростой задачей. Это требовало специальных компонентов, которые нужно было лицензировать у разных компаний. Аудио был лицензирован у GIPs, видео - у Vidyo, а сетевая часть - у libjingle. Магия заключалась в том, чтобы заставить все это работать вместе.
 
-### The first Google project
-The first project that the future WebRTC team worked on was Gmail voice and
-video chat. Getting audio and video into the browser was no easy task. It
-required specialty components that we had to license from different companies.
-Audio was licensed from GIPs, video was licensed for Vidyo and the networking
-was libjingle. The magic was then making all of them work together.
+Каждая подсистема имеет совершенно разные API и предполагает решение разных проблем. Чтобы заставить все это работать вместе, нужны глубокие знания сетей, криптографии, медиа и многого другого. [Джастин Убертти](https://juberti.com) был тем, кто взял на себя эту работу. Он объединил эти компоненты, чтобы создать пригодный к использованию продукт.
 
-Each subsystem has completely different APIs, and assumed you were solving
-different problems. To make it all work together you need working knowledge
-of networking, cryptography, media and more.
-[Justin Uberti](https://juberti.com) was the person that took on this work.
-He brought these components together to make a usable product.
-
-Rendering real-time in the browser was also really hard. We had to use the
-NPAPI (Netscape Plugin API) and do lots of clever things to make it work.
-The lessons we learned from this project greatly influenced WebRTC.
+Отрисовка в реальном времени в браузере также была очень сложной. Нам пришлось использовать NPAPI (Netscape Plugin API) и делать много хитрых вещей, чтобы это работало. Уроки, которые мы извлекли из этого проекта, очень повлияли на WebRTC.
 
 ### Chrome
-At the same time the Chrome project started inside of Google. There was
-so much excitement, and this project had huge goals. There was talk about
-WebGL, Offline, Database capabilities, low latency input for gaming just
-to name a few.
+В то же время внутри Google начался проект Chrome. Было много волнения, и у этого проекта были огромные цели. Велись разговоры о WebGL, автономной работе, возможностях базы данных, низкой задержке ввода для игр - и это только некоторые из них.
 
-Moving away from NPAPI became a big focus. It is a powerful API, but comes with
-big security consequences. Chrome uses a sandbox design to keep users safe.
-Operations that can be potentially unsafe are run in different processes.
-Even if something goes wrong an attacker still doesn't have access to the
-user data.
+Отказ от NPAPI стал большим приоритетом. Это мощный API, но он несет большие последствия для безопасности. Chrome использует дизайн песочницы, чтобы защитить пользователей. Операции, которые могут быть потенциально небезопасными, выполняются в разных процессах. Даже если что-то пойдет не так, злоумышленник все еще не получит доступ к пользовательским данным.
 
-### WebRTC is born
-For me WebRTC was born with a few motivations. Combined they gave birth to the
-effort.
+### WebRTC рождается
+Для меня WebRTC родился с несколькими мотивациями. В совокупности они дали жизнь этому усилию.
 
-It shouldn't be this hard to build RTC experiences. So much effort is wasted
-re-implementing the same thing by different developers. We should solve these
-frustrating integration problems once, and focus on other things.
+Не должно быть так сложно создавать RTC-опыт. Слишком много усилий тратится впустую на повторную реализацию одного и того же разными разработчиками. Мы должны решить эти раздражающие проблемы интеграции один раз и сосредоточиться на других вещах.
 
-Human communication should be unhampered and should be open. How is it ok for
-text and HTML to be open, but my voice and my image in real-time not to be?
+Человеческое общение не должно быть ограничено и должно быть открытым. Как может быть нормально, что текст и HTML открыты, но мой голос и мое изображение в реальном времени - нет?
 
-Security is a priority. Using the NPAPI wasn't best for users. This was also
-a chance to make a protocol that was secure by default.
+Безопасность - приоритет. Использование NPAPI не было лучшим для пользователей. Это также был шанс создать протокол, безопасный по умолчанию.
 
-To make WebRTC happen Google acquired and Open Sourced the components we had
-used before. [On2](https://en.wikipedia.org/wiki/On2_Technologies) was
-acquired for it’s video technology and
-[Global IP Solutions](https://en.wikipedia.org/wiki/Global_IP_Solutions)
-for its RTC technology. I was in charge of the effort of acquiring GIPS.
-We got to work combining these and making them easy to use in and outside
-the browser.
+Чтобы сделать WebRTC реальностью, Google приобрел и открыл исходный код компонентов, которые использовались ранее. [On2](https://en.wikipedia.org/wiki/On2_Technologies) был приобретен за его видеотехнологию, а [Global IP Solutions](https://en.wikipedia.org/wiki/Global_IP_Solutions) за его RTC-технологию. Я отвечал за усилия по приобретению GIPS. Мы приступили к работе по объединению этих технологий и их упрощению для использования внутри и вне браузера.
 
-### Standardization
-Standardizing WebRTC was something we really wanted to do, but not something I
-had done before nor anyone on our immediate team. For this we were really
-fortunate to have Harald Alvestrand at Google. He had done extensive work in
-the IETF already and started the WebRTC standardization process.
+### Стандартизация
+Стандартизация WebRTC была чем-то, что мы действительно хотели сделать, но чего я раньше не делал, как и кто-либо из нашей непосредственной команды. Для этого нам очень повезло иметь Харальда Альвестранда в Google. Он уже проделал обширную работу в IETF и начал процесс стандартизации WebRTC.
 
-In summer 2010 an informal lunch was scheduled in Maastricht. Developers from
-many companies came together to discuss what WebRTC should be. The lunch had
-engineers from Google, Cisco, Ericsson, Skype, Mozilla, Linden Labs and more.
-You can find the full attendance and presenter slides on
-[rtc-web.alvestrand.com](http://rtc-web.alvestrand.com).
+Летом 2010 года в Маастрихте был запланирован неформальный обед. Разработчики из многих компаний собрались вместе, чтобы обсудить, каким должен быть WebRTC. На обеде присутствовали инженеры из Google, Cisco, Ericsson, Skype, Mozilla, Linden Labs и других. Полный список участников и презентационные слайды можно найти на [rtc-web.alvestrand.com](http://rtc-web.alvestrand.com).
 
-Skype also provided some great guidance because of the work they had done with
-Opus in the IETF.
+Skype также предоставил отличное руководство благодаря работе, которую они проделали с Opus в IETF.
 
-### Standing on the shoulders of giants
-When working in the IETF you are extending the work that has come before you.
-With WebRTC we were lucky that so many things existed. We didn't have to take
-on every problem because they already were solved. If you don't like the
-pre-existing technology it can be frustrating though. There has to be a pretty
-big reason to disregard existing work, so rolling your own isn't an option.
+### Опираясь на плечи гигантов
+При работе в IETF вы развиваете работу, которая была до вас. С WebRTC нам повезло, что существовало так много вещей. Нам не пришлось решать каждую проблему, потому что они уже были решены. Если вам не нравится предсуществующая технология, это может быть frustrating. Должна быть очень веская причина, чтобы пренебречь существующей работой, поэтому создание собственной версии не является вариантом.
 
-We also consciously didn't attempt to re-standardize things like signaling.
-This had already been solved with SIP and other non-IETF efforts, and it
-felt like it could end up being very political. In the end it just didn't
-feel like there was much value to add to the space.
+Мы также сознательно не пытались повторно стандартизировать такие вещи, как сигнализация. Это уже было решено с помощью SIP и других усилий, не связанных с IETF, и казалось, что это может стать очень политизированным. В конце концов, просто не казалось, что здесь есть много ценного, что можно добавить.
 
-I didn't stay as involved in standardization as Justin and Harald, but I
-enjoyed my time doing it. I was more excited about returning to building
-things for users.
+Я не остался таким же вовлеченным в стандартизацию, как Джастин и Харальд, но мне понравилось время, проведенное там. Я был более взволнован возвращением к созданию вещей для пользователей.
 
-### The future
-WebRTC is in a great place today. There are lots of iterative changes
-happening, but nothing in particular I have been working on.
+### Будущее
+WebRTC сегодня находится в отличном состоянии. Происходят различные итеративные изменения, но ничего конкретного, над чем бы я работал.
 
-I am most excited about what cloud computing can do for communication. Using
-advanced algorithms we can remove background noise from a call and make
-communication possible where it wasn't before. We are also seeing WebRTC
-extend far beyond communications… Who knew that it would be powering cloud
-based gaming 9 years later? All of this wouldn't be possible without the
-foundation of WebRTC.
+Я больше всего взволнован тем, что облачные вычисления могут сделать для коммуникаций. Используя передовые алгоритмы, мы можем удалять фоновый шум во время звонка и делать коммуникацию возможной там, где ее раньше не было. Мы также видим, что WebRTC распространяется далеко за пределы коммуникаций... Кто бы мог подумать, что через 9 лет он будет обеспечивать облачные игры? Все это было бы невозможно без фундамента WebRTC.

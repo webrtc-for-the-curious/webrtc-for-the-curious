@@ -1,117 +1,117 @@
 ---
-title: Connecting
+title: Подключение
 type: docs
 weight: 4
 ---
 
-# Connecting
+# Подключение
 
-## Why does WebRTC need a dedicated subsystem for connecting?
+## Почему WebRTC нужна выделенная подсистема для подключения?
 
-Most applications deployed today establish client/server connections. A client/server connection requires the server to have a stable well-known transport address. A client contacts a server, and the server responds.
+Большинство приложений, развернутых сегодня, устанавливают клиент-серверные соединения. Клиент-серверное соединение требует, чтобы сервер имел стабильный, известный транспортный адрес. Клиент связывается с сервером, и сервер отвечает.
 
-WebRTC doesn't use a client/server model, it establishes peer-to-peer (P2P) connections. In a P2P connection the task of creating a connection is equally distributed to both peers. This is because a transport address (IP and port) in WebRTC can not be assumed, and may even change during the session. WebRTC will gather all the information it can and will go to great lengths to achieve bi-directional communication between two WebRTC Agents.
+WebRTC не использует клиент-серверную модель, а устанавливает одноранговые (P2P) соединения. В P2P-соединении задача создания соединения равномерно распределена между обоими пирами. Это связано с тем, что транспортный адрес (IP и порт) в WebRTC не может быть предположен и может даже измениться во время сеанса. WebRTC соберет всю доступную информацию и приложит все усилия для достижения двунаправленной связи между двумя WebRTC-агентами.
 
-Establishing peer-to-peer connectivity can be difficult though. These agents could be in different networks with no direct connectivity. In situations where direct connectivity does exist you can still have other issues. In some cases, your clients don't speak the same network protocols (UDP <-> TCP) or maybe use different IP Versions (IPv4 <-> IPv6).
+Установление одноранговой связности может быть сложным. Эти агенты могут находиться в разных сетях без прямой связности. В ситуациях, где прямая связность существует, все еще могут возникать другие проблемы. В некоторых случаях ваши клиенты не говорят на одних сетевых протоколах (UDP <-> TCP) или используют разные версии IP (IPv4 <-> IPv6).
 
-Despite these difficulties in setting up a P2P connection, you get advantages over traditional Client/Server technology because of the following attributes that WebRTC offers.
+Несмотря на эти сложности при настройке P2P-соединения, вы получаете преимущества перед традиционной клиент-серверной технологией благодаря следующим атрибутам, которые предлагает WebRTC.
 
-### Reduced Bandwidth Costs
+### Уменьшенные затраты на пропускную способность
 
-Since media communication happens directly between peers you don't have to pay for, or host a separate server to relay media.
+Поскольку медиакоммуникация происходит непосредственно между пирами, вам не нужно платить за, или размещать отдельный сервер для передачи медиа.
 
-### Lower Latency
+### Нижняя задержка
 
-Communication is faster when it is direct! When a user has to run everything through your server, it makes transmissions slower.
+Связь быстрее, когда она прямая! Когда пользователь должен запускать все через ваш сервер, это замедляет передачи.
 
-### Secure E2E Communication
+### Безопасная E2E-связь
 
-Direct Communication is more secure. Since users aren't routing data through your server, they don't even need to trust you won't decrypt it.
+Прямая связь безопаснее. Поскольку пользователи не маршрутизируют данные через ваш сервер, им даже не нужно доверять вам, что вы не расшифруете их.
 
-## How does it work?
+## Как это работает?
 
-The process described above is called Interactive Connectivity Establishment ([ICE](https://tools.ietf.org/html/rfc8445)). Another protocol that pre-dates WebRTC.
+Процесс, описанный выше, называется Установление интерактивной связности ([ICE](https://tools.ietf.org/html/rfc8445)). Другой протокол, который предшествует WebRTC.
 
-ICE is a protocol that tries to find the best way to communicate between two ICE Agents. Each ICE Agent publishes the ways it is reachable, these are known as candidates. A candidate is essentially a transport address of the agent that it believes the other peer can reach. ICE then determines the best pairing of candidates.
+ICE - это протокол, который пытается найти лучший способ связи между двумя ICE-агентами. Каждый ICE-агент публикует способы, которыми он достижим, это называется кандидатами. Кандидат - это по сути транспортный адрес агента, который он считает достижимым для другого пира. ICE затем определяет лучшую пару кандидатов.
 
-The actual ICE process is described in greater detail later in this chapter. To understand why ICE exists, it is useful to understand what network behaviors we are overcoming.
+Фактический процесс ICE описывается более подробно позже в этой главе. Для понимания того, почему существует ICE, полезно понять, какие сетевые поведения мы преодолеваем.
 
-## Networking real-world constraints
-ICE is all about overcoming the constraints of real-world networks. Before we explore the solution, let's talk about the actual problems.
+## Сетевые реальные ограничения
+ICE - это все о преодолении ограничений реальных сетей. Прежде чем мы исследуем решение, давайте поговорим о реальных проблемах.
 
-### Not in the same network
-Most of the time the other WebRTC Agent will not even be in the same network. A typical call is usually between two WebRTC Agents in different networks with no direct connectivity.
+### Не в одной сети
+Большую часть времени другой WebRTC-агент даже не будет в той же сети. Обычный звонок обычно происходит между двумя WebRTC-агентами в разных сетях с отсутствием прямой связности.
 
-Below is a graph of two distinct networks, connected over public internet. In each network you have two hosts.
+Ниже приведен график двух разных сетей, соединенных через публичный интернет. В каждой сети у вас два хоста.
 
-![Two networks](../images/03-two-networks.png "Two networks")
+![Две сети](../images/03-two-networks.png "Две сети")
 
-For the hosts in the same network it is very easy to connect. Communication between `192.168.0.1 -> 192.168.0.2` is easy to do! These two hosts can connect to each other without any outside help.
+Для хостов в одной сети соединение очень просто. Связь между `192.168.0.1 -> 192.168.0.2` легко сделать! Эти два хоста могут подключиться друг к другу без какой-либо внешней помощи.
 
-However, a host using `Router B` has no way to directly access anything behind `Router A`. How would you tell the difference between `192.168.0.1` behind `Router A` and the same IP behind `Router B`? They are private IPs! A host using `Router B` could send traffic directly to `Router A`, but the request would end there. How does `Router A` know which host it should forward the message to?
+Однако хост, использующий `Router B`, не имеет способа напрямую получить доступ к чему-либо за `Router A`. Как вы можете сказать разницу между `192.168.0.1` за `Router A` и тем же IP за `Router B`? Это частные IP! Хост, использующий `Router B`, мог бы отправить трафик непосредственно к `Router A`, но запрос завершится там. Как `Router A` знает, какой хост он должен передать сообщение?
 
-### Protocol Restrictions
-Some networks don't allow UDP traffic at all, or maybe they don't allow TCP. Some networks may have a very low MTU (Maximum Transmission Unit). There are lots of variables that network administrators can change that can make communication difficult.
+### Протокольные ограничения
+Некоторые сети вообще не позволяют трафик UDP, или, возможно, они не позволяют TCP. Некоторые сети могут иметь очень низкий MTU (Maximum Transmission Unit). Существует множество переменных, которые сетевые администраторы могут изменять, что может сделать связь сложной.
 
-### Firewall/IDS Rules
-Another is "Deep Packet Inspection" and other intelligent filtering. Some network administrators will run software that tries to process every packet. Many times this software doesn't understand WebRTC, so it blocks it because it doesn't know what to do, e.g. treating WebRTC packets as suspicious UDP packets on an arbitrary port that is not whitelisted.
+### Правила брандмауэра/IDS
+Другой - "Глубокая проверка пакетов" и другие интеллектуальные фильтры. Некоторые сетевые администраторы будут запускать программное обеспечение, которое пытается обрабатывать каждый пакет. Часто это программное обеспечение не понимает WebRTC, поэтому оно блокирует его, потому что оно не знает, что делать, например, обрабатывая пакеты WebRTC как подозрительные UDP-пакеты на произвольном порту, который не белый.
 
-## NAT Mapping
-NAT (Network Address Translation) mapping is the magic that makes the connectivity of WebRTC possible. This is how WebRTC allows two peers in completely different subnets to communicate, addressing the "not in the same network" problem above. While it creates new challenges, let's explain how NAT mapping works in the first place.
+## NAT-маппинг
+NAT (Network Address Translation) маппинг - это волшебство, которое делает возможным подключение WebRTC. Это как WebRTC позволяет двум пирам в совершенно разных подсетях общаться, решая проблему "не в одной сети" выше. Хотя это создает новые вызовы, давайте объясним, как работает NAT-маппинг сначала.
 
-It doesn't use a relay, proxy, or server. Again we have `Agent 1` and `Agent 2` and they are in different networks. However, traffic is flowing completely through. Visualized it looks like this:
+Он не использует ретрансляцию, прокси или сервер. Снова у нас есть `Agent 1` и `Agent 2`, и они находятся в разных сетях. Однако трафик течет полностью через. Визуализируется это так:
 
-![NAT mapping](../images/03-nat-mapping.png "NAT mapping")
+![NAT-маппинг](../images/03-nat-mapping.png "NAT-маппинг")
 
-To make this communication happen you establish a NAT mapping. Agent 1 uses port 7000 to establish a WebRTC connection with Agent 2. This creates a binding of `192.168.0.1:7000` to `5.0.0.1:7000`. This then allows Agent 2 to reach Agent 1 by sending packets to `5.0.0.1:7000`. Creating a NAT mapping like in this example is like an automated version of doing port forwarding in your router.
+Чтобы сделать эту связь, вы устанавливаете NAT-маппинг. Agent 1 использует порт 7000 для установки WebRTC-соединения с Agent 2. Это создает привязку `192.168.0.1:7000` к `5.0.0.1:7000`. Это затем позволяет Agent 2 достичь Agent 1, отправляя пакеты на `5.0.0.1:7000`. Создание NAT-маппинга, как в этом примере, похоже на автоматизированную версию настройки портового перенаправления в вашем роутере.
 
-The downside to NAT mapping is that there isn't a single form of mapping (e.g. static port forwarding), and the behavior is inconsistent between networks. ISPs and hardware manufacturers may do it in different ways. In some cases, network administrators may even disable it.
+Недостатком NAT-маппинга является то, что нет единого вида маппинга (например, статическое портовое перенаправление), и поведение несогласовано между сетями. ISPs и производители оборудования могут делать это по-разному. В некоторых случаях сетевые администраторы могут даже отключить его.
 
-The good news is the full range of behaviors is understood and observable, so an ICE Agent is able to confirm it created a NAT mapping, and the attributes of the mapping.
+Хорошая новость в том, что полный диапазон поведений понятен и наблюдаем, поэтому ICE-агент способен подтвердить, что он создал NAT-маппинг, и атрибуты маппинга.
 
-The document that describes these behaviors is [RFC 4787](https://tools.ietf.org/html/rfc4787).
+Документ, описывающий эти поведения, - [RFC 4787](https://tools.ietf.org/html/rfc4787).
 
-### Creating a mapping
-Creating a mapping is the easiest part. When you send a packet to an address outside your network, a mapping is created! A NAT mapping is just a temporary public IP and port that is allocated by your NAT. The outbound message will be rewritten to have its source address given by the newly mapping address. If a message is sent to the mapping, it will be automatically routed back to the host inside the NAT that created it. The details around mappings is where it gets complicated.
+### Создание маппинга
+Создание маппинга - это самая простая часть. Когда вы отправляете пакет по адресу вне вашей сети, создается маппинг! NAT-маппинг - это временный публичный IP и порт, который выделяется вашим NAT. Исходящее сообщение будет переписано, чтобы иметь свой источник, заданный новым адресом маппинга. Если сообщение отправлено на маппинг, оно будет автоматически маршрутизироваться обратно к хосту внутри NAT, который его создал. Детали вокруг маппинга - это то, где все усложняется.
 
-### Mapping Creation Behaviors
-Mapping creation falls into three different categories:
+### Поведение создания маппинга
+Создание маппинга делится на три разных категории:
 
-#### Endpoint-Independent Mapping
-One mapping is created for each sender inside the NAT. If you send two packets to two different remote addresses, the NAT mapping will be re-used. Both remote hosts would see the same source IP and port. If the remote hosts respond, it would be sent back to the same local listener.
+#### Конечная точка, независимая от маппинга
+Создается один маппинг для каждого отправителя внутри NAT. Если вы отправите два пакета на два разных удаленных адреса, маппинг будет переиспользован. Оба удаленных хоста увидят один и тот же IP-адрес и порт. Если удаленные хосты отвечают, они будут отправлены обратно к той же локальной слушательной точке.
 
-This is the best-case scenario. For a call to work, at least one side MUST be of this type.
+Это лучший сценарий. Для работы звонка, по крайней мере, одна сторона МОЖЕТ быть этого типа.
 
-#### Address Dependent Mapping
-A new mapping is created every time you send a packet to a new address. If you send two packets to different hosts, two mappings will be created. If you send two packets to the same remote host but different destination ports, a new mapping will NOT be created.
+#### Адрес, зависимый от маппинга
+Создается новый маппинг каждый раз, когда вы отправляете пакет по новому адресу. Если вы отправите два пакета на разные хосты, создадутся два маппинга. Если вы отправите два пакета на один удаленный хост, но разные порты назначения, новый маппинг НЕ будет создан.
 
-#### Address and Port Dependent Mapping
-A new mapping is created if the remote IP or port is different. If you send two packets to the same remote host, but different destination ports, a new mapping will be created.
+#### Адрес и порт, зависимый от маппинга
+Создается новый маппинг, если удаленный IP или порт отличается. Если вы отправите два пакета на один удаленный хост, но разные порты назначения, создается новый маппинг.
 
-### Mapping Filtering Behaviors
-Mapping filtering is the rules around who is allowed to use the mapping. They fall into three similar classifications:
+### Поведение фильтрации маппинга
+Поведение фильтрации - это правила, которые определяют, кто может использовать маппинг. Они делятся на три похожие категории:
 
-#### Endpoint-Independent Filtering
-Anyone can use the mapping. You can share the mapping with multiple other peers, and they could all send traffic to it.
+#### Конечная точка, независимая от фильтрации
+Кто угодно может использовать маппинг. Вы можете поделиться маппингом с несколькими другими пирами, и они могут все отправить трафик к нему.
 
-#### Address Dependent Filtering
-Only the host the mapping was created for can use the mapping. If you send a packet to host `A` it can respond with as many packets as it wants. If host `B` attempts to send a packet to that mapping, it will be ignored.
+#### Адрес, зависимый от фильтрации
+Только хост, для которого создан маппинг, может использовать маппинг. Если вы отправите пакет на хост `A`, вы можете получить ответ только от этого же хоста. Если хост `B` попытается отправить пакет на этот маппинг, он будет проигнорирован.
 
-#### Address and Port Dependent Filtering
-Only the host and port for which the mapping was created for can use that mapping. If you send a packet to host `A:5000` it can respond with as many packets as it wants. If host `A:5001` attempts to send a packet to that mapping, it will be ignored.
+#### Адрес и порт, зависимый от фильтрации
+Только хост и порт, для которых создан маппинг, могут использовать этот маппинг. Если вы отправите пакет на `A:5000`, вы можете получить ответ только от этого же хоста и порта. Если `A:5001` попытается отправить пакет на этот маппинг, он будет проигнорирован.
 
-### Mapping Refresh
-It is recommended that if a mapping is unused for 5 minutes it should be destroyed. This is entirely up to the ISP or hardware manufacturer.
+### Обновление маппинга
+Рекомендуется, чтобы если маппинг не использовался в течение 5 минут, он должен быть уничтожен. Это полностью зависит от ISP или производителя оборудования.
 
 ## STUN
-STUN (Session Traversal Utilities for NAT) is a protocol that was created just for working with NATs. This is another technology that pre-dates WebRTC (and ICE!). It is defined by [RFC 8489](https://tools.ietf.org/html/rfc8489), which also defines the STUN packet structure. The STUN protocol is also used by ICE/TURN.
+STUN (Session Traversal Utilities for NAT) - это протокол, созданный специально для работы с NAT. Это еще одна технология, которая предшествует WebRTC (и ICE!). Он определен в [RFC 8489](https://tools.ietf.org/html/rfc8489), который также определяет структуру STUN-пакета. Протокол STUN также используется ICE/TURN.
 
-STUN is useful because it allows the programmatic creation of NAT Mappings. Before STUN, we were able to create a NAT mapping, but we had no idea what the IP and port of it was! STUN not only gives you the ability to create a mapping, but also gives you the details so that you can share them with others, so they can send traffic back to you via the mapping you just created.
+STUN полезен, потому что он позволяет программному созданию NAT-маппингов. До STUN мы могли создать NAT-маппинг, но у нас не было ни малейшего представления о том, какой у него IP-адрес и порт! STUN не только дает вам возможность создать маппинг, но и предоставляет детали, чтобы вы могли поделиться ими с другими, так что они могут отправить трафик обратно к вам через маппинг, который вы только что создали.
 
-Let's start with a basic description of STUN. Later, we will expand on TURN and ICE usage. For now, we are just going to describe the Request/Response flow to create a mapping. Then we will talk about how to get the details of it to share with others. This is the process that happens when you have a `stun:` server in your ICE URLs for a WebRTC PeerConnection. In a nutshell, STUN helps an endpoint behind a NAT figure out what mapping was created by asking a STUN server outside NAT to report what it observes.
+Давайте начнем с базового описания STUN. Позже мы расширим TURN и использование ICE. На данный момент мы просто опишем поток запрос/ответ для создания маппинга. Затем мы поговорим о том, как получить детали, чтобы поделиться ими. Это процесс, который происходит, когда у вас есть `stun:` сервер в ваших ICE-URL для WebRTC PeerConnection. В сущности, STUN помогает конечной точке за NAT определить, какой маппинг был создан, запрашивая STUN-сервер за пределами NAT, чтобы сообщить, что он наблюдает.
 
-### Protocol Structure
-Every STUN packet has the following structure:
+### Структура пакета
+Каждый STUN-пакет имеет следующую структуру:
 
 ```
  0                   1                   2                   3
@@ -129,25 +129,25 @@ Every STUN packet has the following structure:
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-#### STUN Message Type
-Each STUN packet has a type. For now, we only care about the following:
+#### Тип STUN-сообщения
+Каждый STUN-пакет имеет тип. На данный момент нам важно следующее:
 
-* Binding Request - `0x0001`
-* Binding Response - `0x0101`
+* Запрос привязки - `0x0001`
+* Ответ привязки - `0x0101`
 
-To create a NAT mapping we make a `Binding Request`. Then the server responds with a `Binding Response`.
+Чтобы создать NAT-маппинг, мы делаем `Запрос привязки`. Затем сервер отвечает с `Ответ привязки`.
 
-#### Message Length
-This is how long the `Data` section is. This section contains arbitrary data that is defined by the `Message Type`.
+#### Длина сообщения
+Это длина секции `Данные`. Эта секция содержит произвольные данные, определяемые `Тип сообщения`.
 
 #### Magic Cookie
-The fixed value `0x2112A442` in network byte order, it helps distinguish STUN traffic from other protocols.
+Фиксированное значение `0x2112A442` в сетевом порядке байтов, оно помогает отличить трафик STUN от других протоколов.
 
 #### Transaction ID
-A 96-bit identifier that uniquely identifies a request/response. This helps you pair up your requests and responses.
+96-битный идентификатор, который уникально идентифицирует запрос/ответ. Это помогает вам сопоставить ваши запросы и ответы.
 
-#### Data
-Data will contain a list of STUN attributes. A STUN Attribute has the following structure:
+#### Данные
+Данные будут содержать список STUN-атрибутов. STUN-атрибут имеет следующую структуру:
 
 ```
 0                   1                   2                   3
@@ -159,129 +159,128 @@ Data will contain a list of STUN attributes. A STUN Attribute has the following 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-The `STUN Binding Request` uses no attributes. This means a `STUN Binding Request` contains only the header.
+`STUN Запрос привязки` не использует атрибуты. Это означает, что `STUN Запрос привязки` содержит только заголовок.
 
-The `STUN Binding Response` uses a `XOR-MAPPED-ADDRESS (0x0020)`. This attribute contains an IP and port. This is the IP and port of the NAT mapping that is created!
+`STUN Ответ привязки` использует атрибут `XOR-MAPPED-ADDRESS (0x0020)`. Этот атрибут содержит IP и порт. Это IP и порт NAT-маппинга, который создается!
 
-### Create a NAT Mapping
-Creating a NAT mapping using STUN just takes sending one request! You send a `STUN Binding Request` to the STUN Server. The STUN Server then responds with a `STUN Binding Response`.
-This `STUN Binding Response` will contain the `Mapped Address`. The `Mapped Address` is how the STUN Server sees you and is your `NAT mapping`.
-The `Mapped Address` is what you would share if you wanted someone to send packets to you.
+### Создание NAT-маппинга
+Создание NAT-маппинга с использованием STUN - это просто отправка одного запроса! Вы отправляете `STUN Запрос привязки` на STUN-сервер. STUN-сервер затем отвечает с `STUN Ответ привязки`.
+Этот `STUN Ответ привязки` будет содержать `Mapped Address`. `Mapped Address` - это как STUN-сервер видит вас и является вашим `NAT-маппингом`.
+`Mapped Address` - это то, что вы бы поделились, если хотели, чтобы кто-то отправил пакеты к вам.
 
-People will also call the `Mapped Address` your `Public IP` or `Server Reflexive Candidate`.
+Люди также называют `Mapped Address` вашим `Общественным IP` или `Серверный рефлексивный кандидат`.
 
-### Determining NAT Type
-Unfortunately, the `Mapped Address` might not be useful in all cases. If it is `Address Dependent`, only the STUN server can send traffic back to you. If you shared it and another peer tried to send messages in they will be dropped. This makes it useless for communicating with others. You may find the `Address Dependent` case is in fact solvable, if the STUN server can also forward packets for you to the peer! This leads us to the solution using TURN below.
+### Определение типа NAT
+К сожалению, `Mapped Address` может быть бесполезен во всех случаях. Если это `Адрес, зависимый`, только STUN-сервер может отправить трафик обратно к вам. Если вы поделились им и другой пир попытался отправить сообщения, они будут отброшены. Это делает его бесполезным для общения с другими. Возможно, вы обнаружите, что случай `Адрес, зависимый` на самом деле решаем, если хост, который запускает STUN-сервер, также может передавать пакеты для вас к пиру! Это приводит нас к решению, использующему TURN ниже.
 
-[RFC 5780](https://tools.ietf.org/html/rfc5780) defines a method for running a test to determine your NAT Type. This is useful because you would know ahead of time if direct connectivity is possible.
+[RFC 5780](https://tools.ietf.org/html/rfc5780) определяет метод для запуска теста, чтобы определить ваш тип NAT. Это полезно, потому что вы бы знали заранее, возможно ли прямое подключение.
 
 ## TURN
-TURN (Traversal Using Relays around NAT) is defined in [RFC 8656](https://tools.ietf.org/html/rfc8656) is the solution when direct connectivity isn't possible. It could be because you have two NAT Types that are incompatible, or maybe can't speak the same protocol! TURN can also be used for privacy purposes. By running all your communication through TURN you obscure the client's actual address.
+TURN (Traversal Using Relays around NAT) определен в [RFC 8656](https://tools.ietf.org/html/rfc8656) является решением, когда прямое подключение невозможно. Это может быть из-за того, что у вас два несовместимых типа NAT, или, возможно, они не могут говорить на одном и том же протоколе! TURN также может использоваться для целей конфиденциальности. Запуская все ваше общение через TURN, вы скрываете фактический адрес клиента.
 
-TURN uses a dedicated server. This server acts as a proxy for a client. The client connects to a TURN Server and creates an `Allocation`. By creating an allocation, a client gets a temporary IP/Port/Protocol that can be used to send traffic back to the client. This new listener is known as the `Relayed Transport Address`. Think of it as a forwarding address, you give this out so that others can send you traffic via TURN! For each peer you give the `Relay Transport Address` to, you must create a new `Permission` to allow communication with you.
+TURN использует отдельный сервер. Этот сервер действует как прокси для клиента. Клиент подключается к TURN-серверу и создает `Allocation`. Создание `Allocation` позволяет клиенту получить временный IP/Port/Протокол, который может использоваться для отправки трафика обратно к клиенту. Этот новый слушатель известен как `Relayed Transport Address`. Думайте об этом как о пересылаемом адресе, вы его раздаете, чтобы другие могли отправить вам трафик через TURN! Для каждого пира вы даете `Relay Transport Address`, вы должны создать новую `Permission`, чтобы разрешить общение с вами.
 
-When you send outbound traffic via TURN it is sent via the `Relayed Transport Address`. When a remote peer gets traffic they see it coming from the TURN Server.
+Когда вы отправляете исходящий трафик через TURN, он отправляется через `Relayed Transport Address`. Когда удаленный пир получает трафик, он видит, что он приходит от TURN-сервера.
 
-### TURN Lifecycle
-The following is everything that a client who wishes to create a TURN allocation has to do. Communicating with someone who is using TURN requires no changes. The other peer gets an IP and port, and they communicate with it like any other host.
+### Жизненный цикл TURN
+Следующее - это все, что должен сделать клиент, который хочет создать TURN-allocation. Общение с кем-то, кто использует TURN, не требует изменений. Другой пир получает IP и порт, и они общаются с ним, как с любым другим хостом.
 
-#### Allocations
-Allocations are at the core of TURN. An `allocation` is basically a "TURN Session". To create a TURN allocation you communicate with the TURN `Server Transport Address` (usually port `3478`).
+#### Allocation
+Allocation - это ядро TURN. `Allocation` - это по сути "TURN-сессия". Чтобы создать TURN-allocation, вы общаетесь с TURN `Server Transport Address` (обычно порт `3478`).
 
-When creating an allocation, you need to provide the following:
-* Username/Password - Creating TURN allocations require authentication.
-* Allocation Transport - The transport protocol between the server (`Relayed Transport Address`) and the peers, can be UDP or TCP.
-* Even-Port - You can request sequential ports for multiple allocations, not relevant for WebRTC.
+При создании `Allocation` вам нужно предоставить следующее:
+* Имя пользователя/Пароль - Создание TURN-allocation требует аутентификации.
+* Transport Allocation - Транспортный протокол между сервером (`Relayed Transport Address`) и пирами, может быть UDP или TCP.
+* Even-Port - Вы можете запросить последовательные порты для нескольких allocation, не относящихся к WebRTC.
 
-If the request succeeded, you get a response with the TURN Server with the following STUN Attributes in the Data section:
-* `XOR-MAPPED-ADDRESS` - `Mapped Address` of the `TURN Client`. When someone sends data to the `Relayed Transport Address` this is where it is forwarded to.
-* `RELAYED-ADDRESS` - This is the address that you give out to other clients. If someone sends a packet to this address, it is relayed to the TURN client.
-* `LIFETIME` - How long until this TURN Allocation is destroyed. You can extend the lifetime by sending a `Refresh` request.
+Если запрос выполнен, вы получаете ответ от TURN-сервера со следующими STUN-атрибутами в секции `Данные`:
+* `XOR-MAPPED-ADDRESS` - `Mapped Address` `TURN Client`. Когда кто-то отправляет данные на `Relayed Transport Address`, это куда они перенаправляются.
+* `RELAYED-ADDRESS` - Это адрес, который вы выдаете другим клиентам. Если кто-то отправляет пакет на этот адрес, он передается TURN-клиенту.
+* `LIFETIME` - Через сколько времени эта TURN-allocation уничтожается. Вы можете продлить срок действия, отправив запрос `Refresh`.
 
 #### Permissions
-A remote host can't send into your `Relayed Transport Address` until you create a permission for them. When you create a permission, you are telling the TURN server that this IP and port is allowed to send inbound traffic.
+Удаленный хост не может отправить в ваш `Relayed Transport Address`, пока вы не создадите для него разрешение. Когда вы создаете разрешение, вы говорите TURN-серверу, что этот IP и порт разрешен для отправки входящего трафика.
 
-The remote host needs to give you the IP and port as it appears to the TURN server. This means it should send a `STUN Binding Request` to the TURN Server. A common error case is that a remote host will send a `STUN Binding Request` to a different server. They will then ask you to create a permission for this IP.
+Удаленный хост должен отправить `STUN Binding Request` на TURN-сервер. Обычная ошибка - это то, что удаленный хост отправит `STUN Binding Request` на другой сервер. Они затем попросят вас создать разрешение для этого IP.
 
-Let's say you want to create a permission for a host behind a `Address Dependent Mapping`. If you generate the `Mapped Address` from a different TURN server, all inbound traffic will be dropped. Every time they communicate with a different host it generates a new mapping. Permissions expire after 5 minutes if they are not refreshed.
+Предположим, вы хотите создать разрешение для хоста за `Адрес, зависимым маппингом`. Если вы сгенерируете `Mapped Address` от другого TURN-сервера, все входящие трафик будет отброшен. Каждый раз, когда они общаются с разным хостом, генерируется новый маппинг. Разрешения истекают через 5 минут, если они не обновляются.
 
 #### SendIndication/ChannelData
-These two messages are for the TURN Client to send messages to a remote peer.
+Эти два сообщения предназначены для TURN-клиента, чтобы отправить сообщения удаленному пиру.
 
-SendIndication is a self-contained message. Inside it is the data you wish to send, and who you wish to send it to. This is wasteful if you are sending a lot of messages to a remote peer. If you send 1,000 messages you will repeat their IP Address 1,000 times!
+SendIndication - это самодостаточное сообщение. В нем находится данные, которые вы хотите отправить, и кто вы хотите отправить их. Это бесполезно, если вы отправляете много сообщений удаленному пиру. Если вы отправите 1,000 сообщений, вы повторите их IP-адрес 1,000 раз!
 
-ChannelData allows you to send data, but not repeat an IP Address. You create a Channel with an IP and port. You then send with the ChannelId, and the IP and port will be populated server side. This is the better choice if you are sending a lot of messages.
+ChannelData позволяет вам отправлять данные, но не повторять IP-адрес. Вы создаете Channel с IP и портом. Затем вы отправляете с ChannelId, и IP и порт будут заполнены с серверной стороны. Это лучший выбор, если вы отправляете много сообщений.
 
-#### Refreshing
-Allocations will destroy themselves automatically. The TURN Client must refresh them sooner than the `LIFETIME` given when creating the allocation.
+#### Обновление
+Allocation уничтожаются автоматически. TURN-клиент должен обновлять их раньше, чем `LIFETIME`, указанный при создании allocation.
 
-### TURN Usage
-TURN Usage exists in two forms. Usually, you have one peer acting as a "TURN Client" and the other side communicating directly. In some cases you might have TURN usage on both sides, for example because both clients are in networks that block UDP and therefore the connection to the respective TURN servers happens via TCP.
+### Использование TURN
+Использование TURN существует в двух формах. Обычно один пир действует как "TURN-клиент", а другой - как прямое общение. В некоторых случаях у вас может быть использование TURN с обеих сторон, например, потому что оба клиента находятся в сетях, которые блокируют UDP, и, следовательно, подключение к соответствующим TURN-серверам происходит через TCP.
 
-These diagrams help illustrate what that would look like.
+Эти диаграммы помогают проиллюстрировать, как это может выглядеть.
 
-#### One TURN Allocation for Communication
+#### Одна TURN-allocation для общения
 
-![One TURN allocation](../images/03-one-turn-allocation.png "One TURN allocation")
+![Одна TURN-allocation](../images/03-one-turn-allocation.png "Одна TURN-allocation")
 
-#### Two TURN Allocations for Communication
+#### Две TURN-allocations для общения
 
-![Two TURN allocations](../images/03-two-turn-allocations.png "Two TURN allocations")
+![Две TURN-allocations](../images/03-two-turn-allocations.png "Две TURN-allocations")
 
 ## ICE
-ICE (Interactive Connectivity Establishment) is how WebRTC connects two Agents. Defined in [RFC 8445](https://tools.ietf.org/html/rfc8445), this is another technology that pre-dates WebRTC! ICE is a protocol for establishing connectivity. It determines all the possible routes between the two peers and then ensures you stay connected.
+ICE (Interactive Connectivity Establishment) - это как WebRTC подключает два агента. Определен в [RFC 8445](https://tools.ietf.org/html/rfc8445), это еще одна технология, которая предшествует WebRTC! ICE - это протокол для установления связи. Он определяет все возможные маршруты между двумя пирами и затем обеспечивает, что вы остаетесь подключенными.
 
-These routes are known as `Candidate Pairs`, which is a pairing of a local and remote transport address. This is where STUN and TURN come into play with ICE. These addresses can be your local IP Address plus a port, `NAT mapping`, or `Relayed Transport Address`. Each side gathers all the addresses they want to use, exchanges them, and then attempts to connect!
+Эти маршруты известны как `Candidate Pairs`, которые являются парой локального и удаленного транспортного адреса. Это где STUN и TURN вступают в игру с ICE. Эти адреса могут быть ваш локальный IP-адрес плюс порт, `NAT-маппинг`, или `Relayed Transport Address`. Каждая сторона собирает все адреса, которые хотят использовать, обмениваются ими и затем пытаются подключиться!
 
-Two ICE Agents communicate using ICE ping packets (or formally called the connectivity checks) to establish connectivity. After connectivity is established, they can send whatever data they want. It will be like using a normal socket. These checks use the STUN protocol.
+Два ICE-агента общаются с помощью пакетов ICE ping (или формально называемых проверками связности) для установления связи. После установления связи они могут отправлять все, что хотят. Это будет как использование обычного сокета. Эти проверки используют протокол STUN.
 
-### Creating an ICE Agent
-An ICE Agent is either `Controlling` or `Controlled`. The `Controlling` Agent is the one that decides the selected `Candidate Pair`. Usually, the peer sending the offer is the controlling side.
+### Создание ICE-агента
+ICE-агент либо `Controlling` или `Controlled`. `Controlling` Agent - это тот, кто решает выбранную `Candidate Pair`. Обычно пир, отправляющий офер, является контролирующей стороной.
 
-Each side must have a `user fragment` and a `password`. These two values must be exchanged before connectivity checks can even begin. The `user fragment` is sent in plain text and is useful for demuxing multiple ICE Sessions.
-The `password` is used to generate a `MESSAGE-INTEGRITY` attribute. At the end of each STUN packet, there is an attribute that is a hash of the entire packet using the `password` as a key. This is used to authenticate the packet and ensure it hasn't been tampered with.
+Каждая сторона должна иметь `user fragment` и `password`. Эти два значения должны быть обменены перед началом проверки связности. `User fragment` отправляется в открытом виде и полезен для демультиплексирования нескольких ICE-сессий. `Password` используется для генерации атрибута `MESSAGE-INTEGRITY`. В конце каждого STUN-пакета есть атрибут, который является хэшем всего пакета с использованием `Password` в качестве ключа. Это используется для аутентификации пакета и обеспечения того, что он не был изменен.
 
-For WebRTC, all these values are distributed via the `Session Description` as described in the previous chapter.
+Для WebRTC все эти значения распределяются через `Session Description`, как описано в предыдущей главе.
 
-### Candidate Gathering
-We now need to gather all the possible addresses we are reachable at. These addresses are known as candidates.
+### Сбор кандидатов
+Теперь нам нужно собрать все возможные адреса, которые мы достижимы. Эти адреса известны как кандидаты.
 
-#### Host
-A Host candidate is listening directly on a local interface. This can either be UDP or TCP.
+#### Хост
+Хост-кандидат слушает непосредственно на локальном интерфейсе. Это может быть UDP или TCP.
 
 #### mDNS
-An mDNS candidate is similar to a host candidate, but the IP address is obscured. Instead of informing the other side about your IP address, you give them a UUID as the hostname. You then set up a multicast listener, and respond if anyone requests the UUID you published.
+mDNS-кандидат похож на хост-кандидат, но IP-адрес скрыт. Вместо того, чтобы сообщать другой стороне ваш IP-адрес, вы даете им UUID как имя хоста. Затем вы устанавливаете многоадресный слушатель и отвечаете, если кто-то запросит UUID, который вы опубликовали.
 
-If you are in the same network as the agent, you can find each other via Multicast. If you are not in the same network, you will be unable to connect (unless the network administrator explicitly configured the network to allow Multicast packets to traverse).
+Если вы находитесь в той же сети, что и агент, вы можете найти друг друга через Multicast. Если вы не находитесь в той же сети, вы не сможете подключиться (если сетевой администратор явно настроил сеть, чтобы разрешить пакеты Multicast для прохождения).
 
-This is useful for privacy purposes. A user could find out your local IP address via WebRTC with a Host candidate (without even trying to connect to you), but with an mDNS candidate, now they only get a random UUID.
+Это полезно для целей конфиденциальности. Пользователь мог бы узнать ваш локальный IP-адрес через WebRTC с хост-кандидатом (без даже пытаясь подключиться к вам), но с mDNS-кандидатом, теперь они получают случайный UUID.
 
-#### Server Reflexive
-A Server Reflexive candidate is generated by doing a `STUN Binding Request` to a STUN Server.
+#### Серверный рефлексивный
+Серверный рефлексивный кандидат генерируется путем выполнения `STUN Binding Request` к STUN-серверу.
 
-When you get the `STUN Binding Response`, the `XOR-MAPPED-ADDRESS` is your Server Reflexive Candidate.
+Когда вы получаете `STUN Binding Response`, `XOR-MAPPED-ADDRESS` является вашим серверным рефлексивным кандидатом.
 
-#### Peer Reflexive
-A Peer Reflexive candidate is when you get an inbound request from an address that isn't known to you. Since ICE is an authenticated protocol, you know the traffic is valid. This just means the remote peer is communicating with you from an address it didn't know about.
+#### Пир-рефлексивный
+Пир-рефлексивный кандидат создается, когда удаленный пир получает ваш запрос от адреса, который ранее был неизвестен для пира. При получении он сообщает (отражает) этот адрес обратно к вам. Пир знает, что запрос был отправлен вами, а не кем-то другим, потому что ICE - это аутентифицированный протокол.
 
-This commonly happens when a `Host Candidate` communicates with a `Server Reflexive Candidate`. A new `NAT mapping` was created because you are communicating outside your subnet. Remember we said the connectivity checks are in fact STUN packets? The format of STUN response naturally allows a peer to report back the peer-reflexive address.
+Это обычно происходит, когда `Хост-кандидат` общается с `Серверный рефлексивный кандидат`, который находится в другой подсети, что приводит к созданию нового `NAT-маппинга`. Помните, мы сказали, что проверки связности на самом деле STUN-пакеты? Формат ответа STUN естественным образом позволяет пиру сообщить обратно пир-рефлексивный адрес.
 
 #### Relay
-A Relay Candidate is generated by using a TURN Server.
+Relay-кандидат генерируется путем использования TURN-сервера.
 
-After the initial handshake with the TURN Server you are given a `RELAYED-ADDRESS`, this is your Relay Candidate.
+После начального рукопожатия с TURN-сервером вам дается `RELAYED-ADDRESS`, это ваш Relay-кандидат.
 
-### Connectivity Checks
-We now know the remote agent's `user fragment`, `password`, and candidates. We can now attempt to connect! Every candidate is paired with each other. So if you have 3 candidates on each side, you now have 9 candidate pairs.
+### Проверка связности
+Теперь мы знаем `user fragment`, `password` удаленного агента и кандидаты. Мы можем теперь попытаться подключиться! Каждый кандидат связывается с каждым другим. Так что если у вас 3 кандидата с каждой стороны, теперь у вас 9 пар кандидатов.
 
-Visually it looks like this:
+Визуально это выглядит так:
 
-![Connectivity checks](../images/03-connectivity-checks.png "Connectivity checks")
+![Проверка связности](../images/03-connectivity-checks.png "Проверка связности")
 
-### Candidate Selection
-The Controlling and Controlled Agent both start sending traffic on each pair. This is needed if one Agent is behind an `Address Dependent Mapping`, this will cause a `Peer Reflexive Candidate` to be created.
+### Выбор кандидата
+Контролирующий и контролируемый агенты начинают отправлять трафик на каждой паре. Это необходимо, если один агент находится за `Адрес, зависимым маппингом`, это приведет к созданию `Пир-рефлексивного кандидата`.
 
-Each `Candidate Pair` that saw network traffic is then promoted to a `Valid Candidate` pair. The Controlling Agent then takes one `Valid Candidate` pair and nominates it. This becomes the `Nominated Pair`. The Controlling and Controlled Agent then attempt one more round of bi-directional communication. If that succeeds, the `Nominated Pair` becomes the `Selected Candidate Pair`! This pair is then used for the rest of the session.
+Каждая `Candidate Pair`, которая видела сетевой трафик, затем повышается до `Valid Candidate` пары. Контролирующий агент затем выбирает одну `Valid Candidate` пару и номинирует ее. Это становится `Nominated Pair`. Контролирующий и контролируемый агенты затем пытаются установить один последний раунд двунаправленной связи. Если это удается, `Nominated Pair` становится `Selected Candidate Pair`! Эта пара используется для остальной части сессии.
 
-### Restarts
-If the `Selected Candidate Pair` stops working for any reason (NAT mapping expires, TURN Server crashes) the ICE Agent will go to `Failed` state. Both agents can be restarted and will do the whole process all over again.
+### Перезапуски
+Если `Selected Candidate Pair` перестает работать по какой-либо причине (NAT-маппинг истек, TURN-сервер упал) ICE-агент переходит в состояние `Failed`. Оба агента могут быть перезапущены, и процесс будет повторен полностью.

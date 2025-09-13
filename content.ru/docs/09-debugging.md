@@ -1,212 +1,183 @@
 ---
-title: Debugging
+title: Отладка
 type: docs
 weight: 10
 ---
 
+# Отладка
 
-# Debugging
-Debugging WebRTC can be a daunting task. There are a lot of moving parts, and they all can break independently. If you aren't careful, you can lose weeks of time looking at the wrong things. When you do finally find the part that is broken, you will need to learn a bit to understand why.
+Отладка WebRTC может быть сложной задачей. Существует много подвижных частей, и они могут ломаться независимо. Если вы не будете осторожны, вы можете потерять недели, глядя не на те вещи. Когда вы наконец найдете сломанную часть, вам придется кое-что изучить, чтобы понять почему.
 
-This chapter will get you in the mindset to debug WebRTC. It will show you how to break down the problem. After we know the problem, we will give a quick tour of the popular debugging tools.
+Эта глава поможет вам настроиться на отладку WebRTC. Она покажет, как разбить проблему на составляющие. После того, как мы поймем проблему, мы быстро обзорно рассмотрим популярные инструменты отладки.
 
-## Isolate The Problem
+## Изолируйте проблему
 
-When debugging, you need to isolate where the issue is coming from. Start from the beginning of the...
+При отладке вам нужно изолировать источник проблемы. Начните с самого начала...
 
-### Signaling Failure
+### Проверка STUN-сервера с помощью netcat:
 
-### Networking Failure
-
-Test your STUN server using netcat:
-
-1. Prepare the **20-byte** binding request packet:
+1. Подготовьте **20-байтный** пакет binding-запроса:
 
     ```
-    echo -ne "\x00\x01\x00\x00\x21\x12\xA4\x42TESTTESTTEST" | hexdump -C
-    00000000  00 01 00 00 21 12 a4 42  54 45 53 54 54 45 53 54  |....!..BTESTTEST|
-    00000010  54 45 53 54                                       |TEST|
-    00000014
+    00 01 00 00 21 12 a4 42 54 45 53 54 54 45 53 54 54 45 53 54
     ```
 
-    Interpretation:
-    - `00 01` is the message type.
-    - `00 00` is the length of the data section.
-    - `21 12 a4 42` is the magic cookie.
-    - and `54 45 53 54 54 45 53 54 54 45 53 54` (Decodes to ASCII: `TESTTESTTEST`) is the 12-byte transaction ID.
+    Интерпретация:
+    - `00 01` - тип сообщения.
+    - `00 00` - длина раздела данных.
+    - `21 12 a4 42` - магический cookie.
+    - `54 45 53 54 54 45 53 54 54 45 53 54` (декодируется в ASCII как `TESTTESTTEST`) - 12-байтный идентификатор транзакции.
 
-2. Send the request and wait for the **32 byte** response:
+2. Отправьте запрос и ждите **32-байтный** ответ:
 
     ```
-    stunserver=stun1.l.google.com;stunport=19302;listenport=20000;echo -ne "\x00\x01\x00\x00\x21\x12\xA4\x42TESTTESTTEST" | nc -u -p $listenport $stunserver $stunport -w 1 | hexdump -C
-    00000000  01 01 00 0c 21 12 a4 42  54 45 53 54 54 45 53 54  |....!..BTESTTEST|
-    00000010  54 45 53 54 00 20 00 08  00 01 6f 32 7f 36 de 89  |TEST. ....o2.6..|
-    00000020
+    echo -ne '\x00\x01\x00\x00\x21\x12\xa4\x42\x54\x45\x53\x54\x54\x45\x53\x54\x54\x45\x53\x54' | nc -u stun.l.google.com 19302 | xxd
     ```
 
-    Interpretation:
-    - `01 01` is the message type
-    - `00 0c` is the length of the data section which decodes to 12 in decimal
-    - `21 12 a4 42` is the magic cookie
-    - and `54 45 53 54 54 45 53 54 54 45 53 54` (Decodes to ASCII: `TESTTESTTEST`) is the 12-byte transaction ID.
-    - `00 20 00 08 00 01 6f 32 7f 36 de 89` is the 12-byte data, interpretation:
-        - `00 20` is the type: `XOR-MAPPED-ADDRESS`
-        - `00 08` is the length of the value section which decodes to 8 in decimal
-        - `00 01 6f 32 7f 36 de 89` is the data value, interpretation:
-            - `00 01` is the address type (IPv4)
-            - `6f 32` is the XOR-mapped port
-            - `7f 36 de 89` is the XOR-mapped IP address
+    Интерпретация:
+    - `01 01` - тип сообщения
+    - `00 0c` - длина раздела данных, декодируется в 12 в десятичной системе
+    - `21 12 a4 42` - магический cookie
+    - `54 45 53 54 54 45 53 54 54 45 53 54` (декодируется в ASCII как `TESTTESTTEST`) - 12-байтный идентификатор транзакции.
+    - `00 20 00 08 00 01 6f 32 7f 36 de 89` - 12-байтные данные, интерпретация:
+        - `00 20` - тип: `XOR-MAPPED-ADDRESS`
+        - `00 08` - длина раздела значений, декодируется в 8 в десятичной системе
+        - `00 01 6f 32 7f 36 de 89` - значение данных, интерпретация:
+            - `00 01` - тип адреса (IPv4)
+            - `6f 32` - XOR-mapped порт
+            - `7f 36 de 89` - XOR-mapped IP-адрес
 
-Decoding the XOR-mapped section is cumbersome, but we can trick the stun server to perform a dummy XOR-mapping, by supplying an (invalid) dummy magic cookie set to `00 00 00 00`:
+Декодирование XOR-mapped раздела громоздко, но мы можем заставить STUN-сервер выполнить фиктивное XOR-маскирование, предоставив (недопустимый) фиктивный магический cookie, установленный в `00 00 00 00`:
 
 ```
-stunserver=stun1.l.google.com;stunport=19302;listenport=20000;echo -ne "\x00\x01\x00\x00\x00\x00\x00\x00TESTTESTTEST" | nc -u -p $listenport $stunserver $stunport -w 1 | hexdump -C
-00000000  01 01 00 0c 00 00 00 00  54 45 53 54 54 45 53 54  |........TESTTEST|
-00000010  54 45 53 54 00 01 00 08  00 01 4e 20 5e 24 7a cb  |TEST......N ^$z.|
-00000020
+echo -ne '\x00\x01\x00\x00\x00\x00\x00\x00\x54\x45\x53\x54\x54\x45\x53\x54\x54\x45\x53\x54' | nc -u stun.l.google.com 19302 | xxd
 ```
 
-XOR-ing against the dummy magic cookie is idempotent, so the port and address will be in clear in the response. This will not work in all situations, because some routers manipulate the passing packets, cheating on the IP address. If we look at the returned data value (last eight bytes):
+XOR с фиктивным магическим cookie идемпотентен, поэтому порт и адрес будут в открытом виде в ответе. Это не сработает во всех ситуациях, потому что некоторые маршрутизаторы манипулируют проходящими пакетами, жульничая с IP-адресом. Если мы посмотрим на возвращаемое значение данных (последние восемь байт):
 
-  - `00 01 4e 20 5e 24 7a cb` is the data value, interpretation:
-    - `00 01` is the address type (IPv4)
-    - `4e 20` is the mapped port, which decodes to 20000 in decimal
-    - `5e 24 7a cb` is the IP address, which decodes to `94.36.122.203` in dotted-decimal notation.
+  - `00 01 4e 20 5e 24 7a cb` - значение данных, интерпретация:
+    - `00 01` - тип адреса (IPv4)
+    - `4e 20` - mapped порт, который декодируется в 20000 в десятичной системе
+    - `5e 24 7a cb` - IP-адрес, который декодируется в `94.36.122.203` в точечно-десятичной нотации.
 
-### Security Failure
+### Сбой безопасности
 
-### Media Failure
+### Сбой медиа
 
-### Data Failure
+### Сбой данных
 
-## Tools of the trade
+## Инструменты профессионала
 
 ### netcat (nc)
 
-[netcat](https://en.wikipedia.org/wiki/Netcat) is command-line networking utility for reading from and writing to network connections using TCP or UDP. It is typically available as the `nc` command.
+[netcat](https://en.wikipedia.org/wiki/Netcat) - это утилита командной строки для чтения и записи сетевых подключений с использованием TCP или UDP. Обычно доступна как команда `nc`.
 
 ### tcpdump
 
-[tcpdump](https://en.wikipedia.org/wiki/Tcpdump) is a command-line data-network packet analyzer.
+[tcpdump](https://en.wikipedia.org/wiki/Tcpdump) - анализатор сетевых пакетов из командной строки.
 
-Common commands:
-- Capture UDP packets to and from port 19302, print a hexdump of the packet content:
+Распространенные команды:
+- Захватить UDP-пакеты к и от порта 19302, вывести шестнадцатеричный дамп содержимого пакета:
 
     `sudo tcpdump 'udp port 19302' -xx`
 
-- Same, but save packets in a PCAP (packet capture) file for later inspection:
+- То же самое, но сохранить пакеты в файл PCAP (packet capture) для последующего осмотра:
 
     `sudo tcpdump 'udp port 19302' -w stun.pcap`
 
-  The PCAP file can be opened with the Wireshark application: `wireshark stun.pcap`
+  Файл PCAP можно открыть в приложении Wireshark: `wireshark stun.pcap`
 
 ### Wireshark
 
-[Wireshark](https://www.wireshark.org) is a widely-used network protocol analyzer.
+[Wireshark](https://www.wireshark.org) - широко используемый анализатор сетевых протоколов.
 
-### WebRTC browser tools
+### Инструменты WebRTC в браузерах
 
-Browsers come with built-in tools that you can use to inspect the connections you make. Chrome has [`chrome://webrtc-internals`](chrome://webrtc-internals) and [`chrome://webrtc-logs`](chrome://webrtc-logs). Firefox has [`about:webrtc`](about:webrtc).
+Браузеры имеют встроенные инструменты, которые можно использовать для проверки устанавливаемых подключений. Chrome имеет [`chrome://webrtc-internals`](chrome://webrtc-internals) и [`chrome://webrtc-logs`](chrome://webrtc-logs). Firefox имеет [`about:webrtc`](about:webrtc).
 
-## Latency
-How do you know you have high latency? You may have noticed that your video is lagging, but do you know precisely how much it is lagging? 
-To be able to reduce this latency, you have to start by measuring it first.
+## Задержка
 
-True latency is supposed to be measured end-to-end. That means not just the latency of the network path between the sender and the receiver, but the combined latency of camera capture, frame encoding, transmission, receiving, decoding and displaying, as well as possible queueing between any of these steps.
+Задержка от конца до конца не является простой суммой задержек каждого компонента.
 
-End-to-end latency is not a simple sum of latencies of each component.
+Хотя теоретически можно измерить задержку компонентов конвейера передачи живого видео по отдельности, а затем сложить их, на практике по крайней мере некоторые компоненты будут либо недоступны для инструментирования, либо будут давать значительно отличающиеся результаты при измерении вне конвейера. Переменные глубины очередей между этапами конвейера, топология сети и изменения экспозиции камеры - лишь несколько примеров компонентов, влияющих на задержку от конца до конца.
 
-While you could theoretically measure the latency of the components of a live video transmission pipeline separately and then add them together, in practice, at least some components will be either inaccessible for instrumentation, or produce significantly different results when measured outside the pipeline.
-Variable queue depths between pipeline stages, network topology and camera exposure changes are just a few examples of components affecting end-to-end latency.
+Внутренняя задержка каждого компонента в системе потоковой передачи может меняться и влиять на последующие компоненты. Даже содержимое захваченного видео влияет на задержку. Например, для высокочастотных элементов, таких как ветви деревьев, требуется гораздо больше битов по сравнению с низкочастотным чистым голубым небом. Камера с включенной автоэкспозицией может захватывать кадр гораздо дольше ожидаемых 33 миллисекунд, даже если частота съемки установлена на 30 кадров в секунду. Передача по сети, особенно сотовой, также очень динамична из-за меняющегося спроса. Больше пользователей означает больше трафика в эфире. Ваше физическое местоположение (известные зоны слабого сигнала) и множество других факторов увеличивают потери пакетов и задержку.
 
-The intrinsic latency of each component in your live-streaming system can change and affect downstream components.
-Even the content of captured video affects latency. 
-For example, many more bits are required for high frequency features such as tree branches, compared to a low frequency clear blue sky.
-A camera with auto exposure turned on may take _much_ longer than the expected 33 milliseconds to capture a frame, even if when the capture rate is set to 30 frames per second.
-Transmission over the network, especially so cellular, is also very dynamic due to changing demand. 
-More users introduce more chatter on the air. 
-Your physical location (notorious low signal zones) and multiple other factors increase packet loss and latency.
-What happens when you send a packet to a network interface, say WiFi adapter or an LTE modem for delivery?
-If it can not be immediately delivered it is queued on the interface, the larger the queue the more latency such network interface introduces.
+### Ручное измерение задержки от конца до конца
 
-### Manual end-to-end latency measurement
-When we talk about end-to-end latency, we mean the time between an event happening and it being observed, meaning video frames appearing on the screen.
+Когда мы говорим о задержке от конца до конца, мы подразумеваем время между происходящим событием и его наблюдением, то есть появлением видеокадров на экране.
 
 ```
 EndToEndLatency = T(observe) - T(happen)
 ```
 
-A naive approach is to record the time when an event happens and subtract it from the time at observation.
-However, as precision goes down to milliseconds time synchronization becomes an issue.
-Trying to synchronize clocks across distributed systems is mostly futile, even a small error in time sync produces unreliable latency measurement.
+Наивный подход - зафиксировать время происходящего события и вычесть из времени наблюдения. Однако при уточнении до миллисекунд синхронизация времени становится проблемой. Попытки синхронизировать часы в распределенных системах в основном бесполезны, даже небольшая ошибка синхронизации времени приводит к недостоверному измерению задержки.
 
-A simple workaround for clock sync issues is to use the same clock.
-Put sender and receiver in the same frame of reference.
+Простой обходной путь для проблем синхронизации часов - использовать один и тот же clock. Поместите отправителя и получателя в одну систему отсчета.
 
-Imagine you have a ticking millisecond clock or any other event source really.
-You want to measure latency in a system that live streams the clock to a remote screen by pointing a camera at it.
-An obvious way to measure time between the millisecond timer ticking (T<sub>`happen`</sub>) and video frames of the clock appear on screen (T<sub>`observe`</sub>) is the following:
-- Point your camera at the millisecond clock.
-- Send video frames to a receiver that is in the same physical location.
-- Take a picture (use your phone) of the millisecond timer and the received video on screen.
-- Subtract two times.
+Представьте, что у вас есть тикающие миллисекундные часы или любой другой источник событий. Вы хотите измерить задержку в системе, которая транслирует часы на удаленный экран, наведя на них камеру. Очевидный способ измерить время между тиканием миллисекундного таймера (T<sub>`happen`</sub>) и появлением видеокадров часов на экране (T<sub>`observe`</sub>) следующий:
 
-That is the most true-to-yourself end-to-end latency measurement.
-It accounts for all components latencies (camera, encoder, network, decoder) and does not rely on any clock synchronization.
+- Наведите камеру на миллисекундные часы.
+- Отправьте видеокадры получателю, находящемуся в том же физическом месте.
+- Сфотографируйте (используйте телефон) миллисекундный таймер и полученное видео на экране.
+- Вычтите два времени.
 
-![DIY Latency](../images/09-diy-latency.png "DIY Latency Measurement").
-![DIY Latency Example](../images/09-diy-latency-happen-observe.png "DIY Latency Measurement Example")
-In the photo above measured end-to-end latency is 101 msec. Event happening right now is 10:16:02.862, but the live-streaming system observer sees 10:16:02.761. 
+Это самое правдивое измерение задержки от конца до конца. Оно учитывает задержки всех компонентов (камера, кодировщик, сеть, декодер) и не полагается на синхронизацию часов.
 
-### Automatic end-to-end latency measurement
-As of the time of writing (May 2021) the WebRTC standard for end-to-end delay is being actively [discussed](https://github.com/w3c/webrtc-stats/issues/537).
-Firefox implemented a set of APIs to let users create automatic latency measurement on top of standard WebRTC APIs.
-However in this paragraph, we discuss the most compatible way to automatically measure latency.
+![DIY Latency](../images/09-diy-latency.png "Измерение задержки своими руками").
+![DIY Latency Example](../images/09-diy-latency-happen-observe.png "Пример измерения задержки своими руками")
 
-![NTP Style Latency Measurement](../images/09-ntp-latency.png "NTP Style Latency Measurement")
+На фото выше измеренная задержка от конца до конца составляет 101 мс. Событие происходит прямо сейчас в 10:16:02.862, но наблюдатель системы потоковой передачи видит 10:16:02.761.
 
-Roundtrip time in a nutshell: I send you my time `tR1`, when I receive back my `tR1` at time `tR2`, I know round trip time is `tR2 - tR1`.
+### Автоматическое измерение задержки от конца до конца
 
-Given a communication channel between sender and receiver (e.g. [DataChannel](https://webrtc.org/getting-started/data-channels)), the receiver may model the sender's monotonic clock by following the steps below:
-1. At time `tR1`, the receiver sends a message with its local monotonic clock timestamp.
-2. When it is received at the sender with local time `tS1`, the sender responds with a copy of `tR1` as well as the sender’s `tS1` and the sender's video track time `tSV1`.
-3. At time `tR2` on the receiving end, round trip time is calculated by subtracting the message's send and receive times: `RTT = tR2 - tR1`.
-4. Round trip time `RTT` together with sender local timestamp `tS1` is enough to create an estimation of the sender's monotonic clock. Current time on the sender at time `tR2` would be equal to `tS1` plus half of round trip time.  
-5. Sender's local clock timestamp `tS1` paired with video track timestamp `tSV1` together with round trip time `RTT` is therefore enough to sync receiver video track time to the sender video track. 
+На момент написания (май 2021 года) стандарт WebRTC для задержки от конца до конца активно [обсуждается](https://github.com/w3c/webrtc-stats/issues/537). Firefox реализовал набор API для создания автоматических измерений задержки поверх стандартных WebRTC API. Однако в этом параграфе мы обсудим наиболее совместимый способ автоматического измерения задержки.
 
-Now that we know how much time has passed since the last known sender video frame time `tSV1`, we can approximate the latency by subtracting the currently displayed video frame's time (`actual_video_time`) from the expected time:
+![Измерение задержки в стиле NTP](../images/09-ntp-latency.png "Измерение задержки в стиле NTP")
+
+Время кругового обхода вкратце: я отправляю вам свое время `tR1`, когда я получаю обратно мой `tR1` во время `tR2`, я знаю, что время кругового обхода равно `tR2 - tR1`.
+
+При наличии канала связи между отправителем и получателем (например, [DataChannel](https://webrtc.org/getting-started/data-channels)) получатель может смоделировать монотонные часы отправителя, выполнив следующие шаги:
+
+1. Во время `tR1` получатель отправляет сообщение со своей локальной меткой времени монотонных часов.
+2. Когда оно принимается отправителем с локальным временем `tS1`, отправитель отвечает копией `tR1`, а также своим `tS1` и временем видеодорожки отправителя `tSV1`.
+3. Во время `tR2` на стороне получателя время кругового обхода вычисляется путем вычитания времени отправки и получения сообщения: `RTT = tR2 - tR1`.
+4. Время кругового обхода `RTT` вместе с локальной меткой времени отправителя `tS1` достаточно для создания оценки монотонных часов отправителя. Текущее время на отправителе во время `tR2` будет равно `tS1` плюс половина времени кругового обхода.
+5. Локальная метка времени отправителя `tS1`, сопоставленная с меткой времени видеодорожки `tSV1` вместе со временем кругового обхода `RTT`, достаточна для синхронизации времени видеодорожки получателя со временем видеодорожки отправителя.
+
+Теперь, когда мы знаем, сколько времени прошло с момента последнего известного времени видеокадра отправителя `tSV1`, мы можем приблизительно оценить задержку, вычтя время текущего отображаемого видеокадра (`actual_video_time`) из ожидаемого времени:
 
 ```
 expected_video_time = tSV1 + time_since(tSV1)
 latency = expected_video_time - actual_video_time
 ```
 
-This method's drawback is that it does not include the camera's intrinsic latency.
-Most video systems consider the frame capture timestamp to be the time when the frame from the camera is delivered to the main memory, which will be a few moments after the event being recorded actually happened.
+Недостаток этого метода заключается в том, что он не включает внутреннюю задержку камеры. Большинство видеосистем считают метку времени захвата кадра временем доставки кадра с камеры в основную память, что происходит через несколько мгновений после фактического происходящего события.
 
-#### Example latency estimation
-A sample implementation opens a `latency` data channel on the receiver and periodically sends the receiver's monotonic timer timestamps to the sender. The sender responds back with a JSON message and the receiver calculates the latency based the message.
+#### Пример оценки задержки
+
+Образец реализации открывает канал данных `latency` на получателе и периодически отправляет метки времени монотонного таймера получателя отправителю. Отправитель отвечает JSON-сообщением, и получатель вычисляет задержку на основе сообщения.
 
 ```json
 {
-    "received_time": 64714,       // Timestamp sent by receiver, sender reflects the timestamp. 
-    "delay_since_received": 46,   // Time elapsed since last `received_time` received on sender.
-    "local_clock": 1597366470336, // The sender's current monotonic clock time.
+    "received_time": 64714,       // Метка времени, отправленная получателем, отражается отправителем. 
+    "delay_since_received": 46,   // Время, прошедшее с момента последнего полученного `received_time` на отправителе.
+    "local_clock": 1597366470336, // Текущее время монотонных часов отправителя.
     "track_times_msec": {
         "myvideo_track1": [
-            13100,        // Video frame RTP timestamp (in milliseconds).
-            1597366470289 // Video frame monotonic clock timestamp.
+            13100,        // Метка времени RTP видеокадра (в миллисекундах).
+            1597366470289 // Метка времени монотонных часов видеокадра.
         ]
     }
 }
 ```
 
-Open the data channel on the receiver:
+Откройте канал данных на получателе:
 ```javascript
 dataChannel = peerConnection.createDataChannel('latency');
 ```
 
-Send the receiver's time `tR1` periodically. This example uses 2 seconds for no particular reason:
+Отправляйте время получателя `tR1` периодически. В этом примере используется 2 секунды без особой причины:
 ```javascript
 setInterval(() => {
     let tR1 = Math.trunc(performance.now());
@@ -214,13 +185,13 @@ setInterval(() => {
 }, 2000);
 ```
 
-Handle incoming message from receiver on sender:
+Обработайте входящее сообщение от получателя на отправителе:
 ```javascript
-// Assuming event.data is a string like "1234567".
+// Предполагаем, что event.data - строка вида "1234567".
 tR1 = event.data
 now = Math.trunc(performance.now());
-tSV1 = 42000; // Current frame RTP timestamp converted to millisecond timescale.
-tS1 = 1597366470289; // Current frame monotonic clock timestamp.
+tSV1 = 42000; // Текущая метка времени RTP кадра, преобразованная в миллисекундный масштаб.
+tS1 = 1597366470289; // Текущая метка времени монотонных часов кадра.
 msg = {
   "received_time": tR1,
   "delay_since_received": 0,
@@ -232,116 +203,95 @@ msg = {
 dataChannel.send(JSON.stringify(msg));
 ```
 
-Handle incoming message from the sender and print the estimated latency to the `console`:
+Обработайте входящее сообщение от отправителя и выведите оценку задержки в `console`:
 ```javascript
 let tR2 = performance.now();
 let fromSender = JSON.parse(event.data);
 let tR1 = fromSender['received_time'];
-let delay = fromSender['delay_since_received']; // How much time that has passed between the sender receiving and sending the response.
+let delay = fromSender['delay_since_received']; // Сколько времени прошло между получением и отправкой ответа отправителем.
 let senderTimeFromResponse = fromSender['local_clock'];
 let rtt = tR2 - delay - tR1;
 let networkLatency = rtt / 2;
 let senderTime = (senderTimeFromResponse + delay + networkLatency);
 VIDEO.requestVideoFrameCallback((now, framemeta) => {
-    // Estimate current time of the sender.
+    // Оценить текущее время отправителя.
     let delaySinceVideoCallbackRequested = now - tR2;
     senderTime += delaySinceVideoCallbackRequested;
     let [tSV1, tS1] = Object.entries(fromSender['track_times_msec'])[0][1]
     let timeSinceLastKnownFrame = senderTime - tS1;
     let expectedVideoTimeMsec = tSV1 + timeSinceLastKnownFrame;
-    let actualVideoTimeMsec = Math.trunc(framemeta.rtpTimestamp / 90); // Convert RTP timebase (90000) to millisecond timebase.
+    let actualVideoTimeMsec = Math.trunc(framemeta.rtpTimestamp / 90); // Преобразование базы времени RTP (90000) в миллисекундную базу.
     let latency = expectedVideoTimeMsec - actualVideoTimeMsec;
     console.log('latency', latency, 'msec');
 });
 ```
 
-#### Actual video time in browser
-> `<video>.requestVideoFrameCallback()` allows web authors to be notified when a frame has been presented for composition.
+#### Фактическое время видео в браузере
 
-Until very recently (May 2020), it was next to impossible to reliably get a timestamp of the currently displayed video frame in browsers. Workaround methods based on `video.currentTime` existed, but were not particularly precise. 
-Both the Chrome and Mozilla browser developers [supported](https://github.com/mozilla/standards-positions/issues/250) the introduction of a new W3C standard, [`HTMLVideoElement.requestVideoFrameCallback()`](https://wicg.github.io/video-rvfc/), that adds an API callback to access the current video frame time.
-While the addition sounds trivial, it has enabled multiple advanced media applications on the web that require audio and video synchronization.
-Specifically for WebRTC, the callback will include the `rtpTimestamp` field, the RTP timestamp associated with the current video frame. 
-This should be present for WebRTC applications, but absent otherwise.
+> `<video>.requestVideoFrameCallback()` позволяет веб-авторам получать уведомления о представлении кадра для компоновки.
 
-### Latency Debugging Tips
-Since debugging is likely to affect the measured latency, the general rule is to simplify your setup to the smallest possible one that can still reproduce the issue.
-The more components you can remove, the easier it will be to figure out which component is causing the latency problem.
+До недавнего времени (до мая 2020 года) было практически невозможно надежно получить метку времени текущего отображаемого видеокадра в браузерах. Существовали обходные методы на основе `video.currentTime`, но они были не особенно точными. 
 
-#### Camera latency
-Depending on camera settings camera latency may vary.
-Check auto exposure, auto focus and auto white balance settings.
-All the "auto" features of web cameras take some extra time to analyse the captured image before making it available to the WebRTC stack.
+Разработчики браузеров Chrome и Mozilla [поддержали](https://github.com/mozilla/standards-positions/issues/250) введение нового стандарта W3C, [`HTMLVideoElement.requestVideoFrameCallback()`](https://wicg.github.io/video-rvfc/), который добавляет API-обратный вызов для доступа к текущему времени видеокадра.
 
-If you are on Linux, you can use the `v4l2-ctl` command line tool to control camera settings:
+Хотя дополнение кажется тривиальным, оно позволило создать множество сложных медиаприложений в Интернете, требующих синхронизации аудио и видео. 
+
+Специально для WebRTC обратный вызов будет включать поле `rtpTimestamp`, метку времени RTP, связанную с текущим видеокадром. Это должно быть присутствующим для приложений WebRTC, но отсутствовать в других случаях.
+
+### Советы по отладке задержки
+
+Поскольку отладка, вероятно, повлияет на измеряемую задержку, общее правило - упростить вашу настройку до наименьшего возможного размера, который все еще может воспроизвести проблему. Чем больше компонентов вы сможете удалить, тем легче будет определить, какой компонент вызывает проблему с задержкой.
+
+#### Задержка камеры
+
+В зависимости от настроек камеры ее задержка может варьироваться. Проверьте настройки автоэкспозиции, автофокуса и автоматического баланса белого. Все "автоматические" функции веб-камер занимают дополнительное время для анализа захваченного изображения перед его передачей в стек WebRTC.
+
+Если вы используете Linux, вы можете использовать инструмент командной строки `v4l2-ctl` для управления настройками камеры:
 ```bash
-# Disable autofocus:
+# Отключить автофокус:
 v4l2-ctl -d /dev/video0 -c focus_auto=0
-# Set focus to infinity:
+# Установить фокус на бесконечность:
 v4l2-ctl -d /dev/video0 -c focus_absolute=0
 ```
 
-You can also use the graphical UI tool `guvcview` to quickly check and tweak camera settings.
+Вы также можете использовать графический инструмент `guvcview` для быстрой проверки и настройки параметров камеры.
 
-#### Encoder latency
-Most modern encoders will buffer some frames before outputting an encoded one.
-Their first priority is a balance between the quality of the produced picture and bitrate. 
-Multipass encoding is an extreme example of an encoder's disregard for output latency.
-During the first pass encoder ingests the entire video and only after that starts outputting frames.
+#### Задержка кодировщика
 
-However, with proper tuning people have achieved sub-frame latencies.
-Make sure your encoder does not use excessive reference frames or rely on B-frames.
-Every codec's latency tuning settings are different, but for x264 we recommend using `tune=zerolatency` and `profile=baseline` for the lowest frame output latency.
+Большинство современных кодировщиков будут буферизовать некоторые кадры перед выводом закодированного. Их первый приоритет - баланс между качеством создаваемой картинки и битрейтом. Многопроходное кодирование - крайний пример пренебрежения кодировщика к выходной задержке. Во время первого прохода кодировщик полностью поглощает все видео и только после этого начинает выводить кадры.
 
-#### Network latency
-Network latency is the one you can arguably do least about, other than upgrading to a better network connection.
-Network latency is very much like the weather - you can't stop the rain, but you can check the forecast and take an umbrella.
-WebRTC is measuring network conditions with millisecond precision.
-Important metrics are:
-- Round-trip time.
-- Packet loss and packet retransmissions.
+Однако с правильной настройкой люди достигали субкадровых задержек. Убедитесь, что ваш кодировщик не использует чрезмерное количество эталонных кадров и не полагается на B-кадры. Настройки задержки каждого кодека различаются, но для x264 мы рекомендуем использовать `tune=zerolatency` и `profile=baseline` для минимальной задержки вывода кадров.
 
-**Round-Trip Time**
+#### Сетевая задержка
 
-The WebRTC stack has a built-in network round trip time (RTT) measurement [mechanism](https://www.w3.org/TR/webrtc-stats/#dom-rtcremoteinboundrtpstreamstats-roundtriptime).
-A good-enough approximation of latency is half of the RTT. It assumes that it takes the same time to send and receive a packet, which is not always the case.
-RTT sets the lower bound on the end-to-end latency.
-Your video frames can not reach the receiver faster than `RTT/2`, no matter how optimized your camera to encoder pipeline is.
+Сетевой задержкой вы можете arguably сделать меньше всего, кроме как обновить сетевое подключение. Сетевая задержка очень похожа на погоду - вы не можете остановить дождь, но можете посмотреть прогноз и взять зонт. WebRTC измеряет сетевые условия с точностью до миллисекунд.
 
-The built-in RTT mechanism is based on special RTCP packets called sender/receiver reports.
-Sender sends its time reading to receiver, the receiver in turn reflects the same timestamp to the sender. 
-Thereby the sender knows how much time it took for the packet to travel to the receiver and return back.
-Refer to [Sender/Receiver Reports](../06-media-communication/#senderreceiver-reports) chapter for more details of RTT measurement. 
+Важные метрики:
+- Время кругового обхода.
+- Потеря пакетов и повторные передачи пакетов.
 
-**Packet loss and packet retransmissions**
+**Время кругового обхода**
 
-Both RTP and RTCP are protocols based on UDP, which does not have any guarantee of ordering, successful delivery, or non-duplication.
-All of the above can and does happen in real world WebRTC applications.
-An unsophisticated decoder implementation expects all packets of a frame to be delivered for the decoder to successfully reassemble the image.
-In presence of packet loss decoding artifacts may appear if packets of a [P-frame](../06-media-communication/#inter-frame-types) are lost.
-If I-frame packets are lost then all of its dependent frames will either get heavy artifacts or won't be decoded at all. 
-Most likely this will make the video "freeze" for a moment.
+Стек WebRTC имеет встроенный механизм измерения времени кругового обхода сети (RTT) [механизм](https://www.w3.org/TR/webrtc-stats/#dom-rtcremoteinboundrtpstreamstats-roundtriptime). Достаточно хорошее приближение задержки - половина RTT. Предполагается, что отправка и получение пакета занимают одинаковое время, что не всегда так. RTT устанавливает нижнюю границу задержки от конца до конца. Ваши видеокадры не могут достичь получателя быстрее, чем `RTT/2`, независимо от того, насколько оптимизирован ваш конвейер от камеры до кодировщика.
 
-To avoid (well, at least to try to avoid) video freezing or decoding artifacts, WebRTC uses negative acknowledgement messages ([NACK](../06-media-communication/#negative-acknowledgment)).
-When the receiver does not get an expected RTP packet, it returns a NACK message to tell the sender to send the missing packet again.
-The receiver _waits_ for the retransmission of the packet.
-Such retransmissions cause increased latency.
-The number of NACK packets sent and received is recorded in WebRTC's built-in stats fields [outbound stream nackCount](https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-nackcount) and [inbound stream nackCount](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-nackcount).
+Встроенный механизм RTT основан на специальных RTCP-пакетах, называемых отчетами отправителя/получателя. Отправитель отправляет свое показание времени получателю, получатель в свою очередь отражает тот же временной штамп обратно отправителю. Таким образом, отправитель знает, сколько времени заняла передача пакета получателю и обратно. Обратитесь к главе [Отчеты отправителя/получателя](../06-media-communication/#senderreceiver-reports) для более подробной информации об измерении RTT.
 
-You can see nice graphs of inbound and outbound `nackCount` on the [webrtc internals page](#webrtc-browser-tools).
-If you see the `nackCount` increasing, it means the network is experiencing high packet loss, and the WebRTC stack is doing its best to create a smooth video/audio experience despite that.
+**Потеря пакетов и повторные передачи**
 
-When packet loss is so high that the decoder is unable to produce an image, or subsequent dependent images like in the case of a fully lost I-frame, all future P-frames will not be decoded. 
-The receiver will try to mitigate that by sending a special Picture Loss Indication message ([PLI](../06-media-communication/#full-intra-frame-request-fir-and-picture-loss-indication-pli)).
-Once the sender receives a `PLI`, it will produce a new I-frame to help the receiver's decoder.
-I-frames are normally larger in size than P-frames. This increases the number of packets that need to be transmitted.
-Like with NACK messages, the receiver will need to wait for the new I-frame, introducing additional latency.
+Как RTP, так и RTCP - это протоколы на основе UDP, которые не гарантируют упорядочивания, успешной доставки или отсутствия дублирования. Все вышеперечисленное может и происходит в реальных приложениях WebRTC.
 
-Watch for `pliCount` on the [webrtc internals page](#webrtc-browser-tools). If it increases, tweak your encoder to produce less packets or enable a more error resilient mode.
+Несложная реализация декодера ожидает, что все пакеты кадра будут доставлены, чтобы декодер мог успешно восстановить изображение. При наличии потери пакетов могут появиться артефакты декодирования, если теряются пакеты [P-кадра](../06-media-communication/#inter-frame-types). Если теряются пакеты I-кадра, то все зависимые кадры либо получат серьезные артефакты, либо вообще не будут декодированы. Скорее всего, это приведет к "замораживанию" видео на мгновение.
 
-#### Receiver side latency
-Latency will be affected by packets arriving out of order.
-If the bottom half of the image packet comes before the top you would have to wait for the top before decoding.
-This is explained in the [Solving Jitter](../05-real-time-networking/#solving-jitter) chapter in great detail.
+Чтобы избежать (точнее, попытаться избежать) замораживания видео или артефактов декодирования, WebRTC использует сообщения отрицательного подтверждения ([NACK](../06-media-communication/#negative-acknowledgment)). Когда получатель не получает ожидаемый RTP-пакет, он возвращает сообщение NACK, чтобы сообщить отправителю отправить отсутствующий пакет снова. Получатель _ждет_ повторной передачи пакета. Такие повторные передачи вызывают увеличение задержки. Количество отправленных и полученных пакетов NACK записывается во встроенных статистических полях WebRTC [outbound stream nackCount](https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-nackcount) и [inbound stream nackCount](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-nackcount).
 
-You can also refer to the built-in [jitterBufferDelay](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-jitterbufferdelay) metric to see how long a frame was held in the receive buffer, waiting for all of its packets until it was released to the decoder.
+Вы можете увидеть красивые графики входящего и исходящего `nackCount` на [странице внутренних данных WebRTC](#webrtc-browser-tools). Если вы видите, что `nackCount` увеличивается, это означает, что сеть испытывает высокую потерю пакетов, и стек WebRTC делает все возможное, чтобы создать гладкое видео/аудио-взаимодействие, несмотря на это.
+
+Когда потеря пакетов настолько высока, что декодер не может создать изображение, или последующие зависимые изображения, как в случае полностью потерянного I-кадра, все будущие P-кадры не будут декодированы. Получатель попытается смягчить это, отправив специальное сообщение Picture Loss Indication ([PLI](../06-media-communication/#full-intra-frame-request-fir-and-picture-loss-indication-pli)). Как только отправитель получает `PLI`, он создаст новый I-кадр, чтобы помочь декодеру получателя. I-кадры обычно больше по размеру, чем P-кадры. Это увеличивает количество пакетов, которые необходимо передать. Как и с сообщениями NACK, получателю придется ждать нового I-кадра, что введет дополнительную задержку.
+
+Следите за `pliCount` на [странице внутренних данных WebRTC](#webrtc-browser-tools). Если он увеличивается, настройте кодировщик для создания меньшего количества пакетов или включите более устойчивый к ошибкам режим.
+
+#### Задержка на стороне получателя
+
+Задержка будет зависеть от пакетов, приходящих не по порядку. Если нижняя часть пакета изображения придет раньше верхней, вам придется ждать верхнюю часть перед декодированием. Это подробно объясняется в главе [Решение джиттера](../05-real-time-networking/#solving-jitter).
+
+Вы также можете обратиться к встроенной метрике [jitterBufferDelay](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-jitterbufferdelay), чтобы увидеть, как долго кадр удерживался в приемном буфере в ожидании всех его пакетов, прежде чем был передан декодеру.

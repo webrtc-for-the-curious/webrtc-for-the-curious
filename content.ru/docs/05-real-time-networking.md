@@ -1,123 +1,99 @@
 ---
-title: Real-time Networking
+title: Сетевое взаимодействие в реальном времени
 type: docs
 weight: 6
 ---
 
-# Real-time Networking
+# Сетевое взаимодействие в реальном времени
 
-## Why is networking so important in Real-time communication?
+## Почему сетевое взаимодействие так важно в коммуникации в реальном времени?
 
-Networks are the limiting factor in Real-time communication. In an ideal world we would have unlimited bandwidth
-and packets would arrive instantaneously. This isn't the case though. Networks are limited, and the conditions
-could change at anytime. Measuring and observing network conditions is also a difficult problem. You can get different behaviors
-depending on hardware, software and the configuration of it.
+Сети являются ограничивающим фактором в коммуникации в реальном времени. В идеальном мире у нас была бы неограниченная пропускная способность, и пакеты прибывали бы мгновенно. Но это не так. Сети ограничены, и условия могут измениться в любой момент. Измерение и наблюдение сетевых условий также является сложной проблемой. Вы можете получить разное поведение в зависимости от оборудования, программного обеспечения и его конфигурации.
 
-Real-time communication also poses a problem that doesn't exist in most other domains. For a web developer it isn't fatal
-if your website is slower on some networks. As long as all the data arrives, users are happy. With WebRTC, if your data is
-late it is useless. No one cares about what was said in a conference call 5 seconds ago. So when developing a realtime communication system, 
-you have to make a trade-off. What is my time limit, and how much data can I send?
+Коммуникация в реальном времени также создает проблему, которой не существует в большинстве других областей. Для веб-разработчика не фатально, если ваш сайт работает медленнее в некоторых сетях. Пока все данные прибывают, пользователи довольны. С WebRTC, если ваши данные опаздывают, они бесполезны. Никому не интересно, что было сказано в видеоконференции 5 секунд назад. Поэтому при разработке системы связи в реальном времени вам приходится идти на компромисс. Каков ваш временной лимит и сколько данных вы можете отправить?
 
-This chapter covers the concepts that apply to both data and media communication. In later chapters we go beyond
-the theoretical and discuss how WebRTC's media and data subsystems solve these problems.
+Эта глава охватывает концепции, применимые как к передаче данных, так и к медиа-коммуникации. В следующих главах мы выходим за рамки теории и обсуждаем, как подсистемы медиа и данных WebRTC решают эти проблемы.
 
-## What are the attributes of the network that make it difficult?
-Code that effectively works across all networks is complicated. You have lots of different factors, and they
-can all affect each other subtly. These are the most common issues that developers will encounter.
+## Какие атрибуты сети делают ее сложной?
+Код, эффективно работающий во всех сетях, сложен. Существует множество различных факторов, и они могут тонко влиять друг на друга. Вот наиболее распространенные проблемы, с которыми столкнутся разработчики.
 
-#### Bandwidth
-Bandwidth is the maximum rate of data that can be transferred across a given path. It is important to remember
-this isn't a static number either. The bandwidth will change along the route as more (or less) people use it.
+#### Пропускная способность
+Пропускная способность - это максимальная скорость передачи данных по заданному маршруту. Важно помнить, что это не статичное число. Пропускная способность будет меняться вдоль маршрута по мере того, как больше (или меньше) людей его использует.
 
-#### Transmission Time and Round Trip Time
-Transmission Time is how long it takes for a packet to arrive to its destination. Like Bandwidth this isn't constant. The Transmission Time can fluctuate at anytime.
+#### Время передачи и время круглого пути
+Время передачи - это время, за которое пакет достигает пункта назначения. Как и пропускная способность, это не константа. Время передачи может колебаться в любой момент.
 
 `transmission_time = receive_time - send_time`
 
-To compute transmission time, you need clocks on sender and receiver synchronized with millisecond precision.
-Even a small deviation would produce an unreliable transmission time measurement.
-Since WebRTC is operating in highly heterogeneous environments, it is next to impossible to rely on perfect time synchronization between hosts.
+Чтобы вычислить время передачи, вам нужны синхронизированные с миллисекундной точностью часы на отправителе и получателе. Даже небольшое отклонение приведет к ненадежному измерению времени передачи.
+Поскольку WebRTC работает в крайне неоднородных средах, практически невозможно полагаться на идеальную синхронизацию времени между хостами.
 
-Round-trip time measurement is a workaround for imperfect clock synchronization.
+Измерение времени круглого пути - это обходной путь для несовершенной синхронизации часов.
 
-Instead of operating on distributed clocks a WebRTC peer sends a special packet with its own timestamp `sendertime1`.
-A cooperating peer receives the packet and reflects the timestamp back to the sender.
-Once the original sender gets the reflected time it subtracts the timestamp `sendertime1` from the current time `sendertime2`.
-This time delta is called "round-trip propagation delay" or more commonly round-trip time.
+Вместо работы с распределенными часами WebRTC-пир отправляет специальный пакет со своей собственной меткой времени `sendertime1`.
+Сотрудничающий пир получает пакет и отражает метку времени обратно отправителю.
+Как только первоначальный отправитель получает отраженное время, он вычитает метку времени `sendertime1` из текущего времени `sendertime2`.
+Эта временная дельта называется "задержкой распространения круглого пути" или, чаще, временем круглого пути.
 
 `rtt = sendertime2 - sendertime1`
 
-Half of the round trip time is considered to be a good enough approximation of transmission time.
-This workaround is not without drawbacks. 
-It makes the assumption that it takes an equal amount of time to send and receive packets.
-However on cellular networks, send and receive operations may not be time-symmetrical. 
-You may have noticed that upload speeds on your phone are almost always lower than download speeds.
+Половина времени круглого пути считается достаточно хорошим приближением времени передачи.
+Этот обходной путь не лишен недостатков.
+Он предполагает, что на отправку и получение пакетов уходит одинаковое время.
+Однако в сотовых сетях операции отправки и получения могут быть не симметричны по времени.
+Вы могли заметить, что скорости загрузки на вашем телефоне почти всегда ниже скоростей скачивания.
 
 `transmission_time = rtt/2`
 
-The technicalities of round-trip time measurement are described in greater detail in [RTCP Sender and Receiver Reports chapter](../06-media-communication/#receiver-reports--sender-reports).
+Технические подробности измерения времени круглого пути описаны более подробно в [главе о Sender и Receiver Reports RTCP](../06-media-communication/#receiver-reports--sender-reports).
 
-#### Jitter
-Jitter is the fact that `Transmission Time` may vary for each packet. Your packets could be delayed, but then arrive in bursts.
+#### Джиттер
+Джиттер - это факт, что `Время передачи` может варьироваться для каждого пакета. Ваши пакеты могут быть задержаны, но затем прибыть пачкой.
 
-#### Packet Loss
-Packet Loss is when messages are lost in transmission. The loss could be steady, or it could come in spikes.
-This could be because of the network type like satellite or Wi-Fi. Or it could be introduced by the software along the way.
+#### Потеря пакетов
+Потеря пакетов - это когда сообщения теряются при передаче. Потеря может быть стабильной или происходить скачкообразно.
+Это может быть связано с типом сети, например, спутниковой или Wi-Fi. Или может быть введена программным обеспечением по пути.
 
-#### Maximum Transmission Unit
-Maximum Transmission Unit is the limit on how large a single packet can be. Networks don't allow you to send
-one giant message. At the protocol level, messages might have to be split into multiple smaller packets.
+#### Максимальный блок передачи
+Максимальный блок передачи (Maximum Transmission Unit) - это ограничение на размер одного пакета. Сети не позволяют отправлять одно гигантское сообщение. На уровне протокола сообщения могут быть разделены на несколько более мелких пакетов.
 
-The MTU will also differ depending on what network path you take. You can
-use a protocol like [Path MTU Discovery](https://tools.ietf.org/html/rfc1191) to figure out the largest packet size you can send.
+MTU также будет различаться в зависимости от того, какой сетевой путь вы проходите. Вы можете использовать протокол, такой как [Path MTU Discovery](https://tools.ietf.org/html/rfc1191), чтобы определить максимальный размер пакета, который вы можете отправить.
 
-### Congestion
-Congestion is when the limits of the network have been reached. This is usually because you have reached the peak
-bandwidth that the current route can handle. Or it could be operator imposed like hourly limits your ISP configures.
+### Перегрузка
+Перегрузка - это когда достигнуты пределы сети. Обычно это происходит, когда вы достигли пиковой пропускной способности, которую может обработать текущий маршрут. Или это может быть ограничение, наложенное оператором, например, почасовые лимиты, которые настраивает ваш интернет-провайдер.
 
-Congestion exhibits itself in many different ways. There is no standardized behavior. In most cases when congestion is
-reached the network will drop excess packets. In other cases the network will buffer. This will cause the Transmission Time
-for your packets to increase. You could also see more jitter as your network becomes congested. This is a rapidly changing area
-and new algorithms for congestion detection are still being written.
+Перегрузка проявляется по-разному. Нет стандартизированного поведения. В большинстве случаев при достижении перегрузки сеть будет сбрасывать избыточные пакеты. В других случаях сеть будет буферизовать. Это вызовет увеличение времени передачи для ваших пакетов. Вы также можете увидеть больше джиттера по мере перегрузки сети. Это быстро меняющаяся область, и новые алгоритмы обнаружения перегрузки все еще разрабатываются.
 
-### Dynamic
-Networks are incredibly dynamic and conditions can change rapidly. During a call you may send and receive hundreds of thousands of packets.
-Those packets will be traveling through multiple hops. Those hops will be shared by millions of other users. Even in your local network you could have
-HD movies being downloaded or maybe a device decides to download a software update.
+### Динамичность
+Сети крайне динамичны, и условия могут быстро меняться. Во время вызова вы можете отправить и получить сотни тысяч пакетов.
+Эти пакеты будут проходить через несколько транзитных узлов. Эти узлы будут совместно использоваться миллионами других пользователей. Даже в вашей локальной сети может загружаться HD-фильм или устройство может решить скачать обновление программного обеспечения.
 
-Having a good call isn't as simple as measuring your network on startup. You need to be constantly evaluating. You also need to handle all the different
-behaviors that come from a multitude of network hardware and software.
+Хороший вызов - это не просто измерение вашей сети при запуске. Вам нужно постоянно оценивать ситуацию. Вам также нужно справляться со всеми различными поведениями, возникающими из множества сетевого оборудования и программного обеспечения.
 
-## Solving Packet Loss
-Handling packet loss is the first problem to solve. There are multiple ways to solve it, each with their own benefits. It depends on what you are sending and how
-latency tolerant you are. It is also important to note that not all packet loss is fatal. Losing some video might not be a problem, the human eye might not
-even able to perceive it. Losing a users text messages are fatal.
+## Решение проблемы потери пакетов
+Обработка потери пакетов - первая проблема для решения. Существует несколько способов ее решения, каждый со своими преимуществами. Это зависит от того, что вы отправляете, и насколько вы терпимы к задержкам. Важно также отметить, что не все потери пакетов фатальны. Потеря некоторого видео может не быть проблемой, человеческий глаз может даже не заметить этого. Потеря текстовых сообщений пользователя фатальна.
 
-Let's say you send 10 packets, and packets 5 and 6 are lost. Here are the ways you can solve it.
+Допустим, вы отправляете 10 пакетов, и пакеты 5 и 6 теряются. Вот способы решения этой проблемы.
 
-### Acknowledgments
-Acknowledgments is when the receiver notifies the sender of every packet they have received. The sender is aware of packet loss when it gets an acknowledgment
-for a packet twice that isn't final. When the sender gets an `ACK` for packet 4 twice, it knows that packet 5 has not been seen yet.
+### Подтверждения
+Подтверждения - это когда получатель уведомляет отправителя о каждом полученном пакете. Отправитель узнает о потере пакетов, когда получает подтверждение для пакета дважды, который не является окончательным. Когда отправитель получает `ACK` для пакета 4 дважды, он знает, что пакет 5 еще не был виден.
 
-### Selective Acknowledgments
-Selective Acknowledgments is an improvement upon Acknowledgments. A receiver can send a `SACK` that acknowledges multiple packets and notifies the sender of gaps.
-Now the sender can get a `SACK` for packet 4 and 7. It then knows it needs to re-send packets 5 and 6.
+### Избирательные подтверждения
+Избирательные подтверждения - это улучшение обычных подтверждений. Получатель может отправить `SACK`, который подтверждает несколько пакетов и уведомляет отправителя о пропусках.
+Теперь отправитель может получить `SACK` для пакетов 4 и 7. Он знает, что ему нужно повторно отправить пакеты 5 и 6.
 
-### Negative Acknowledgments
-Negative Acknowledgments solve the problem the opposite way. Instead of notifying the sender what it has received, the receiver notifies the sender what has been lost. In our case a `NACK`
-will be sent for packets 5 and 6. The sender only knows packets the receiver wishes to have sent again.
+### Отрицательные подтверждения
+Отрицательные подтверждения решают проблему противоположным образом. Вместо уведомления отправителя о том, что он получил, получатель уведомляет отправителя о том, что было потеряно. В нашем случае `NACK` будет отправлен для пакетов 5 и 6. Отправитель знает только пакеты, которые получатель хочет, чтобы были отправлены снова.
 
-### Forward Error Correction
-Forward Error Correction fixes packet loss pre-emptively. The sender sends redundant data, meaning a lost packet doesn't affect the final stream. One popular algorithm for
-this is Reed–Solomon error correction.
+### Упреждающая коррекция ошибок
+Упреждающая коррекция ошибок исправляет потерю пакетов заблаговременно. Отправитель отправляет избыточные данные, что означает, что потерянный пакет не влияет на конечный поток. Один популярный алгоритм для этого - коррекция ошибок Рида-Соломона.
 
-This reduces the latency/complexity of sending and handling Acknowledgments. Forward Error Correction is a waste of bandwidth if the network you are in has zero loss.
+Это уменьшает задержку/сложность отправки и обработки подтверждений. Упреждающая коррекция ошибок - это напрасная трата пропускной способности, если в сети, в которой вы находитесь, нет потерь.
 
-## Solving Jitter
-Jitter is present in most networks. Even inside a LAN you have many devices sending data at fluctuating rates. You can easily observe jitter by pinging another device with the `ping` command and noticing the fluctuations in round-trip latency.
+## Решение джиттера
+Джиттер присутствует в большинстве сетей. Даже внутри локальной сети есть много устройств, отправляющих данные с колеблющимися скоростями. Вы легко можете наблюдать джиттер, пингуя другое устройство командой `ping` и замечая колебания круглого пути задержки.
 
-To solve jitter, clients use a JitterBuffer. The JitterBuffer ensures a steady delivery time of packets. The downside is that JitterBuffer adds some latency to packets that arrive early.
-The upside is that late packets don't cause jitter. Imagine that during a call, you see the following packet arrival times:
+Чтобы решить джиттер, клиенты используют JitterBuffer. JitterBuffer обеспечивает стабильное время доставки пакетов. Недостаток заключается в том, что JitterBuffer добавляет некоторую задержку к пакетам, которые прибывают рано. Преимущество в том, что поздние пакеты не вызывают джиттера. Представьте, что во время вызова вы видите следующие времена прибытия пакетов:
 
 ```
 * time=1.46 ms
@@ -131,48 +107,45 @@ The upside is that late packets don't cause jitter. Imagine that during a call, 
 * time=1.80 ms
 ```
 
-In this case, around 1.8 ms would be a good choice. Packets that arrive late will use our window of latency. Packets that arrive early will be delayed a bit and can
-fill the window depleted by late packets. This means we no longer have stuttering and provide a smooth delivery rate for the client.
+В этом случае около 1.8 мс было бы хорошим выбором. Пакеты, прибывающие поздно, будут использовать наш временной интервал задержки. Пакеты, прибывающие рано, будут немного задержаны и могут заполнить окно, истощенное поздними пакетами. Это означает, что мы больше не имеем заторов и обеспечиваем клиенту плавную скорость доставки.
 
-### JitterBuffer operation
+### Работа JitterBuffer
 
 ![JitterBuffer](../images/05-jitterbuffer.png "JitterBuffer")
 
-Every packet gets added to the jitter buffer as soon as it is received. 
-Once there are enough packets to reconstruct the frame, packets that make up the frame are released from the buffer and emitted for decoding.
-The decoder, in turn, decodes and draws the video frame on the user's screen.
-Since the jitter buffer has a limited capacity, packets that stay in the buffer for too long will be discarded.
+Каждый пакет добавляется в буфер джиттера сразу после получения.
+Как только накопится достаточно пакетов для реконструкции кадра, пакеты, составляющие кадр, освобождаются из буфера и выдаются для декодирования.
+Декодер, в свою очередь, декодирует и отрисовывает видеокадр на экране пользователя.
+Поскольку буфер джиттера имеет ограниченную емкость, пакеты, которые слишком долго остаются в буфере, будут отброшены.
 
-Read more on how video frames are converted to RTP packets, and why reconstruction is necessary [in the media communication chapter](../06-media-communication/#rtp).
+Подробнее о том, как видеокадры преобразуются в RTP-пакеты и почему необходима реконструкция, читайте [в главе о медиа-коммуникации](../06-media-communication/#rtp).
 
-`jitterBufferDelay` provides a great insight into your network performance and its influence on playback smoothness.
-It is a part of [WebRTC statistics API](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-jitterbufferdelay) relevant to the receiver's inbound stream.
-The delay defines the amount of time video frames spend in the jitter buffer before being emitted for decoding.
-A long jitter buffer delay means your network is highly congested.
+`jitterBufferDelay` предоставляет отличное представление о производительности вашей сети и ее влиянии на плавность воспроизведения.
+Это часть [API статистики WebRTC](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-jitterbufferdelay), относящаяся к входящему потоку получателя.
+Задержка определяет время, которое видеокадры проводят в буфере джиттера перед выдачей для декодирования.
+Длинная задержка буфера джиттера означает, что ваша сеть сильно перегружена.
 
-## Detecting Congestion
-Before we can even resolve congestion, we need to detect it. To detect it we use a congestion controller. This is a complicated subject, and is still rapidly changing.
-New algorithms are still being published and tested. At a high level they all operate the same. A congestion controller provides bandwidth estimates given some inputs.
-These are some possible inputs:
+## Обнаружение перегрузки
+Прежде чем мы сможем разрешить перегрузку, нам нужно ее обнаружить. Для этого мы используем контроллер перегрузки. Это сложный предмет, который все еще быстро меняется.
+Новые алгоритмы все еще публикуются и тестируются. На высоком уровне они все работают одинаково. Контроллер перегрузки предоставляет оценки пропускной способности по некоторым входным данным.
+Вот некоторые возможные входные данные:
 
-* **Packet Loss** - Packets are dropped as the network becomes congested.
-* **Jitter** - As network equipment becomes more overloaded packets queuing will cause the times to be erratic.
-* **Round Trip Time** - Packets take longer to arrive when congested. Unlike jitter, the Round Trip Time just keeps increasing.
-* **Explicit Congestion Notification** - Newer networks may tag packets as at risk for being dropped to relieve congestion.
+* **Потеря пакетов** - Пакеты сбрасываются по мере перегрузки сети.
+* **Джиттер** - По мере перегрузки сетевого оборудования, постановка пакетов в очередь вызывает их нерегулярность.
+* **Время круглого пути** - При перегрузке пакеты дольше прибывают. В отличие от джиттера, время круглого пути просто продолжает увеличиваться.
+* **Явное уведомление о перегрузке** - Новые сети могут помечать пакеты как подверженные риску сброса для облегчения перегрузки.
 
-These values need to be measured continuously during the call. Utilization of the network may increase or decrease, so the available bandwidth could constantly be changing.
+Эти значения необходимо измерять непрерывно во время вызова. Использование сети может увеличиваться или уменьшаться, поэтому доступная пропускная способность может постоянно меняться.
 
-## Resolving Congestion
-Now that we have an estimated bandwidth we need to adjust what we are sending. How we adjust depends on what kind of data we want to send.
+## Разрешение перегрузки
+Теперь, когда у нас есть оценка пропускной способности, нам нужно скорректировать то, что мы отправляем. Как мы корректируем, зависит от того, какие данные мы хотим отправить.
 
-### Sending Slower
-Limiting the speed at which you send data is the first solution to preventing congestion. The Congestion Controller gives you an estimate, and it is the
-sender's responsibility to rate limit.
+### Отправка медленнее
+Ограничение скорости, с которой вы отправляете данные, - первое решение для предотвращения перегрузки. Контроллер перегрузки дает вам оценку, и ответственность за ограничение скорости лежит на отправителе.
 
-This is the method used for most data communication. With protocols like TCP this is all done by the operating system and completely transparent to both users and developers.
+Этот метод используется для большинства коммуникаций с данными. С такими протоколами, как TCP, это все делается операционной системой и полностью прозрачно для пользователей и разработчиков.
 
-### Sending Less
-In some cases we can send less information to satisfy our limits. We also have hard deadlines on the arrival of our data, so we can't send slower. These are the constraints
-that Real-time media falls under.
+### Отправка меньшего количества
+В некоторых случаях мы можем отправлять меньше информации, чтобы удовлетворить наши ограничения. У нас также есть жесткие сроки доставки наших данных, поэтому мы не можем отправлять медленнее. Это ограничения, которые относятся к медиа в реальном времени.
 
-If we don't have enough bandwidth available, we can lower the quality of video we send. This requires a tight feedback loop between your video encoder and congestion controller.
+Если у нас недостаточно доступной пропускной способности, мы можем снизить качество отправляемого видео. Это требует тесной обратной связи между вашим видеокодировщиком и контроллером перегрузки.

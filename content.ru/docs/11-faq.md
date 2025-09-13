@@ -1,49 +1,39 @@
 ---
-title: FAQ
+title: Часто задаваемые вопросы
 type: docs
 weight: 12
 ---
 
-# FAQ
+# Часто задаваемые вопросы
 
-{{<details "Why does WebRTC use UDP?">}}
-NAT Traversal requires UDP. Without NAT Traversal establishing a P2P connection
-wouldn't be possible.  UDP doesn't provide "guaranteed delivery" like TCP, so WebRTC provides it at the
-user level.
+{{<details "Почему WebRTC использует UDP?">}}
+Обход NAT требует использования UDP. Без обхода NAT установление однорангового P2P-соединения было бы невозможно. UDP не обеспечивает "гарантированную доставку", как TCP, поэтому WebRTC реализует её на уровне пользователя.
 
-See [Connecting]({{< ref "03-connecting" >}}) for more info.
+Подробнее смотрите в разделе [Подключение]({{< ref "03-connecting" >}}).
 {{</details>}}
 
-{{<details "How many DataChannels can I have?">}}
-65534 channels as stream identifier has 16 bits. You can close and open a new one at any time.
+{{<details "Сколько каналов данных я могу иметь?">}}
+65534 канала, так как идентификатор потока имеет 16 бит. Вы можете закрывать и открывать новые каналы в любое время.
 {{</details>}}
 
-{{<details "Does WebRTC impose bandwidth limits?">}}
-Both DataChannels and RTP use congestion control. This means that WebRTC actively measures
-your bandwidth and attempts to use the optimal amount. It is a balance between sending as much
-as possible, without overwhelming the connection.
+{{<details "Налагает ли WebRTC ограничения пропускной способности?">}}
+Как каналы данных, так и RTP используют контроль перегрузки. Это означает, что WebRTC активно измеряет вашу пропускную способность и пытается использовать оптимальное количество. Это баланс между отправкой максимально возможного объема данных без перегрузки соединения.
 {{</details>}}
 
-{{<details "Can I send binary data?">}}
-Yes, you can send both text and binary data via DataChannels.
+{{<details "Могу ли я отправлять бинарные данные?">}}
+Да, вы можете отправлять как текстовые, так и бинарные данные через каналы данных.
 {{</details>}}
 
-{{<details "What latency can I expect with WebRTC?">}}
-For un-tuned media, you can expect sub-500 milliseconds. If you are willing to tune or sacrifice quality
-for latency, developers have gotten sub-100ms latency.
+{{<details "Какую задержку можно ожидать с WebRTC?">}}
+Для немного настроенных медиа можно ожидать задержку менее 500 миллисекунд. Если вы готовы настраивать или жертвовать качеством ради задержки, разработчики добивались задержки менее 100 миллисекунд.
 
-DataChannels support "Partial-reliability" option which can reduce latency caused by
-data retransmissions over a lossy connection. If configured properly, it has been shown to beat TCP TLS connections.
+Каналы данных поддерживают опцию "частичной надежности", которая может уменьшить задержку, вызванную повторной передачей данных по ненадежному соединению. При правильной настройке было показано, что это превосходит TCP TLS-соединения.
 {{</details>}}
 
-{{<details "Why would I want unordered delivery for DataChannels?">}}
-When newer information obsoletes the old such as positional information of an
-object, or each message is independent from the others and need to avoid
-head-of-line blocking delay.
+{{<details "Зачем нужна внеочередная доставка для каналов данных?">}}
+Когда более новая информация делает старую устаревшей, например, информация о положении объекта, или когда каждое сообщение независимо от других и нужно избежать задержки блокировки первого в очереди.
 {{</details>}}
 
-{{<details "Can I send audio or video over a DataChannel?">}}
-Yes, you can send any data over a DataChannel. In the browser case, it will be your
-responsibility to decode the data and pass it to a media player for rendering,
-while all of that is done automatically if you use media channels.
+{{<details "Могу ли я отправлять аудио или видео через канал данных?">}}
+Да, вы можете отправлять любые данные через канал данных. В случае браузера вы будете сами отвечать за декодирование данных и передачу их медиаплееру для воспроизведения, в то время как при использовании медиаканалов все это происходит автоматически.
 {{</details>}}
