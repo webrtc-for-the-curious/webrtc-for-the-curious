@@ -50,6 +50,10 @@ Vi kommer att gå igenom alla dessa steg i detalj senare, men det är bra att f�
 
 När en WebRTC-agent startar har den ingen aning om vem den ska kommunicera med och vad de ska kommunicera om. Signalering löser problemet! Signalering används för att starta samtalet så att två WebRTC-agenter kan börja kommunicera.
 
+<!-- Källkod för diagrammet:
+https://www.mermaidchart.com/d/f366d7bf-a952-46b3-b7e7-c09c00b19d5a -->
+![Översikt av signaleringssekvens](../../images/01-signaling-sequence-overview.png "Översikt av signaleringssekvens")
+
 Signalering använder ett befintligt protokoll SDP (Session Description Protocol). SDP är ett enkelt textbaserat protokoll. Varje SDP-meddelande består av nyckel/värdepar och innehåller en lista med "media sections". SDP:n som de två WebRTC agenterna utbyter innehåller detaljer som:
 
 * IP-adresser och portar som agenten kan nås på (kandidater).
@@ -58,13 +62,13 @@ Signalering använder ett befintligt protokoll SDP (Session Description Protocol
 * Värden som används vid anslutning (`uFrag`/`uPwd`).
 * Värden som används vid säkringen (certifikatfingeravtryck).
 
-Observera att signalering vanligtvis sker i en separat kanal (out-of-band); applikationer använder i allmänhet inte WebRTC för att skicka signalmeddelanden. Vilken arkitektur som helst som är lämplig för att skicka meddelanden kan användas för att vidarebefordra SDP:erna mellan de anslutande parterna. Många applikationer använder sin befintliga infrastruktur (som REST-API:er, WebSocket-anslutningar eller autentiserande proxys) för att på enklaste sätt utbyta SDP:er mellan rätt klienter.
+Observera att signalering vanligtvis sker i en separat kanal (out-of-band); applikationer använder i allmänhet inte WebRTC för att skicka signalmeddelanden. Vilken arkitektur som helst som är lämplig för att skicka meddelanden kan användas för att vidarebefordra SDP:erna mellan de anslutande parterna. Många applikationer använder sin befintliga infrastruktur (som REST-API:er, WebSocket-anslutningar eller autentiserande proxys) för att underlätta utbytet av SDP:er mellan rätt klienter.
 
 ### Anslutning och NAT Traversal med STUN/TURN
 
 När de två WebRTC-agenterna utbytt SDP:er har de nu tillräckligt med detaljer för att försöka ansluta till varandra. För att göra det använder WebRTC en annan etablerad teknik som kallas ICE (Interactive Connectivity Establishment).
 
-ICE är ett protokoll som skapades före WebRTC och. ICE används för att upprätta en anslutning mellan två agenter. Dessa agenter kan vara i samma nätverk eller på andra sidan världen.
+ICE är ett protokoll som skapades före WebRTC och möjliggör upprättande av en direkt anslutning mellan två agenter utan en central server. Dessa agenter kan vara i samma nätverk eller på andra sidan världen.
 
 ICE är används för att skapa en direktanslutning utan att gå via en central server. Den verkliga magin här är "NAT Traversal" och STUN/TURN-servrar. Dessa två begrepp, som vi kommer att utforska djupare senare, är allt du behöver för att kommunicera med en ICE-agent i ett annat sub-nät.
 
@@ -74,11 +78,11 @@ När de två agenterna väl har anslutits går WebRTC vidare till nästa steg; a
 
 Nu när vi har dubbelriktad kommunikation (via ICE) måste vi sätta upp en säker kommunikationskanal. Detta görs genom två andra protokoll som också är äldre än WebRTC; DTLS (Datagram Transport Layer Security) och SRTP (Secure Real-time Transport Protocol). Det första protokollet, DTLS är helt enkelt TLS över UDP. (TLS är det kryptografiska protokollet som används för att säkra kommunikation via HTTPS). Det andra protokollet, SRTP, används för att kryptera RTP (Real-time Protocol) data paket.
 
-Först ansluter WebRTC genom att göra en DTLS-handskakning över anslutningen som upprättats av ICE. Till skillnad från HTTPS använder WebRTC inte en centraliserad Certificate Authority för certifikatet. Istället verifierar WebRTC bara att certifikatet som utbyts via DTLS matchar. Denna DTLS-anslutning används sedan för DataChannel-meddelanden.
+Först ansluter WebRTC genom att göra en DTLS-handskakning över anslutningen som upprättats av ICE. Till skillnad från HTTPS använder WebRTC inte en centraliserad Certificate Authority för certifikatet. Istället verifierar WebRTC bara att certifikatet som utbyts via DTLS matchar fingeravtrycket som delades via signalering. Denna DTLS-anslutning används sedan för DataChannel-meddelanden.
 
 WebRTC använder sedan ett annat protokoll för ljud- och video-överföring som heter RTP. Vi skyddar våra RTP-paket med SRTP. Vi initierar vår SRTP-session genom att extrahera nycklarna från den förhandlade DTLS-sessionen. 
 
-Vi kommer att gå igenom varför medieöverföring har ett eget protokoll i ett senare kapitel, men just nu räcker det att veta add de hanteras separat.
+Vi kommer att gå igenom varför medieöverföring har ett eget protokoll i ett senare kapitel, men just nu räcker det att veta att de hanteras separat.
 
 Nu är vi klara! Vi har nu satt upp dubbelriktad och säker kommunikation. Om du har en stabil anslutning mellan dina WebRTC-agenter är det här all komplexitet du behöver. Tyvärr har den verkliga världen andra problem som paketförlust och brist på bandbredd. Nästa avsnitt handlar om hur vi hanterar dem.
 

@@ -127,7 +127,7 @@ flexibilitet tillåter oss att implementera båda.
 En-till-en är den första anslutningstypen du använder med WebRTC. Du ansluter två WebRTC-agenter direkt och de kan skicka dubbelriktad media och data.
 Anslutningen ser ut så här.
 
-![En-till-en](../images/08-one-to-one.png "En-till-en")
+![En-till-en](../../images/08-one-to-one.png "En-till-en")
 
 ### Full Mesh
 Full mesh är svaret om du vill bygga ett konferenssamtal eller ett multiplayer-spel. I denna topologi upprättar varje användare en anslutning
