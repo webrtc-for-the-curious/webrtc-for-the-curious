@@ -51,7 +51,7 @@ Vi kommer att gå igenom alla dessa steg i detalj senare, men det är bra att f�
 När en WebRTC-agent startar har den ingen aning om vem den ska kommunicera med och vad de ska kommunicera om. Signalering löser problemet! Signalering används för att starta samtalet så att två WebRTC-agenter kan börja kommunicera.
 
 <!-- Källkod för diagrammet:
-https://mermaid.live/edit#pako:eNq9U7FOwzAQ_ZWTF5a0A2OEKgFlYECKCBISynKxL4lFcg62U6iq_jvnpCBUsUIm-51z7z373UFpZ0jlKtDbRKxpa7H1OFQM8qGOzsN1bzUtwIg-Wm1H5AilbRl7y21JfkceMMDdhw1RENBuGCa2GqN1fFX7je6QmfoMaN2uE4AQ7DD2BDXq1xWxgTC3yVJRSGlHDDSg7X9KuXH1sp01rTabMxH5UrgIUG4LcE0jUGrYib77YoXGeAoBUOhG5-NMJq79fkxCQZPYa5JsShVopDH50VuOojzq9UJ-RioyRNf_UAvRb64FPhEjh_eEzNQ2_Knr2fD_kJ_ee77nrfWkIzxT_fh0C8VlIXGTcOnUr2KVqYG8BMdIqg_p70rFjgaqVC5LQw1OfaxUxUc5ilN05Z61yqOfKFPeTW2n8gb7ILtpNKLrNBLfKBkrWXxY5mYen0zJRLw493Xm-AnVWCmE -->
+https://www.mermaidchart.com/d/f366d7bf-a952-46b3-b7e7-c09c00b19d5a -->
 ![Översikt av signaleringssekvens](../../images/01-signaling-sequence-overview.png "Översikt av signaleringssekvens")
 
 Signalering använder ett befintligt protokoll SDP (Session Description Protocol). SDP är ett enkelt textbaserat protokoll. Varje SDP-meddelande består av nyckel/värdepar och innehåller en lista med "media sections". SDP:n som de två WebRTC agenterna utbyter innehåller detaljer som:
