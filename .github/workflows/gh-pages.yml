@@ -28,19 +28,19 @@ jobs:
       - name: Build
         run: hugo --minify
 
-      - uses: docker://pandoc/latex:3.3
+      - uses: docker://pandoc/latex:3.8
         with:
           args: --output=public/docs/webrtc-for-the-curious.pdf --resource-path=.:./content:./content/docs/images --toc ${{ env.FILELIST }} .pandoc/metadata_pdf_en.txt
-          
-      - uses: docker://pandoc/latex:3.3
+
+      - uses: docker://pandoc/latex:3.8
         with:
           args: --output=public/docs/webrtc-for-the-curious.epub --resource-path=.:./content:./content/images --toc ${{ env.FILELIST }} .pandoc/metadata_en.txt
 
-      - uses: docker://pandoc/latex:3.3
+      - uses: docker://pandoc/latex:3.8
         with:
           args: --output=public/docs/webrtc-for-the-curious-sv.pdf --resource-path=.:./content.sv:./content.sv/docs/images --toc ${{ env.FILELIST_SV }} .pandoc/metadata_pdf_sv.txt
 
-      - uses: docker://pandoc/latex:3.3
+      - uses: docker://pandoc/latex:3.8
         with:
           args: --output=public/docs/webrtc-for-the-curious-sv.epub --resource-path=.:./content.sv:./content.sv/docs/images --toc ${{ env.FILELIST_SV }} .pandoc/metadata_sv.txt
 
