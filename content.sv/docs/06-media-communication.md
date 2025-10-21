@@ -188,7 +188,7 @@ RTP och RTCP arbetar sedan tillsammans för att lösa alla problem som orsakas a
 ### Vidarekorrigering av fel
 Även känd som Forward Error Correction (FEC). En annan metod för att hantera paketförlust. FEC är när du skickar samma data flera gånger, utan att det ens begärs. Detta görs på RTP-nivå, eller till och med lägre nivå via kodeken.
 
-Om paketförlusten för ett samtal är stabil get FEC en mycket lägre latens än NACK. Tur-och-returtiden för att begära och sedan skicka om ett paketet kan vara ganska stor när man använder NACK.
+Om paketförlusten för ett samtal är stabil ger FEC en mycket lägre latens än NACK. Tur-och-returtiden för att begära och sedan skicka om ett paketet kan vara ganska stor när man använder NACK.
 
 ### Adaptiv bittakt och uppskattning av bandbredd
 Nätverk är oförutsägbara och opålitliga, som vi tidigare diskuterade i kapitlet om [Realtidsnätverk](../05-real-time-networking/). Bandbredds tillgänglighet kan ändras flera gånger under en session.
@@ -217,8 +217,8 @@ Det finns två primära mål för dessa protokoll:
 2. Kommunicera nätverksegenskaper mellan avsändare och mottagare.
 
 RTP/RTCP har tre olika tillvägagångssätt för att lösa detta problem. De har alla sina för- och nackdelar,
-och i allmänhet har varje generation förbättrats jämfört med sina föregångare. Vilken implementation du använder beror
-i första hand på vilken mjukvara som är tillgänglig för dina klienter och vilka bibliotek som är tillgängliga för
+och i allmänhet har varje generation förbättrats jämfört med sina föregångare. Vilken implementation du använder beror på
+i första hand vilken mjukvara som är tillgänglig för dina klienter och vilka bibliotek som är tillgängliga för
 dig för att bygga din applikation.
 
 ### Mottagar- och Avsändarrapporter
