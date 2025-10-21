@@ -13,7 +13,7 @@ applikationsnivån istället.
 Se [Connecting]({{< ref "03-connecting" >}}) för mer info.
 {{</details>}}
 
-{{<details "Hut många DataChannels kan jag ha?">}}
+{{<details "Hur många DataChannels kan jag ha?">}}
 65534 kanaler, eftersom strömidentifieraren har 16 bitar. Du kan när som helst stänga eller öppna nya kanaler.
 {{</details>}}
 
@@ -28,7 +28,7 @@ Ja, du kan skicka både text och binär data över DataChannels.
 {{</details>}}
 
 {{<details "Vilken latens kan jag förvänta mig från WebRTC?">}}
-För icke-optimerad media kan du förvänta dig under 500 millisekunder. Om du tar dig tid att optimera videon eller kan tumma lite på kvalitèten
+För icke-optimerad media kan du förvänta dig under 500 millisekunder. Om du tar dig tid att optimera videon eller kan tumma lite på kvaliteten
 och istället optimera för latens, har utvecklare fått ner den under 100 ms.
 
 DataChannels har alternativet "partiell tillförlitlighet", vilket kan minska latens orsakad av

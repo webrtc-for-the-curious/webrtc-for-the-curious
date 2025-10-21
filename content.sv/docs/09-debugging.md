@@ -45,7 +45,7 @@ Testa din STUN-server med netcat:
 
    Förklaring:
     - `01 01` är meddelandetypen.
-    - `00 0c` är längden på datan, i det hör fallet 12 i decimaltal.
+    - `00 0c` är längden på datan, i det här fallet 12 i decimaltal.
     - `21 12 a4 42` är den magiska kakan.
     - och `54 45 53 54 54 45 53 54 54 45 53 54` (I ASCII: `TESTTESTTEST`) är ett 12-bitars transaktions-ID
     - `00 20 00 08 00 01 6f 32 7f 36 de 89` de 12-bitarna med data, som översatt blir:
@@ -69,7 +69,7 @@ XOR på en magiska kakan med bara nollor ändrar inget, så porten och adressen 
 
   - `00 01 4e 20 5e 24 7a cb` data värdet, som översatt blir:
     - `00 01` adresstyp (IPv4)
-    - `4e 20` portwn, i det hör fallet 20000 i decimal tal.
+    - `4e 20` porten, i det här fallet 20000 i decimaltal.
     - `5e 24 7a cb` är IP adressen, `94.36.122.203` i mer lättläst form.
 
 ### Säkerhetsfel
@@ -292,7 +292,7 @@ Se till att din kodare inte använder för många I-bilder eller förlitar dig p
 Varje codecs inställningar för latensinställning är olika, men för x264 rekommenderar vi att du använder `tune=zerolatency` och `profile=baseline` för få så låg latens som möjligt.
 
 #### Nätverksfördröjning
-Nätverksfördröjningar är nog det kan göra minst åt, förutom att uppgradera till en bättre internetanslutning.
+Nätverksfördröjningar är nog det du kan göra minst åt, förutom att uppgradera till en bättre internetanslutning.
 Nätverksfördröjningar är ungefär som vädret - du kan inte stoppa regnet, men du kan kolla prognosen och ta med ett paraply.
 WebRTC mäter nätverksförhållanden med millisekundprecision.
 Viktiga mätvärden är:

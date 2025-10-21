@@ -9,7 +9,7 @@ weight: 8
 ## Vad får jag från WebRTCs datakommunikation?
 
 WebRTC tillhandahåller datakanaler för datakommunikation. Mellan två klienter kan du öppna 65534 datakanaler.
-En datakanal är UDP-baserad och alla har sina egna hållbarhetsinställningar. Som standard har varje data kanal garanterad leveransordning på skickade paket.
+En datakanal är UDP-baserad och alla har sina egna hållbarhetsinställningar. Som standard har varje datakanal garanterad leveransordning på skickade paket.
 
 Om du närmar dig WebRTC från ett mediabakgrund kan datakanaler verka slösaktiga. Varför använda hela detta delsystem när du bara kan använda HTTP eller WebSockets?
 
@@ -191,7 +191,7 @@ Flaggorna `B` och `E` och sekvensnummret är hur SCTP kommunicerar detta.
 `TSN` är sändningssekvensnumret. Det är det globala unika
 identifierare för detta meddelande. Efter 4 294 967 295 DATA-avsnitt börjar räknaren om.
 Om ett meddelande fragmenterats till flera DATA-avsnitt, uppdateras sändningssekvensnumret
-för varje DATA-avsnitt så att mottagaren kan återskapa det usprungliga meddelandet korrekt.
+för varje DATA-avsnitt så att mottagaren kan återskapa det ursprungliga meddelandet korrekt.
 
 `Stream Identifier` är det unika IDt för strömmen som den här datan tillhör.    
 

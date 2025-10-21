@@ -147,7 +147,7 @@ du kunde spela upp det, men det kunde göras i mjukvara när man förstått
 hur ljud-samplingen fungerade. Den ljudapplikationen ledde mig till att 
 arbeta med MBONE och så småningom gå från ljud till video med “nv”.
 
-###Har något som utelämnats från protokollet som du önskar att du hade lagt till? Är det något i protokollet du ångrar?
+### Har något som utelämnats från protokollet som du önskar att du hade lagt till? Är det något i protokollet du ångrar?
 
 Jag skulle inte säga att jag ångrar det, men ett vanligt klagomål som människor 
 har om RTP är komplexiteten i att implementera RTCP, kontrollprotokollet
