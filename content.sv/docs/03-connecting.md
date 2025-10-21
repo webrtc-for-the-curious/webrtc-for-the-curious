@@ -176,7 +176,7 @@ Tyvärr kan en "mappad adress" kanske ändå inte vara användbar. Om reglerna �
 [RFC 5780](https://tools.ietf.org/html/rfc5780) definierar en metod för att göra ett test för att lista ut din NAT-typ. Detta är användbart eftersom du kan veta i förväg om direktanslutning var möjlig.
 
 ## TURN
-TURN (Traversal Using Relays around NAT) definieras i [RFC 8656] (https://tools.ietf.org/html/rfc8656) är lösningen när direktanslutning inte är möjlig. Det kan bero på att du har två NAT-typer som är oförenliga eller kanske inte kan tala samma protokoll! TURN kan också användas för sekretessändamål. Genom att köra all din kommunikation genom TURN döljer du klientens faktiska adress.
+TURN (Traversal Using Relays around NAT) definieras i [RFC 8656](https://tools.ietf.org/html/rfc8656) är lösningen när direktanslutning inte är möjlig. Det kan bero på att du har två NAT-typer som är oförenliga eller kanske inte kan tala samma protokoll! TURN kan också användas för sekretessändamål. Genom att köra all din kommunikation genom TURN döljer du klientens faktiska adress.
 
 TURN använder en dedikerad server. Denna server fungerar som en proxy för en klient. Klienten ansluter till en TURN-server och skapar en allokering (`Allocation`). Genom att skapa en allokering får en klient en tillfällig IP/port/protokoll som kan användas för att skicka trafik tillbaka till klienten. Den här nya lyssnaren kallas en `Relayed Transport Address`. Tänk på det som en vidarebefordringsadress, du använder den så att andra kan skicka dig trafik via TURN! För varje klient du ger din `Relay Transport Address` till måste du skapa ett nytt "tillstånd" (`Permission`) för att tillåta kommunikation med dig.
 
@@ -194,7 +194,7 @@ När du skapar en tilldelning måste du ange följande:
 * Even-Port - Du kan begära sekventiella portar för flera tilldelningar, inte relevanta för WebRTC.
 
 Om begäran lyckades får du svar med TURN-servern med följande STUN-attribut i Data-sektionen:
-* `XOR-MAPPED-ADRESS` - `Mappad adress` för din `TURN Client`. När någon skickar data till "Relayed Transport Address", vidarebefordras den till.
+* `XOR-MAPPED-ADRESS` - `Mappad adress` för din `TURN Client`. När någon skickar data till "Relayed Transport Address", vidarebefordras den dit.
 * `RELAYED-ADRESS` - Det här är adressen som du ger ut till andra klienter. Om någon skickar ett paket till den här adressen vidarebefordras det till TURN-klienten.
 * `LIFETIME`- Hur länge tills denna TURN-fördelning tas bort. Du kan förlänga livslängden genom att skicka ett uppdaterings anrop (`Refresh`).
 
@@ -279,7 +279,7 @@ Visuellt ser det ut så här:
 ![Anslutningskontroller](../../images/03-connectivity-checks.png "Anslutningskontroller")
 
 ### Kandidatval
-Den kontrollerande och kontrollerade agenten skickar a trafik över varje par. Detta behövs om en agent står bakom en "adressberoende mappning" (`Address Dependent Mapping`). Detta kommer att skapa en ny "peer reflexive kandidat".
+Den kontrollerande och kontrollerade agenten skickar all trafik över varje par. Detta behövs om en agent står bakom en "adressberoende mappning" (`Address Dependent Mapping`). Detta kommer att skapa en ny "peer reflexive kandidat".
 
 Varje "kandidatpar" (`Candidate Pair`) som lyckades skicka nätverkstrafik befordras till ett "giltigt kandidatpar". Den kontrollerande agenten nominerar sedan ett giltigt kandidatpart. Detta blir det "nominerade paret". Den kontrollerande och kontrollerade agenten försöker sedan ytterligare en runda dubbelriktad kommunikation. Om det lyckas blir det "nominerade paret" det "utvalda kandidatparet" (`Selected Candidate Pair`)! Detta par används sedan under resten av sessionen.
 

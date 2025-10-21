@@ -36,7 +36,7 @@ Ett enkelt chiffer är ROT13. Varje bokstav flyttas 13 tecken framåt. För att 
 ### Hashfunktioner
 Hash är en enkelriktad funktion som genererar en kontrollsumma. Från samma meddelande genererar den samma kontrollsumma varje gång. Det är viktigt att funktionen *inte* är reversibel. Om du har en kontrollsumma ska du inte kunna lista ut meddelandet som den genererades från. Hashing är användbart när du vill bekräfta att ett meddelande inte har manipulerats.
 
-En enkel hash funktion skulle vara att bara ta varannan bokstav. `HEJSAN` skulle bli `HJA`. Du kan inte anta att `HEJSAN` var ingången, men du kan bekräfta att `HEJSAN` skulle vara en matcha kontrollsumman.
+En enkel hash funktion skulle vara att bara ta varannan bokstav. `HEJSAN` skulle bli `HJA`. Du kan inte anta att `HEJSAN` var ingången, men du kan bekräfta att `HEJSAN` skulle matcha kontrollsumman.
 
 ### Kryptografi för offentlig / privat nyckel
 Public/Private Key Cryptography beskriver vilken typ av kod som DTLS och SRTP använder. I det här systemet har du två nycklar, en offentlig och en privat nyckel. Den offentliga nyckeln är för kryptering av meddelanden och är säker att dela.
@@ -59,7 +59,7 @@ Låt oss säga att du får en nyckel som är 8 byte. Du kan använda en KDF för
 ### Nonce
 En nonce är ytterligare indata till ett chiffer. Detta är så att du kan få olika utdata från krypteringen, även om du krypterar samma meddelande flera gånger.
 
-Om du krypterar samma meddelande tio gånger kommer krypteringen att ge dig samma kryptotext 10 gånger. Genom att använda ett nonce kan du få olika indata medan du fortfarande använder samma nyckel. Det är viktigt att du använder ett nytt nonce för varje meddelande! Annars ger det ger det inte någon extra säkerhet.
+Om du krypterar samma meddelande tio gånger kommer krypteringen att ge dig samma kryptotext 10 gånger. Genom att använda ett nonce kan du få olika indata medan du fortfarande använder samma nyckel. Det är viktigt att du använder ett nytt nonce för varje meddelande! Annars ger det inte någon extra säkerhet.
 
 ### Meddelandeautentiseringskod
 En meddelandeautentiseringskod (Message Authentication Code) är en hash som placeras i slutet av ett meddelande. En MAC visar att meddelandet kommer från den användare du förväntade dig.
@@ -118,7 +118,7 @@ ServerHello är svaret från servern för konfigurationen av sessionen. Den inne
 Certifikatet (Certificate) innehåller certifikatet för klienten eller servern. Detta används för att unikt identifiera vem vi kommunicerade med. Efter att handskakningen är över ser vi till att detta certifikat när det hashas matchar fingeravtrycket i `SessionDescription`.
 
 #### ServerKeyExchange/ClientKeyExchange
-Dessa meddelanden används för att överföra den offentliga nyckeln. Vid start genererar klienten och servern båda ett knappsats. Efter handskakningen kommer dessa värden att användas för att generera en `Pre-Master Secret`.
+Dessa meddelanden används för att överföra den offentliga nyckeln. Vid start genererar klienten och servern båda ett nyckelpar. Efter handskakningen kommer dessa värden att användas för att generera en `Pre-Master Secret`.
 
 #### CertificateRequest
 En CertificateRequest skickas av servern som meddelar klienten att den vill ha ett certifikat. Servern kan antingen begära eller kräva ett certifikat.
@@ -146,7 +146,7 @@ Resultatet från att köra pseudorandom-funktionen är vår `Master Secret` som 
 ### Utbyta applikationsdata
 Arbetshästen för DTLS är `ApplicationData`. Nu när vi har ett initialiserat chiffer kan vi börja kryptera och skicka data.
 
-Meddelanden med `applikationsdata` använder den DTLS-header vi beskrev tidigare. Datan är skickas som krypterad text. Du har nu en fungerande DTLS-session och kan kommunicera säkert.
+Meddelanden med `applikationsdata` använder den DTLS-header vi beskrev tidigare. Datan skickas som krypterad text. Du har nu en fungerande DTLS-session och kan kommunicera säkert.
 
 DTLS har många fler intressanta funktioner som till exempel omförhandling (renegotiation). Men eftersom de inte används i WebRTC hoppar vi över det.
 
