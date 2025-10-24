@@ -1,39 +1,39 @@
 ---
-title: Data Communication
+title: Comunicación de Datos
 type: docs
 weight: 8
 ---
 
-# Data Communication
+# Comunicación de Datos
 
-## What do I get from WebRTC's data communication?
+## ¿Qué obtengo de la comunicación de datos de WebRTC?
 
-WebRTC provides data channels for data communication. Between two peers you can open 65,534 data channels.
-A data channel is datagram based, and each has its own durability settings. By default, each data channel has guaranteed ordered delivery.
+WebRTC proporciona canales de datos para la comunicación de datos. Entre dos pares puedes abrir 65,534 canales de datos.
+Un canal de datos está basado en datagramas, y cada uno tiene su propia configuración de durabilidad. Por defecto, cada canal de datos tiene entrega ordenada garantizada.
 
-If you are approaching WebRTC from a media background data channels might seem wasteful. Why do I need this whole subsystem when I could just use HTTP or WebSockets?
+Si te acercas a WebRTC desde un trasfondo de medios, los canales de datos pueden parecer derro chadores. ¿Por qué necesito todo este subsistema cuando podría simplemente usar HTTP o WebSockets?
 
-The real power with data channels is that you can configure them to behave like UDP with unordered/lossy delivery.
-This is necessary for low latency and high performance situations. You can measure the backpressure and ensure you are only sending as much as your network supports.
+El verdadero poder de los canales de datos es que puedes configurarlos para que se comporten como UDP con entrega desordenada/con pérdida.
+Esto es necesario para situaciones de baja latencia y alto rendimiento. Puedes medir la contrapresión y asegurarte de que solo estás enviando tanto como tu red soporta.
 
-## How does it work?
-WebRTC uses the Stream Control Transmission Protocol (SCTP), defined in [RFC 4960](https://tools.ietf.org/html/rfc4960). SCTP is a
-transport layer protocol that was intended as an alternative to TCP or UDP. For WebRTC we use it as an application layer protocol which runs over our DTLS connection.
+## ¿Cómo funciona?
+WebRTC usa el Protocolo de Transmisión de Control de Flujo (SCTP), definido en [RFC 4960](https://tools.ietf.org/html/rfc4960). SCTP es un
+protocolo de capa de transporte que fue concebido como una alternativa a TCP o UDP. Para WebRTC lo usamos como un protocolo de capa de aplicación que se ejecuta sobre nuestra conexión DTLS.
 
-SCTP gives you streams and each stream can be configured independently. WebRTC data channels are just thin abstractions around them. The settings
-around durability and ordering are just passed right into the SCTP Agent.
+SCTP te da flujos y cada flujo puede ser configurado independientemente. Los canales de datos de WebRTC son solo abstracciones delgadas sobre ellos. Las configuraciones
+sobre durabilidad y ordenamiento se pasan directamente al Agente SCTP.
 
-Data channels have some features that SCTP can't express, like channel labels. To solve that WebRTC uses the Data Channel Establishment Protocol (DCEP)
-which is defined in [RFC 8832](https://tools.ietf.org/html/rfc8832). DCEP defines a message to communicate the channel label and protocol.
+Los canales de datos tienen algunas características que SCTP no puede expresar, como etiquetas de canal. Para resolver eso, WebRTC usa el Protocolo de Establecimiento de Canal de Datos (DCEP)
+que está definido en [RFC 8832](https://tools.ietf.org/html/rfc8832). DCEP define un mensaje para comunicar la etiqueta del canal y el protocolo.
 
 ## DCEP
-DCEP only has two messages `DATA_CHANNEL_OPEN` and `DATA_CHANNEL_ACK`. For each data channel that is opened the remote must respond with an ack.
+DCEP solo tiene dos mensajes `DATA_CHANNEL_OPEN` y `DATA_CHANNEL_ACK`. Para cada canal de datos que se abre, el remoto debe responder con un acuse de recibo.
 
 ### DATA_CHANNEL_OPEN
-This message is sent by the WebRTC Agent that wishes to open a channel.
+Este mensaje es enviado por el Agente WebRTC que desea abrir un canal.
 
-#### Packet Format
-```
+#### Formato de Paquete
+\`\`\`
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -51,114 +51,114 @@ This message is sent by the WebRTC Agent that wishes to open a channel.
 /                            Protocol                           /
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-```
+\`\`\`
 
-#### Message Type
-Message Type is a static value of `0x03`.
+#### Tipo de Mensaje
+El Tipo de Mensaje es un valor estático de \`0x03\`.
 
-#### Channel Type
-Channel Type controls durability/ordering attributes of the channel. It may have the following values:
+#### Tipo de Canal
+El Tipo de Canal controla los atributos de durabilidad/ordenamiento del canal. Puede tener los siguientes valores:
 
-* `DATA_CHANNEL_RELIABLE` (`0x00`) - No messages are lost and will arrive in order
-* `DATA_CHANNEL_RELIABLE_UNORDERED` (`0x80`) - No messages are lost, but they may arrive out of order.
-* `DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT` (`0x01`) - Messages may be lost after trying the requested amount of times, but they will arrive in order.
-* `DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT_UNORDERED` (`0x81`) - Messages may be lost after trying the requested amount of times and may arrive out of order.
-* `DATA_CHANNEL_PARTIAL_RELIABLE_TIMED` (`0x02`) - Messages may be lost if they don't arrive in the requested amount of time, but they will arrive in order.
-* `DATA_CHANNEL_PARTIAL_RELIABLE_TIMED_UNORDERED` (`0x82`) - Messages may be lost if they don't arrive in the requested amount of time and may arrive out of order.
+* \`DATA_CHANNEL_RELIABLE\` (\`0x00\`) - No se pierden mensajes y llegarán en orden
+* \`DATA_CHANNEL_RELIABLE_UNORDERED\` (\`0x80\`) - No se pierden mensajes, pero pueden llegar fuera de orden.
+* \`DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT\` (\`0x01\`) - Los mensajes pueden perderse después de intentar la cantidad de veces solicitada, pero llegarán en orden.
+* \`DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT_UNORDERED\` (\`0x81\`) - Los mensajes pueden perderse después de intentar la cantidad de veces solicitada y pueden llegar fuera de orden.
+* \`DATA_CHANNEL_PARTIAL_RELIABLE_TIMED\` (\`0x02\`) - Los mensajes pueden perderse si no llegan en la cantidad de tiempo solicitada, pero llegarán en orden.
+* \`DATA_CHANNEL_PARTIAL_RELIABLE_TIMED_UNORDERED\` (\`0x82\`) - Los mensajes pueden perderse si no llegan en la cantidad de tiempo solicitada y pueden llegar fuera de orden.
 
-#### Priority
-The priority of the data channel. Data channels having a higher priority will be scheduled first. Large lower-priority user messages will not delay the sending of higher-priority user messages.
+#### Prioridad
+La prioridad del canal de datos. Los canales de datos con mayor prioridad se programarán primero. Los mensajes de usuario de prioridad más baja y de gran tamaño no retrasarán el envío de mensajes de usuario de mayor prioridad.
 
-#### Reliability Parameter
-If the data channel type is `DATA_CHANNEL_PARTIAL_RELIABLE`, the suffixes configures the behavior:
+#### Parámetro de Confiabilidad
+Si el tipo de canal de datos es \`DATA_CHANNEL_PARTIAL_RELIABLE\`, los sufijos configuran el comportamiento:
 
-* `REXMIT` - Defines how many times the sender will re-send the message before giving up.
-* `TIMED` - Defines for how long time (in ms) the sender will re-send the message before giving up.
+* \`REXMIT\` - Define cuántas veces el remitente reintentará enviar el mensaje antes de rendirse.
+* \`TIMED\` - Define durante cuánto tiempo (en ms) el remitente reintentará enviar el mensaje antes de rendirse.
 
-#### Label
-A UTF-8-encoded string containing the name of the data channel. This string may be empty.
+#### Etiqueta
+Una cadena codificada en UTF-8 que contiene el nombre del canal de datos. Esta cadena puede estar vacía.
 
-#### Protocol
-If this is an empty string, the protocol is unspecified. If it is a non-empty string, it should specify a protocol registered in the "WebSocket Subprotocol Name Registry", defined in [RFC 6455](https://tools.ietf.org/html/rfc6455#page-61).
+#### Protocolo
+Si es una cadena vacía, el protocolo no está especificado. Si es una cadena no vacía, debe especificar un protocolo registrado en el "WebSocket Subprotocol Name Registry", definido en [RFC 6455](https://tools.ietf.org/html/rfc6455#page-61).
 
 ### DATA_CHANNEL_ACK
-This message is sent by the WebRTC Agent to acknowledge that this data channel has been opened.
+Este mensaje es enviado por el Agente WebRTC para reconocer que este canal de datos ha sido abierto.
 
-#### Packet Format
-```
+#### Formato de Paquete
+\`\`\`
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |  Message Type |
 +-+-+-+-+-+-+-+-+
-```
+\`\`\`
 
-## Stream Control Transmission Protocol
-SCTP is the real power behind WebRTC data channels. It provides all these features of the data channel:
+## Protocolo de Transmisión de Control de Flujo
+SCTP es el verdadero poder detrás de los canales de datos de WebRTC. Proporciona todas estas características del canal de datos:
 
-* Multiplexing
-* Reliable delivery using a TCP-like retransmission mechanism
-* Partial-reliability options
-* Congestion Avoidance
-* Flow Control
+* Multiplexación
+* Entrega confiable usando un mecanismo de retransmisión similar a TCP
+* Opciones de confiabilidad parcial
+* Evitación de Congestión
+* Control de Flujo
 
-To understand SCTP we will explore it in three parts. The goal is that you will know enough to debug and learn the deep details of SCTP on your own after this chapter.
+Para entender SCTP lo exploraremos en tres partes. El objetivo es que sepas lo suficiente para depurar y aprender los detalles profundos de SCTP por tu cuenta después de este capítulo.
 
-## Concepts
-SCTP is a feature rich protocol. This section is only going to cover the parts of SCTP that are used by WebRTC.
-Features in SCTP that are not used by WebRTC include multi-homing and path selection.
+## Conceptos
+SCTP es un protocolo rico en características. Esta sección solo va a cubrir las partes de SCTP que son usadas por WebRTC.
+Las características en SCTP que no son usadas por WebRTC incluyen multi-homing y selección de ruta.
 
-With over twenty years of development SCTP can be hard to fully grasp.
+Con más de veinte años de desarrollo, SCTP puede ser difícil de comprender completamente.
 
-### Association
-Association is the term used for an SCTP Session. It is the state that is shared
-between two SCTP Agents while they communicate.
+### Asociación
+Asociación es el término usado para una Sesión SCTP. Es el estado que se comparte
+entre dos Agentes SCTP mientras se comunican.
 
-### Streams
-A stream is one bi-directional sequence of user data. When you create a data channel you are actually just creating a SCTP stream. Each SCTP Association contains a list of streams. Each stream can be configured with different reliability types.
+### Flujos
+Un flujo es una secuencia bidireccional de datos de usuario. Cuando creas un canal de datos en realidad solo estás creando un flujo SCTP. Cada Asociación SCTP contiene una lista de flujos. Cada flujo puede ser configurado con diferentes tipos de confiabilidad.
 
-WebRTC only allows you to configure on stream creation, but SCTP actually allows changing the configuration at anytime.
+WebRTC solo te permite configurar en la creación del flujo, pero SCTP en realidad permite cambiar la configuración en cualquier momento.
 
-### Datagram Based
-SCTP frames data as datagrams and not as a byte stream. Sending and receiving data feels like using UDP instead of TCP.
-You don't need to add any extra code to transfer multiple files over one stream.
+### Basado en Datagramas
+SCTP enmarca datos como datagramas y no como un flujo de bytes. Enviar y recibir datos se siente como usar UDP en lugar de TCP.
+No necesitas agregar ningún código extra para transferir múltiples archivos sobre un flujo.
 
-SCTP messages don't have size limits like UDP. A single SCTP message can be multiple gigabytes in size.
+Los mensajes SCTP no tienen límites de tamaño como UDP. Un solo mensaje SCTP puede ser de múltiples gigabytes de tamaño.
 
-### Chunks
-The SCTP protocol is made up of chunks. There are many different types of chunks. These chunks are used for all communication.
-User data, connection initialization, congestion control, and more are all done via chunks.
+### Fragmentos
+El protocolo SCTP está compuesto de fragmentos. Hay muchos tipos diferentes de fragmentos. Estos fragmentos se usan para toda la comunicación.
+Datos de usuario, inicialización de conexión, control de congestión y más se hacen a través de fragmentos.
 
-Each SCTP packet contains a list of chunks. So in one UDP packet you can have multiple chunks carrying messages from different streams.
+Cada paquete SCTP contiene una lista de fragmentos. Así que en un paquete UDP puedes tener múltiples fragmentos transportando mensajes de diferentes flujos.
 
-### Transmission Sequence Number
-The Transmission Sequence Number (TSN) is a global unique identifier for DATA chunks. A DATA chunk is what carries all the messages a user wishes to send. The TSN is important because it helps a receiver determine if packets are lost or out of order.
+### Número de Secuencia de Transmisión
+El Número de Secuencia de Transmisión (TSN) es un identificador único global para fragmentos DATA. Un fragmento DATA es lo que transporta todos los mensajes que un usuario desea enviar. El TSN es importante porque ayuda a un receptor a determinar si los paquetes se perdieron o están fuera de orden.
 
-If the receiver notices a missing TSN, it doesn't give the data to the user until it is fulfilled.
+Si el receptor nota un TSN faltante, no entrega los datos al usuario hasta que se cumpla.
 
-### Stream Identifier
-Each stream has a unique identifier. When you create a data channel with an explicit ID, it is actually just passed right into SCTP as the stream identifier. If you don't pass an ID the stream identifier is chosen for you.
+### Identificador de Flujo
+Cada flujo tiene un identificador único. Cuando creas un canal de datos con un ID explícito, en realidad solo se pasa directamente a SCTP como el identificador de flujo. Si no pasas un ID, el identificador de flujo se elige por ti.
 
-### Payload Protocol Identifier
-Each DATA chunk also has a Payload Protocol Identifier (PPID). This is used to uniquely identify what type of data is being exchanged.
-SCTP has many PPIDs, but WebRTC is only using the following five:
+### Identificador de Protocolo de Carga Útil
+Cada fragmento DATA también tiene un Identificador de Protocolo de Carga Útil (PPID). Esto se usa para identificar de manera única qué tipo de datos se está intercambiando.
+SCTP tiene muchos PPIDs, pero WebRTC solo está usando los siguientes cinco:
 
-* `WebRTC DCEP` (`50`) - DCEP messages.
-* `WebRTC String` (`51`) - DataChannel string messages.
-* `WebRTC Binary` (`53`) - DataChannel binary messages.
-* `WebRTC String Empty` (`56`) - DataChannel string messages with 0 length.
-* `WebRTC Binary Empty` (`57`) - DataChannel binary messages with 0 length.
+* \`WebRTC DCEP\` (\`50\`) - Mensajes DCEP.
+* \`WebRTC String\` (\`51\`) - Mensajes de cadena de DataChannel.
+* \`WebRTC Binary\` (\`53\`) - Mensajes binarios de DataChannel.
+* \`WebRTC String Empty\` (\`56\`) - Mensajes de cadena de DataChannel con longitud 0.
+* \`WebRTC Binary Empty\` (\`57\`) - Mensajes binarios de DataChannel con longitud 0.
 
-## Protocol
-The following are some of the chunks used by the SCTP protocol. This is
-not an exhaustive demonstration. This provides enough structures for the
-state machine to make sense.
+## Protocolo
+Los siguientes son algunos de los fragmentos utilizados por el protocolo SCTP. Esta no es
+una demostración exhaustiva. Esto proporciona suficientes estructuras para que la
+máquina de estados tenga sentido.
 
-Each Chunk starts with a `type` field. Before a list of chunks, you will
-also have a header.
+Cada Fragmento comienza con un campo \`tipo\`. Antes de una lista de fragmentos, también
+tendrás un encabezado.
 
-### DATA Chunk
-```
+### Fragmento DATA
+\`\`\`
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -174,39 +174,39 @@ also have a header.
 /                            User Data                          /
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-```
-The DATA chunk is how all user data is exchanged. When you send
-anything over the data channel, this is how it is exchanged.
+\`\`\`
+El fragmento DATA es cómo se intercambian todos los datos de usuario. Cuando envías
+cualquier cosa sobre el canal de datos, así es como se intercambia.
 
-`U` bit is set if this is an unordered packet. We can ignore the
-Stream Sequence Number.
+El bit \`U\` se establece si este es un paquete desordenado. Podemos ignorar el
+Número de Secuencia de Flujo.
 
-`B` and `E` are the beginning and end bits. If you want to send a
-message that is too large for one DATA chunk it needs to be fragmented into multiple DATA chunks sent in separate packets.
-With the `B` and `E` bit and Sequence Numbers SCTP is able to express
-this.
+\`B\` y \`E\` son los bits de inicio y fin. Si quieres enviar un
+mensaje que es demasiado grande para un fragmento DATA, necesita fragmentarse en múltiples fragmentos DATA enviados en paquetes separados.
+Con el bit \`B\` y \`E\` y Números de Secuencia, SCTP es capaz de expresar
+esto.
 
-* `B=1`, `E=0` - First piece of a fragmented user message.
-* `B=0`, `E=0` - Middle piece of a fragmented user message.
-* `B=0`, `E=1` - Last piece of a fragmented user message.
-* `B=1`, `E=1` - Unfragmented message.
+* \`B=1\`, \`E=0\` - Primera pieza de un mensaje de usuario fragmentado.
+* \`B=0\`, \`E=0\` - Pieza intermedia de un mensaje de usuario fragmentado.
+* \`B=0\`, \`E=1\` - Última pieza de un mensaje de usuario fragmentado.
+* \`B=1\`, \`E=1\` - Mensaje sin fragmentar.
 
-`TSN` is the Transmission Sequence Number. It is the global unique
-identifier for this DATA chunk. After 4,294,967,295 chunks this will wrap around to 0.
-The TSN is incremented for every chunk in a fragmented user message so that the receiver knows how to order the received chunks to reconstruct the original message.
+\`TSN\` es el Número de Secuencia de Transmisión. Es el identificador
+único global para este fragmento DATA. Después de 4,294,967,295 fragmentos esto se reiniciará a 0.
+El TSN se incrementa para cada fragmento en un mensaje de usuario fragmentado para que el receptor sepa cómo ordenar los fragmentos recibidos para reconstruir el mensaje original.
 
-`Stream Identifier` is the unique identifier for the stream this data belongs to.
+\`Identificador de Flujo\` es el identificador único para el flujo al que pertenecen estos datos.
 
-`Stream Sequence Number` is a 16-bit number incremented every user message and included in the DATA message chunk header. After 65535 messages this will wrap around to 0. This number is used to decide the message order of delivery to the receiver if `U` is set to 0. Similar to the TSN, except the Stream Sequence Number is only incremented for each message as a whole and not each individual DATA chunk.
+\`Número de Secuencia de Flujo\` es un número de 16 bits incrementado cada mensaje de usuario e incluido en el encabezado del fragmento del mensaje DATA. Después de 65535 mensajes esto se reiniciará a 0. Este número se usa para decidir el orden de entrega de mensajes al receptor si \`U\` está establecido en 0. Similar al TSN, excepto que el Número de Secuencia de Flujo solo se incrementa para cada mensaje en su conjunto y no para cada fragmento DATA individual.
 
-`Payload Protocol Identifier` is the type of data that is flowing through
-this stream. For WebRTC, it is going to be DCEP, String or Binary.
+\`Identificador de Protocolo de Carga Útil\` es el tipo de datos que fluye a través
+de este flujo. Para WebRTC, será DCEP, String o Binary.
 
-`User Data` is what you are sending. All data you send via a WebRTC data channel
-is transmitted via a DATA chunk.
+\`Datos de Usuario\` es lo que estás enviando. Todos los datos que envías a través de un canal de datos de WebRTC
+se transmiten a través de un fragmento DATA.
 
-### INIT Chunk
-```
+### Fragmento INIT
+\`\`\`
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -224,28 +224,28 @@ is transmitted via a DATA chunk.
 /              Optional/Variable-Length Parameters              /
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-```
+\`\`\`
 
-The INIT chunk starts the process of creating an association.
+El fragmento INIT inicia el proceso de creación de una asociación.
 
-`Initiate Tag` is used for cookie generation. Cookies are used for Man-In-The-Middle
-and Denial of Service protection. They are described in greater detail in the state
-machine section.
+\`Etiqueta de Inicio\` se usa para la generación de cookies. Las cookies se usan para la protección contra
+Man-In-The-Middle y Denegación de Servicio. Se describen con mayor detalle en la sección de
+máquina de estados.
 
-`Advertised Receiver Window Credit` is used for SCTP's Congestion Control. This
-communicates how large of a buffer the receiver has allocated for this association.
+\`Crédito de Ventana de Receptor Anunciado\` se usa para el Control de Congestión de SCTP. Esto
+comunica qué tan grande es el búfer que el receptor ha asignado para esta asociación.
 
-`Number of Outbound/Inbound Streams` notifies the remote of how many streams this
-agent supports.
+\`Número de Flujos de Salida/Entrada\` notifica al remoto cuántos flujos este
+agente soporta.
 
-`Initial TSN` is a random `uint32` to start the local TSN at.
+\`TSN Inicial\` es un \`uint32\` aleatorio para comenzar el TSN local.
 
-`Optional Parameters` allows SCTP to introduce new features to the protocol.
+\`Parámetros Opcionales\` permite a SCTP introducir nuevas características al protocolo.
 
 
-### SACK Chunk
+### Fragmento SACK
 
-```
+\`\`\`
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -273,27 +273,27 @@ agent supports.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                       Duplicate TSN X                         |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-```
+\`\`\`
 
-The SACK (Selective Acknowledgment) Chunk is how a receiver notifies
-a sender it has gotten a packet. Until a sender gets a SACK for a TSN
-it will re-send the DATA chunk in question. A SACK does more than just
-update the TSN though.
+El fragmento SACK (Acuse de Recibo Selectivo) es cómo un receptor notifica
+a un remitente que ha recibido un paquete. Hasta que un remitente obtiene un SACK para un TSN
+reenviará el fragmento DATA en cuestión. Sin embargo, un SACK hace más que
+actualizar el TSN.
 
-`Cumulative TSN ACK` the highest TSN that has been received.
+\`TSN ACK Acumulativo\` el TSN más alto que se ha recibido.
 
-`Advertised Receiver Window Credit` receiver buffer size. The receiver
-may change this during the session if more memory becomes available.
+\`Crédito de Ventana de Receptor Anunciado\` tamaño del búfer del receptor. El receptor
+puede cambiar esto durante la sesión si hay más memoria disponible.
 
-`Ack Blocks` TSNs that have been received after the `Cumulative TSN ACK`.
-This is used if there is a gap in packets delivered. Let's say DATA chunks with TSNs
-`100`, `102`, `103` and `104` are delivered. The `Cumulative TSN ACK` would be `100`, but
-`Ack Blocks` could be used to tell the sender it doesn't need to resend `102`, `103` or `104`.
+\`Bloques Ack\` TSNs que han sido recibidos después del \`TSN ACK Acumulativo\`.
+Esto se usa si hay una brecha en los paquetes entregados. Digamos que los fragmentos DATA con TSNs
+\`100\`, \`102\`, \`103\` y \`104\` son entregados. El \`TSN ACK Acumulativo\` sería \`100\`, pero
+\`Bloques Ack\` podrían usarse para decirle al remitente que no necesita reenviar \`102\`, \`103\` o \`104\`.
 
-`Duplicate TSN` informs the sender that it has received the following DATA chunks more than once.
+\`TSN Duplicado\` informa al remitente que ha recibido los siguientes fragmentos DATA más de una vez.
 
-### HEARTBEAT Chunk
-```
+### Fragmento HEARTBEAT
+\`\`\`
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -303,14 +303,14 @@ This is used if there is a gap in packets delivered. Let's say DATA chunks with 
 /            Heartbeat Information TLV (Variable-Length)        /
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-```
+\`\`\`
 
-The HEARTBEAT Chunk is used to assert the remote is still responding.
-Useful if you aren't sending any DATA chunks and need to keep a NAT
-mapping open.
+El fragmento HEARTBEAT se usa para afirmar que el remoto todavía está respondiendo.
+Útil si no estás enviando fragmentos DATA y necesitas mantener un
+mapeo NAT abierto.
 
-### ABORT Chunk
-```
+### Fragmento ABORT
+\`\`\`
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -320,14 +320,14 @@ mapping open.
 \               Zero or more Error Causes                       \
 /                                                               /
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-```
+\`\`\`
 
-An ABORT chunk abruptly shuts down the association. Used when
-one side enters an error state. Gracefully ending the connection uses
-the SHUTDOWN chunk.
+Un fragmento ABORT cierra abruptamente la asociación. Usado cuando
+un lado entra en un estado de error. Finalizar la conexión de manera elegante usa
+el fragmento SHUTDOWN.
 
-### SHUTDOWN Chunk
-```
+### Fragmento SHUTDOWN
+\`\`\`
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -335,19 +335,19 @@ the SHUTDOWN chunk.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                      Cumulative TSN Ack                       |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-```
+\`\`\`
 
-The SHUTDOWN Chunk starts a graceful shutdown of the SCTP association.
-Each agent informs the remote of the last TSN it sent. This ensures
-that no packets are lost. WebRTC doesn't do a graceful shutdown of
-the SCTP association. You need to tear down each data channel yourself
-to handle it gracefully.
+El fragmento SHUTDOWN inicia un cierre elegante de la asociación SCTP.
+Cada agente informa al remoto del último TSN que envió. Esto asegura
+que no se pierdan paquetes. WebRTC no hace un cierre elegante de
+la asociación SCTP. Necesitas cerrar cada canal de datos tú mismo
+para manejarlo de manera elegante.
 
-`Cumulative TSN ACK` is the last TSN that was sent. Each side knows
-not to terminate until they have received the DATA chunk with this TSN.
+\`TSN ACK Acumulativo\` es el último TSN que fue enviado. Cada lado sabe
+que no debe terminar hasta que haya recibido el fragmento DATA con este TSN.
 
-### ERROR Chunk
-```
+### Fragmento ERROR
+\`\`\`
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -357,13 +357,13 @@ not to terminate until they have received the DATA chunk with this TSN.
 /                    One or more Error Causes                   /
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-```
+\`\`\`
 
-An ERROR chunk is used to notify the remote SCTP Agent that a non-fatal
-error has occurred.
+Un fragmento ERROR se usa para notificar al Agente SCTP remoto que ha ocurrido un
+error no fatal.
 
-### FORWARD TSN Chunk
-```
+### Fragmento FORWARD TSN
+\`\`\`
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -378,46 +378,46 @@ error has occurred.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |         Stream-N              |       Stream Sequence-N       |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-```
+\`\`\`
 
-The `FORWARD TSN` chunk moves the global TSN forward. SCTP does this, 
-so you can skip some packets you don't care about anymore. Let's say
-you send `10 11 12 13 14 15` and these packets are only valid if they
-all arrive. This data is also real-time sensitive, so if it arrives
-late it isn't useful.
+El fragmento \`FORWARD TSN\` mueve el TSN global hacia adelante. SCTP hace esto
+para que puedas saltar algunos paquetes que ya no te importan. Digamos
+que envías \`10 11 12 13 14 15\` y estos paquetes solo son válidos si
+todos llegan. Estos datos también son sensibles al tiempo real, así que si llegan
+tarde no son útiles.
 
-If you lose `12` and `13` there is no reason to send `14` and `15`!
-SCTP uses the `FORWARD TSN` chunk to achieve that. It tells the receiver
-that `14` and `15` aren't going to be delivered anymore.
+Si pierdes \`12\` y \`13\` ¡no hay razón para enviar \`14\` y \`15\`!
+SCTP usa el fragmento \`FORWARD TSN\` para lograr eso. Le dice al receptor
+que \`14\` y \`15\` ya no se entregarán.
 
-`New Cumulative TSN` this is the new TSN of the connection. Any packets
-before this TSN will not be retained.
+\`Nuevo TSN Acumulativo\` este es el nuevo TSN de la conexión. Cualquier paquete
+antes de este TSN no se retendrá.
 
-`Stream` and `Stream Sequence` are used to jump the `Stream Sequence Number`
-number ahead. Refer back to the DATA Chunk for the significance of this field.
+\`Flujo\` y \`Secuencia de Flujo\` se usan para saltar el \`Número de Secuencia de Flujo\`
+adelante. Consulta de nuevo el Fragmento DATA para la importancia de este campo.
 
-## State Machine
-These are some interesting parts of the SCTP state machine. WebRTC doesn't use all
-the features of the SCTP state machine, so we have excluded those parts. We also have simplified some components to make them understandable on their own.
+## Máquina de Estados
+Estas son algunas partes interesantes de la máquina de estados SCTP. WebRTC no usa todas
+las características de la máquina de estados SCTP, por lo que hemos excluido esas partes. También hemos simplificado algunos componentes para hacerlos comprensibles por sí mismos.
 
-### Connection Establishment Flow
-The `INIT` and `INIT ACK` chunks are used to exchange the capabilities and configurations
-of each peer. SCTP uses a cookie during the handshake to validate the peer it is communicating with.
-This is to ensure that the handshake is not intercepted and to prevent DoS attacks.
+### Flujo de Establecimiento de Conexión
+Los fragmentos \`INIT\` e \`INIT ACK\` se usan para intercambiar las capacidades y configuraciones
+de cada par. SCTP usa una cookie durante el handshake para validar el par con el que se está comunicando.
+Esto es para asegurar que el handshake no sea interceptado y para prevenir ataques DoS.
 
-The `INIT ACK` chunk contains the cookie. The cookie is then returned to its creator
-using the `COOKIE ECHO`. If cookie verification is successful the `COOKIE ACK` is
-sent and DATA chunks are ready to be exchanged.
+El fragmento \`INIT ACK\` contiene la cookie. La cookie luego se devuelve a su creador
+usando el \`COOKIE ECHO\`. Si la verificación de la cookie es exitosa, se
+envía el \`COOKIE ACK\` y los fragmentos DATA están listos para ser intercambiados.
 
-![Connection establishment](../images/07-connection-establishment.png "Connection establishment")
+![Establecimiento de conexión](../../images/07-connection-establishment.png "Establecimiento de conexión")
 
-### Connection Teardown Flow
-SCTP uses the `SHUTDOWN` chunk. When an agent receives a `SHUTDOWN` chunk it will wait until it
-receives the requested `Cumulative TSN ACK`. This allows a user to ensure that all data
-is delivered even if the connection is lossy.
+### Flujo de Desconexión
+SCTP usa el fragmento \`SHUTDOWN\`. Cuando un agente recibe un fragmento \`SHUTDOWN\`, esperará hasta que
+reciba el \`TSN ACK Acumulativo\` solicitado. Esto permite a un usuario asegurar que todos los datos
+se entreguen incluso si la conexión tiene pérdidas.
 
-### Keep-Alive Mechanism
-SCTP uses the `HEARTBEAT REQUEST` and `HEARTBEAT ACK` Chunks to keep the connection alive. These are sent
-on a configurable interval. SCTP also performs an exponential backoff if the packet hasn't arrived.
+### Mecanismo de Keep-Alive
+SCTP usa los fragmentos \`HEARTBEAT REQUEST\` y \`HEARTBEAT ACK\` para mantener la conexión viva. Estos se envían
+en un intervalo configurable. SCTP también realiza un backoff exponencial si el paquete no ha llegado.
 
-The `HEARTBEAT` chunk also contains a time value. This allows two associations to compute trip time between two agents.
+El fragmento \`HEARTBEAT\` también contiene un valor de tiempo. Esto permite que dos asociaciones calculen el tiempo de viaje entre dos agentes.

@@ -1,117 +1,117 @@
 ---
-title: Connecting
+title: Conexión
 type: docs
 weight: 4
 ---
 
-# Connecting
+# Conexión
 
-## Why does WebRTC need a dedicated subsystem for connecting?
+## ¿Por qué WebRTC necesita un subsistema dedicado para conectarse?
 
-Most applications deployed today establish client/server connections. A client/server connection requires the server to have a stable well-known transport address. A client contacts a server, and the server responds.
+La mayoría de las aplicaciones implementadas hoy en día establecen conexiones cliente/servidor. Una conexión cliente/servidor requiere que el servidor tenga una dirección de transporte estable y bien conocida. Un cliente contacta a un servidor, y el servidor responde.
 
-WebRTC doesn't use a client/server model, it establishes peer-to-peer (P2P) connections. In a P2P connection the task of creating a connection is equally distributed to both peers. This is because a transport address (IP and port) in WebRTC can not be assumed, and may even change during the session. WebRTC will gather all the information it can and will go to great lengths to achieve bi-directional communication between two WebRTC Agents.
+WebRTC no usa un modelo cliente/servidor, establece conexiones peer-to-peer (P2P). En una conexión P2P, la tarea de crear una conexión se distribuye equitativamente entre ambos pares. Esto se debe a que una dirección de transporte (IP y puerto) en WebRTC no se puede asumir, e incluso puede cambiar durante la sesión. WebRTC recopilará toda la información que pueda e irá a grandes esfuerzos para lograr comunicación bidireccional entre dos Agentes WebRTC.
 
-Establishing peer-to-peer connectivity can be difficult though. These agents could be in different networks with no direct connectivity. In situations where direct connectivity does exist you can still have other issues. In some cases, your clients don't speak the same network protocols (UDP <-> TCP) or maybe use different IP Versions (IPv4 <-> IPv6).
+Sin embargo, establecer conectividad peer-to-peer puede ser difícil. Estos agentes podrían estar en diferentes redes sin conectividad directa. En situaciones donde existe conectividad directa, aún puedes tener otros problemas. En algunos casos, tus clientes no hablan los mismos protocolos de red (UDP <-> TCP) o tal vez usan diferentes versiones de IP (IPv4 <-> IPv6).
 
-Despite these difficulties in setting up a P2P connection, you get advantages over traditional Client/Server technology because of the following attributes that WebRTC offers.
+A pesar de estas dificultades para establecer una conexión P2P, obtienes ventajas sobre la tecnología cliente/servidor tradicional debido a los siguientes atributos que WebRTC ofrece.
 
-### Reduced Bandwidth Costs
+### Costos de Ancho de Banda Reducidos
 
-Since media communication happens directly between peers you don't have to pay for, or host a separate server to relay media.
+Dado que la comunicación de medios ocurre directamente entre pares, no tienes que pagar por, u hospedar un servidor separado para transmitir medios.
 
-### Lower Latency
+### Menor Latencia
 
-Communication is faster when it is direct! When a user has to run everything through your server, it makes transmissions slower.
+La comunicación es más rápida cuando es directa. Cuando un usuario tiene que ejecutar todo a través de tu servidor, hace que las transmisiones sean más lentas.
 
-### Secure E2E Communication
+### Comunicación E2E Segura
 
-Direct Communication is more secure. Since users aren't routing data through your server, they don't even need to trust you won't decrypt it.
+La comunicación directa es más segura. Dado que los usuarios no están enrutando datos a través de tu servidor, ni siquiera necesitan confiar en que no los descifrarás.
 
-## How does it work?
+## ¿Cómo funciona?
 
-The process described above is called Interactive Connectivity Establishment ([ICE](https://tools.ietf.org/html/rfc8445)). Another protocol that pre-dates WebRTC.
+El proceso descrito anteriormente se llama Establecimiento de Conectividad Interactiva ([ICE](https://tools.ietf.org/html/rfc8445)). Otro protocolo que es anterior a WebRTC.
 
-ICE is a protocol that tries to find the best way to communicate between two ICE Agents. Each ICE Agent publishes the ways it is reachable, these are known as candidates. A candidate is essentially a transport address of the agent that it believes the other peer can reach. ICE then determines the best pairing of candidates.
+ICE es un protocolo que intenta encontrar la mejor manera de comunicarse entre dos Agentes ICE. Cada Agente ICE publica las formas en que es accesible, estas se conocen como candidatos. Un candidato es esencialmente una dirección de transporte del agente que cree que el otro par puede alcanzar. ICE entonces determina el mejor emparejamiento de candidatos.
 
-The actual ICE process is described in greater detail later in this chapter. To understand why ICE exists, it is useful to understand what network behaviors we are overcoming.
+El proceso ICE real se describe con mayor detalle más adelante en este capítulo. Para entender por qué existe ICE, es útil entender qué comportamientos de red estamos superando.
 
-## Networking real-world constraints
-ICE is all about overcoming the constraints of real-world networks. Before we explore the solution, let's talk about the actual problems.
+## Restricciones de redes del mundo real
+ICE se trata de superar las restricciones de las redes del mundo real. Antes de explorar la solución, hablemos de los problemas reales.
 
-### Not in the same network
-Most of the time the other WebRTC Agent will not even be in the same network. A typical call is usually between two WebRTC Agents in different networks with no direct connectivity.
+### No en la misma red
+La mayor parte del tiempo el otro Agente WebRTC ni siquiera estará en la misma red. Una llamada típica suele ser entre dos Agentes WebRTC en diferentes redes sin conectividad directa.
 
-Below is a graph of two distinct networks, connected over public internet. In each network you have two hosts.
+A continuación se muestra un gráfico de dos redes distintas, conectadas a través de Internet público. En cada red tienes dos hosts.
 
-![Two networks](../images/03-two-networks.png "Two networks")
+![Dos redes](../../images/03-two-networks.png "Dos redes")
 
-For the hosts in the same network it is very easy to connect. Communication between `192.168.0.1 -> 192.168.0.2` is easy to do! These two hosts can connect to each other without any outside help.
+Para los hosts en la misma red es muy fácil conectarse. ¡La comunicación entre `192.168.0.1 -> 192.168.0.2` es fácil de hacer! Estos dos hosts pueden conectarse entre sí sin ninguna ayuda externa.
 
-However, a host using `Router B` has no way to directly access anything behind `Router A`. How would you tell the difference between `192.168.0.1` behind `Router A` and the same IP behind `Router B`? They are private IPs! A host using `Router B` could send traffic directly to `Router A`, but the request would end there. How does `Router A` know which host it should forward the message to?
+Sin embargo, un host usando `Router B` no tiene forma de acceder directamente a nada detrás de `Router A`. ¿Cómo distinguirías entre `192.168.0.1` detrás de `Router A` y la misma IP detrás de `Router B`? ¡Son IPs privadas! Un host usando `Router B` podría enviar tráfico directamente a `Router A`, pero la solicitud terminaría ahí. ¿Cómo sabe `Router A` a qué host debe reenviar el mensaje?
 
-### Protocol Restrictions
-Some networks don't allow UDP traffic at all, or maybe they don't allow TCP. Some networks may have a very low MTU (Maximum Transmission Unit). There are lots of variables that network administrators can change that can make communication difficult.
+### Restricciones de Protocolo
+Algunas redes no permiten tráfico UDP en absoluto, o tal vez no permiten TCP. Algunas redes pueden tener un MTU (Unidad Máxima de Transmisión) muy bajo. Hay muchas variables que los administradores de red pueden cambiar que pueden dificultar la comunicación.
 
-### Firewall/IDS Rules
-Another is "Deep Packet Inspection" and other intelligent filtering. Some network administrators will run software that tries to process every packet. Many times this software doesn't understand WebRTC, so it blocks it because it doesn't know what to do, e.g. treating WebRTC packets as suspicious UDP packets on an arbitrary port that is not whitelisted.
+### Reglas de Firewall/IDS
+Otra es la "Inspección Profunda de Paquetes" y otro filtrado inteligente. Algunos administradores de red ejecutarán software que intenta procesar cada paquete. Muchas veces este software no entiende WebRTC, por lo que lo bloquea porque no sabe qué hacer, por ejemplo, tratando los paquetes WebRTC como paquetes UDP sospechosos en un puerto arbitrario que no está en la lista blanca.
 
-## NAT Mapping
-NAT (Network Address Translation) mapping is the magic that makes the connectivity of WebRTC possible. This is how WebRTC allows two peers in completely different subnets to communicate, addressing the "not in the same network" problem above. While it creates new challenges, let's explain how NAT mapping works in the first place.
+## Mapeo NAT
+El mapeo NAT (Traducción de Direcciones de Red) es la magia que hace posible la conectividad de WebRTC. Así es como WebRTC permite que dos pares en subredes completamente diferentes se comuniquen, abordando el problema de "no en la misma red" anterior. Si bien crea nuevos desafíos, expliquemos cómo funciona el mapeo NAT en primer lugar.
 
-It doesn't use a relay, proxy, or server. Again we have `Agent 1` and `Agent 2` and they are in different networks. However, traffic is flowing completely through. Visualized it looks like this:
+No utiliza un relé, proxy o servidor. Nuevamente tenemos `Agente 1` y `Agente 2` y están en diferentes redes. Sin embargo, el tráfico fluye completamente. Visualizado se ve así:
 
-![NAT mapping](../images/03-nat-mapping.png "NAT mapping")
+![Mapeo NAT](../../images/03-nat-mapping.png "Mapeo NAT")
 
-To make this communication happen you establish a NAT mapping. Agent 1 uses port 7000 to establish a WebRTC connection with Agent 2. This creates a binding of `192.168.0.1:7000` to `5.0.0.1:7000`. This then allows Agent 2 to reach Agent 1 by sending packets to `5.0.0.1:7000`. Creating a NAT mapping like in this example is like an automated version of doing port forwarding in your router.
+Para que esta comunicación suceda, estableces un mapeo NAT. El Agente 1 usa el puerto 7000 para establecer una conexión WebRTC con el Agente 2. Esto crea un enlace de `192.168.0.1:7000` a `5.0.0.1:7000`. Esto permite que el Agente 2 alcance al Agente 1 enviando paquetes a `5.0.0.1:7000`. Crear un mapeo NAT como en este ejemplo es como una versión automatizada de hacer reenvío de puertos en tu enrutador.
 
-The downside to NAT mapping is that there isn't a single form of mapping (e.g. static port forwarding), and the behavior is inconsistent between networks. ISPs and hardware manufacturers may do it in different ways. In some cases, network administrators may even disable it.
+La desventaja del mapeo NAT es que no hay una sola forma de mapeo (por ejemplo, reenvío de puertos estático), y el comportamiento es inconsistente entre redes. Los ISP y fabricantes de hardware pueden hacerlo de diferentes maneras. En algunos casos, los administradores de red pueden incluso deshabilitarlo.
 
-The good news is the full range of behaviors is understood and observable, so an ICE Agent is able to confirm it created a NAT mapping, and the attributes of the mapping.
+La buena noticia es que se entiende y observa el rango completo de comportamientos, por lo que un Agente ICE puede confirmar que creó un mapeo NAT y los atributos del mapeo.
 
-The document that describes these behaviors is [RFC 4787](https://tools.ietf.org/html/rfc4787).
+El documento que describe estos comportamientos es [RFC 4787](https://tools.ietf.org/html/rfc4787).
 
-### Creating a mapping
-Creating a mapping is the easiest part. When you send a packet to an address outside your network, a mapping is created! A NAT mapping is just a temporary public IP and port that is allocated by your NAT. The outbound message will be rewritten to have its source address given by the newly mapping address. If a message is sent to the mapping, it will be automatically routed back to the host inside the NAT that created it. The details around mappings is where it gets complicated.
+### Crear un mapeo
+Crear un mapeo es la parte más fácil. ¡Cuando envías un paquete a una dirección fuera de tu red, se crea un mapeo! Un mapeo NAT es solo una IP pública temporal y un puerto que es asignado por tu NAT. El mensaje saliente se reescribirá para tener su dirección de origen dada por la dirección de mapeo recién creada. Si se envía un mensaje al mapeo, se enrutará automáticamente de vuelta al host dentro del NAT que lo creó. Los detalles sobre los mapeos es donde se vuelve complicado.
 
-### Mapping Creation Behaviors
-Mapping creation falls into three different categories:
+### Comportamientos de Creación de Mapeos
+La creación de mapeos se divide en tres categorías diferentes:
 
-#### Endpoint-Independent Mapping
-One mapping is created for each sender inside the NAT. If you send two packets to two different remote addresses, the NAT mapping will be re-used. Both remote hosts would see the same source IP and port. If the remote hosts respond, it would be sent back to the same local listener.
+#### Mapeo Independiente del Punto Final
+Se crea un mapeo para cada remitente dentro del NAT. Si envías dos paquetes a dos direcciones remotas diferentes, el mapeo NAT se reutilizará. Ambos hosts remotos verían la misma IP y puerto de origen. Si los hosts remotos responden, se enviaría de vuelta al mismo oyente local.
 
-This is the best-case scenario. For a call to work, at least one side MUST be of this type.
+Este es el mejor escenario posible. Para que una llamada funcione, al menos un lado DEBE ser de este tipo.
 
-#### Address Dependent Mapping
-A new mapping is created every time you send a packet to a new address. If you send two packets to different hosts, two mappings will be created. If you send two packets to the same remote host but different destination ports, a new mapping will NOT be created.
+#### Mapeo Dependiente de la Dirección
+Se crea un nuevo mapeo cada vez que envías un paquete a una nueva dirección. Si envías dos paquetes a diferentes hosts, se crearán dos mapeos. Si envías dos paquetes al mismo host remoto pero diferentes puertos de destino, NO se creará un nuevo mapeo.
 
-#### Address and Port Dependent Mapping
-A new mapping is created if the remote IP or port is different. If you send two packets to the same remote host, but different destination ports, a new mapping will be created.
+#### Mapeo Dependiente de Dirección y Puerto
+Se crea un nuevo mapeo si la IP o el puerto remoto es diferente. Si envías dos paquetes al mismo host remoto, pero diferentes puertos de destino, se creará un nuevo mapeo.
 
-### Mapping Filtering Behaviors
-Mapping filtering is the rules around who is allowed to use the mapping. They fall into three similar classifications:
+### Comportamientos de Filtrado de Mapeos
+El filtrado de mapeos son las reglas sobre quién puede usar el mapeo. Se dividen en tres clasificaciones similares:
 
-#### Endpoint-Independent Filtering
-Anyone can use the mapping. You can share the mapping with multiple other peers, and they could all send traffic to it.
+#### Filtrado Independiente del Punto Final
+Cualquiera puede usar el mapeo. Puedes compartir el mapeo con múltiples otros pares, y todos podrían enviar tráfico a él.
 
-#### Address Dependent Filtering
-Only the host the mapping was created for can use the mapping. If you send a packet to host `A` it can respond with as many packets as it wants. If host `B` attempts to send a packet to that mapping, it will be ignored.
+#### Filtrado Dependiente de la Dirección
+Solo el host para el que se creó el mapeo puede usar el mapeo. Si envías un paquete al host `A` solo puedes obtener una respuesta de ese mismo host. Si el host `B` intenta enviar un paquete a ese mapeo, será ignorado.
 
-#### Address and Port Dependent Filtering
-Only the host and port for which the mapping was created for can use that mapping. If you send a packet to host `A:5000` it can respond with as many packets as it wants. If host `A:5001` attempts to send a packet to that mapping, it will be ignored.
+#### Filtrado Dependiente de Dirección y Puerto
+Solo el host y puerto para el que se creó el mapeo pueden usar ese mapeo. Si envías un paquete a `A:5000` solo puedes obtener una respuesta de ese mismo host y puerto. Si `A:5001` intenta enviar un paquete a ese mapeo, será ignorado.
 
-### Mapping Refresh
-It is recommended that if a mapping is unused for 5 minutes it should be destroyed. This is entirely up to the ISP or hardware manufacturer.
+### Actualización de Mapeos
+Se recomienda que si un mapeo no se usa durante 5 minutos, debe ser destruido. Esto depende completamente del ISP o fabricante de hardware.
 
 ## STUN
-STUN (Session Traversal Utilities for NAT) is a protocol that was created just for working with NATs. This is another technology that pre-dates WebRTC (and ICE!). It is defined by [RFC 8489](https://tools.ietf.org/html/rfc8489), which also defines the STUN packet structure. The STUN protocol is also used by ICE/TURN.
+STUN (Utilidades de Traversal de Sesión para NAT) es un protocolo que fue creado solo para trabajar con NATs. Esta es otra tecnología que es anterior a WebRTC (¡y a ICE!). Está definido por [RFC 8489](https://tools.ietf.org/html/rfc8489), que también define la estructura del paquete STUN. El protocolo STUN también es utilizado por ICE/TURN.
 
-STUN is useful because it allows the programmatic creation of NAT Mappings. Before STUN, we were able to create a NAT mapping, but we had no idea what the IP and port of it was! STUN not only gives you the ability to create a mapping, but also gives you the details so that you can share them with others, so they can send traffic back to you via the mapping you just created.
+STUN es útil porque permite la creación programática de Mapeos NAT. Antes de STUN, podíamos crear un mapeo NAT, ¡pero no teníamos idea de cuál era la IP y el puerto! STUN no solo te da la capacidad de crear un mapeo, sino que también te da los detalles para que puedas compartirlos con otros, para que puedan enviarte tráfico de vuelta a través del mapeo que acabas de crear.
 
-Let's start with a basic description of STUN. Later, we will expand on TURN and ICE usage. For now, we are just going to describe the Request/Response flow to create a mapping. Then we will talk about how to get the details of it to share with others. This is the process that happens when you have a `stun:` server in your ICE URLs for a WebRTC PeerConnection. In a nutshell, STUN helps an endpoint behind a NAT figure out what mapping was created by asking a STUN server outside NAT to report what it observes.
+Comencemos con una descripción básica de STUN. Más tarde, ampliaremos el uso de TURN e ICE. Por ahora, solo vamos a describir el flujo de Solicitud/Respuesta para crear un mapeo. Luego hablaremos sobre cómo obtener los detalles para compartir con otros. Este es el proceso que ocurre cuando tienes un servidor `stun:` en tus URLs ICE para una PeerConnection de WebRTC. En pocas palabras, STUN ayuda a un punto final detrás de un NAT a descubrir qué mapeo fue creado al pedirle a un servidor STUN fuera del NAT que informe lo que observa.
 
-### Protocol Structure
-Every STUN packet has the following structure:
+### Estructura del Protocolo
+Cada paquete STUN tiene la siguiente estructura:
 
 ```
  0                   1                   2                   3
@@ -129,25 +129,25 @@ Every STUN packet has the following structure:
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-#### STUN Message Type
-Each STUN packet has a type. For now, we only care about the following:
+#### Tipo de Mensaje STUN
+Cada paquete STUN tiene un tipo. Por ahora, solo nos importan los siguientes:
 
-* Binding Request - `0x0001`
-* Binding Response - `0x0101`
+* Solicitud de Enlace (Binding Request) - `0x0001`
+* Respuesta de Enlace (Binding Response) - `0x0101`
 
-To create a NAT mapping we make a `Binding Request`. Then the server responds with a `Binding Response`.
+Para crear un mapeo NAT hacemos una `Solicitud de Enlace`. Luego el servidor responde con una `Respuesta de Enlace`.
 
-#### Message Length
-This is how long the `Data` section is. This section contains arbitrary data that is defined by the `Message Type`.
+#### Longitud del Mensaje
+Esto es cuán larga es la sección `Data`. Esta sección contiene datos arbitrarios que son definidos por el `Tipo de Mensaje`.
 
 #### Magic Cookie
-The fixed value `0x2112A442` in network byte order, it helps distinguish STUN traffic from other protocols.
+El valor fijo `0x2112A442` en orden de bytes de red, ayuda a distinguir el tráfico STUN de otros protocolos.
 
-#### Transaction ID
-A 96-bit identifier that uniquely identifies a request/response. This helps you pair up your requests and responses.
+#### ID de Transacción
+Un identificador de 96 bits que identifica únicamente una solicitud/respuesta. Esto te ayuda a emparejar tus solicitudes y respuestas.
 
 #### Data
-Data will contain a list of STUN attributes. A STUN Attribute has the following structure:
+Data contendrá una lista de atributos STUN. Un Atributo STUN tiene la siguiente estructura:
 
 ```
 0                   1                   2                   3
@@ -159,129 +159,129 @@ Data will contain a list of STUN attributes. A STUN Attribute has the following 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-The `STUN Binding Request` uses no attributes. This means a `STUN Binding Request` contains only the header.
+La `Solicitud de Enlace STUN` no usa atributos. Esto significa que una `Solicitud de Enlace STUN` contiene solo el encabezado.
 
-The `STUN Binding Response` uses a `XOR-MAPPED-ADDRESS (0x0020)`. This attribute contains an IP and port. This is the IP and port of the NAT mapping that is created!
+La `Respuesta de Enlace STUN` usa un `XOR-MAPPED-ADDRESS (0x0020)`. Este atributo contiene una IP y puerto. ¡Esta es la IP y el puerto del mapeo NAT que se crea!
 
-### Create a NAT Mapping
-Creating a NAT mapping using STUN just takes sending one request! You send a `STUN Binding Request` to the STUN Server. The STUN Server then responds with a `STUN Binding Response`.
-This `STUN Binding Response` will contain the `Mapped Address`. The `Mapped Address` is how the STUN Server sees you and is your `NAT mapping`.
-The `Mapped Address` is what you would share if you wanted someone to send packets to you.
+### Crear un Mapeo NAT
+¡Crear un mapeo NAT usando STUN solo requiere enviar una solicitud! Envías una `Solicitud de Enlace STUN` al Servidor STUN. El Servidor STUN entonces responde con una `Respuesta de Enlace STUN`.
+Esta `Respuesta de Enlace STUN` contendrá la `Dirección Mapeada`. La `Dirección Mapeada` es cómo el Servidor STUN te ve y es tu `mapeo NAT`.
+La `Dirección Mapeada` es lo que compartirías si quisieras que alguien te envíe paquetes.
 
-People will also call the `Mapped Address` your `Public IP` or `Server Reflexive Candidate`.
+La gente también llamará a la `Dirección Mapeada` tu `IP Pública` o `Candidato Reflexivo del Servidor`.
 
-### Determining NAT Type
-Unfortunately, the `Mapped Address` might not be useful in all cases. If it is `Address Dependent`, only the STUN server can send traffic back to you. If you shared it and another peer tried to send messages in they will be dropped. This makes it useless for communicating with others. You may find the `Address Dependent` case is in fact solvable, if the STUN server can also forward packets for you to the peer! This leads us to the solution using TURN below.
+### Determinar el Tipo de NAT
+Desafortunadamente, la `Dirección Mapeada` puede no ser útil en todos los casos. Si es `Dependiente de la Dirección`, solo el servidor STUN puede enviarte tráfico de vuelta. Si la compartes y otro par intenta enviar mensajes, serán descartados. Esto lo hace inútil para comunicarse con otros. Puedes encontrar que el caso `Dependiente de la Dirección` es de hecho solucionable, ¡si el host que ejecuta el servidor STUN también puede reenviar paquetes para ti al par! Esto nos lleva a la solución usando TURN a continuación.
 
-[RFC 5780](https://tools.ietf.org/html/rfc5780) defines a method for running a test to determine your NAT Type. This is useful because you would know ahead of time if direct connectivity is possible.
+[RFC 5780](https://tools.ietf.org/html/rfc5780) define un método para ejecutar una prueba para determinar tu Tipo de NAT. Esto es útil porque sabrías de antemano si la conectividad directa es posible.
 
 ## TURN
-TURN (Traversal Using Relays around NAT) is defined in [RFC 8656](https://tools.ietf.org/html/rfc8656) is the solution when direct connectivity isn't possible. It could be because you have two NAT Types that are incompatible, or maybe can't speak the same protocol! TURN can also be used for privacy purposes. By running all your communication through TURN you obscure the client's actual address.
+TURN (Traversal Usando Relés alrededor de NAT) está definido en [RFC 8656](https://tools.ietf.org/html/rfc8656) y es la solución cuando la conectividad directa no es posible. Puede ser porque tienes dos Tipos de NAT que son incompatibles, ¡o tal vez no pueden hablar el mismo protocolo! TURN también se puede usar para propósitos de privacidad. Al ejecutar toda tu comunicación a través de TURN, ocultas la dirección real del cliente.
 
-TURN uses a dedicated server. This server acts as a proxy for a client. The client connects to a TURN Server and creates an `Allocation`. By creating an allocation, a client gets a temporary IP/Port/Protocol that can be used to send traffic back to the client. This new listener is known as the `Relayed Transport Address`. Think of it as a forwarding address, you give this out so that others can send you traffic via TURN! For each peer you give the `Relay Transport Address` to, you must create a new `Permission` to allow communication with you.
+TURN usa un servidor dedicado. Este servidor actúa como un proxy para un cliente. El cliente se conecta a un Servidor TURN y crea una `Asignación`. Al crear una asignación, un cliente obtiene un IP/Puerto/Protocolo temporal que se puede usar para enviar tráfico de vuelta al cliente. Este nuevo oyente se conoce como la `Dirección de Transporte Retransmitida`. ¡Piensa en ella como una dirección de reenvío, la das para que otros puedan enviarte tráfico a través de TURN! Para cada par al que le das la `Dirección de Transporte de Relé`, debes crear un nuevo `Permiso` para permitir la comunicación contigo.
 
-When you send outbound traffic via TURN it is sent via the `Relayed Transport Address`. When a remote peer gets traffic they see it coming from the TURN Server.
+Cuando envías tráfico saliente a través de TURN, se envía a través de la `Dirección de Transporte Retransmitida`. Cuando un par remoto recibe tráfico, lo ve venir del Servidor TURN.
 
-### TURN Lifecycle
-The following is everything that a client who wishes to create a TURN allocation has to do. Communicating with someone who is using TURN requires no changes. The other peer gets an IP and port, and they communicate with it like any other host.
+### Ciclo de Vida de TURN
+Lo siguiente es todo lo que un cliente que desea crear una asignación TURN tiene que hacer. Comunicarse con alguien que está usando TURN no requiere cambios. El otro par obtiene una IP y puerto, y se comunica con ella como cualquier otro host.
 
-#### Allocations
-Allocations are at the core of TURN. An `allocation` is basically a "TURN Session". To create a TURN allocation you communicate with the TURN `Server Transport Address` (usually port `3478`).
+#### Asignaciones
+Las asignaciones están en el núcleo de TURN. Una `asignación` es básicamente una "Sesión TURN". Para crear una asignación TURN, te comunicas con la `Dirección de Transporte del Servidor` TURN (generalmente puerto `3478`).
 
-When creating an allocation, you need to provide the following:
-* Username/Password - Creating TURN allocations require authentication.
-* Allocation Transport - The transport protocol between the server (`Relayed Transport Address`) and the peers, can be UDP or TCP.
-* Even-Port - You can request sequential ports for multiple allocations, not relevant for WebRTC.
+Al crear una asignación, necesitas proporcionar lo siguiente:
+* Nombre de Usuario/Contraseña - Crear asignaciones TURN requiere autenticación.
+* Transporte de Asignación - El protocolo de transporte entre el servidor (`Dirección de Transporte Retransmitida`) y los pares, puede ser UDP o TCP.
+* Even-Port - Puedes solicitar puertos secuenciales para múltiples asignaciones, no relevante para WebRTC.
 
-If the request succeeded, you get a response with the TURN Server with the following STUN Attributes in the Data section:
-* `XOR-MAPPED-ADDRESS` - `Mapped Address` of the `TURN Client`. When someone sends data to the `Relayed Transport Address` this is where it is forwarded to.
-* `RELAYED-ADDRESS` - This is the address that you give out to other clients. If someone sends a packet to this address, it is relayed to the TURN client.
-* `LIFETIME` - How long until this TURN Allocation is destroyed. You can extend the lifetime by sending a `Refresh` request.
+Si la solicitud tuvo éxito, obtienes una respuesta del Servidor TURN con los siguientes Atributos STUN en la sección Data:
+* `XOR-MAPPED-ADDRESS` - `Dirección Mapeada` del `Cliente TURN`. Cuando alguien envía datos a la `Dirección de Transporte Retransmitida`, aquí es donde se reenvía.
+* `RELAYED-ADDRESS` - Esta es la dirección que das a otros clientes. Si alguien envía un paquete a esta dirección, se retransmite al cliente TURN.
+* `LIFETIME` - Cuánto tiempo hasta que esta Asignación TURN sea destruida. Puedes extender el tiempo de vida enviando una solicitud `Refresh`.
 
-#### Permissions
-A remote host can't send into your `Relayed Transport Address` until you create a permission for them. When you create a permission, you are telling the TURN server that this IP and port is allowed to send inbound traffic.
+#### Permisos
+Un host remoto no puede enviar a tu `Dirección de Transporte Retransmitida` hasta que crees un permiso para ellos. Cuando creas un permiso, le estás diciendo al servidor TURN que esta IP y puerto pueden enviar tráfico entrante.
 
-The remote host needs to give you the IP and port as it appears to the TURN server. This means it should send a `STUN Binding Request` to the TURN Server. A common error case is that a remote host will send a `STUN Binding Request` to a different server. They will then ask you to create a permission for this IP.
+El host remoto necesita darte la IP y el puerto tal como aparece en el servidor TURN. Esto significa que debe enviar una `Solicitud de Enlace STUN` al Servidor TURN. Un caso de error común es que un host remoto enviará una `Solicitud de Enlace STUN` a un servidor diferente. Luego te pedirán que crees un permiso para esta IP.
 
-Let's say you want to create a permission for a host behind a `Address Dependent Mapping`. If you generate the `Mapped Address` from a different TURN server, all inbound traffic will be dropped. Every time they communicate with a different host it generates a new mapping. Permissions expire after 5 minutes if they are not refreshed.
+Digamos que quieres crear un permiso para un host detrás de un `Mapeo Dependiente de la Dirección`. Si generas la `Dirección Mapeada` desde un servidor TURN diferente, todo el tráfico entrante será descartado. Cada vez que se comunican con un host diferente, genera un nuevo mapeo. Los permisos expiran después de 5 minutos si no se actualizan.
 
 #### SendIndication/ChannelData
-These two messages are for the TURN Client to send messages to a remote peer.
+Estos dos mensajes son para que el Cliente TURN envíe mensajes a un par remoto.
 
-SendIndication is a self-contained message. Inside it is the data you wish to send, and who you wish to send it to. This is wasteful if you are sending a lot of messages to a remote peer. If you send 1,000 messages you will repeat their IP Address 1,000 times!
+SendIndication es un mensaje autocontenido. Dentro está los datos que deseas enviar, y a quién deseas enviarlo. Esto es derrochador si estás enviando muchos mensajes a un par remoto. Si envías 1,000 mensajes repetirás su Dirección IP 1,000 veces.
 
-ChannelData allows you to send data, but not repeat an IP Address. You create a Channel with an IP and port. You then send with the ChannelId, and the IP and port will be populated server side. This is the better choice if you are sending a lot of messages.
+ChannelData te permite enviar datos, pero sin repetir una Dirección IP. Creas un Canal con una IP y puerto. Luego envías con el ChannelId, y la IP y puerto se completarán del lado del servidor. Esta es la mejor opción si estás enviando muchos mensajes.
 
-#### Refreshing
-Allocations will destroy themselves automatically. The TURN Client must refresh them sooner than the `LIFETIME` given when creating the allocation.
+#### Actualización
+Las asignaciones se destruirán automáticamente. El Cliente TURN debe actualizarlas antes del `LIFETIME` dado al crear la asignación.
 
-### TURN Usage
-TURN Usage exists in two forms. Usually, you have one peer acting as a "TURN Client" and the other side communicating directly. In some cases you might have TURN usage on both sides, for example because both clients are in networks that block UDP and therefore the connection to the respective TURN servers happens via TCP.
+### Uso de TURN
+El uso de TURN existe en dos formas. Usualmente, tienes un par actuando como un "Cliente TURN" y el otro lado comunicándose directamente. En algunos casos, puedes tener uso de TURN en ambos lados, por ejemplo, porque ambos clientes están en redes que bloquean UDP y, por lo tanto, la conexión a los respectivos servidores TURN ocurre a través de TCP.
 
-These diagrams help illustrate what that would look like.
+Estos diagramas ayudan a ilustrar cómo se vería eso.
 
-#### One TURN Allocation for Communication
+#### Una Asignación TURN para Comunicación
 
-![One TURN allocation](../images/03-one-turn-allocation.png "One TURN allocation")
+![Una asignación TURN](../../images/03-one-turn-allocation.png "Una asignación TURN")
 
-#### Two TURN Allocations for Communication
+#### Dos Asignaciones TURN para Comunicación
 
-![Two TURN allocations](../images/03-two-turn-allocations.png "Two TURN allocations")
+![Dos asignaciones TURN](../../images/03-two-turn-allocations.png "Dos asignaciones TURN")
 
 ## ICE
-ICE (Interactive Connectivity Establishment) is how WebRTC connects two Agents. Defined in [RFC 8445](https://tools.ietf.org/html/rfc8445), this is another technology that pre-dates WebRTC! ICE is a protocol for establishing connectivity. It determines all the possible routes between the two peers and then ensures you stay connected.
+ICE (Establecimiento de Conectividad Interactiva) es cómo WebRTC conecta dos Agentes. Definido en [RFC 8445](https://tools.ietf.org/html/rfc8445), ¡esta es otra tecnología que es anterior a WebRTC! ICE es un protocolo para establecer conectividad. Determina todas las rutas posibles entre los dos pares y luego asegura que te mantengas conectado.
 
-These routes are known as `Candidate Pairs`, which is a pairing of a local and remote transport address. This is where STUN and TURN come into play with ICE. These addresses can be your local IP Address plus a port, `NAT mapping`, or `Relayed Transport Address`. Each side gathers all the addresses they want to use, exchanges them, and then attempts to connect!
+Estas rutas se conocen como `Pares de Candidatos`, que es un emparejamiento de una dirección de transporte local y remota. Aquí es donde STUN y TURN entran en juego con ICE. Estas direcciones pueden ser tu Dirección IP local más un puerto, `mapeo NAT`, o `Dirección de Transporte Retransmitida`. Cada lado recopila todas las direcciones que quieren usar, las intercambian, ¡y luego intentan conectarse!
 
-Two ICE Agents communicate using ICE ping packets (or formally called the connectivity checks) to establish connectivity. After connectivity is established, they can send whatever data they want. It will be like using a normal socket. These checks use the STUN protocol.
+Dos Agentes ICE se comunican usando paquetes de ping ICE (o formalmente llamados verificaciones de conectividad) para establecer conectividad. Después de que se establece la conectividad, pueden enviar los datos que quieran. Será como usar un socket normal. Estas verificaciones usan el protocolo STUN.
 
-### Creating an ICE Agent
-An ICE Agent is either `Controlling` or `Controlled`. The `Controlling` Agent is the one that decides the selected `Candidate Pair`. Usually, the peer sending the offer is the controlling side.
+### Crear un Agente ICE
+Un Agente ICE es `Controlador` o `Controlado`. El Agente `Controlador` es el que decide el `Par de Candidatos` seleccionado. Generalmente, el par que envía la oferta es el lado controlador.
 
-Each side must have a `user fragment` and a `password`. These two values must be exchanged before connectivity checks can even begin. The `user fragment` is sent in plain text and is useful for demuxing multiple ICE Sessions.
-The `password` is used to generate a `MESSAGE-INTEGRITY` attribute. At the end of each STUN packet, there is an attribute that is a hash of the entire packet using the `password` as a key. This is used to authenticate the packet and ensure it hasn't been tampered with.
+Cada lado debe tener un `fragmento de usuario` y una `contraseña`. Estos dos valores deben intercambiarse antes de que puedan comenzar las verificaciones de conectividad. El `fragmento de usuario` se envía en texto plano y es útil para demultiplexar múltiples Sesiones ICE.
+La `contraseña` se usa para generar un atributo `MESSAGE-INTEGRITY`. Al final de cada paquete STUN, hay un atributo que es un hash de todo el paquete usando la `contraseña` como clave. Esto se usa para autenticar el paquete y asegurar que no haya sido manipulado.
 
-For WebRTC, all these values are distributed via the `Session Description` as described in the previous chapter.
+Para WebRTC, todos estos valores se distribuyen a través de la `Descripción de Sesión` como se describe en el capítulo anterior.
 
-### Candidate Gathering
-We now need to gather all the possible addresses we are reachable at. These addresses are known as candidates.
+### Recopilación de Candidatos
+Ahora necesitamos recopilar todas las direcciones posibles en las que somos accesibles. Estas direcciones se conocen como candidatos.
 
 #### Host
-A Host candidate is listening directly on a local interface. This can either be UDP or TCP.
+Un candidato Host está escuchando directamente en una interfaz local. Esto puede ser UDP o TCP.
 
 #### mDNS
-An mDNS candidate is similar to a host candidate, but the IP address is obscured. Instead of informing the other side about your IP address, you give them a UUID as the hostname. You then set up a multicast listener, and respond if anyone requests the UUID you published.
+Un candidato mDNS es similar a un candidato host, pero la dirección IP está oculta. En lugar de informar al otro lado sobre tu dirección IP, le das un UUID como nombre de host. Luego configuras un oyente de multidifusión y respondes si alguien solicita el UUID que publicaste.
 
-If you are in the same network as the agent, you can find each other via Multicast. If you are not in the same network, you will be unable to connect (unless the network administrator explicitly configured the network to allow Multicast packets to traverse).
+Si estás en la misma red que el agente, pueden encontrarse entre sí a través de Multidifusión. Si no estás en la misma red, no podrás conectarte (a menos que el administrador de red configuró explícitamente la red para permitir que los paquetes de Multidifusión atraviesen).
 
-This is useful for privacy purposes. A user could find out your local IP address via WebRTC with a Host candidate (without even trying to connect to you), but with an mDNS candidate, now they only get a random UUID.
+Esto es útil para propósitos de privacidad. Un usuario podría descubrir tu dirección IP local a través de WebRTC con un candidato Host (sin siquiera intentar conectarse a ti), pero con un candidato mDNS, ahora solo obtienen un UUID aleatorio.
 
-#### Server Reflexive
-A Server Reflexive candidate is generated by doing a `STUN Binding Request` to a STUN Server.
+#### Reflexivo del Servidor
+Un candidato Reflexivo del Servidor se genera haciendo una `Solicitud de Enlace STUN` a un Servidor STUN.
 
-When you get the `STUN Binding Response`, the `XOR-MAPPED-ADDRESS` is your Server Reflexive Candidate.
+Cuando obtienes la `Respuesta de Enlace STUN`, el `XOR-MAPPED-ADDRESS` es tu Candidato Reflexivo del Servidor.
 
-#### Peer Reflexive
-A Peer Reflexive candidate is when you get an inbound request from an address that isn't known to you. Since ICE is an authenticated protocol, you know the traffic is valid. This just means the remote peer is communicating with you from an address it didn't know about.
+#### Reflexivo del Par
+Un candidato Reflexivo del Par se crea cuando el par remoto recibe tu solicitud desde una dirección previamente desconocida para el par. Al recibir, el par informa (refleja) dicha dirección de vuelta a ti. El par sabe que la solicitud fue enviada por ti y no por alguien más porque ICE es un protocolo autenticado.
 
-This commonly happens when a `Host Candidate` communicates with a `Server Reflexive Candidate`. A new `NAT mapping` was created because you are communicating outside your subnet. Remember we said the connectivity checks are in fact STUN packets? The format of STUN response naturally allows a peer to report back the peer-reflexive address.
+Esto comúnmente ocurre cuando un `Candidato Host` se comunica con un `Candidato Reflexivo del Servidor` que está en una subred diferente, lo que resulta en la creación de un nuevo `mapeo NAT`. Recuerda que dijimos que las verificaciones de conectividad son de hecho paquetes STUN. El formato de la respuesta STUN naturalmente permite que un par informe de vuelta la dirección reflexiva del par.
 
-#### Relay
-A Relay Candidate is generated by using a TURN Server.
+#### Relé
+Un Candidato de Relé se genera usando un Servidor TURN.
 
-After the initial handshake with the TURN Server you are given a `RELAYED-ADDRESS`, this is your Relay Candidate.
+Después del handshake inicial con el Servidor TURN, se te da una `RELAYED-ADDRESS`, este es tu Candidato de Relé.
 
-### Connectivity Checks
-We now know the remote agent's `user fragment`, `password`, and candidates. We can now attempt to connect! Every candidate is paired with each other. So if you have 3 candidates on each side, you now have 9 candidate pairs.
+### Verificaciones de Conectividad
+¡Ahora conocemos el `fragmento de usuario`, `contraseña` y candidatos del agente remoto. Ahora podemos intentar conectar! Cada candidato se empareja entre sí. Así que si tienes 3 candidatos en cada lado, ahora tienes 9 pares de candidatos.
 
-Visually it looks like this:
+Visualmente se ve así:
 
-![Connectivity checks](../images/03-connectivity-checks.png "Connectivity checks")
+![Verificaciones de conectividad](../../images/03-connectivity-checks.png "Verificaciones de conectividad")
 
-### Candidate Selection
-The Controlling and Controlled Agent both start sending traffic on each pair. This is needed if one Agent is behind an `Address Dependent Mapping`, this will cause a `Peer Reflexive Candidate` to be created.
+### Selección de Candidatos
+El Agente Controlador y Controlado comienzan a enviar tráfico en cada par. Esto es necesario si un Agente está detrás de un `Mapeo Dependiente de la Dirección`, esto causará que se cree un `Candidato Reflexivo del Par`.
 
-Each `Candidate Pair` that saw network traffic is then promoted to a `Valid Candidate` pair. The Controlling Agent then takes one `Valid Candidate` pair and nominates it. This becomes the `Nominated Pair`. The Controlling and Controlled Agent then attempt one more round of bi-directional communication. If that succeeds, the `Nominated Pair` becomes the `Selected Candidate Pair`! This pair is then used for the rest of the session.
+Cada `Par de Candidatos` que vio tráfico de red es entonces promovido a un par `Candidato Válido`. El Agente Controlador luego toma un par `Candidato Válido` y lo nomina. Este se convierte en el `Par Nominado`. El Agente Controlador y Controlado luego intentan una ronda más de comunicación bidireccional. Si eso tiene éxito, ¡el `Par Nominado` se convierte en el `Par de Candidatos Seleccionado`! Este par se usa luego para el resto de la sesión.
 
-### Restarts
-If the `Selected Candidate Pair` stops working for any reason (NAT mapping expires, TURN Server crashes) the ICE Agent will go to `Failed` state. Both agents can be restarted and will do the whole process all over again.
+### Reinicios
+Si el `Par de Candidatos Seleccionado` deja de funcionar por cualquier razón (el mapeo NAT expira, el Servidor TURN falla), el Agente ICE pasará al estado `Failed`. Ambos agentes pueden reiniciarse y harán todo el proceso de nuevo.
