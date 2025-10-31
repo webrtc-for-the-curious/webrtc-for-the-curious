@@ -1,65 +1,65 @@
 ---
-title: Signaling
+title: Señalización
 type: docs
 weight: 3
 ---
 
-# Signaling
+# Señalización
 
-## What is WebRTC Signaling?
+## ¿Qué es la Señalización de WebRTC?
 
-When you create a WebRTC agent, it knows nothing about the other peer. It has no idea who it is going to connect with or what they are going to send!
-Signaling is the initial bootstrapping that makes a call possible. After these values are exchanged, the WebRTC agents can communicate directly with each other.
+Cuando creas un agente WebRTC, no sabe nada sobre el otro par. ¡No tiene idea de con quién se va a conectar o qué van a enviar!
+La señalización es el proceso inicial de arranque que hace posible una llamada. Después de que estos valores se intercambian, los agentes WebRTC pueden comunicarse directamente entre sí.
 
-Signaling messages are just text. The WebRTC agents don't care how they are transported. They are commonly shared via Websockets, but that is not a requirement.
+Los mensajes de señalización son simplemente texto. A los agentes WebRTC no les importa cómo se transportan. Comúnmente se comparten a través de Websockets, pero eso no es un requisito.
 
-## How does WebRTC signaling work?
+## ¿Cómo funciona la señalización de WebRTC?
 
-WebRTC uses an existing protocol called the Session Description Protocol. Via this protocol, the two WebRTC Agents will share all the state required to establish a connection. The protocol itself is simple to read and understand.
-The complexity comes from understanding all the values that WebRTC populates it with.
+WebRTC utiliza un protocolo existente llamado Protocolo de Descripción de Sesión (Session Description Protocol). A través de este protocolo, los dos agentes WebRTC compartirán todo el estado requerido para establecer una conexión. El protocolo en sí es simple de leer y entender.
+La complejidad proviene de comprender todos los valores con los que WebRTC lo completa.
 
-This protocol is not specific to WebRTC. We will learn the Session Description Protocol first without even talking about WebRTC. WebRTC only really takes advantage of a subset of the protocol, so we are only going to cover what we need.
-After we understand the protocol, we will move on to its applied usage in WebRTC.
+Este protocolo no es específico de WebRTC. Primero aprenderemos el Protocolo de Descripción de Sesión sin siquiera hablar de WebRTC. WebRTC realmente solo aprovecha un subconjunto del protocolo, por lo que solo vamos a cubrir lo que necesitamos.
+Después de que entendamos el protocolo, pasaremos a su uso aplicado en WebRTC.
 
-## What is the *Session Description Protocol* (SDP)?
-The Session Description Protocol is defined in [RFC 8866](https://tools.ietf.org/html/rfc8866). It is a key/value protocol with a newline after each value. It will feel similar to an INI file.
-A Session Description contains zero or more Media Descriptions. Mentally you can model it as a Session Description that contains an array of Media Descriptions.
+## ¿Qué es el *Protocolo de Descripción de Sesión* (SDP)?
+El Protocolo de Descripción de Sesión está definido en [RFC 8866](https://tools.ietf.org/html/rfc8866). Es un protocolo de clave/valor con una nueva línea después de cada valor. Se sentirá similar a un archivo INI.
+Una Descripción de Sesión contiene cero o más Descripciones de Medios. Mentalmente puedes modelarlo como una Descripción de Sesión que contiene un array de Descripciones de Medios.
 
-A Media Description usually maps to a single stream of media. So if you wanted to describe a call with three video streams and two audio tracks you would have five Media Descriptions.
+Una Descripción de Medios generalmente se mapea a un solo flujo de medios. Así que si quisieras describir una llamada con tres flujos de video y dos pistas de audio tendrías cinco Descripciones de Medios.
 
-### How to read the SDP
-Every line in a Session Description will start with a single character, this is your key. It will then be followed by an equal sign. Everything after that equal sign is the value. After the value is complete, you will have a newline.
+### Cómo leer el SDP
+Cada línea en una Descripción de Sesión comenzará con un solo carácter, esta es tu clave. Luego será seguida por un signo igual. Todo después de ese signo igual es el valor. Después de que el valor esté completo, tendrás una nueva línea.
 
-The Session Description Protocol defines all the keys that are valid. You can only use letters for keys as defined in the protocol. These keys all have significant meaning, which will be explained later.
+El Protocolo de Descripción de Sesión define todas las claves que son válidas. Solo puedes usar letras para claves como se define en el protocolo. Estas claves tienen un significado importante, que se explicará más adelante.
 
-Take this Session Description excerpt:
+Toma este extracto de Descripción de Sesión:
 
 ```
 a=my-sdp-value
 a=second-value
 ```
 
-You have two lines. Each with the key `a`. The first line has the value `my-sdp-value`, the second line has the value `second-value`.
+Tienes dos líneas. Cada una con la clave `a`. La primera línea tiene el valor `my-sdp-value`, la segunda línea tiene el valor `second-value`.
 
-### WebRTC only uses some SDP keys
-Not all key values defined by the Session Description Protocol are used by WebRTC. Only keys used in the JavaScript Session Establishment Protocol (JSEP), defined in [RFC 8829](https://datatracker.ietf.org/doc/html/rfc8829), are important. The following seven keys are the only ones you need to understand right now:
+### WebRTC solo usa algunas claves SDP
+No todos los valores de clave definidos por el Protocolo de Descripción de Sesión son utilizados por WebRTC. Solo las claves usadas en el Protocolo de Establecimiento de Sesión de JavaScript (JSEP), definido en [RFC 8829](https://datatracker.ietf.org/doc/html/rfc8829), son importantes. Las siguientes siete claves son las únicas que necesitas entender ahora mismo:
 
-* `v` - Version, should be equal to `0`.
-* `o` - Origin, contains a unique ID useful for renegotiations.
-* `s` - Session Name, should be equal to `-`.
-* `t` - Timing, should be equal to `0 0`.
-* `m` - Media Description (`m=<media> <port> <proto> <fmt> ...`), described in detail below.
-* `a` - Attribute, a free text field. This is the most common line in WebRTC.
-* `c` - Connection Data, should be equal to `IN IP4 0.0.0.0`.
+* `v` - Versión, debería ser igual a `0`.
+* `o` - Origen, contiene un ID único útil para renegociaciones.
+* `s` - Nombre de Sesión, debería ser igual a `-`.
+* `t` - Temporización, debería ser igual a `0 0`.
+* `m` - Descripción de Medios (`m=<media> <port> <proto> <fmt> ...`), descrito en detalle más abajo.
+* `a` - Atributo, un campo de texto libre. Esta es la línea más común en WebRTC.
+* `c` - Datos de Conexión, debería ser igual a `IN IP4 0.0.0.0`.
 
-### Media Descriptions in a Session Description
+### Descripciones de Medios en una Descripción de Sesión
 
-A Session Description can contain an unlimited number of Media Descriptions.
+Una Descripción de Sesión puede contener un número ilimitado de Descripciones de Medios.
 
-A Media Description definition contains a list of formats. These formats map to RTP Payload Types. The actual codec is then defined by an Attribute with the value `rtpmap` in the Media Description.
-The importance of RTP and RTP Payload Types is discussed later in the Media chapter. Each Media Description can contain an unlimited number of attributes.
+Una definición de Descripción de Medios contiene una lista de formatos. Estos formatos se mapean a Tipos de Carga Útil RTP. El códec real se define luego por un Atributo con el valor `rtpmap` en la Descripción de Medios.
+La importancia de RTP y los Tipos de Carga Útil RTP se discute más adelante en el capítulo de Medios. Cada Descripción de Medios puede contener un número ilimitado de atributos.
 
-Take this Session Description excerpt as an example:
+Toma este extracto de Descripción de Sesión como ejemplo:
 
 ```
 v=0
@@ -70,13 +70,13 @@ a=rtpmap:96 VP8/90000
 a=my-sdp-value
 ```
 
-You have two Media Descriptions, one of type audio with fmt `111` and one of type video with the format `96`. The first Media Description has only one attribute. This attribute maps the Payload Type `111` to Opus.
-The second Media Description has two attributes. The first attribute maps the Payload Type `96` to be VP8, and the second attribute is just `my-sdp-value`.
+Tienes dos Descripciones de Medios, una de tipo audio con fmt `111` y una de tipo video con el formato `96`. La primera Descripción de Medios tiene solo un atributo. Este atributo mapea el Tipo de Carga Útil `111` a Opus.
+La segunda Descripción de Medios tiene dos atributos. El primer atributo mapea el Tipo de Carga Útil `96` a VP8, y el segundo atributo es solo `my-sdp-value`.
 
-### Full Example
+### Ejemplo Completo
 
-The following brings all the concepts we have talked about together. These are all the features of the Session Description Protocol that WebRTC uses.
-If you can read this, you can read any WebRTC Session Description!
+Lo siguiente reúne todos los conceptos de los que hemos hablado. Estas son todas las características del Protocolo de Descripción de Sesión que WebRTC utiliza.
+¡Si puedes leer esto, puedes leer cualquier Descripción de Sesión de WebRTC!
 
 ```
 v=0
@@ -90,74 +90,74 @@ m=video 4002 RTP/AVP 96
 a=rtpmap:96 VP8/90000
 ```
 
-* `v`, `o`, `s`, `c`, `t` are defined, but they do not affect the WebRTC session.
-* You have two Media Descriptions. One of type `audio` and one of type `video`.
-* Each of those has one attribute. This attribute configures details of the RTP pipeline, which is discussed in the "Media Communication" chapter.
+* `v`, `o`, `s`, `c`, `t` están definidos, pero no afectan la sesión WebRTC.
+* Tienes dos Descripciones de Medios. Una de tipo `audio` y una de tipo `video`.
+* Cada una de esas tiene un atributo. Este atributo configura detalles del pipeline RTP, que se discute en el capítulo "Comunicación de Medios".
 
-## How *Session Description Protocol* and WebRTC work together
+## Cómo funcionan juntos el *Protocolo de Descripción de Sesión* y WebRTC
 
-The next piece of the puzzle is understanding _how_ WebRTC uses the Session Description Protocol.
+La siguiente pieza del rompecabezas es entender _cómo_ WebRTC usa el Protocolo de Descripción de Sesión.
 
-### What are Offers and Answers?
+### ¿Qué son las Ofertas y Respuestas?
 
-WebRTC uses an offer/answer model. All this means is that one WebRTC Agent makes an "Offer" to start a call, and the other WebRTC Agents "Answers" if it is willing to accept what has been offered.
+WebRTC usa un modelo de oferta/respuesta. Todo esto significa que un agente WebRTC hace una "Oferta" para iniciar una llamada, y el otro agente WebRTC "Responde" si está dispuesto a aceptar lo que se ha ofrecido.
 
-This gives the answerer a chance to reject unsupported codecs in the Media Descriptions. This is how two peers can understand what formats they are willing to exchange.
+Esto le da al que responde la oportunidad de rechazar códecs no soportados en las Descripciones de Medios. Así es como dos pares pueden entender qué formatos están dispuestos a intercambiar.
 
-### Transceivers are for sending and receiving
+### Los Transceivers son para enviar y recibir
 
-Transceivers is a WebRTC specific concept that you will see in the API. What it is doing is exposing the "Media Description" to the JavaScript API. Each Media Description becomes a Transceiver.
-Every time you create a Transceiver a new Media Description is added to the local Session Description.
+Transceivers es un concepto específico de WebRTC que verás en la API. Lo que está haciendo es exponer la "Descripción de Medios" a la API de JavaScript. Cada Descripción de Medios se convierte en un Transceiver.
+Cada vez que creas un Transceiver se agrega una nueva Descripción de Medios a la Descripción de Sesión local.
 
-Each Media Description in WebRTC will have a direction attribute. This allows a WebRTC Agent to declare "I am going to send you this codec, but I am not willing to accept anything back". There are four valid values:
+Cada Descripción de Medios en WebRTC tendrá un atributo de dirección. Esto permite que un agente WebRTC declare "Voy a enviarte este códec, pero no estoy dispuesto a aceptar nada de vuelta". Hay cuatro valores válidos:
 
 * `send`
 * `recv`
 * `sendrecv`
 * `inactive`
 
-### SDP Values used by WebRTC
+### Valores SDP utilizados por WebRTC
 
-This is a list of some common attributes that you will see in a Session Description from a WebRTC Agent. Many of these values control the subsystems that we haven't discussed yet.
+Esta es una lista de algunos atributos comunes que verás en una Descripción de Sesión de un agente WebRTC. Muchos de estos valores controlan los subsistemas que aún no hemos discutido.
 
 #### `group:BUNDLE`
-Bundling is an act of running multiple types of traffic over one connection. Some WebRTC implementations use a dedicated connection per media stream. Bundling should be preferred.
+El empaquetamiento (Bundling) es el acto de ejecutar múltiples tipos de tráfico sobre una conexión. Algunas implementaciones de WebRTC usan una conexión dedicada por flujo de medios. El empaquetamiento debería ser preferido.
 
 #### `fingerprint:sha-256`
-This is a hash of the certificate a peer is using for DTLS. After the DTLS handshake is completed, you compare this to the actual certificate to confirm you are communicating with whom you expect.
+Este es un hash del certificado que un par está usando para DTLS. Después de que se completa el handshake DTLS, comparas esto con el certificado real para confirmar que te estás comunicando con quien esperas.
 
 #### `setup:`
-This controls the DTLS Agent behavior. This determines if it runs as a client or server after ICE has connected. The possible values are:
+Esto controla el comportamiento del agente DTLS. Esto determina si se ejecuta como un cliente o servidor después de que ICE se haya conectado. Los valores posibles son:
 
-* `setup:active` - Run as DTLS Client.
-* `setup:passive` - Run as DTLS Server.
-* `setup:actpass` - Ask the other WebRTC Agent to choose.
+* `setup:active` - Ejecutar como Cliente DTLS.
+* `setup:passive` - Ejecutar como Servidor DTLS.
+* `setup:actpass` - Pedir al otro agente WebRTC que elija.
 
 #### `mid`
-The "mid" attribute is used for identifying media streams within a session description.
+El atributo "mid" se usa para identificar flujos de medios dentro de una descripción de sesión.
 
 #### `ice-ufrag`
-This is the user fragment value for the ICE Agent. Used for the authentication of ICE Traffic.
+Este es el valor de fragmento de usuario para el agente ICE. Usado para la autenticación del tráfico ICE.
 
 #### `ice-pwd`
-This is the password for the ICE Agent. Used for authentication of ICE Traffic.
+Esta es la contraseña para el agente ICE. Usado para la autenticación del tráfico ICE.
 
 #### `rtpmap`
-This value is used to map a specific codec to an RTP Payload Type. Payload types are not static, so for every call the offerer decides the payload types for each codec.
+Este valor se usa para mapear un códec específico a un Tipo de Carga Útil RTP. Los tipos de carga útil no son estáticos, así que para cada llamada el oferente decide los tipos de carga útil para cada códec.
 
 #### `fmtp`
-Defines additional values for one Payload Type. This is useful to communicate a specific video profile or encoder setting.
+Define valores adicionales para un Tipo de Carga Útil. Esto es útil para comunicar un perfil de video específico o configuración de codificador.
 
 #### `candidate`
-This is an ICE Candidate that comes from the ICE Agent. This is one possible address that the WebRTC Agent is available on. These are fully explained in the next chapter.
+Este es un Candidato ICE que proviene del agente ICE. Esta es una posible dirección en la que el agente WebRTC está disponible. Estos se explican completamente en el siguiente capítulo.
 
 #### `ssrc`
-A Synchronization Source (SSRC) defines a single media stream track.
+Una Fuente de Sincronización (SSRC) define una única pista de flujo de medios.
 
-`label` is the ID for this individual stream. `mslabel` is the ID for a container that can have multiple streams inside it.
+`label` es el ID para este flujo individual. `mslabel` es el ID para un contenedor que puede tener múltiples flujos dentro de él.
 
-### Example of a WebRTC Session Description
-The following is a complete Session Description generated by a WebRTC Client:
+### Ejemplo de una Descripción de Sesión de WebRTC
+Lo siguiente es una Descripción de Sesión completa generada por un cliente WebRTC:
 
 ```
 v=0
@@ -204,15 +204,15 @@ a=msid:XHbOTNRFnLtesHwJ JgtwEhBWNEiOnhuW
 a=sendrecv
 ```
 
-This is what we know from this message:
+Esto es lo que sabemos de este mensaje:
 
-* We have two media sections, one audio and one video.
-* Both of them are `sendrecv` transceivers. We are getting two streams, and we can send two back.
-* We have ICE Candidates and Authentication details, so we can attempt to connect.
-* We have a certificate fingerprint, so we can have a secure call.
+* Tenemos dos secciones de medios, una de audio y una de video.
+* Ambas son transceivers `sendrecv`. Estamos recibiendo dos flujos, y podemos enviar dos de vuelta.
+* Tenemos Candidatos ICE y detalles de Autenticación, así que podemos intentar conectarnos.
+* Tenemos una huella digital de certificado, así que podemos tener una llamada segura.
 
-### Further Topics
-In later versions of this book, the following topics will also be addressed:
+### Temas Adicionales
+En versiones posteriores de este libro, también se abordarán los siguientes temas:
 
-* Renegotiation
+* Renegociación
 * Simulcast

@@ -1,172 +1,172 @@
 ---
-title: Applied WebRTC
+title: WebRTC Aplicado
 type: docs
 weight: 9
 ---
 
-# Applied WebRTC
-Now that you know how WebRTC works it is time to build with it! This chapter explores what people are
-building with WebRTC, and how they are building it. You will learn all the interesting things that are
-happening with WebRTC. The power of WebRTC comes at a cost. Building production grade WebRTC services is
-challenging. This chapter will try to explain those challenges before you hit them.
+# WebRTC Aplicado
+Ahora que sabes cómo funciona WebRTC, ¡es hora de construir con él! Este capítulo explora qué están
+construyendo las personas con WebRTC y cómo lo están construyendo. Aprenderás todas las cosas interesantes que están
+sucediendo con WebRTC. El poder de WebRTC viene con un costo. Construir servicios WebRTC de grado producción es
+desafiante. Este capítulo intentará explicar esos desafíos antes de que los encuentres.
 
-## By Use Case
-Many think WebRTC is just a technology for conferencing in the web browser. It is so much more than that though!
-WebRTC is used in a wide range of applications. New use cases are showing up all the time. In this chapter we will list some common ones and how WebRTC is revolutionizing them.
+## Por Caso de Uso
+Muchos piensan que WebRTC es solo una tecnología para conferencias en el navegador web. ¡Es mucho más que eso!
+WebRTC se usa en una amplia gama de aplicaciones. Nuevos casos de uso están apareciendo todo el tiempo. En este capítulo enumeraremos algunos comunes y cómo WebRTC los está revolucionando.
 
-### Conferencing
-Conferencing is the original use case for WebRTC. The protocol contains a few necessary features that no other protocol offers
-in the browser. You could build a conferencing system with WebSockets and it may work in optimal conditions. If you want
-something that can be deployed in real world network conditions, WebRTC is the best choice.
+### Conferencias
+Las conferencias son el caso de uso original para WebRTC. El protocolo contiene algunas características necesarias que ningún otro protocolo ofrece
+en el navegador. Podrías construir un sistema de conferencias con WebSockets y podría funcionar en condiciones óptimas. Si quieres
+algo que pueda implementarse en condiciones de red del mundo real, WebRTC es la mejor opción.
 
-WebRTC provides congestion control and adaptive bitrate for media. As the conditions of the network change, users will still get the
-best experience possible. Developers don't have to write any additional code to measure these conditions either.
+WebRTC proporciona control de congestión y tasa de bits adaptativa para medios. A medida que las condiciones de la red cambian, los usuarios seguirán obteniendo la
+mejor experiencia posible. Los desarrolladores tampoco tienen que escribir ningún código adicional para medir estas condiciones.
 
-Participants can send and receive multiple streams. They can also add and remove those streams at any time during the call. Codecs are negotiated
-as well. All of this functionality is provided by the browser, no custom code is required to be written by the developer.
+Los participantes pueden enviar y recibir múltiples flujos. También pueden agregar y eliminar esos flujos en cualquier momento durante la llamada. Los códecs se negocian
+también. Toda esta funcionalidad es proporcionada por el navegador, no se requiere que el desarrollador escriba código personalizado.
 
-Conferencing also benefits from data channels. Users can send metadata or share documents. You can create multiple streams
-and configure them if you need performance more than reliability.
+Las conferencias también se benefician de los canales de datos. Los usuarios pueden enviar metadatos o compartir documentos. Puedes crear múltiples flujos
+y configurarlos si necesitas rendimiento más que confiabilidad.
 
-### Broadcasting
-Lots of new projects are starting to appear in the broadcast space that use WebRTC. The protocol has a lot to offer for both the publisher
-and consumer of media.
+### Transmisión
+Muchos proyectos nuevos están comenzando a aparecer en el espacio de transmisión que usan WebRTC. El protocolo tiene mucho que ofrecer tanto para el publicador
+como para el consumidor de medios.
 
-WebRTC being in the browser makes it easy for users to publish video. It removes the requirement for users to download a new client.
-Any platform that has a web browser can publish video. Publishers can then send multiple tracks and modify or remove them at anytime. This is
-a huge improvement over legacy protocols that only allowed one audio or one video track per connection.
+WebRTC estar en el navegador facilita que los usuarios publiquen video. Elimina el requisito de que los usuarios descarguen un nuevo cliente.
+Cualquier plataforma que tenga un navegador web puede publicar video. Los publicadores pueden entonces enviar múltiples pistas y modificarlas o eliminarlas en cualquier momento. Esta es
+una gran mejora sobre los protocolos heredados que solo permitían una pista de audio o una pista de video por conexión.
 
-WebRTC gives developers greater control over the latency versus quality trade-offs. If it is more important that latency never exceeds a
-certain threshold, and you are willing to tolerate some decoding artifacts. You can configure the viewer to play media as soon as it
-arrives. With other protocols that run over TCP, that isn't as easy. In the browser you can request data and that is it.
+WebRTC les da a los desarrolladores un mayor control sobre los compromisos entre latencia y calidad. Si es más importante que la latencia nunca exceda un
+cierto umbral, y estás dispuesto a tolerar algunos artefactos de decodificación. Puedes configurar el visor para reproducir medios tan pronto como
+lleguen. Con otros protocolos que se ejecutan sobre TCP, eso no es tan fácil. En el navegador puedes solicitar datos y eso es todo.
 
-### Remote Access
-Remote Access is when you remotely access another computer via WebRTC. You could have complete control of the remote host, or maybe just a
-single application. This is great for running computationally expensive tasks when the local hardware can't do it. Like running a new video game, or
-CAD software. WebRTC was able to revolutionize the space in three ways.
+### Acceso Remoto
+El Acceso Remoto es cuando accedes remotamente a otra computadora a través de WebRTC. Podrías tener control completo del host remoto, o tal vez solo una
+aplicación individual. Esto es genial para ejecutar tareas computacionalmente costosas cuando el hardware local no puede hacerlo. Como ejecutar un nuevo videojuego, o
+software CAD. WebRTC pudo revolucionar el espacio de tres maneras.
 
-WebRTC can be used to remotely access a host that isn't world routable. With NAT Traversal you can access a computer that is only available
-via STUN. This is great for security and privacy. Your users don't have to route video through an ingest, or a "jump box". NAT Traversal also
-makes deployments easier. You don't have to worry about port forwarding or setting up a static IP ahead of time.
+WebRTC puede usarse para acceder remotamente a un host que no es enrutable mundialmente. Con NAT Traversal puedes acceder a una computadora que solo está disponible
+a través de STUN. Esto es genial para seguridad y privacidad. Tus usuarios no tienen que enrutar video a través de una ingesta, o una "caja de salto". NAT Traversal también
+hace que las implementaciones sean más fáciles. No tienes que preocuparte por el reenvío de puertos o configurar una IP estática con anticipación.
 
-Data channels are really powerful as well in this scenario. They can be configured so that only the latest data is accepted. With TCP you run the
-risk of encountering Head-of-line blocking. An old mouse click or keypress could arrive late, and block the subsequent ones from being accepted.
-WebRTC's data channels are designed to handle this and can be configured to not resend lost packets. You can also measure the backpressure and
-make sure that you aren't sending more data than your network supports.
+Los canales de datos también son realmente poderosos en este escenario. Pueden configurarse para que solo se acepten los datos más recientes. Con TCP corres el
+riesgo de encontrar bloqueo Head-of-line. Un clic de mouse o pulsación de tecla antiguo podría llegar tarde y bloquear los subsiguientes de ser aceptados.
+Los canales de datos de WebRTC están diseñados para manejar esto y pueden configurarse para no reenviar paquetes perdidos. También puedes medir la contrapresión y
+asegurarte de que no estás enviando más datos de los que tu red soporta.
 
-WebRTC being available in the browser has been a huge quality of life improvement. You don't have to download a proprietary client to start the
-session. More and more clients are coming with WebRTC bundled, smart TVs are getting full web browsers now.
+WebRTC estar disponible en el navegador ha sido una gran mejora de calidad de vida. No tienes que descargar un cliente propietario para iniciar la
+sesión. Cada vez más clientes vienen con WebRTC incluido, las Smart TVs están obteniendo navegadores web completos ahora.
 
-### File Sharing and Censorship Circumvention
-File Sharing and Censorship Circumvention are dramatically different problems. However, WebRTC solves the same problems for them both. It makes
-them both easily available and harder to block.
+### Compartir Archivos y Elusión de Censura
+Compartir Archivos y Elusión de Censura son problemas dramáticamente diferentes. Sin embargo, WebRTC resuelve los mismos problemas para ambos. Los hace
+a ambos fácilmente disponibles y más difíciles de bloquear.
 
-The first problem that WebRTC solves is getting the client. If you want to join a file sharing network, you need to download the client. Even if
-the network is distributed, you still need to get the client first. In a restricted network the download will often be blocked. Even if you
-can download it, the user may not be able to install and run the client. WebRTC is available in every web browser already making it readily available.
+El primer problema que WebRTC resuelve es obtener el cliente. Si quieres unirte a una red de intercambio de archivos, necesitas descargar el cliente. Incluso si
+la red está distribuida, aún necesitas obtener el cliente primero. En una red restringida, la descarga a menudo será bloqueada. Incluso si puedes
+descargarlo, el usuario puede no ser capaz de instalar y ejecutar el cliente. WebRTC está disponible en cada navegador web, ya lo que hace que esté fácilmente disponible.
 
-The second problem that WebRTC solves is your traffic being blocked. If you use a protocol that is just for file sharing or censorship circumvention
-it is much easier to block it. Since WebRTC is a general purpose protocol, blocking it would impact everyone. Blocking WebRTC might prevent other
-users of the network from joining conference calls.
+El segundo problema que WebRTC resuelve es que tu tráfico sea bloqueado. Si usas un protocolo que es solo para compartir archivos o elusión de censura
+es mucho más fácil bloquearlo. Dado que WebRTC es un protocolo de propósito general, bloquearlo impactaría a todos. Bloquear WebRTC podría evitar que otros
+usuarios de la red se unan a llamadas de conferencia.
 
-### Internet of Things
-Internet of Things (IoT) covers a few different use cases. For many this means network connected security cameras. Using WebRTC you can stream the video to another WebRTC
-peer like your phone or a browser. Another use case is having devices connect and exchange sensor data. You can have two devices in your LAN
-exchange climate, noise or light readings.
+### Internet de las Cosas
+Internet de las Cosas (IoT) cubre algunos casos de uso diferentes. Para muchos esto significa cámaras de seguridad conectadas a la red. Usando WebRTC puedes transmitir el video a otro par WebRTC
+como tu teléfono o un navegador. Otro caso de uso es tener dispositivos que se conecten e intercambien datos de sensores. Puedes tener dos dispositivos en tu LAN
+que intercambien lecturas de clima, ruido o luz.
 
-WebRTC has a huge privacy advantage here over legacy video stream protocols. Since WebRTC supports P2P connectivity the camera can send the video
-directly to your browser. There is no reason for your video to be sent to a 3rd party server. Even when video is encrypted, an attacker can make
-assumptions from the metadata of the call.
+WebRTC tiene una gran ventaja de privacidad aquí sobre los protocolos de transmisión de video heredados. Dado que WebRTC admite conectividad P2P, la cámara puede enviar el video
+directamente a tu navegador. No hay razón para que tu video sea enviado a un servidor de terceros. Incluso cuando el video está cifrado, un atacante puede hacer
+suposiciones a partir de los metadatos de la llamada.
 
-Interoperability is another advantage for the IoT space. WebRTC is available in lots of different languages; C#, C++, C, Go, Java, Python, Rust
-and TypeScript. This means you can use the language that works best for you. You also don't have to turn to proprietary protocols or formats
-to be able to connect your clients.
+La interoperabilidad es otra ventaja para el espacio IoT. WebRTC está disponible en muchos lenguajes diferentes; C#, C++, C, Go, Java, Python, Rust
+y TypeScript. Esto significa que puedes usar el lenguaje que mejor funcione para ti. Tampoco tienes que recurrir a protocolos o formatos propietarios
+para poder conectar tus clientes.
 
-### Media Protocol Bridging
-You have existing hardware and software that is producing video, but you can't upgrade it yet. Expecting users to download a proprietary
-client to watch videos is frustrating. The answer is to run a WebRTC bridge. The bridge translates between the two protocols so users can use the
-browser with your legacy setup.
+### Puente de Protocolo de Medios
+Tienes hardware y software existente que está produciendo video, pero aún no puedes actualizarlo. Esperar que los usuarios descarguen un cliente propietario
+para ver videos es frustrante. La respuesta es ejecutar un puente WebRTC. El puente traduce entre los dos protocolos para que los usuarios puedan usar el
+navegador con tu configuración heredada.
 
-Many of the formats that developers bridge with use the same protocols as WebRTC. SIP is commonly exposed via WebRTC and allows users to make phone calls
-from their browser. RTSP is used in lots of legacy security cameras. They both use the same underlying protocols (RTP and SDP) so it is computationally cheap
-to run. The bridge is just required to add or remove things that are WebRTC specific.
+Muchos de los formatos con los que los desarrolladores hacen puentes usan los mismos protocolos que WebRTC. SIP comúnmente se expone a través de WebRTC y permite a los usuarios hacer llamadas telefónicas
+desde su navegador. RTSP se usa en muchas cámaras de seguridad heredadas. Ambos usan los mismos protocolos subyacentes (RTP y SDP) por lo que es computacionalmente barato
+ejecutar. El puente solo se requiere para agregar o eliminar cosas que son específicas de WebRTC.
 
-### Data Protocol Bridging
-A web browser is only able to speak a constrained set of protocols. You can use HTTP, WebSockets, WebRTC and QUIC. If you want to connect
-to anything else, you need to use a protocol bridge. A protocol bridge is a server that converts foreign traffic into something the browser
-can access. A popular example is using SSH from your browser to access a server. WebRTC's data channels have two advantages over the competition.
+### Puente de Protocolo de Datos
+Un navegador web solo puede hablar un conjunto restringido de protocolos. Puedes usar HTTP, WebSockets, WebRTC y QUIC. Si quieres conectarte
+a cualquier otra cosa, necesitas usar un puente de protocolo. Un puente de protocolo es un servidor que convierte tráfico extranjero en algo que el navegador
+puede acceder. Un ejemplo popular es usar SSH desde tu navegador para acceder a un servidor. Los canales de datos de WebRTC tienen dos ventajas sobre la competencia.
 
-WebRTC's data channels allow unreliable and unordered delivery. In cases where low latency is critical this is needed. You don't want new data to be
-blocked by old data, this is known as head-of-line blocking. Imagine you are playing a multiplayer First-person shooter. Do you really care where the
-player was two seconds ago? If that data didn't arrive in time, it doesn't make sense to keep trying to send it. Unreliable and unordered delivery allows
-you to use the data as soon as it arrives.
+Los canales de datos de WebRTC permiten entrega no confiable y desordenada. En casos donde la baja latencia es crítica, esto es necesario. No quieres que los nuevos datos sean
+bloqueados por datos antiguos, esto se conoce como bloqueo head-of-line. Imagina que estás jugando un shooter multijugador en primera persona. ¿Realmente te importa dónde estaba el
+jugador hace dos segundos? Si esos datos no llegaron a tiempo, no tiene sentido seguir intentando enviarlos. La entrega no confiable y desordenada te permite
+usar los datos tan pronto como lleguen.
 
-Data channels also provide feedback pressure. This tells you if you are sending data faster than your connection can support. You then have two
-choices when this happens. The data channel can either be configured to buffer and deliver the data late, or you can drop the data that hasn't arrived
-in real-time.
+Los canales de datos también proporcionan presión de retroalimentación. Esto te dice si estás enviando datos más rápido de lo que tu conexión puede soportar. Entonces tienes dos
+opciones cuando esto sucede. El canal de datos puede configurarse para almacenar en búfer y entregar los datos tarde, o puedes descartar los datos que no han llegado
+en tiempo real.
 
-### Teleoperation
-Teleoperation is the act of controlling a device remotely via WebRTC data channels, and sending the video back via RTP. Developers are driving cars remotely
-via WebRTC today! This is used to control robots at construction sites and deliver packages. Using WebRTC for these problems makes sense for two reasons.
+### Teleoperación
+La teleoperación es el acto de controlar un dispositivo remotamente a través de canales de datos WebRTC, y enviar el video de vuelta a través de RTP. Los desarrolladores están conduciendo autos remotamente
+a través de WebRTC hoy. Esto se usa para controlar robots en sitios de construcción y entregar paquetes. Usar WebRTC para estos problemas tiene sentido por dos razones.
 
-The ubiquity of WebRTC makes it easy to give users control. All the user needs is a web browser and an input device. Browsers even
-support taking input from joysticks and gamepads. WebRTC completely removes the need to install an additional client on the user's device.
+La ubicuidad de WebRTC facilita dar control a los usuarios. Todo lo que el usuario necesita es un navegador web y un dispositivo de entrada. Los navegadores incluso
+admiten tomar entrada de joysticks y gamepads. WebRTC elimina completamente la necesidad de instalar un cliente adicional en el dispositivo del usuario.
 
-### Distributed CDN
-Distributed CDNs are a subset of file sharing. The files being distributed are configured by the CDN operator instead. When users join the CDN network
-they can download and share the allowed files. Users get all the same benefits as file sharing.
+### CDN Distribuido
+Los CDNs distribuidos son un subconjunto del intercambio de archivos. Los archivos que se distribuyen son configurados por el operador del CDN en su lugar. Cuando los usuarios se unen a la red CDN
+pueden descargar y compartir los archivos permitidos. Los usuarios obtienen todos los mismos beneficios que el intercambio de archivos.
 
-These CDNs work great when you are at an office with poor external connectivity, but great LAN connectivity. You can have one user download a video, and
-then share it with everyone else. Since everyone isn't attempting to fetch the same file via the external network, the transfer will complete faster.
+Estos CDNs funcionan muy bien cuando estás en una oficina con mala conectividad externa, pero gran conectividad LAN. Puedes tener un usuario que descargue un video, y
+luego lo comparta con todos los demás. Dado que no todos están intentando obtener el mismo archivo a través de la red externa, la transferencia se completará más rápido.
 
-## WebRTC Topologies
-WebRTC is a protocol for connecting two agents, so how are developers connecting hundreds of people at once? There are a few different
-ways you can do it, and they all have pros and cons. These solutions broadly fall into two categories; Peer-to-Peer or Client/Server. WebRTC's
-flexibility allows us to create both.
+## Topologías WebRTC
+WebRTC es un protocolo para conectar dos agentes, entonces, ¿cómo están los desarrolladores conectando cientos de personas a la vez? Hay algunas maneras diferentes
+en que puedes hacerlo, y todas tienen pros y contras. Estas soluciones se dividen ampliamente en dos categorías; Peer-to-Peer o Cliente/Servidor. La
+flexibilidad de WebRTC nos permite crear ambos.
 
-### One-To-One
-One-to-One is the first connection type you will use with WebRTC. You connect two WebRTC Agents directly and they can send bi-directional media and data.
-The connection looks like this.
+### Uno-a-Uno
+Uno-a-Uno es el primer tipo de conexión que usarás con WebRTC. Conectas dos Agentes WebRTC directamente y pueden enviar medios y datos bidireccionales.
+La conexión se ve así.
 
-![One-to-One](../images/08-one-to-one.png "One-to-One")
+![Uno-a-Uno](../../images/08-one-to-one.png "Uno-a-Uno")
 
-### Full Mesh
-Full mesh is the answer if you want to build a conference call or a multiplayer game. In this topology each user establishes a connection
-with every other user directly. This allows you to build your application, but it comes with some downsides.
+### Malla Completa
+La malla completa es la respuesta si quieres construir una llamada de conferencia o un juego multijugador. En esta topología, cada usuario establece una conexión
+con cada otro usuario directamente. Esto te permite construir tu aplicación, pero viene con algunas desventajas.
 
-In a Full Mesh topology each user is connected directly. That means you have to encode and upload video independently for each member of the call.
-The network conditions between each connection will be different, so you can't reuse the same video. Error handling is also difficult in these
-deployments. You need to carefully consider if you have lost complete connectivity, or just connectivity with one remote peer.
+En una topología de Malla Completa, cada usuario está conectado directamente. Eso significa que tienes que codificar y cargar video independientemente para cada miembro de la llamada.
+Las condiciones de red entre cada conexión serán diferentes, por lo que no puedes reutilizar el mismo video. El manejo de errores también es difícil en estas
+implementaciones. Necesitas considerar cuidadosamente si has perdido conectividad completa, o solo conectividad con un par remoto.
 
-Because of these concerns, a Full Mesh is best used for small groups. For anything larger a client/server topology is best.
+Debido a estas preocupaciones, una Malla Completa se usa mejor para grupos pequeños. Para cualquier cosa más grande, una topología cliente/servidor es mejor.
 
-![Full mesh](../images/08-full-mesh.png "Full mesh")
+![Malla completa](../../images/08-full-mesh.png "Malla completa")
 
-### Hybrid Mesh
-Hybrid Mesh is an alternative to Full Mesh that can alleviate some of the Full Mesh's issues. In a Hybrid Mesh connections aren't established
-between every user. Instead, media is relayed through peers in the network. This means that the creator of the media doesn't have to use as
-much bandwidth to distribute media.
+### Malla Híbrida
+La Malla Híbrida es una alternativa a la Malla Completa que puede aliviar algunos de los problemas de la Malla Completa. En una Malla Híbrida, las conexiones no se establecen
+entre cada usuario. En su lugar, los medios se retransmiten a través de pares en la red. Esto significa que el creador de los medios no tiene que usar tanto
+ancho de banda para distribuir medios.
 
-This does have some downsides. In this set up, the original creator of the media has no idea who its video is being sent too, and if
-it arrived successfully. You also will have an increase in latency with every hop in your Hybrid Mesh network.
+Esto tiene algunas desventajas. En esta configuración, el creador original de los medios no tiene idea de a quién se está enviando su video, ni si
+llegó con éxito. También tendrás un aumento en la latencia con cada salto en tu red de Malla Híbrida.
 
-![Hybrid mesh](../images/08-hybrid-mesh.png "Hybrid mesh")
+![Malla híbrida](../../images/08-hybrid-mesh.png "Malla híbrida")
 
-### Selective Forwarding Unit
-An SFU (Selective Forwarding Unit) also solves the issues of Full Mesh, but in an entirely different way. An SFU implements a client/server topology, instead of P2P.
-Each WebRTC peer connects to the SFU and uploads its media. The SFU then forwards this media out to each connected client.
+### Unidad de Reenvío Selectivo
+Un SFU (Unidad de Reenvío Selectivo) también resuelve los problemas de Malla Completa, pero de una manera completamente diferente. Un SFU implementa una topología cliente/servidor, en lugar de P2P.
+Cada par WebRTC se conecta al SFU y carga sus medios. El SFU luego reenvía estos medios a cada cliente conectado.
 
-With an SFU each WebRTC Agent only has to encode and upload their video once. The burden of distributing it to all the viewers is on the SFU.
-Connectivity with an SFU is much easier than P2P as well. You can run an SFU on a world routable address, making it much easier for clients to connect.
-You don't need to worry about NAT Mappings. You do still need to make sure your SFU is available via TCP (either via ICE-TCP or TURN).
+Con un SFU, cada Agente WebRTC solo tiene que codificar y cargar su video una vez. La carga de distribuirlo a todos los espectadores está en el SFU.
+La conectividad con un SFU también es mucho más fácil que P2P. Puedes ejecutar un SFU en una dirección enrutable mundialmente, lo que hace que sea mucho más fácil para los clientes conectarse.
+No necesitas preocuparte por Mapeos NAT. Aún necesitas asegurarte de que tu SFU esté disponible a través de TCP (ya sea a través de ICE-TCP o TURN).
 
-Building a simple SFU can be done in a weekend. Building a good SFU that can handle all types of clients is never ending. Tuning the Congestion Control, Error
-Correction and Performance is a never ending task.
+Construir un SFU simple se puede hacer en un fin de semana. Construir un buen SFU que pueda manejar todo tipo de clientes es una tarea interminable. Ajustar el Control de Congestión, la Corrección de
+Errores y el Rendimiento es una tarea que nunca termina.
 
-![Selective Forwarding Unit](../images/08-sfu.png "Selective Forwarding Unit")
+![Unidad de Reenvío Selectivo](../../images/08-sfu.png "Unidad de Reenvío Selectivo")
 
 ### MCU
-A MCU (Multi-point Conferencing Unit) is a client/server topology like an SFU, but composites the output streams. Instead of distributing the outbound media
-unmodified it re-encodes them as one feed.
+Un MCU (Unidad de Conferencia Multipunto) es una topología cliente/servidor como un SFU, pero compone los flujos de salida. En lugar de distribuir los medios salientes
+sin modificar, los recodifica como una sola transmisión.
 
-![Multi-point Conferencing Unit](../images/08-mcu.png "Multi-point Conferencing Unit")
+![Unidad de Conferencia Multipunto](../../images/08-mcu.png "Unidad de Conferencia Multipunto")

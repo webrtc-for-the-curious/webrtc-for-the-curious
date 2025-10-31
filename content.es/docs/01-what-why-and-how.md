@@ -59,6 +59,10 @@ de cada uno de estos pasos.
 Cuando un agente de WebRTC es iniciado, no tiene ni idea de con quién se va a comunicar o que es lo que van a comunicar. ¡La *Señalización* resuelve este problema!
 La señalización es usada para arrancar la llamada, permitiendo dos Agentes independientes de WebRTC empezar a comunicarse.
 
+<!-- Source code of the diagram:
+https://www.mermaidchart.com/d/f366d7bf-a952-46b3-b7e7-c09c00b19d5a -->
+![Descripción general de la secuencia de señalización](../../images/01-signaling-sequence-overview.png "Descripción general de la secuencia de señalización")
+
 La señalización usa un protocolo de texto plano, llamado SDP (Protocolo de descripción de Sesión). Cada mensaje SDP está hecho de una llave y un valor,
 y contiene una lista de "sección de medios". El SDP que intercambian los dos Agentes WebRTC contiene detalles como:
 
@@ -126,7 +130,7 @@ resolver todo mejor. En cambio, abarcó muchas tecnologías existentes de un sol
 Esto nos permite examinar y aprender cada parte individualmente sin abrumarse. Una buena manera de visualizarlo es que un 'Agente WebRTC' es solamente un intermediario de muchos
 protocolos diferentes.
 
-![Agente WebRTC](../images/01-webrtc-agent.png "Diagrama de Agente WebRTC")
+![Agente WebRTC](../../images/01-webrtc-agent.png "Diagrama de Agente WebRTC")
 
 ## ¿Cómo funciona WebRTC (la API)?
 
