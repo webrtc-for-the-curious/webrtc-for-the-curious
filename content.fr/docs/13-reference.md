@@ -1,10 +1,10 @@
 ---
-title: Reference
+title: Référence
 type: docs
 weight: 14
 ---
 
-# Reference
+# Référence
 
 ## WebRTC(W3C)
 
@@ -85,7 +85,7 @@ weight: 14
 * [RFC8872](http://www.rfc-editor.org/info/rfc8872): Guidelines for Using the Multiplexing Features of RTP to Support Multiple Media Streams M. Westerlund, B. Burman, C. Perkins, H. Alvestrand, R. Even [January 2021] (Status: INFORMATIONAL)
 * [RFC8888](http://www.rfc-editor.org/info/rfc8888): RTP Control Protocol (RTCP) Feedback for Congestion Control Z. Sarker, C. Perkins, V. Singh, M. Ramalho [January 2021] (Status: PROPOSED STANDARD)
 
-## ICE, TURN and STUN
+## ICE, TURN et STUN
 
 * [RFC5780](http://www.rfc-editor.org/info/rfc5780): NAT Behavior Discovery Using Session Traversal Utilities for NAT (STUN) D. MacDonald, B. Lowekamp [May 2010] (Updated-By [RFC8553](http://www.rfc-editor.org/info/rfc8553)) (Status: EXPERIMENTAL)
 * [RFC8445](http://www.rfc-editor.org/info/rfc8445): Interactive Connectivity Establishment (ICE): A Protocol for Network Address Translator (NAT) Traversal A. Keranen, C. Holmberg, J. Rosenberg [July 2018] (Obsoletes [RFC5245](http://www.rfc-editor.org/info/rfc5245)) (Updated-By [RFC8863](http://www.rfc-editor.org/info/rfc8863)) (Status: PROPOSED STANDARD)

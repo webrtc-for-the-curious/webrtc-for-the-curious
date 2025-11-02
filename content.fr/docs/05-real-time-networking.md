@@ -1,123 +1,123 @@
 ---
-title: Real-time Networking
+title: Réseau en temps réel
 type: docs
 weight: 6
 ---
 
-# Real-time Networking
+# Réseau en temps réel
 
-## Why is networking so important in Real-time communication?
+## Pourquoi le réseau est-il si important dans la communication en temps réel ?
 
-Networks are the limiting factor in Real-time communication. In an ideal world we would have unlimited bandwidth
-and packets would arrive instantaneously. This isn't the case though. Networks are limited, and the conditions
-could change at anytime. Measuring and observing network conditions is also a difficult problem. You can get different behaviors
-depending on hardware, software and the configuration of it.
+Les réseaux sont le facteur limitant dans la communication en temps réel. Dans un monde idéal, nous aurions une bande passante illimitée
+et les paquets arriveraient instantanément. Ce n'est cependant pas le cas. Les réseaux sont limités, et les conditions
+peuvent changer à tout moment. Mesurer et observer les conditions du réseau est également un problème difficile. Vous pouvez obtenir des comportements différents
+selon le matériel, le logiciel et sa configuration.
 
-Real-time communication also poses a problem that doesn't exist in most other domains. For a web developer it isn't fatal
-if your website is slower on some networks. As long as all the data arrives, users are happy. With WebRTC, if your data is
-late it is useless. No one cares about what was said in a conference call 5 seconds ago. So when developing a realtime communication system, 
-you have to make a trade-off. What is my time limit, and how much data can I send?
+La communication en temps réel pose également un problème qui n'existe pas dans la plupart des autres domaines. Pour un développeur web, ce n'est pas fatal
+si votre site web est plus lent sur certains réseaux. Tant que toutes les données arrivent, les utilisateurs sont satisfaits. Avec WebRTC, si vos données sont
+en retard, elles sont inutiles. Personne ne se soucie de ce qui a été dit dans une conférence téléphonique il y a 5 secondes. Donc, lors du développement d'un système de communication en temps réel,
+vous devez faire un compromis. Quelle est ma limite de temps, et combien de données puis-je envoyer ?
 
-This chapter covers the concepts that apply to both data and media communication. In later chapters we go beyond
-the theoretical and discuss how WebRTC's media and data subsystems solve these problems.
+Ce chapitre couvre les concepts qui s'appliquent à la fois à la communication de données et de médias. Dans les chapitres ultérieurs, nous allons au-delà
+du théorique et discutons de la façon dont les sous-systèmes de médias et de données de WebRTC résolvent ces problèmes.
 
-## What are the attributes of the network that make it difficult?
-Code that effectively works across all networks is complicated. You have lots of different factors, and they
-can all affect each other subtly. These are the most common issues that developers will encounter.
+## Quels sont les attributs du réseau qui le rendent difficile ?
+Le code qui fonctionne efficacement sur tous les réseaux est compliqué. Vous avez beaucoup de facteurs différents, et ils
+peuvent tous s'affecter mutuellement subtilement. Ce sont les problèmes les plus courants que les développeurs rencontreront.
 
-#### Bandwidth
-Bandwidth is the maximum rate of data that can be transferred across a given path. It is important to remember
-this isn't a static number either. The bandwidth will change along the route as more (or less) people use it.
+#### Bande passante
+La bande passante est le taux maximum de données qui peuvent être transférées sur un chemin donné. Il est important de se rappeler
+que ce n'est pas non plus un nombre statique. La bande passante changera le long de la route à mesure que plus (ou moins) de personnes l'utilisent.
 
-#### Transmission Time and Round Trip Time
-Transmission Time is how long it takes for a packet to arrive to its destination. Like Bandwidth this isn't constant. The Transmission Time can fluctuate at anytime.
+#### Temps de transmission et temps de trajet aller-retour
+Le temps de transmission est le temps qu'il faut pour qu'un paquet arrive à sa destination. Comme la bande passante, ce n'est pas constant. Le temps de transmission peut fluctuer à tout moment.
 
 `transmission_time = receive_time - send_time`
 
-To compute transmission time, you need clocks on sender and receiver synchronized with millisecond precision.
-Even a small deviation would produce an unreliable transmission time measurement.
-Since WebRTC is operating in highly heterogeneous environments, it is next to impossible to rely on perfect time synchronization between hosts.
+Pour calculer le temps de transmission, vous avez besoin d'horloges sur l'expéditeur et le récepteur synchronisées avec une précision à la milliseconde.
+Même une petite déviation produirait une mesure de temps de transmission peu fiable.
+Étant donné que WebRTC fonctionne dans des environnements hautement hétérogènes, il est presque impossible de s'appuyer sur une synchronisation temporelle parfaite entre les hôtes.
 
-Round-trip time measurement is a workaround for imperfect clock synchronization.
+La mesure du temps de trajet aller-retour est une solution de contournement pour une synchronisation d'horloge imparfaite.
 
-Instead of operating on distributed clocks a WebRTC peer sends a special packet with its own timestamp `sendertime1`.
-A cooperating peer receives the packet and reflects the timestamp back to the sender.
-Once the original sender gets the reflected time it subtracts the timestamp `sendertime1` from the current time `sendertime2`.
-This time delta is called "round-trip propagation delay" or more commonly round-trip time.
+Au lieu d'opérer sur des horloges distribuées, un pair WebRTC envoie un paquet spécial avec son propre horodatage `sendertime1`.
+Un pair coopérant reçoit le paquet et reflète l'horodatage vers l'expéditeur.
+Une fois que l'expéditeur original obtient le temps réfléchi, il soustrait l'horodatage `sendertime1` du temps actuel `sendertime2`.
+Ce delta de temps est appelé "délai de propagation aller-retour" ou plus communément temps aller-retour.
 
 `rtt = sendertime2 - sendertime1`
 
-Half of the round trip time is considered to be a good enough approximation of transmission time.
-This workaround is not without drawbacks. 
-It makes the assumption that it takes an equal amount of time to send and receive packets.
-However on cellular networks, send and receive operations may not be time-symmetrical. 
-You may have noticed that upload speeds on your phone are almost always lower than download speeds.
+La moitié du temps aller-retour est considérée comme une approximation suffisamment bonne du temps de transmission.
+Cette solution de contournement n'est pas sans inconvénients.
+Elle suppose qu'il faut un temps égal pour envoyer et recevoir des paquets.
+Cependant, sur les réseaux cellulaires, les opérations d'envoi et de réception peuvent ne pas être symétriques dans le temps.
+Vous avez peut-être remarqué que les vitesses de téléchargement sur votre téléphone sont presque toujours inférieures aux vitesses de téléchargement descendant.
 
 `transmission_time = rtt/2`
 
-The technicalities of round-trip time measurement are described in greater detail in [RTCP Sender and Receiver Reports chapter](../06-media-communication/#receiver-reports--sender-reports).
+Les aspects techniques de la mesure du temps aller-retour sont décrits plus en détail dans le [chapitre Rapports d'expéditeur et de récepteur RTCP](../06-media-communication/#receiver-reports--sender-reports).
 
-#### Jitter
-Jitter is the fact that `Transmission Time` may vary for each packet. Your packets could be delayed, but then arrive in bursts.
+#### Gigue
+La gigue est le fait que le `temps de transmission` peut varier pour chaque paquet. Vos paquets pourraient être retardés, mais ensuite arriver en rafales.
 
-#### Packet Loss
-Packet Loss is when messages are lost in transmission. The loss could be steady, or it could come in spikes.
-This could be because of the network type like satellite or Wi-Fi. Or it could be introduced by the software along the way.
+#### Perte de paquets
+La perte de paquets est lorsque les messages sont perdus en transmission. La perte pourrait être régulière, ou elle pourrait venir en pics.
+Cela pourrait être dû au type de réseau comme le satellite ou le Wi-Fi. Ou cela pourrait être introduit par le logiciel en cours de route.
 
-#### Maximum Transmission Unit
-Maximum Transmission Unit is the limit on how large a single packet can be. Networks don't allow you to send
-one giant message. At the protocol level, messages might have to be split into multiple smaller packets.
+#### Unité de transmission maximale
+L'unité de transmission maximale est la limite de la taille d'un seul paquet. Les réseaux ne vous permettent pas d'envoyer
+un message géant. Au niveau du protocole, les messages peuvent devoir être divisés en plusieurs paquets plus petits.
 
-The MTU will also differ depending on what network path you take. You can
-use a protocol like [Path MTU Discovery](https://tools.ietf.org/html/rfc1191) to figure out the largest packet size you can send.
+La MTU différera également en fonction du chemin réseau que vous empruntez. Vous pouvez
+utiliser un protocole comme [Path MTU Discovery](https://tools.ietf.org/html/rfc1191) pour déterminer la plus grande taille de paquet que vous pouvez envoyer.
 
 ### Congestion
-Congestion is when the limits of the network have been reached. This is usually because you have reached the peak
-bandwidth that the current route can handle. Or it could be operator imposed like hourly limits your ISP configures.
+La congestion est lorsque les limites du réseau ont été atteintes. C'est généralement parce que vous avez atteint le pic
+de bande passante que la route actuelle peut gérer. Ou cela pourrait être imposé par l'opérateur comme des limites horaires que votre FAI configure.
 
-Congestion exhibits itself in many different ways. There is no standardized behavior. In most cases when congestion is
-reached the network will drop excess packets. In other cases the network will buffer. This will cause the Transmission Time
-for your packets to increase. You could also see more jitter as your network becomes congested. This is a rapidly changing area
-and new algorithms for congestion detection are still being written.
+La congestion se manifeste de nombreuses façons différentes. Il n'y a pas de comportement standardisé. Dans la plupart des cas, lorsque la congestion est
+atteinte, le réseau abandonnera les paquets excédentaires. Dans d'autres cas, le réseau mettra en mémoire tampon. Cela augmentera le temps de transmission
+pour vos paquets. Vous pourriez également voir plus de gigue à mesure que votre réseau devient congestionné. C'est un domaine en évolution rapide
+et de nouveaux algorithmes pour la détection de congestion sont encore en cours d'écriture.
 
-### Dynamic
-Networks are incredibly dynamic and conditions can change rapidly. During a call you may send and receive hundreds of thousands of packets.
-Those packets will be traveling through multiple hops. Those hops will be shared by millions of other users. Even in your local network you could have
-HD movies being downloaded or maybe a device decides to download a software update.
+### Dynamique
+Les réseaux sont incroyablement dynamiques et les conditions peuvent changer rapidement. Au cours d'un appel, vous pouvez envoyer et recevoir des centaines de milliers de paquets.
+Ces paquets passeront par plusieurs sauts. Ces sauts seront partagés par des millions d'autres utilisateurs. Même dans votre réseau local, vous pourriez avoir
+des films HD en cours de téléchargement ou peut-être qu'un appareil décide de télécharger une mise à jour logicielle.
 
-Having a good call isn't as simple as measuring your network on startup. You need to be constantly evaluating. You also need to handle all the different
-behaviors that come from a multitude of network hardware and software.
+Avoir un bon appel n'est pas aussi simple que de mesurer votre réseau au démarrage. Vous devez constamment évaluer. Vous devez également gérer tous les différents
+comportements qui proviennent d'une multitude de matériels et de logiciels réseau.
 
-## Solving Packet Loss
-Handling packet loss is the first problem to solve. There are multiple ways to solve it, each with their own benefits. It depends on what you are sending and how
-latency tolerant you are. It is also important to note that not all packet loss is fatal. Losing some video might not be a problem, the human eye might not
-even able to perceive it. Losing a users text messages are fatal.
+## Résolution de la perte de paquets
+La gestion de la perte de paquets est le premier problème à résoudre. Il existe plusieurs façons de le résoudre, chacune avec ses propres avantages. Cela dépend de ce que vous envoyez et de votre
+tolérance à la latence. Il est également important de noter que toutes les pertes de paquets ne sont pas fatales. Perdre de la vidéo pourrait ne pas être un problème, l'œil humain pourrait ne pas
+même être capable de la percevoir. Perdre les messages texte d'un utilisateur est fatal.
 
-Let's say you send 10 packets, and packets 5 and 6 are lost. Here are the ways you can solve it.
+Disons que vous envoyez 10 paquets, et que les paquets 5 et 6 sont perdus. Voici les façons de le résoudre.
 
-### Acknowledgments
-Acknowledgments is when the receiver notifies the sender of every packet they have received. The sender is aware of packet loss when it gets an acknowledgment
-for a packet twice that isn't final. When the sender gets an `ACK` for packet 4 twice, it knows that packet 5 has not been seen yet.
+### Accusés de réception
+Les accusés de réception sont lorsque le récepteur notifie l'expéditeur de chaque paquet qu'il a reçu. L'expéditeur est conscient de la perte de paquets lorsqu'il obtient un accusé de réception
+pour un paquet deux fois qui n'est pas final. Lorsque l'expéditeur obtient un `ACK` pour le paquet 4 deux fois, il sait que le paquet 5 n'a pas encore été vu.
 
-### Selective Acknowledgments
-Selective Acknowledgments is an improvement upon Acknowledgments. A receiver can send a `SACK` that acknowledges multiple packets and notifies the sender of gaps.
-Now the sender can get a `SACK` for packet 4 and 7. It then knows it needs to re-send packets 5 and 6.
+### Accusés de réception sélectifs
+Les accusés de réception sélectifs sont une amélioration des accusés de réception. Un récepteur peut envoyer un `SACK` qui accuse réception de plusieurs paquets et notifie l'expéditeur des lacunes.
+Maintenant l'expéditeur peut obtenir un `SACK` pour les paquets 4 et 7. Il sait alors qu'il doit renvoyer les paquets 5 et 6.
 
-### Negative Acknowledgments
-Negative Acknowledgments solve the problem the opposite way. Instead of notifying the sender what it has received, the receiver notifies the sender what has been lost. In our case a `NACK`
-will be sent for packets 5 and 6. The sender only knows packets the receiver wishes to have sent again.
+### Accusés de réception négatifs
+Les accusés de réception négatifs résolvent le problème de manière opposée. Au lieu de notifier l'expéditeur de ce qu'il a reçu, le récepteur notifie l'expéditeur de ce qui a été perdu. Dans notre cas, un `NACK`
+sera envoyé pour les paquets 5 et 6. L'expéditeur ne connaît que les paquets que le récepteur souhaite recevoir à nouveau.
 
-### Forward Error Correction
-Forward Error Correction fixes packet loss pre-emptively. The sender sends redundant data, meaning a lost packet doesn't affect the final stream. One popular algorithm for
-this is Reed–Solomon error correction.
+### Correction d'erreur directe
+La correction d'erreur directe corrige la perte de paquets de manière préventive. L'expéditeur envoie des données redondantes, ce qui signifie qu'un paquet perdu n'affecte pas le flux final. Un algorithme populaire pour
+cela est la correction d'erreur Reed–Solomon.
 
-This reduces the latency/complexity of sending and handling Acknowledgments. Forward Error Correction is a waste of bandwidth if the network you are in has zero loss.
+Cela réduit la latence/complexité de l'envoi et du traitement des accusés de réception. La correction d'erreur directe est un gaspillage de bande passante si le réseau dans lequel vous vous trouvez n'a aucune perte.
 
-## Solving Jitter
-Jitter is present in most networks. Even inside a LAN you have many devices sending data at fluctuating rates. You can easily observe jitter by pinging another device with the `ping` command and noticing the fluctuations in round-trip latency.
+## Résolution de la gigue
+La gigue est présente dans la plupart des réseaux. Même à l'intérieur d'un LAN, vous avez de nombreux appareils envoyant des données à des vitesses fluctuantes. Vous pouvez facilement observer la gigue en pinguant un autre appareil avec la commande `ping` et en remarquant les fluctuations de la latence aller-retour.
 
-To solve jitter, clients use a JitterBuffer. The JitterBuffer ensures a steady delivery time of packets. The downside is that JitterBuffer adds some latency to packets that arrive early.
-The upside is that late packets don't cause jitter. Imagine that during a call, you see the following packet arrival times:
+Pour résoudre la gigue, les clients utilisent un JitterBuffer. Le JitterBuffer garantit un temps de livraison stable des paquets. L'inconvénient est que JitterBuffer ajoute une certaine latence aux paquets qui arrivent tôt.
+L'avantage est que les paquets en retard ne causent pas de gigue. Imaginez que pendant un appel, vous voyez les temps d'arrivée de paquets suivants :
 
 ```
 * time=1.46 ms
@@ -131,48 +131,48 @@ The upside is that late packets don't cause jitter. Imagine that during a call, 
 * time=1.80 ms
 ```
 
-In this case, around 1.8 ms would be a good choice. Packets that arrive late will use our window of latency. Packets that arrive early will be delayed a bit and can
-fill the window depleted by late packets. This means we no longer have stuttering and provide a smooth delivery rate for the client.
+Dans ce cas, environ 1,8 ms serait un bon choix. Les paquets qui arrivent en retard utiliseront notre fenêtre de latence. Les paquets qui arrivent tôt seront retardés un peu et peuvent
+remplir la fenêtre épuisée par les paquets en retard. Cela signifie que nous n'avons plus de bégaiement et que nous fournissons un taux de livraison fluide au client.
 
-### JitterBuffer operation
+### Fonctionnement du JitterBuffer
 
 ![JitterBuffer](../images/05-jitterbuffer.png "JitterBuffer")
 
-Every packet gets added to the jitter buffer as soon as it is received. 
-Once there are enough packets to reconstruct the frame, packets that make up the frame are released from the buffer and emitted for decoding.
-The decoder, in turn, decodes and draws the video frame on the user's screen.
-Since the jitter buffer has a limited capacity, packets that stay in the buffer for too long will be discarded.
+Chaque paquet est ajouté au tampon de gigue dès qu'il est reçu.
+Une fois qu'il y a suffisamment de paquets pour reconstruire la trame, les paquets qui composent la trame sont libérés du tampon et émis pour le décodage.
+Le décodeur, à son tour, décode et dessine la trame vidéo sur l'écran de l'utilisateur.
+Étant donné que le tampon de gigue a une capacité limitée, les paquets qui restent trop longtemps dans le tampon seront abandonnés.
 
-Read more on how video frames are converted to RTP packets, and why reconstruction is necessary [in the media communication chapter](../06-media-communication/#rtp).
+En savoir plus sur la façon dont les trames vidéo sont converties en paquets RTP, et pourquoi la reconstruction est nécessaire [dans le chapitre communication média](../06-media-communication/#rtp).
 
-`jitterBufferDelay` provides a great insight into your network performance and its influence on playback smoothness.
-It is a part of [WebRTC statistics API](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-jitterbufferdelay) relevant to the receiver's inbound stream.
-The delay defines the amount of time video frames spend in the jitter buffer before being emitted for decoding.
-A long jitter buffer delay means your network is highly congested.
+`jitterBufferDelay` fournit un excellent aperçu de vos performances réseau et de son influence sur la fluidité de lecture.
+Il fait partie de l'[API de statistiques WebRTC](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-jitterbufferdelay) pertinent pour le flux entrant du récepteur.
+Le délai définit le temps que les trames vidéo passent dans le tampon de gigue avant d'être émises pour le décodage.
+Un long délai de tampon de gigue signifie que votre réseau est fortement congestionné.
 
-## Detecting Congestion
-Before we can even resolve congestion, we need to detect it. To detect it we use a congestion controller. This is a complicated subject, and is still rapidly changing.
-New algorithms are still being published and tested. At a high level they all operate the same. A congestion controller provides bandwidth estimates given some inputs.
-These are some possible inputs:
+## Détection de la congestion
+Avant même de pouvoir résoudre la congestion, nous devons la détecter. Pour la détecter, nous utilisons un contrôleur de congestion. C'est un sujet compliqué, et il change encore rapidement.
+De nouveaux algorithmes sont encore publiés et testés. À un niveau élevé, ils fonctionnent tous de la même manière. Un contrôleur de congestion fournit des estimations de bande passante étant donné certaines entrées.
+Voici quelques entrées possibles :
 
-* **Packet Loss** - Packets are dropped as the network becomes congested.
-* **Jitter** - As network equipment becomes more overloaded packets queuing will cause the times to be erratic.
-* **Round Trip Time** - Packets take longer to arrive when congested. Unlike jitter, the Round Trip Time just keeps increasing.
-* **Explicit Congestion Notification** - Newer networks may tag packets as at risk for being dropped to relieve congestion.
+* **Perte de paquets** - Les paquets sont abandonnés à mesure que le réseau devient congestionné.
+* **Gigue** - À mesure que l'équipement réseau devient plus surchargé, la mise en file d'attente des paquets rendra les temps erratiques.
+* **Temps aller-retour** - Les paquets mettent plus de temps à arriver lorsqu'ils sont congestionnés. Contrairement à la gigue, le temps aller-retour continue d'augmenter.
+* **Notification explicite de congestion** - Les réseaux plus récents peuvent marquer les paquets comme étant à risque d'être abandonnés pour soulager la congestion.
 
-These values need to be measured continuously during the call. Utilization of the network may increase or decrease, so the available bandwidth could constantly be changing.
+Ces valeurs doivent être mesurées en continu pendant l'appel. L'utilisation du réseau peut augmenter ou diminuer, donc la bande passante disponible pourrait changer constamment.
 
-## Resolving Congestion
-Now that we have an estimated bandwidth we need to adjust what we are sending. How we adjust depends on what kind of data we want to send.
+## Résolution de la congestion
+Maintenant que nous avons une bande passante estimée, nous devons ajuster ce que nous envoyons. La façon dont nous ajustons dépend du type de données que nous voulons envoyer.
 
-### Sending Slower
-Limiting the speed at which you send data is the first solution to preventing congestion. The Congestion Controller gives you an estimate, and it is the
-sender's responsibility to rate limit.
+### Envoyer plus lentement
+Limiter la vitesse à laquelle vous envoyez des données est la première solution pour prévenir la congestion. Le contrôleur de congestion vous donne une estimation, et c'est la
+responsabilité de l'expéditeur de limiter le débit.
 
-This is the method used for most data communication. With protocols like TCP this is all done by the operating system and completely transparent to both users and developers.
+C'est la méthode utilisée pour la plupart des communications de données. Avec des protocoles comme TCP, tout cela est fait par le système d'exploitation et est complètement transparent pour les utilisateurs et les développeurs.
 
-### Sending Less
-In some cases we can send less information to satisfy our limits. We also have hard deadlines on the arrival of our data, so we can't send slower. These are the constraints
-that Real-time media falls under.
+### Envoyer moins
+Dans certains cas, nous pouvons envoyer moins d'informations pour satisfaire nos limites. Nous avons également des délais stricts sur l'arrivée de nos données, donc nous ne pouvons pas envoyer plus lentement. Ce sont les contraintes
+sous lesquelles les médias en temps réel tombent.
 
-If we don't have enough bandwidth available, we can lower the quality of video we send. This requires a tight feedback loop between your video encoder and congestion controller.
+Si nous n'avons pas assez de bande passante disponible, nous pouvons réduire la qualité de la vidéo que nous envoyons. Cela nécessite une boucle de rétroaction étroite entre votre encodeur vidéo et le contrôleur de congestion.
