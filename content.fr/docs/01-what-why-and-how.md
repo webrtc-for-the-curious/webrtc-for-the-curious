@@ -49,6 +49,10 @@ Chacune de ces étapes possède un chapitre dédié, mais cela aide de les compr
 
 Quand un agent WebRTC démarre, il n’a aucune idée avec qui il va communiquer et en quoi va consister cette communication. La signalisation résout ce problème ! La signalisation est utilisée pour amorcer l’appel pour que deux agents WebRTC puissent commencer à communiquer.
 
+<!-- Source code of the diagram:
+https://www.mermaidchart.com/d/f366d7bf-a952-46b3-b7e7-c09c00b19d5a -->
+![Aperçu de la séquence de signalisation](../images/01-signaling-sequence-overview.png "Aperçu de la séquence de signalisation")
+
 La signalisation utilise un protocole déjà existant appelé SDP (Session Description Protocol). Le SDP est un protocole en texte brut. Chaque message SDP est constitué de paire Clé/Valeur et contient une liste de “section média”. Les SDP que deux agents WebRTC échangent contiennent des détails tels que :
 * IPs et Ports sur lesquels l’agent est joignable  (les candidats);
 * Combien de flux audio et vidéo l’agent désire recevoir;

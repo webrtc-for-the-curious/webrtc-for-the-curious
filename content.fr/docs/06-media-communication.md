@@ -1,63 +1,63 @@
 ---
-title: Media Communication
+title: Communication média
 type: docs
 weight: 7
 ---
 
-# Media Communication
+# Communication média
 
-## What do I get from WebRTC's media communication?
+## Que m'apporte la communication média de WebRTC ?
 
-WebRTC allows you to send and receive an unlimited amount of audio and video streams. You can add and remove these streams at anytime during a call. These streams could all be independent, or they could be bundled together! You could send a video feed of your desktop, and then include audio and video from your webcam.
+WebRTC vous permet d'envoyer et de recevoir une quantité illimitée de flux audio et vidéo. Vous pouvez ajouter et supprimer ces flux à tout moment pendant un appel. Ces flux peuvent tous être indépendants, ou ils peuvent être regroupés ! Vous pourriez envoyer un flux vidéo de votre bureau, puis inclure l'audio et la vidéo de votre webcam.
 
-The WebRTC protocol is codec agnostic. The underlying transport supports everything, even things that don't exist yet! However, the WebRTC Agent you are communicating with may not have the necessary tools to accept it.
+Le protocole WebRTC est agnostique au codec. Le transport sous-jacent prend en charge tout, même des choses qui n'existent pas encore ! Cependant, l'agent WebRTC avec lequel vous communiquez peut ne pas avoir les outils nécessaires pour l'accepter.
 
-WebRTC is also designed to handle dynamic network conditions. During a call your bandwidth might increase, or decrease. Maybe you suddenly experience lots of packet loss. The protocol is designed to handle all of this. WebRTC responds to network conditions and tries to give you the best experience possible with the resources available.
+WebRTC est également conçu pour gérer des conditions réseau dynamiques. Pendant un appel, votre bande passante peut augmenter ou diminuer. Peut-être que vous subissez soudainement beaucoup de perte de paquets. Le protocole est conçu pour gérer tout cela. WebRTC répond aux conditions du réseau et essaie de vous donner la meilleure expérience possible avec les ressources disponibles.
 
-## How does it work?
-WebRTC uses two preexisting protocols RTP and RTCP, both defined in [RFC 1889](https://tools.ietf.org/html/rfc1889).
+## Comment cela fonctionne-t-il ?
+WebRTC utilise deux protocoles préexistants RTP et RTCP, tous deux définis dans la [RFC 1889](https://tools.ietf.org/html/rfc1889).
 
-RTP (Real-time Transport Protocol) is the protocol that carries the media. It was designed to allow for real-time delivery of video. It does not stipulate any rules around latency or reliability, but gives you the tools to implement them. RTP gives you streams, so you can run multiple media feeds over one connection. It also gives you the timing and ordering information you need to feed a media pipeline.
+RTP (Real-time Transport Protocol) est le protocole qui transporte les médias. Il a été conçu pour permettre la livraison en temps réel de vidéo. Il ne stipule aucune règle concernant la latence ou la fiabilité, mais vous donne les outils pour les implémenter. RTP vous donne des flux, afin que vous puissiez exécuter plusieurs flux de médias sur une seule connexion. Il vous donne également les informations de timing et d'ordonnancement dont vous avez besoin pour alimenter un pipeline média.
 
-RTCP (RTP Control Protocol) is the protocol that communicates metadata about the call. The format is very flexible and allows you to add any metadata you want. This is used to communicate statistics about the call. It is also used to handle packet loss and to implement congestion control. It gives you the bi-directional communication necessary to respond to changing network conditions.
+RTCP (RTP Control Protocol) est le protocole qui communique les métadonnées sur l'appel. Le format est très flexible et vous permet d'ajouter toutes les métadonnées que vous souhaitez. Ceci est utilisé pour communiquer des statistiques sur l'appel. Il est également utilisé pour gérer la perte de paquets et pour implémenter le contrôle de congestion. Il vous donne la communication bidirectionnelle nécessaire pour répondre aux conditions réseau changeantes.
 
-## Latency vs Quality
-Real-time media is about making trade-offs between latency and quality. The more latency you are willing to tolerate, the higher quality video you can expect.
+## Latence vs Qualité
+Les médias en temps réel consistent à faire des compromis entre la latence et la qualité. Plus vous êtes prêt à tolérer de latence, plus la qualité vidéo que vous pouvez attendre est élevée.
 
-### Real World Limitations
-These constraints are all caused by the limitations of the real world. They are all characteristics of your network that you will need to overcome.
+### Limitations du monde réel
+Ces contraintes sont toutes causées par les limitations du monde réel. Ce sont toutes des caractéristiques de votre réseau que vous devrez surmonter.
 
-### Video is Complex
-Transporting video isn't easy. To store 30 minutes of uncompressed 720 8-bit video you need about 110 GB. With those numbers, a 4-person conference call isn't going to happen. We need a way to make it smaller, and the answer is video compression. That doesn't come without downsides though.
+### La vidéo est complexe
+Transporter de la vidéo n'est pas facile. Pour stocker 30 minutes de vidéo 720 8 bits non compressée, vous avez besoin d'environ 110 GB. Avec ces chiffres, une conférence téléphonique à 4 personnes ne va pas se produire. Nous avons besoin d'un moyen de la rendre plus petite, et la réponse est la compression vidéo. Cela ne vient pas sans inconvénients cependant.
 
-## Video 101
-We aren't going to cover video compression in depth, but just enough to understand why RTP is designed the way it is. Video compression encodes video into a new format that requires fewer bits to represent the same video.
+## Vidéo 101
+Nous n'allons pas couvrir la compression vidéo en profondeur, mais juste assez pour comprendre pourquoi RTP est conçu de la manière dont il l'est. La compression vidéo encode la vidéo dans un nouveau format qui nécessite moins de bits pour représenter la même vidéo.
 
-### Lossy and Lossless compression
-You can encode video to be lossless (no information is lost) or lossy (information may be lost). Because lossless encoding requires more data to be sent to a peer, making for a higher latency stream and more dropped packets, RTP typically uses lossy compression even though the video quality won’t be as good.
+### Compression avec perte et sans perte
+Vous pouvez encoder la vidéo pour qu'elle soit sans perte (aucune information n'est perdue) ou avec perte (l'information peut être perdue). Étant donné que l'encodage sans perte nécessite plus de données à envoyer à un pair, ce qui entraîne un flux de latence plus élevée et plus de paquets abandonnés, RTP utilise généralement une compression avec perte même si la qualité vidéo ne sera pas aussi bonne.
 
-### Intra and Inter frame compression
-Video compression comes in two types. The first is intra-frame. Intra-frame compression reduces the bits used to describe a single video frame. The same techniques are used to compress still pictures, like the JPEG compression method.
+### Compression intra et inter-image
+La compression vidéo se présente en deux types. Le premier est intra-image. La compression intra-image réduit les bits utilisés pour décrire une seule image vidéo. Les mêmes techniques sont utilisées pour comprimer les images fixes, comme la méthode de compression JPEG.
 
-The second type is inter-frame compression. Since video is made up of many pictures we look for ways to not send the same information twice.
+Le deuxième type est la compression inter-image. Étant donné que la vidéo est composée de nombreuses images, nous cherchons des moyens de ne pas envoyer la même information deux fois.
 
-### Inter-frame types
-You then have three frame types:
+### Types d'images inter
+Vous avez ensuite trois types d'images :
 
-* **I-Frame** - A complete picture, can be decoded without anything else.
-* **P-Frame** - A partial picture, containing only changes from the previous picture.
-* **B-Frame** - A partial picture, is a modification of previous and future pictures.
+* **I-Frame** - Une image complète, peut être décodée sans rien d'autre.
+* **P-Frame** - Une image partielle, ne contenant que les changements par rapport à l'image précédente.
+* **B-Frame** - Une image partielle, est une modification des images précédentes et futures.
 
-The following is visualization of the three frame types.
+Voici une visualisation des trois types d'images.
 
-![Frame types](../images/06-frame-types.png "Frame types")
+![Types d'images](../images/06-frame-types.png "Types d'images")
 
-### Video is delicate
-Video compression is incredibly stateful, making it difficult to transfer over the internet. What happens If you lose part of an I-Frame? How does a P-Frame know what to modify? As video compression gets more complex, this is becoming even more of a problem. Luckily RTP and RTCP have the solution.
+### La vidéo est délicate
+La compression vidéo est incroyablement avec état, ce qui la rend difficile à transférer sur Internet. Que se passe-t-il si vous perdez une partie d'une I-Frame ? Comment une P-Frame sait-elle quoi modifier ? À mesure que la compression vidéo devient plus complexe, cela devient un problème encore plus important. Heureusement, RTP et RTCP ont la solution.
 
 ## RTP
-### Packet Format
-Every RTP packet has the following structure:
+### Format de paquet
+Chaque paquet RTP a la structure suivante :
 
 ```
  0                   1                   2                   3
@@ -77,54 +77,54 @@ Every RTP packet has the following structure:
 ```
 
 #### Version (V)
-`Version` is always `2`
+`Version` est toujours `2`
 
-#### Padding (P)
-`Padding` is a bool that controls if the payload has padding.
+#### Remplissage (P)
+`Remplissage` est un booléen qui contrôle si la charge utile a du remplissage.
 
-The last byte of the payload contains a count of how many padding bytes were added.
+Le dernier octet de la charge utile contient un décompte du nombre d'octets de remplissage qui ont été ajoutés.
 
 #### Extension (X)
-If set, the RTP header will have extensions. This is described in greater detail below.
+S'il est défini, l'en-tête RTP aura des extensions. Ceci est décrit plus en détail ci-dessous.
 
-#### CSRC count (CC)
-The amount of `CSRC` identifiers that follow after the `SSRC`, and before the payload.
+#### Nombre CSRC (CC)
+Le nombre d'identifiants `CSRC` qui suivent après le `SSRC`, et avant la charge utile.
 
-#### Marker (M)
-The marker bit has no pre-set meaning, and can be used however the user likes.
+#### Marqueur (M)
+Le bit de marqueur n'a pas de signification prédéfinie et peut être utilisé comme l'utilisateur le souhaite.
 
-In some cases it is set when a user is speaking. It is also commonly used to mark a keyframe.
+Dans certains cas, il est défini lorsqu'un utilisateur parle. Il est également couramment utilisé pour marquer une image clé.
 
-#### Payload Type (PT)
-`Payload Type` is a unique identifier for what codec is being carried by this packet.
+#### Type de charge utile (PT)
+`Type de charge utile` est un identifiant unique pour quel codec est transporté par ce paquet.
 
-For WebRTC the `Payload Type` is dynamic. VP8 in one call may be different from another. The offerer in the call determines the mapping of `Payload Types` to codecs in the `Session Description`.
+Pour WebRTC, le `Type de charge utile` est dynamique. VP8 dans un appel peut être différent d'un autre. L'offrant dans l'appel détermine le mappage des `Types de charge utile` aux codecs dans la `Description de session`.
 
-#### Sequence Number
-`Sequence Number` is used for ordering packets in a stream. Every time a packet is sent the `Sequence Number` is incremented by one.
+#### Numéro de séquence
+`Numéro de séquence` est utilisé pour ordonner les paquets dans un flux. Chaque fois qu'un paquet est envoyé, le `Numéro de séquence` est incrémenté de un.
 
-RTP is designed to be useful over lossy networks. This gives the receiver a way to detect when packets have been lost.
+RTP est conçu pour être utile sur des réseaux avec perte. Cela donne au récepteur un moyen de détecter quand des paquets ont été perdus.
 
-#### Timestamp
-The sampling instant for this packet. This is not a global clock, but how much time has passed in the media stream. Several RTP packets can have the same timestamp if they for example are all part of the same video frame.
+#### Horodatage
+L'instant d'échantillonnage pour ce paquet. Ce n'est pas une horloge globale, mais combien de temps s'est écoulé dans le flux média. Plusieurs paquets RTP peuvent avoir le même horodatage s'ils font par exemple tous partie de la même image vidéo.
 
-#### Synchronization Source (SSRC)
-An `SSRC` is the unique identifier for this stream. This allows you to run multiple streams of media over a single RTP stream.
+#### Source de synchronisation (SSRC)
+Un `SSRC` est l'identifiant unique pour ce flux. Cela vous permet d'exécuter plusieurs flux de médias sur un seul flux RTP.
 
-#### Contributing Source (CSRC)
-A list that communicates what `SSRC`es contributed to this packet.
+#### Source contributrice (CSRC)
+Une liste qui communique quels `SSRC` ont contribué à ce paquet.
 
-This is commonly used for talking indicators. Let's say server side you combined multiple audio feeds into a single RTP stream. You could then use this field to say "Input stream A and C were talking at this moment".
+Ceci est couramment utilisé pour les indicateurs de conversation. Disons que côté serveur, vous avez combiné plusieurs flux audio en un seul flux RTP. Vous pourriez alors utiliser ce champ pour dire "Les flux d'entrée A et C parlaient à ce moment".
 
-#### Payload
-The actual payload data. Might end with the count of how many padding bytes were added, if the padding flag is set.
+#### Charge utile
+Les données de charge utile réelles. Peut se terminer par le décompte du nombre d'octets de remplissage qui ont été ajoutés, si le drapeau de remplissage est défini.
 
 ### Extensions
 
 ## RTCP
 
-### Packet Format
-Every RTCP packet has the following structure:
+### Format de paquet
+Chaque paquet RTCP a la structure suivante :
 
 ```
  0                   1                   2                   3
@@ -137,287 +137,269 @@ Every RTCP packet has the following structure:
 ```
 
 #### Version (V)
-`Version` is always `2`.
+`Version` est toujours `2`.
 
-#### Padding (P)
-`Padding` is a bool that controls if the payload has padding.
+#### Remplissage (P)
+`Remplissage` est un booléen qui contrôle si la charge utile a du remplissage.
 
-The last byte of the payload contains a count of how many padding bytes were added.
+Le dernier octet de la charge utile contient un décompte du nombre d'octets de remplissage qui ont été ajoutés.
 
-#### Reception Report Count (RC)
-The number of reports in this packet. A single RTCP packet can contain multiple events.
+#### Nombre de rapports de réception (RC)
+Le nombre de rapports dans ce paquet. Un seul paquet RTCP peut contenir plusieurs événements.
 
-#### Packet Type (PT)
-Unique Identifier for what type of RTCP Packet this is. A WebRTC Agent doesn't need to support all these types, and support between Agents can be different. These are the ones you may commonly see though:
+#### Type de paquet (PT)
+Identifiant unique pour quel type de paquet RTCP c'est. Un agent WebRTC n'a pas besoin de prendre en charge tous ces types, et le support entre les agents peut être différent. Voici ceux que vous pouvez couramment voir cependant :
 
-* `192` - Full INTRA-frame Request (`FIR`)
-* `193` - Negative ACKnowledgements (`NACK`)
-* `200` - Sender Report
-* `201` - Receiver Report
-* `205` - Generic RTP Feedback
-* `206` - Payload Specific Feedback
+* `192` - Requête d'image INTRA complète (`FIR`)
+* `193` - Accusés de réception négatifs (`NACK`)
+* `200` - Rapport d'expéditeur
+* `201` - Rapport de récepteur
+* `205` - Rétroaction RTP générique
+* `206` - Rétroaction spécifique à la charge utile
 
-The significance of these packet types will be described in greater detail below.
+La signification de ces types de paquets sera décrite plus en détail ci-dessous.
 
-### Full INTRA-frame Request (FIR) and Picture Loss Indication (PLI)
-Both `FIR` and `PLI` messages serve a similar purpose. These messages request a full key frame from the sender.
-`PLI` is used when partial frames were given to the decoder, but it was unable to decode them.
-This could happen because you had lots of packet loss, or maybe the decoder crashed.
+### Requête d'image INTRA complète (FIR) et indication de perte d'image (PLI)
+Les messages `FIR` et `PLI` servent un objectif similaire. Ces messages demandent une image clé complète de l'expéditeur.
+`PLI` est utilisé lorsque des images partielles ont été données au décodeur, mais qu'il n'a pas pu les décoder.
+Cela pourrait se produire parce que vous avez eu beaucoup de perte de paquets, ou peut-être que le décodeur s'est écrasé.
 
-According to [RFC 5104](https://tools.ietf.org/html/rfc5104#section-4.3.1.2), `FIR` shall not be used when packets or frames are lost. That is  `PLI`s job. `FIR` requests a key frame for reasons other than packet loss - for example when a new member enters a video conference. They need a full key frame to start decoding video stream, the decoder will be discarding frames until key frame arrives.
+Selon la [RFC 5104](https://tools.ietf.org/html/rfc5104#section-4.3.1.2), `FIR` ne doit pas être utilisé lorsque des paquets ou des images sont perdus. C'est le travail de `PLI`. `FIR` demande une image clé pour des raisons autres que la perte de paquets - par exemple lorsqu'un nouveau membre entre dans une conférence vidéo. Ils ont besoin d'une image clé complète pour commencer à décoder le flux vidéo, le décodeur abandonnera les images jusqu'à ce que l'image clé arrive.
 
-It is a good idea for a receiver to request a full key frame right after connecting, this minimizes the delay between connecting, and an image showing up on the user's screen.
+C'est une bonne idée pour un récepteur de demander une image clé complète juste après la connexion, cela minimise le délai entre la connexion et l'apparition d'une image sur l'écran de l'utilisateur.
 
-`PLI` packets are a part of Payload Specific Feedback messages.
+Les paquets `PLI` font partie des messages de rétroaction spécifiques à la charge utile.
 
-In practice, software that is able to handle both `PLI` and `FIR` packets will act the same way in both cases. It will send a signal to the encoder to produce a new full key frame.
+En pratique, le logiciel qui est capable de gérer à la fois les paquets `PLI` et `FIR` agira de la même manière dans les deux cas. Il enverra un signal à l'encodeur pour produire une nouvelle image clé complète.
 
-### Negative Acknowledgment
-A `NACK` requests that a sender re-transmits a single RTP packet. This is usually caused by an RTP packet getting lost, but could also happen because it is late.
+### Accusé de réception négatif
+Un `NACK` demande qu'un expéditeur retransmette un seul paquet RTP. Cela est généralement causé par la perte d'un paquet RTP, mais pourrait également se produire parce qu'il est en retard.
 
-`NACK`s are much more bandwidth efficient than requesting that the whole frame get sent again. Since RTP breaks up packets into very small chunks, you are really just requesting one small missing piece. The receiver crafts an RTCP message with the SSRC and Sequence Number. If the sender does not have this RTP packet available to re-send, it just ignores the message.
+Les `NACK` sont beaucoup plus efficaces en bande passante que de demander que toute l'image soit envoyée à nouveau. Étant donné que RTP divise les paquets en très petits morceaux, vous ne demandez vraiment qu'une petite pièce manquante. Le récepteur crée un message RTCP avec le SSRC et le numéro de séquence. Si l'expéditeur n'a pas ce paquet RTP disponible pour le renvoyer, il ignore simplement le message.
 
-### Sender and Receiver Reports
-These reports are used to send statistics between agents. This communicates the amount of packets actually received and jitter.
+### Rapports d'expéditeur et de récepteur
+Ces rapports sont utilisés pour envoyer des statistiques entre les agents. Cela communique la quantité de paquets réellement reçus et la gigue.
 
-The reports can be used for diagnostics and congestion control.
+Les rapports peuvent être utilisés pour les diagnostics et le contrôle de congestion.
 
-## How RTP/RTCP solve problems together
-RTP and RTCP then work together to solve all the problems caused by networks. These techniques are still constantly changing!
+## Comment RTP/RTCP résolvent les problèmes ensemble
+RTP et RTCP travaillent ensuite ensemble pour résoudre tous les problèmes causés par les réseaux. Ces techniques changent encore constamment !
 
-### Forward Error Correction
-Also known as FEC. Another method of dealing with packet loss. FEC is when you send the same data multiple times, without it even being requested. This is done at the RTP level, or even lower with the codec.
+### Correction d'erreur directe
+Également connu sous le nom de FEC. Une autre méthode pour gérer la perte de paquets. FEC, c'est lorsque vous envoyez les mêmes données plusieurs fois, sans même qu'elles soient demandées. Cela se fait au niveau RTP, ou même plus bas avec le codec.
 
-If the packet loss for a call is steady then FEC is a much lower latency solution than NACK. The round trip time of having to request, and then re-transmit the missing packet can be significant for NACKs.
+Si la perte de paquets pour un appel est stable, alors FEC est une solution de latence beaucoup plus faible que NACK. Le temps d'aller-retour pour avoir à demander, puis retransmettre le paquet manquant peut être significatif pour les NACK.
 
-### Adaptive Bitrate and Bandwidth Estimation
-As discussed in the [Real-time networking](../05-real-time-networking/) chapter, networks are unpredictable and unreliable. Bandwidth availability can change multiple times throughout a session.
-It is not uncommon to see available bandwidth change dramatically (orders of magnitude) within a second.
+### Débit adaptatif et estimation de bande passante
+Comme discuté dans le chapitre [Réseau en temps réel](../05-real-time-networking/), les réseaux sont imprévisibles et peu fiables. La disponibilité de la bande passante peut changer plusieurs fois au cours d'une session.
+Il n'est pas rare de voir la bande passante disponible changer de façon spectaculaire (ordres de grandeur) en une seconde.
 
-The main idea is to adjust encoding bitrate based on predicted, current, and future available network bandwidth.
-This ensures that video and audio signal of the best possible quality is transmitted, and the connection does not get dropped because of network congestion.
-Heuristics that model the network behavior and tries to predict it is known as Bandwidth estimation.
+L'idée principale est d'ajuster le débit d'encodage en fonction de la bande passante réseau disponible prédite, actuelle et future.
+Cela garantit qu'un signal vidéo et audio de la meilleure qualité possible est transmis, et que la connexion n'est pas interrompue en raison de la congestion du réseau.
+Les heuristiques qui modélisent le comportement du réseau et essaient de le prédire sont connues sous le nom d'estimation de bande passante.
 
-There is a lot of nuance to this, so let's explore in greater detail.
+Il y a beaucoup de nuances à cela, explorons donc plus en détail.
 
-## Identifying and Communicating Network Status
-RTP/RTCP runs over all types of different networks, and as a result, it's common for some
-communication to be dropped on its way from the sender to the receiver. Being built on top of UDP,
-there is no built-in mechanism for packet retransmission, let alone handling congestion control.
+## Identification et communication de l'état du réseau
+RTP/RTCP fonctionne sur tous les types de réseaux différents, et en conséquence, il est courant qu'une partie de la
+communication soit abandonnée sur son chemin de l'expéditeur au récepteur. Étant construit sur UDP,
+il n'y a pas de mécanisme intégré pour la retransmission de paquets, et encore moins pour gérer le contrôle de congestion.
 
-To provide users the best experience, WebRTC must estimate qualities about the network path, and
-adapt to how those qualities change over time. The key traits to monitor include: available
-bandwidth (in each direction, as it may not be symmetric), round trip time, and jitter (fluctuations
-in round trip time). It needs to account for packet loss, and communicate changes in these
-properties as network conditions evolve.
+Pour offrir aux utilisateurs la meilleure expérience, WebRTC doit estimer les qualités du chemin réseau, et
+s'adapter à la façon dont ces qualités changent au fil du temps. Les traits clés à surveiller incluent : la bande passante disponible (dans chaque direction, car elle peut ne pas être symétrique), le temps d'aller-retour et la gigue (fluctuations
+du temps d'aller-retour). Il doit tenir compte de la perte de paquets et communiquer les changements dans ces
+propriétés à mesure que les conditions réseau évoluent.
 
-There are two primary objectives for these protocols:
+Il y a deux objectifs principaux pour ces protocoles :
 
-1. Estimate the available bandwidth (in each direction) supported by the network.
-2. Communicate network characteristics between sender and receiver.
+1. Estimer la bande passante disponible (dans chaque direction) prise en charge par le réseau.
+2. Communiquer les caractéristiques du réseau entre l'expéditeur et le récepteur.
 
-RTP/RTCP has three different approaches to address this problem. They all have their pros and cons,
-and generally each generation has improved over its predecessors. Which implementation you use will
-depend primarily on the software stack available to your clients and the libraries available for
-building your application.
+RTP/RTCP a trois approches différentes pour résoudre ce problème. Elles ont toutes leurs avantages et leurs inconvénients,
+et généralement chaque génération s'est améliorée par rapport à ses prédécesseurs. L'implémentation que vous utilisez dépendra principalement de la pile logicielle disponible pour vos clients et des bibliothèques disponibles pour
+construire votre application.
 
-### Receiver Reports / Sender Reports
-The first implementation is the pair of Receiver Reports and its complement, Sender Reports. These
-RTCP messages are defined in [RFC 3550](https://tools.ietf.org/html/rfc3550#section-6.4), and are
-responsible for communicating network status between endpoints. Receiver Reports focuses on
-communicating qualities about the network (including packet loss, round-trip time, and jitter), and
-it pairs with other algorithms that are then responsible for estimating available bandwidth based on
-these reports.
+### Rapports de récepteur / Rapports d'expéditeur
+La première implémentation est la paire de rapports de récepteur et son complément, les rapports d'expéditeur. Ces
+messages RTCP sont définis dans la [RFC 3550](https://tools.ietf.org/html/rfc3550#section-6.4), et sont
+responsables de la communication de l'état du réseau entre les points de terminaison. Les rapports de récepteur se concentrent sur
+la communication des qualités du réseau (y compris la perte de paquets, le temps d'aller-retour et la gigue), et
+ils s'associent à d'autres algorithmes qui sont alors responsables de l'estimation de la bande passante disponible en fonction de
+ces rapports.
 
-Sender and Receiver reports (SR and RR) together paint a picture of the network quality. They are
-sent on a schedule for each SSRC, and they are the inputs used when estimating available
-bandwidth. Those estimates are made by the sender after receiving the RR data, containing the
-following fields:
+Les rapports d'expéditeur et de récepteur (SR et RR) dressent ensemble un tableau de la qualité du réseau. Ils sont
+envoyés selon un calendrier pour chaque SSRC, et ce sont les entrées utilisées lors de l'estimation de la bande passante disponible. Ces estimations sont faites par l'expéditeur après avoir reçu les données RR, contenant les
+champs suivants :
 
-* **Fraction Lost** - What percentage of packets have been lost since the last Receiver Report.
-* **Cumulative Number of Packets Lost** - How many packets have been lost during the entire call.
-* **Extended Highest Sequence Number Received** - What was the last Sequence Number received, and
-  how many times has it rolled over.
-* **Interarrival Jitter** - The rolling Jitter for the entire call.
-* **Last Sender Report Timestamp** - Last known time on sender, used for round-trip time
-  calculation.
+* **Fraction perdue** - Quel pourcentage de paquets a été perdu depuis le dernier rapport de récepteur.
+* **Nombre cumulatif de paquets perdus** - Combien de paquets ont été perdus pendant tout l'appel.
+* **Numéro de séquence le plus élevé étendu reçu** - Quel était le dernier numéro de séquence reçu, et
+  combien de fois a-t-il débordé.
+* **Gigue d'interarrivée** - La gigue glissante pour tout l'appel.
+* **Horodatage du dernier rapport d'expéditeur** - Dernière heure connue sur l'expéditeur, utilisée pour le calcul du temps d'aller-retour.
 
-SR and RR work together to compute round-trip time.
+SR et RR travaillent ensemble pour calculer le temps d'aller-retour.
 
-The sender includes its local time, `sendertime1` in SR. When the receiver gets an SR packet, it
-sends back RR. Among other things, the RR includes `sendertime1` just received from the sender.
-There will be a delay between receiving the SR and sending the RR. Because of that, the RR also
-includes a "delay since last sender report" time - `DLSR`. The `DLSR` is used to adjust the
-round-trip time estimate later on in the process. Once the sender receives the RR it subtracts
-`sendertime1` and `DLSR` from the current time `sendertime2`. This time delta is called round-trip
-propagation delay or round-trip time.
+L'expéditeur inclut son heure locale, `sendertime1` dans SR. Lorsque le récepteur obtient un paquet SR, il
+renvoie RR. Entre autres choses, le RR inclut `sendertime1` qui vient d'être reçu de l'expéditeur.
+Il y aura un délai entre la réception du SR et l'envoi du RR. Pour cette raison, le RR inclut également un temps "délai depuis le dernier rapport d'expéditeur" - `DLSR`. Le `DLSR` est utilisé pour ajuster l'estimation du temps d'aller-retour plus tard dans le processus. Une fois que l'expéditeur reçoit le RR, il soustrait
+`sendertime1` et `DLSR` de l'heure actuelle `sendertime2`. Ce delta de temps est appelé délai de propagation aller-retour ou temps d'aller-retour.
 
 `rtt = sendertime2 - sendertime1 - DLSR`
 
-Round-trip time in plain English:
-- I send you a message with my clock's current reading, say it is 4:20pm, 42 seconds and 420 milliseconds.
-- You send me this same timestamp back.
-- You also include the time elapsed from reading my message to sending the message back, say 5 milliseconds.
-- Once I receive the time back, I look at the clock again.
-- Now my clock says 4:20pm, 42 seconds 690 milliseconds.
-- It means that it took 265 milliseconds (690 - 420 - 5) to reach you and return back to me.
-- Therefore, the round-trip time is 265 milliseconds.
+Temps d'aller-retour en langage clair :
+- Je vous envoie un message avec la lecture actuelle de mon horloge, disons qu'il est 4:20pm, 42 secondes et 420 millisecondes.
+- Vous me renvoyez ce même horodatage.
+- Vous incluez également le temps écoulé entre la lecture de mon message et l'envoi du message de retour, disons 5 millisecondes.
+- Une fois que je reçois l'heure de retour, je regarde à nouveau l'horloge.
+- Maintenant mon horloge dit 4:20pm, 42 secondes 690 millisecondes.
+- Cela signifie qu'il a fallu 265 millisecondes (690 - 420 - 5) pour vous atteindre et revenir vers moi.
+- Par conséquent, le temps d'aller-retour est de 265 millisecondes.
 
-![Round-trip time](../images/06-rtt.png "Round-trip time")
+![Temps d'aller-retour](../images/06-rtt.png "Temps d'aller-retour")
 
 <!-- Missing: What is an example congestion-control alg that pairs with RR/SR? -->
 
-### TMMBR, TMMBN, REMB and TWCC, paired with GCC
+### TMMBR, TMMBN, REMB et TWCC, associés à GCC
 
-#### Google Congestion Control (GCC)
-The Google Congestion Control (GCC) algorithm (outlined in
-[draft-ietf-rmcat-gcc-02](https://tools.ietf.org/html/draft-ietf-rmcat-gcc-02)) addresses the
-challenge of bandwidth estimation. It pairs with a variety of other protocols to facilitate the
-associated communication requirements. Consequently, it is well-suited to run on either the
-receiving side (when run with TMMBR/TMMBN or REMB) or on the sending side (when run with TWCC).
+#### Contrôle de congestion Google (GCC)
+L'algorithme de contrôle de congestion Google (GCC) (décrit dans
+[draft-ietf-rmcat-gcc-02](https://tools.ietf.org/html/draft-ietf-rmcat-gcc-02)) relève le
+défi de l'estimation de la bande passante. Il s'associe à une variété d'autres protocoles pour faciliter les
+exigences de communication associées. Par conséquent, il est bien adapté pour s'exécuter soit du côté
+récepteur (lorsqu'il est exécuté avec TMMBR/TMMBN ou REMB) soit du côté expéditeur (lorsqu'il est exécuté avec TWCC).
 
-To arrive at estimates for available bandwidth, GCC focuses on packet loss and fluctuations in frame
-arrival time as its two primary metrics. It runs these metrics through two linked controllers: the
-loss-based controller and the delay-based controller.
+Pour arriver à des estimations de la bande passante disponible, GCC se concentre sur la perte de paquets et les fluctuations du temps d'arrivée des images comme ses deux métriques principales. Il exécute ces métriques à travers deux contrôleurs liés : le
+contrôleur basé sur les pertes et le contrôleur basé sur les délais.
 
-GCC's first component, the loss-based controller, is simple:
+Le premier composant de GCC, le contrôleur basé sur les pertes, est simple :
 
-* If packet loss is above 10%, the bandwidth estimate is reduced.
-* If packet loss is between 2-10%, the bandwidth estimate stays the same.
-* If packet loss is below 2%, the bandwidth estimate is increased.
+* Si la perte de paquets est supérieure à 10%, l'estimation de la bande passante est réduite.
+* Si la perte de paquets est entre 2 et 10%, l'estimation de la bande passante reste la même.
+* Si la perte de paquets est inférieure à 2%, l'estimation de la bande passante est augmentée.
 
-Packet loss measurements are taken frequently. Depending on the paired communication protocol,
-packet loss may be either be explicitly communicated (as with TWCC) or inferred (as with TMMBR/TMMBN
-and REMB). These percentages are evaluated over time windows of around one second.
+Les mesures de perte de paquets sont prises fréquemment. Selon le protocole de communication associé,
+la perte de paquets peut soit être explicitement communiquée (comme avec TWCC) soit déduite (comme avec TMMBR/TMMBN
+et REMB). Ces pourcentages sont évalués sur des fenêtres de temps d'environ une seconde.
 
-The second function cooperates with the loss-based controller, and looks at the variations in packet
-arrival time. This delay-based controller aims to identify when network links are becoming
-increasingly congested, and may reduce bandwidth estimates even before packet loss occurs. The
-theory is that the busiest network interface along the path will continue queuing up packets up
-until the interface runs out of capacity inside its buffers. If that interface continues to receive
-more traffic than it is able to send, it will be forced to drop all packets that it cannot fit into
-its buffer space. This type of packet loss is particularly disruptive for low-latency/real-time
-communication, but it can also degrade throughput for all communication over that link and should
-ideally be avoided. Thus, GCC tries to figure out if network links are growing larger and larger
-queue depths _before_ packet loss actually occurs. It will reduce the bandwidth usage if it observes
-increased queuing delays over time.
+Le contrôleur basé sur les délais coopère avec le contrôleur basé sur les pertes, et examine les variations dans 
+le temps d'arrivée des paquets. Ce contrôleur basé sur les délais vise à identifier quand les liens réseau deviennent
+de plus en plus congestionnés, et peut réduire les estimations de bande passante même avant que la perte de paquets ne se produise. La
+théorie est que l'interface réseau la plus occupée le long du chemin continuera à mettre en file d'attente des paquets
+jusqu'à ce que l'interface manque de capacité dans ses tampons. Si cette interface continue à recevoir
+plus de trafic qu'elle n'est capable d'envoyer, elle sera forcée d'abandonner tous les paquets qu'elle ne peut pas adapter dans
+son espace tampon. Ce type de perte de paquets est particulièrement perturbateur pour la communication à faible latence/en temps réel, mais il peut également dégrader le débit pour toute communication sur ce lien et devrait
+idéalement être évité. Ainsi, GCC essaie de déterminer si les liens réseau développent des profondeurs de file d'attente de plus en plus grandes _avant_ que la perte de paquets ne se produise réellement. Il réduira l'utilisation de la bande passante s'il observe
+des délais de mise en file d'attente accrus au fil du temps.
 
-To achieve this, GCC tries to infer increases in queue depth by measuring subtle increases in round
-trip time. It records frames' "inter-arrival time", `t(i) - t(i-1)`: the difference in arrival time
-of two groups of packets (generally, consecutive video frames). These packet groups frequently
-depart at regular time intervals (e.g. every 1/24 seconds for a 24 fps video). As a result,
-measuring inter-arrival time is then as simple as recording the time difference between the start of
-the first packet group (i.e. frame) and the first frame of the next.
+Pour y parvenir, GCC essaie de déduire les augmentations de profondeur de file d'attente en mesurant des augmentations subtiles du temps d'aller-retour. Il enregistre le "temps d'inter-arrivée" des images, `t(i) - t(i-1)` : la différence de temps d'arrivée
+de deux groupes de paquets (généralement, des images vidéo consécutives). Ces groupes de paquets partent fréquemment
+à intervalles de temps réguliers (par exemple, toutes les 1/24 secondes pour une vidéo à 24 fps). En conséquence,
+mesurer le temps d'inter-arrivée est alors aussi simple que d'enregistrer la différence de temps entre le début de
+la première groupe de paquets (c'est-à-dire l'image) et la première image de la suivante.
 
-In the diagram below, the median inter-packet delay increase is +20 msec, a clear indicator of
-network congestion.
+Dans le diagramme ci-dessous, l'augmentation médiane du délai inter-paquets est de +20 msec, un indicateur clair de
+congestion du réseau.
 
-![TWCC with delay](../images/06-twcc.png "TWCC with delay")
+![TWCC avec délai](../images/06-twcc.png "TWCC avec délai")
 
-If inter-arrival time increases over time, that is presumed evidence of increased queue depth on
-connecting network interfaces and considered to be network congestion. (Note: GCC is smart enough to
-control these measurements for fluctuations in frame byte sizes.) GCC refines its latency
-measurements using a [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) and takes many
-measurements of network round-trip times (and its variations) before flagging congestion. One can
-think of GCC's Kalman filter as taking the place of a linear regression: helping to make accurate
-predictions even when jitter adds noise into the timing measurements. Upon flagging congestion, GCC
-will reduce the available bitrate. Alternatively, under steady network conditions, it can slowly
-increase its bandwidth estimates to test out higher load values.
+Si le temps d'inter-arrivée augmente au fil du temps, c'est une preuve présumée d'une profondeur de file d'attente accrue sur
+les interfaces réseau de connexion et considéré comme une congestion du réseau. (Note : GCC est assez intelligent pour
+contrôler ces mesures pour les fluctuations de taille d'octets d'image.) GCC affine ses mesures de latence
+en utilisant un [filtre de Kalman](https://en.wikipedia.org/wiki/Kalman_filter) et prend de nombreuses
+mesures des temps d'aller-retour du réseau (et de ses variations) avant de signaler la congestion. On peut
+penser au filtre de Kalman de GCC comme prenant la place d'une régression linéaire : aidant à faire des prédictions précises même lorsque la gigue ajoute du bruit dans les mesures de timing. Lors du signalement de la congestion, GCC
+réduira le débit disponible. Alternativement, dans des conditions réseau stables, il peut lentement
+augmenter ses estimations de bande passante pour tester des valeurs de charge plus élevées.
 
-#### TMMBR, TMMBN, and REMB
-For TMMBR/TMMBN and REMB, the receiving side first estimates available inbound bandwidth (using a
-protocol such as GCC), and then communicates these bandwidth estimates to the remote senders. They
-do not need to exchange details about packet loss or other qualities about network congestion
-because operating on the receiving side allows them to measure inter-arrival time and packet loss
-directly. Instead, TMMBR, TMMBN, and REMB exchange just the bandwidth estimates themselves:
+#### TMMBR, TMMBN et REMB
+Pour TMMBR/TMMBN et REMB, le côté récepteur estime d'abord la bande passante entrante disponible (en utilisant un
+protocole tel que GCC), puis communique ces estimations de bande passante aux expéditeurs distants. Ils
+n'ont pas besoin d'échanger des détails sur la perte de paquets ou d'autres qualités sur la congestion du réseau
+parce que fonctionner du côté récepteur leur permet de mesurer le temps d'inter-arrivée et la perte de paquets
+directement. Au lieu de cela, TMMBR, TMMBN et REMB échangent juste les estimations de bande passante elles-mêmes :
 
-* **Temporary Maximum Media Stream Bit Rate Request** - A mantissa/exponent of a requested bitrate
-  for a single SSRC.
-* **Temporary Maximum Media Stream Bit Rate Notification** - A message to notify that a TMMBR has
-  been received.
-* **Receiver Estimated Maximum Bitrate** - A mantissa/exponent of a requested bitrate for the
-  entire session.
+* **Demande de débit binaire maximum temporaire du flux média** - Une mantisse/exposant d'un débit binaire demandé
+  pour un seul SSRC.
+* **Notification de débit binaire maximum temporaire du flux média** - Un message pour notifier qu'un TMMBR a
+  été reçu.
+* **Débit binaire maximum estimé du récepteur** - Une mantisse/exposant d'un débit binaire demandé pour la
+  session entière.
 
-TMMBR and TMMBN came first and are defined in [RFC 5104](https://tools.ietf.org/html/rfc5104). REMB
-came later, there was a draft submitted in
-[draft-alvestrand-rmcat-remb](https://tools.ietf.org/html/draft-alvestrand-rmcat-remb-03), but it
-was never standardized.
+TMMBR et TMMBN sont venus en premier et sont définis dans la [RFC 5104](https://tools.ietf.org/html/rfc5104). REMB
+est venu plus tard, il y avait un brouillon soumis dans
+[draft-alvestrand-rmcat-remb](https://tools.ietf.org/html/draft-alvestrand-rmcat-remb-03), mais il
+n'a jamais été standardisé.
 
-An example session that uses REMB might behave like the following:
+Un exemple de session qui utilise REMB pourrait se comporter comme suit :
 
 ![REMB](../images/06-remb.png "REMB")
 
-This method works great on paper. The Sender receives estimation from the receiver, sets encoder bitrate to the received value. Tada! We've adjusted to the network conditions.
+Cette méthode fonctionne bien sur le papier. L'expéditeur reçoit l'estimation du récepteur, règle le débit binaire de l'encodeur à la valeur reçue. Et voilà ! Nous nous sommes adaptés aux conditions du réseau.
 
-However in practice, the REMB approach has multiple drawbacks.
+Cependant, en pratique, l'approche REMB a plusieurs inconvénients.
 
-Encoder inefficiency is the first. When you set a bitrate for the encoder, it won't necessarily
-output the exact bitrate you requested. Encoding may output more or fewer bits, depending on the
-encoder settings and the frame being encoded.
+L'inefficacité de l'encodeur est la première. Lorsque vous définissez un débit binaire pour l'encodeur, il ne produira pas nécessairement
+exactement le débit binaire que vous avez demandé. L'encodage peut produire plus ou moins de bits, selon les
+paramètres de l'encodeur et l'image en cours d'encodage.
 
-For example, using the x264 encoder with `tune=zerolatency` can significantly deviate from the specified target bitrate. Here is a possible scenario:
+Par exemple, utiliser l'encodeur x264 avec `tune=zerolatency` peut s'écarter significativement du débit binaire cible spécifié. Voici un scénario possible :
 
-- Let's say we start off by setting the bitrate to 1000 kbps.
-- The encoder outputs only 700 kbps, because there is not enough high frequency features to encode. (AKA - "staring at a wall".)
-- Let's also imagine that the receiver gets the 700 kbps video at zero packet loss. It then applies REMB rule 1 to increase the incoming bitrate by 8%.
-- The receiver sends a REMB packet with a 756 kbps suggestion (700 kbps * 1.08) to the sender.
-- The sender sets the encoder bitrate to 756 kbps.
-- The encoder outputs an even lower bitrate.
-- This process continues to repeat itself, lowering the bitrate to the absolute minimum.
+- Disons que nous commençons par définir le débit binaire à 1000 kbps.
+- L'encodeur ne produit que 700 kbps, car il n'y a pas assez de fonctionnalités à haute fréquence à encoder. (AKA - "regarder un mur".)
+- Imaginons également que le récepteur obtienne la vidéo à 700 kbps avec zéro perte de paquets. Il applique ensuite la règle REMB 1 pour augmenter le débit binaire entrant de 8%.
+- Le récepteur envoie un paquet REMB avec une suggestion de 756 kbps (700 kbps * 1.08) à l'expéditeur.
+- L'expéditeur règle le débit binaire de l'encodeur à 756 kbps.
+- L'encodeur produit un débit binaire encore plus faible.
+- Ce processus continue à se répéter, abaissant le débit binaire au minimum absolu.
 
-You can see how this would cause heavy encoder parameter tuning, and surprise users with unwatchable video even on a great connection.
+Vous pouvez voir comment cela causerait un réglage lourd des paramètres de l'encodeur, et surprendrait les utilisateurs avec une vidéo impossible à regarder même sur une excellente connexion.
 
-#### Transport Wide Congestion Control
-Transport Wide Congestion Control is the latest development in RTCP network status
-communication. It is defined in
+#### Contrôle de congestion étendu au transport
+Le contrôle de congestion étendu au transport est le dernier développement dans la communication de l'état du réseau RTCP. Il est défini dans
 [draft-holmer-rmcat-transport-wide-cc-extensions-01](https://datatracker.ietf.org/doc/html/draft-holmer-rmcat-transport-wide-cc-extensions-01),
-but has also never been standardized.
+mais n'a également jamais été standardisé.
 
-TWCC uses a quite simple principle:
+TWCC utilise un principe assez simple :
 
 ![TWCC](../images/06-twcc-idea.png "TWCC")
 
-With REMB, the receiver instructs the sending side in the available download bitrate. It uses
-precise measurements about inferred packet loss and data only it has about inter-packet arrival
-time.
+Avec REMB, le récepteur instruit le côté émetteur du débit binaire de téléchargement disponible. Il utilise
+des mesures précises sur la perte de paquets déduite et des données qu'il possède uniquement sur le temps d'arrivée inter-paquets.
 
-TWCC is almost a hybrid approach between the SR/RR and REMB generations of protocols. It brings the
-bandwidth estimates back to the sender side (similar to SR/RR), but its bandwidth estimate technique
-more closely resembles the REMB generation.
+TWCC est presque une approche hybride entre les générations de protocoles SR/RR et REMB. Il ramène les
+estimations de bande passante du côté de l'expéditeur (similaire à SR/RR), mais sa technique d'estimation de bande passante
+ressemble plus étroitement à la génération REMB.
 
-With TWCC, the receiver lets the sender know the arrival time of each packet. This is enough
-information for the sender to measure inter-packet arrival delay variation, as well as identifying
-which packets were dropped or arrived too late to contribute to the audio/video feed. With this data
-being exchanged frequently, the sender able to quickly adjust to changing network conditions and
-vary its output bandwidth using an algorithm such GCC.
+Avec TWCC, le récepteur fait savoir à l'expéditeur l'heure d'arrivée de chaque paquet. C'est suffisant
+d'informations pour que l'expéditeur mesure la variation du délai d'arrivée inter-paquets, ainsi que pour identifier
+quels paquets ont été abandonnés ou sont arrivés trop tard pour contribuer au flux audio/vidéo. Avec ces données
+échangées fréquemment, l'expéditeur est capable de s'adapter rapidement aux conditions réseau changeantes et
+de varier sa bande passante de sortie en utilisant un algorithme tel que GCC.
 
-The sender keeps track of sent packets, their sequence numbers, sizes and timestamps. When the
-sender receives RTCP messages from the receiver, it compares the send inter-packet delays with
-the receive delays. If the receive delays increase, it signals network congestion, and the sender
-must take corrective measures.
+L'expéditeur garde une trace des paquets envoyés, leurs numéros de séquence, tailles et horodatages. Lorsque l'expéditeur reçoit des messages RTCP du récepteur, il compare les délais inter-paquets d'envoi avec
+les délais de réception. Si les délais de réception augmentent, cela signale une congestion du réseau, et l'expéditeur
+doit prendre des mesures correctives.
 
-By providing the sender with the raw data, TWCC provides an excellent view into real time network
-conditions:
-- Almost instant packet loss behavior, down to the individual lost packets
-- Accurate send bitrate
-- Accurate receive bitrate
-- Jitter measurement
-- Differences between send and receive packet delays
-- Description of how the network tolerated bursty or steady bandwidth delivery
+En fournissant à l'expéditeur les données brutes, TWCC offre une excellente vue des conditions réseau en temps réel :
+- Comportement de perte de paquets presque instantané, jusqu'aux paquets perdus individuels
+- Débit binaire d'envoi précis
+- Débit binaire de réception précis
+- Mesure de la gigue
+- Différences entre les délais d'envoi et de réception des paquets
+- Description de la façon dont le réseau a toléré la livraison de bande passante en rafale ou stable
 
-One of the most significant contributions of TWCC is the flexibility it affords to WebRTC
-developers. By consolidating the congestion control algorithm to the sending side, it allows simple
-client code that can be widely used and requires minimal enhancements over time. The complex
-congestion control algorithms can then be iterated more quickly on the hardware they directly
-control (like the Selective Forwarding Unit, discussed in section 8). In the case of browsers and
-mobile devices, this means those clients can benefit from algorithm enhancements without having to
-await standardization or browser updates (which can take quite a long time to be widely available).
+L'une des contributions les plus importantes de TWCC est la flexibilité qu'il offre aux
+développeurs WebRTC. En consolidant l'algorithme de contrôle de congestion du côté expéditeur, il permet un code client simple
+qui peut être largement utilisé et nécessite des améliorations minimales au fil du temps. Les algorithmes complexes de contrôle de congestion peuvent ensuite être itérés plus rapidement sur le matériel qu'ils contrôlent directement (comme l'unité de transfert sélectif, discutée dans la section 8). Dans le cas des navigateurs et
+des appareils mobiles, cela signifie que ces clients peuvent bénéficier d'améliorations d'algorithmes sans avoir à
+attendre la standardisation ou les mises à jour du navigateur (ce qui peut prendre beaucoup de temps pour être largement disponible).
 
-## Bandwidth Estimation Alternatives
-The most deployed implementation is "A Google Congestion Control Algorithm for Real-Time
-Communication" defined in
+## Alternatives d'estimation de bande passante
+L'implémentation la plus déployée est "A Google Congestion Control Algorithm for Real-Time
+Communication" définie dans
 [draft-alvestrand-rmcat-congestion](https://tools.ietf.org/html/draft-alvestrand-rmcat-congestion-02).
 
-There are several alternatives to GCC, for example [NADA: A Unified Congestion Control Scheme for
-Real-Time Media](https://tools.ietf.org/html/draft-zhu-rmcat-nada-04) and [SCReAM - Self-Clocked
+Il existe plusieurs alternatives à GCC, par exemple [NADA: A Unified Congestion Control Scheme for
+Real-Time Media](https://tools.ietf.org/html/draft-zhu-rmcat-nada-04) et [SCReAM - Self-Clocked
 Rate Adaptation for Multimedia](https://tools.ietf.org/html/draft-johansson-rmcat-scream-cc-05).
