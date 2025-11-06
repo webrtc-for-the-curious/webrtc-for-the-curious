@@ -6,118 +6,118 @@ weight: 6
 
 # Real-time Networking
 
-## Why is networking so important in Real-time communication?
+## Mengapa jaringan begitu penting dalam komunikasi _Real-time_?
 
-Networks are the limiting factor in Real-time communication. In an ideal world we would have unlimited bandwidth
-and packets would arrive instantaneously. This isn't the case though. Networks are limited, and the conditions
-could change at anytime. Measuring and observing network conditions is also a difficult problem. You can get different behaviors
-depending on hardware, software and the configuration of it.
+Jaringan adalah faktor pembatas dalam komunikasi _Real-time_. Dalam dunia yang ideal kita akan memiliki _bandwidth_ tak terbatas
+dan paket akan tiba secara instan. Namun ini tidak terjadi. Jaringan terbatas, dan kondisinya
+dapat berubah kapan saja. Mengukur dan mengamati kondisi jaringan juga merupakan masalah yang sulit. Anda bisa mendapatkan perilaku yang berbeda
+tergantung pada perangkat keras, perangkat lunak dan konfigurasinya.
 
-Real-time communication also poses a problem that doesn't exist in most other domains. For a web developer it isn't fatal
-if your website is slower on some networks. As long as all the data arrives, users are happy. With WebRTC, if your data is
-late it is useless. No one cares about what was said in a conference call 5 seconds ago. So when developing a realtime communication system, 
-you have to make a trade-off. What is my time limit, and how much data can I send?
+Komunikasi _real-time_ juga menghadirkan masalah yang tidak ada di sebagian besar domain lain. Untuk _developer_ web, tidak fatal
+jika situs web Anda lebih lambat di beberapa jaringan. Selama semua data tiba, pengguna senang. Dengan WebRTC, jika data Anda
+terlambat, itu tidak berguna. Tidak ada yang peduli tentang apa yang dikatakan dalam panggilan konferensi 5 detik yang lalu. Jadi ketika mengembangkan sistem komunikasi _realtime_,
+Anda harus membuat _trade-off_. Apa batas waktu saya, dan berapa banyak data yang dapat saya kirim?
 
-This chapter covers the concepts that apply to both data and media communication. In later chapters we go beyond
-the theoretical and discuss how WebRTC's media and data subsystems solve these problems.
+Bab ini mencakup konsep yang berlaku untuk komunikasi data dan media. Pada bab selanjutnya kita akan melampaui
+teorinya dan membahas bagaimana subsistem media dan data WebRTC menyelesaikan masalah ini.
 
-## What are the attributes of the network that make it difficult?
-Code that effectively works across all networks is complicated. You have lots of different factors, and they
-can all affect each other subtly. These are the most common issues that developers will encounter.
+## Apa atribut jaringan yang membuatnya sulit?
+Kode yang efektif bekerja di semua jaringan adalah rumit. Anda memiliki banyak faktor berbeda, dan mereka
+semua dapat saling mempengaruhi secara halus. Ini adalah masalah paling umum yang akan dihadapi _developer_.
 
-#### Bandwidth
-Bandwidth is the maximum rate of data that can be transferred across a given path. It is important to remember
-this isn't a static number either. The bandwidth will change along the route as more (or less) people use it.
+#### _Bandwidth_
+_Bandwidth_ adalah laju maksimum data yang dapat ditransfer melintasi jalur tertentu. Penting untuk diingat
+ini juga bukan angka statis. _Bandwidth_ akan berubah sepanjang rute seiring lebih banyak (atau lebih sedikit) orang menggunakannya.
 
-#### Transmission Time and Round Trip Time
-Transmission Time is how long it takes for a packet to arrive to its destination. Like Bandwidth this isn't constant. The Transmission Time can fluctuate at anytime.
+#### _Transmission Time_ dan _Round Trip Time_
+_Transmission Time_ adalah berapa lama waktu yang dibutuhkan paket untuk tiba di tujuannya. Seperti _Bandwidth_ ini tidak konstan. _Transmission Time_ dapat berfluktuasi kapan saja.
 
 `transmission_time = receive_time - send_time`
 
-To compute transmission time, you need clocks on sender and receiver synchronized with millisecond precision.
-Even a small deviation would produce an unreliable transmission time measurement.
-Since WebRTC is operating in highly heterogeneous environments, it is next to impossible to rely on perfect time synchronization between hosts.
+Untuk menghitung _transmission time_, Anda memerlukan jam pada pengirim dan penerima yang disinkronkan dengan presisi milidetik.
+Bahkan penyimpangan kecil akan menghasilkan pengukuran _transmission time_ yang tidak dapat diandalkan.
+Karena WebRTC beroperasi di lingkungan yang sangat heterogen, hampir mustahil untuk mengandalkan sinkronisasi waktu sempurna antara _host_.
 
-Round-trip time measurement is a workaround for imperfect clock synchronization.
+Pengukuran _round-trip time_ adalah solusi untuk sinkronisasi jam yang tidak sempurna.
 
-Instead of operating on distributed clocks a WebRTC peer sends a special packet with its own timestamp `sendertime1`.
-A cooperating peer receives the packet and reflects the timestamp back to the sender.
-Once the original sender gets the reflected time it subtracts the timestamp `sendertime1` from the current time `sendertime2`.
-This time delta is called "round-trip propagation delay" or more commonly round-trip time.
+Alih-alih beroperasi pada jam terdistribusi, _peer_ WebRTC mengirim paket khusus dengan _timestamp_-nya sendiri `sendertime1`.
+_Peer_ yang bekerja sama menerima paket dan memantulkan _timestamp_ kembali ke pengirim.
+Setelah pengirim asli mendapat waktu yang dipantulkan, ia mengurangi _timestamp_ `sendertime1` dari waktu saat ini `sendertime2`.
+Delta waktu ini disebut "_round-trip propagation delay_" atau lebih umum _round-trip time_.
 
 `rtt = sendertime2 - sendertime1`
 
-Half of the round trip time is considered to be a good enough approximation of transmission time.
-This workaround is not without drawbacks. 
-It makes the assumption that it takes an equal amount of time to send and receive packets.
-However on cellular networks, send and receive operations may not be time-symmetrical. 
-You may have noticed that upload speeds on your phone are almost always lower than download speeds.
+Setengah dari _round trip time_ dianggap sebagai perkiraan yang cukup baik dari _transmission time_.
+Solusi ini tidak tanpa kekurangan.
+Ini membuat asumsi bahwa dibutuhkan waktu yang sama untuk mengirim dan menerima paket.
+Namun pada jaringan seluler, operasi pengiriman dan penerimaan mungkin tidak simetris waktu.
+Anda mungkin telah memperhatikan bahwa kecepatan unggah pada ponsel Anda hampir selalu lebih rendah daripada kecepatan unduh.
 
 `transmission_time = rtt/2`
 
-The technicalities of round-trip time measurement are described in greater detail in [RTCP Sender and Receiver Reports chapter](../06-media-communication/#receiver-reports--sender-reports).
+Teknisnya pengukuran _round-trip time_ dijelaskan lebih detail dalam [bab RTCP Sender dan Receiver Reports](../06-media-communication/#receiver-reports--sender-reports).
 
-#### Jitter
-Jitter is the fact that `Transmission Time` may vary for each packet. Your packets could be delayed, but then arrive in bursts.
+#### _Jitter_
+_Jitter_ adalah fakta bahwa `Transmission Time` dapat bervariasi untuk setiap paket. Paket Anda dapat ditunda, tetapi kemudian tiba dalam ledakan.
 
-#### Packet Loss
-Packet Loss is when messages are lost in transmission. The loss could be steady, or it could come in spikes.
-This could be because of the network type like satellite or Wi-Fi. Or it could be introduced by the software along the way.
+#### _Packet Loss_
+_Packet Loss_ adalah ketika pesan hilang dalam transmisi. Kehilangan bisa stabil, atau bisa datang dalam lonjakan.
+Ini bisa karena jenis jaringan seperti satelit atau Wi-Fi. Atau bisa diperkenalkan oleh perangkat lunak di sepanjang jalan.
 
-#### Maximum Transmission Unit
-Maximum Transmission Unit is the limit on how large a single packet can be. Networks don't allow you to send
-one giant message. At the protocol level, messages might have to be split into multiple smaller packets.
+#### _Maximum Transmission Unit_
+_Maximum Transmission Unit_ adalah batas seberapa besar satu paket tunggal bisa. Jaringan tidak mengizinkan Anda mengirim
+satu pesan raksasa. Pada level protokol, pesan mungkin harus dipecah menjadi beberapa paket yang lebih kecil.
 
-The MTU will also differ depending on what network path you take. You can
-use a protocol like [Path MTU Discovery](https://tools.ietf.org/html/rfc1191) to figure out the largest packet size you can send.
+MTU juga akan berbeda tergantung pada jalur jaringan apa yang Anda ambil. Anda dapat
+menggunakan protokol seperti [Path MTU Discovery](https://tools.ietf.org/html/rfc1191) untuk mengetahui ukuran paket terbesar yang dapat Anda kirim.
 
-### Congestion
-Congestion is when the limits of the network have been reached. This is usually because you have reached the peak
-bandwidth that the current route can handle. Or it could be operator imposed like hourly limits your ISP configures.
+### _Congestion_
+_Congestion_ adalah ketika batas jaringan telah tercapai. Ini biasanya karena Anda telah mencapai puncak
+_bandwidth_ yang dapat ditangani rute saat ini. Atau bisa operator yang memaksakan seperti batas per jam yang dikonfigurasi ISP Anda.
 
-Congestion exhibits itself in many different ways. There is no standardized behavior. In most cases when congestion is
-reached the network will drop excess packets. In other cases the network will buffer. This will cause the Transmission Time
-for your packets to increase. You could also see more jitter as your network becomes congested. This is a rapidly changing area
-and new algorithms for congestion detection are still being written.
+_Congestion_ menampakkan dirinya dalam banyak cara berbeda. Tidak ada perilaku standar. Dalam kebanyakan kasus ketika _congestion_
+tercapai jaringan akan menjatuhkan paket berlebih. Dalam kasus lain jaringan akan _buffer_. Ini akan menyebabkan _Transmission Time_
+untuk paket Anda meningkat. Anda juga dapat melihat lebih banyak _jitter_ saat jaringan Anda menjadi padat. Ini adalah area yang berubah dengan cepat
+dan algoritma baru untuk deteksi _congestion_ masih ditulis.
 
-### Dynamic
-Networks are incredibly dynamic and conditions can change rapidly. During a call you may send and receive hundreds of thousands of packets.
-Those packets will be traveling through multiple hops. Those hops will be shared by millions of other users. Even in your local network you could have
-HD movies being downloaded or maybe a device decides to download a software update.
+### Dinamis
+Jaringan sangat dinamis dan kondisinya dapat berubah dengan cepat. Selama panggilan Anda dapat mengirim dan menerima ratusan ribu paket.
+Paket-paket itu akan melakukan perjalanan melalui beberapa _hop_. _Hop_ tersebut akan dibagikan oleh jutaan pengguna lain. Bahkan di jaringan lokal Anda, Anda dapat memiliki
+film HD yang diunduh atau mungkin perangkat memutuskan untuk mengunduh pembaruan perangkat lunak.
 
-Having a good call isn't as simple as measuring your network on startup. You need to be constantly evaluating. You also need to handle all the different
-behaviors that come from a multitude of network hardware and software.
+Memiliki panggilan yang baik tidak sesederhana mengukur jaringan Anda saat startup. Anda perlu terus mengevaluasi. Anda juga perlu menangani semua perilaku berbeda
+yang berasal dari banyak perangkat keras dan perangkat lunak jaringan.
 
-## Solving Packet Loss
-Handling packet loss is the first problem to solve. There are multiple ways to solve it, each with their own benefits. It depends on what you are sending and how
-latency tolerant you are. It is also important to note that not all packet loss is fatal. Losing some video might not be a problem, the human eye might not
-even able to perceive it. Losing a users text messages are fatal.
+## Menyelesaikan _Packet Loss_
+Menangani _packet loss_ adalah masalah pertama untuk diselesaikan. Ada beberapa cara untuk menyelesaikannya, masing-masing dengan manfaatnya sendiri. Ini tergantung pada apa yang Anda kirim dan seberapa
+toleran Anda terhadap latensi. Penting juga untuk dicatat bahwa tidak semua _packet loss_ fatal. Kehilangan beberapa video mungkin bukan masalah, mata manusia mungkin bahkan tidak
+mampu menganggapnya. Kehilangan pesan teks pengguna adalah fatal.
 
-Let's say you send 10 packets, and packets 5 and 6 are lost. Here are the ways you can solve it.
+Katakanlah Anda mengirim 10 paket, dan paket 5 dan 6 hilang. Ini adalah cara Anda dapat menyelesaikannya.
 
-### Acknowledgments
-Acknowledgments is when the receiver notifies the sender of every packet they have received. The sender is aware of packet loss when it gets an acknowledgment
-for a packet twice that isn't final. When the sender gets an `ACK` for packet 4 twice, it knows that packet 5 has not been seen yet.
+### _Acknowledgments_
+_Acknowledgments_ adalah ketika penerima memberi tahu pengirim setiap paket yang telah mereka terima. Pengirim menyadari _packet loss_ ketika ia mendapat _acknowledgment_
+untuk paket dua kali yang bukan final. Ketika pengirim mendapat `ACK` untuk paket 4 dua kali, ia tahu bahwa paket 5 belum terlihat.
 
-### Selective Acknowledgments
-Selective Acknowledgments is an improvement upon Acknowledgments. A receiver can send a `SACK` that acknowledges multiple packets and notifies the sender of gaps.
-Now the sender can get a `SACK` for packet 4 and 7. It then knows it needs to re-send packets 5 and 6.
+### _Selective Acknowledgments_
+_Selective Acknowledgments_ adalah peningkatan dari _Acknowledgments_. Penerima dapat mengirim `SACK` yang mengakui beberapa paket dan memberi tahu pengirim tentang kesenjangan.
+Sekarang pengirim dapat mendapat `SACK` untuk paket 4 dan 7. Kemudian ia tahu ia perlu mengirim ulang paket 5 dan 6.
 
-### Negative Acknowledgments
-Negative Acknowledgments solve the problem the opposite way. Instead of notifying the sender what it has received, the receiver notifies the sender what has been lost. In our case a `NACK`
-will be sent for packets 5 and 6. The sender only knows packets the receiver wishes to have sent again.
+### _Negative Acknowledgments_
+_Negative Acknowledgments_ menyelesaikan masalah dengan cara sebaliknya. Alih-alih memberi tahu pengirim apa yang telah diterimanya, penerima memberi tahu pengirim apa yang telah hilang. Dalam kasus kami `NACK`
+akan dikirim untuk paket 5 dan 6. Pengirim hanya mengetahui paket yang ingin dikirim ulang oleh penerima.
 
-### Forward Error Correction
-Forward Error Correction fixes packet loss pre-emptively. The sender sends redundant data, meaning a lost packet doesn't affect the final stream. One popular algorithm for
-this is Reed–Solomon error correction.
+### _Forward Error Correction_
+_Forward Error Correction_ memperbaiki _packet loss_ secara pre-emptif. Pengirim mengirim data redundan, yang berarti paket yang hilang tidak mempengaruhi _stream_ akhir. Salah satu algoritma populer untuk
+ini adalah koreksi kesalahan Reed–Solomon.
 
-This reduces the latency/complexity of sending and handling Acknowledgments. Forward Error Correction is a waste of bandwidth if the network you are in has zero loss.
+Ini mengurangi latensi/kompleksitas pengiriman dan penanganan _Acknowledgments_. _Forward Error Correction_ adalah pemborosan _bandwidth_ jika jaringan tempat Anda berada memiliki nol kehilangan.
 
-## Solving Jitter
-Jitter is present in most networks. Even inside a LAN you have many devices sending data at fluctuating rates. You can easily observe jitter by pinging another device with the `ping` command and noticing the fluctuations in round-trip latency.
+## Menyelesaikan _Jitter_
+_Jitter_ hadir di sebagian besar jaringan. Bahkan di dalam LAN Anda memiliki banyak perangkat yang mengirim data pada tingkat yang berfluktuasi. Anda dapat dengan mudah mengamati _jitter_ dengan melakukan ping perangkat lain dengan perintah `ping` dan memperhatikan fluktuasi dalam latensi _round-trip_.
 
-To solve jitter, clients use a JitterBuffer. The JitterBuffer ensures a steady delivery time of packets. The downside is that JitterBuffer adds some latency to packets that arrive early.
-The upside is that late packets don't cause jitter. Imagine that during a call, you see the following packet arrival times:
+Untuk menyelesaikan _jitter_, klien menggunakan JitterBuffer. JitterBuffer memastikan waktu pengiriman paket yang stabil. Kelemahannya adalah JitterBuffer menambahkan beberapa latensi ke paket yang tiba lebih awal.
+Sisi baiknya adalah paket yang terlambat tidak menyebabkan _jitter_. Bayangkan bahwa selama panggilan, Anda melihat waktu kedatangan paket berikut:
 
 ```
 * time=1.46 ms
@@ -131,48 +131,48 @@ The upside is that late packets don't cause jitter. Imagine that during a call, 
 * time=1.80 ms
 ```
 
-In this case, around 1.8 ms would be a good choice. Packets that arrive late will use our window of latency. Packets that arrive early will be delayed a bit and can
-fill the window depleted by late packets. This means we no longer have stuttering and provide a smooth delivery rate for the client.
+Dalam kasus ini, sekitar 1,8 ms akan menjadi pilihan yang baik. Paket yang tiba terlambat akan menggunakan jendela latensi kami. Paket yang tiba lebih awal akan ditunda sedikit dan dapat
+mengisi jendela yang habis oleh paket yang terlambat. Ini berarti kita tidak lagi memiliki gagap dan memberikan tingkat pengiriman yang lancar untuk klien.
 
-### JitterBuffer operation
+### Operasi JitterBuffer
 
 ![JitterBuffer](../images/05-jitterbuffer.png "JitterBuffer")
 
-Every packet gets added to the jitter buffer as soon as it is received. 
-Once there are enough packets to reconstruct the frame, packets that make up the frame are released from the buffer and emitted for decoding.
-The decoder, in turn, decodes and draws the video frame on the user's screen.
-Since the jitter buffer has a limited capacity, packets that stay in the buffer for too long will be discarded.
+Setiap paket ditambahkan ke _jitter buffer_ segera setelah diterima.
+Setelah ada cukup paket untuk merekonstruksi _frame_, paket yang membentuk _frame_ dilepaskan dari _buffer_ dan dikeluarkan untuk dekoding.
+Decoder, pada gilirannya, mendekode dan menggambar _frame_ video di layar pengguna.
+Karena _jitter buffer_ memiliki kapasitas terbatas, paket yang tetap di _buffer_ terlalu lama akan dibuang.
 
-Read more on how video frames are converted to RTP packets, and why reconstruction is necessary [in the media communication chapter](../06-media-communication/#rtp).
+Baca lebih lanjut tentang bagaimana _frame_ video dikonversi menjadi paket RTP, dan mengapa rekonstruksi diperlukan [dalam bab komunikasi media](../06-media-communication/#rtp).
 
-`jitterBufferDelay` provides a great insight into your network performance and its influence on playback smoothness.
-It is a part of [WebRTC statistics API](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-jitterbufferdelay) relevant to the receiver's inbound stream.
-The delay defines the amount of time video frames spend in the jitter buffer before being emitted for decoding.
-A long jitter buffer delay means your network is highly congested.
+`jitterBufferDelay` memberikan wawasan yang baik tentang kinerja jaringan Anda dan pengaruhnya pada kelancaran pemutaran.
+Ini adalah bagian dari [WebRTC statistics API](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-jitterbufferdelay) yang relevan dengan _stream_ masuk penerima.
+Penundaan mendefinisikan jumlah waktu _frame_ video menghabiskan di _jitter buffer_ sebelum dikeluarkan untuk dekoding.
+Penundaan _jitter buffer_ yang panjang berarti jaringan Anda sangat padat.
 
-## Detecting Congestion
-Before we can even resolve congestion, we need to detect it. To detect it we use a congestion controller. This is a complicated subject, and is still rapidly changing.
-New algorithms are still being published and tested. At a high level they all operate the same. A congestion controller provides bandwidth estimates given some inputs.
-These are some possible inputs:
+## Mendeteksi _Congestion_
+Sebelum kita dapat menyelesaikan _congestion_, kita perlu mendeteksinya. Untuk mendeteksinya kita menggunakan _congestion controller_. Ini adalah subjek yang rumit, dan masih berubah dengan cepat.
+Algoritma baru masih diterbitkan dan diuji. Pada level tinggi mereka semua beroperasi sama. _Congestion controller_ memberikan estimasi _bandwidth_ yang diberikan beberapa input.
+Ini beberapa input yang mungkin:
 
-* **Packet Loss** - Packets are dropped as the network becomes congested.
-* **Jitter** - As network equipment becomes more overloaded packets queuing will cause the times to be erratic.
-* **Round Trip Time** - Packets take longer to arrive when congested. Unlike jitter, the Round Trip Time just keeps increasing.
-* **Explicit Congestion Notification** - Newer networks may tag packets as at risk for being dropped to relieve congestion.
+* **Packet Loss** - Paket dijatuhkan saat jaringan menjadi padat.
+* **Jitter** - Saat peralatan jaringan menjadi lebih kelebihan beban, antrian paket akan menyebabkan waktu menjadi tidak menentu.
+* **Round Trip Time** - Paket membutuhkan waktu lebih lama untuk tiba ketika padat. Tidak seperti _jitter_, _Round Trip Time_ terus meningkat.
+* **Explicit Congestion Notification** - Jaringan yang lebih baru dapat menandai paket sebagai berisiko dijatuhkan untuk mengurangi _congestion_.
 
-These values need to be measured continuously during the call. Utilization of the network may increase or decrease, so the available bandwidth could constantly be changing.
+Nilai-nilai ini perlu diukur terus-menerus selama panggilan. Pemanfaatan jaringan dapat meningkat atau menurun, sehingga _bandwidth_ yang tersedia dapat terus berubah.
 
-## Resolving Congestion
-Now that we have an estimated bandwidth we need to adjust what we are sending. How we adjust depends on what kind of data we want to send.
+## Menyelesaikan _Congestion_
+Sekarang kita memiliki estimasi _bandwidth_ kita perlu menyesuaikan apa yang kita kirim. Bagaimana kita menyesuaikan tergantung pada jenis data apa yang ingin kita kirim.
 
-### Sending Slower
-Limiting the speed at which you send data is the first solution to preventing congestion. The Congestion Controller gives you an estimate, and it is the
-sender's responsibility to rate limit.
+### Mengirim Lebih Lambat
+Membatasi kecepatan di mana Anda mengirim data adalah solusi pertama untuk mencegah _congestion_. _Congestion Controller_ memberi Anda estimasi, dan itu adalah
+tanggung jawab pengirim untuk membatasi laju.
 
-This is the method used for most data communication. With protocols like TCP this is all done by the operating system and completely transparent to both users and developers.
+Ini adalah metode yang digunakan untuk sebagian besar komunikasi data. Dengan protokol seperti TCP ini semua dilakukan oleh sistem operasi dan sepenuhnya transparan bagi pengguna dan _developer_.
 
-### Sending Less
-In some cases we can send less information to satisfy our limits. We also have hard deadlines on the arrival of our data, so we can't send slower. These are the constraints
-that Real-time media falls under.
+### Mengirim Lebih Sedikit
+Dalam beberapa kasus kita dapat mengirim lebih sedikit informasi untuk memenuhi batas kita. Kita juga memiliki tenggat waktu keras untuk kedatangan data kita, jadi kita tidak bisa mengirim lebih lambat. Ini adalah kendala
+yang dimiliki media _Real-time_.
 
-If we don't have enough bandwidth available, we can lower the quality of video we send. This requires a tight feedback loop between your video encoder and congestion controller.
+Jika kita tidak memiliki cukup _bandwidth_ yang tersedia, kita dapat menurunkan kualitas video yang kita kirim. Ini memerlukan _feedback loop_ yang ketat antara _video encoder_ dan _congestion controller_ Anda.

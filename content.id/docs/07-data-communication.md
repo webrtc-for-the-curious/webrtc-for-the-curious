@@ -6,33 +6,33 @@ weight: 8
 
 # Data Communication
 
-## What do I get from WebRTC's data communication?
+## Apa yang saya dapatkan dari komunikasi data WebRTC?
 
-WebRTC provides data channels for data communication. Between two peers you can open 65,534 data channels.
-A data channel is datagram based, and each has its own durability settings. By default, each data channel has guaranteed ordered delivery.
+WebRTC menyediakan _data channel_ untuk komunikasi data. Antara dua _peer_ Anda dapat membuka 65.534 _data channel_.
+_Data channel_ berbasis datagram, dan masing-masing memiliki pengaturan daya tahan sendiri. Secara default, setiap _data channel_ memiliki pengiriman berurutan yang dijamin.
 
-If you are approaching WebRTC from a media background data channels might seem wasteful. Why do I need this whole subsystem when I could just use HTTP or WebSockets?
+Jika Anda mendekati WebRTC dari latar belakang media, _data channel_ mungkin tampak boros. Mengapa saya memerlukan seluruh subsistem ini ketika saya bisa menggunakan HTTP atau WebSocket?
 
-The real power with data channels is that you can configure them to behave like UDP with unordered/lossy delivery.
-This is necessary for low latency and high performance situations. You can measure the backpressure and ensure you are only sending as much as your network supports.
+Kekuatan sebenarnya dengan _data channel_ adalah Anda dapat mengonfigurasinya untuk berperilaku seperti UDP dengan pengiriman tidak berurutan/_lossy_.
+Ini diperlukan untuk situasi latensi rendah dan kinerja tinggi. Anda dapat mengukur _backpressure_ dan memastikan Anda hanya mengirim sebanyak yang didukung jaringan Anda.
 
-## How does it work?
-WebRTC uses the Stream Control Transmission Protocol (SCTP), defined in [RFC 4960](https://tools.ietf.org/html/rfc4960). SCTP is a
-transport layer protocol that was intended as an alternative to TCP or UDP. For WebRTC we use it as an application layer protocol which runs over our DTLS connection.
+## Bagaimana cara kerjanya?
+WebRTC menggunakan _Stream Control Transmission Protocol_ (SCTP), didefinisikan dalam [RFC 4960](https://tools.ietf.org/html/rfc4960). SCTP adalah
+protokol lapisan transpor yang dimaksudkan sebagai alternatif untuk TCP atau UDP. Untuk WebRTC kami menggunakannya sebagai protokol lapisan aplikasi yang berjalan di atas koneksi DTLS kami.
 
-SCTP gives you streams and each stream can be configured independently. WebRTC data channels are just thin abstractions around them. The settings
-around durability and ordering are just passed right into the SCTP Agent.
+SCTP memberi Anda _stream_ dan setiap _stream_ dapat dikonfigurasi secara independen. _Data channel_ WebRTC hanyalah abstraksi tipis di sekitarnya. Pengaturan
+sekitar daya tahan dan pengurutan hanya diteruskan langsung ke _Agent_ SCTP.
 
-Data channels have some features that SCTP can't express, like channel labels. To solve that WebRTC uses the Data Channel Establishment Protocol (DCEP)
-which is defined in [RFC 8832](https://tools.ietf.org/html/rfc8832). DCEP defines a message to communicate the channel label and protocol.
+_Data channel_ memiliki beberapa fitur yang tidak dapat diekspresikan oleh SCTP, seperti _label channel_. Untuk mengatasi itu WebRTC menggunakan _Data Channel Establishment Protocol_ (DCEP)
+yang didefinisikan dalam [RFC 8832](https://tools.ietf.org/html/rfc8832). DCEP mendefinisikan pesan untuk mengomunikasikan _label channel_ dan protokol.
 
 ## DCEP
-DCEP only has two messages `DATA_CHANNEL_OPEN` and `DATA_CHANNEL_ACK`. For each data channel that is opened the remote must respond with an ack.
+DCEP hanya memiliki dua pesan `DATA_CHANNEL_OPEN` dan `DATA_CHANNEL_ACK`. Untuk setiap _data channel_ yang dibuka, _remote_ harus merespons dengan _ack_.
 
 ### DATA_CHANNEL_OPEN
-This message is sent by the WebRTC Agent that wishes to open a channel.
+Pesan ini dikirim oleh _Agent_ WebRTC yang ingin membuka _channel_.
 
-#### Packet Format
+#### Format Paket
 ```
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -54,37 +54,37 @@ This message is sent by the WebRTC Agent that wishes to open a channel.
 ```
 
 #### Message Type
-Message Type is a static value of `0x03`.
+_Message Type_ adalah nilai statis `0x03`.
 
 #### Channel Type
-Channel Type controls durability/ordering attributes of the channel. It may have the following values:
+_Channel Type_ mengontrol atribut daya tahan/pengurutan dari _channel_. Ini mungkin memiliki nilai berikut:
 
-* `DATA_CHANNEL_RELIABLE` (`0x00`) - No messages are lost and will arrive in order
-* `DATA_CHANNEL_RELIABLE_UNORDERED` (`0x80`) - No messages are lost, but they may arrive out of order.
-* `DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT` (`0x01`) - Messages may be lost after trying the requested amount of times, but they will arrive in order.
-* `DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT_UNORDERED` (`0x81`) - Messages may be lost after trying the requested amount of times and may arrive out of order.
-* `DATA_CHANNEL_PARTIAL_RELIABLE_TIMED` (`0x02`) - Messages may be lost if they don't arrive in the requested amount of time, but they will arrive in order.
-* `DATA_CHANNEL_PARTIAL_RELIABLE_TIMED_UNORDERED` (`0x82`) - Messages may be lost if they don't arrive in the requested amount of time and may arrive out of order.
+* `DATA_CHANNEL_RELIABLE` (`0x00`) - Tidak ada pesan yang hilang dan akan tiba secara berurutan
+* `DATA_CHANNEL_RELIABLE_UNORDERED` (`0x80`) - Tidak ada pesan yang hilang, tetapi mereka mungkin tiba tidak berurutan.
+* `DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT` (`0x01`) - Pesan mungkin hilang setelah mencoba jumlah yang diminta, tetapi mereka akan tiba secara berurutan.
+* `DATA_CHANNEL_PARTIAL_RELIABLE_REXMIT_UNORDERED` (`0x81`) - Pesan mungkin hilang setelah mencoba jumlah yang diminta dan mungkin tiba tidak berurutan.
+* `DATA_CHANNEL_PARTIAL_RELIABLE_TIMED` (`0x02`) - Pesan mungkin hilang jika mereka tidak tiba dalam jumlah waktu yang diminta, tetapi mereka akan tiba secara berurutan.
+* `DATA_CHANNEL_PARTIAL_RELIABLE_TIMED_UNORDERED` (`0x82`) - Pesan mungkin hilang jika mereka tidak tiba dalam jumlah waktu yang diminta dan mungkin tiba tidak berurutan.
 
 #### Priority
-The priority of the data channel. Data channels having a higher priority will be scheduled first. Large lower-priority user messages will not delay the sending of higher-priority user messages.
+Prioritas dari _data channel_. _Data channel_ yang memiliki prioritas lebih tinggi akan dijadwalkan terlebih dahulu. Pesan pengguna prioritas rendah yang besar tidak akan menunda pengiriman pesan pengguna prioritas lebih tinggi.
 
 #### Reliability Parameter
-If the data channel type is `DATA_CHANNEL_PARTIAL_RELIABLE`, the suffixes configures the behavior:
+Jika tipe _data channel_ adalah `DATA_CHANNEL_PARTIAL_RELIABLE`, akhiran mengonfigurasi perilaku:
 
-* `REXMIT` - Defines how many times the sender will re-send the message before giving up.
-* `TIMED` - Defines for how long time (in ms) the sender will re-send the message before giving up.
+* `REXMIT` - Mendefinisikan berapa kali pengirim akan mengirim ulang pesan sebelum menyerah.
+* `TIMED` - Mendefinisikan berapa lama waktu (dalam ms) pengirim akan mengirim ulang pesan sebelum menyerah.
 
 #### Label
-A UTF-8-encoded string containing the name of the data channel. This string may be empty.
+_String_ yang dikode UTF-8 yang berisi nama _data channel_. _String_ ini mungkin kosong.
 
 #### Protocol
-If this is an empty string, the protocol is unspecified. If it is a non-empty string, it should specify a protocol registered in the "WebSocket Subprotocol Name Registry", defined in [RFC 6455](https://tools.ietf.org/html/rfc6455#page-61).
+Jika ini adalah _string_ kosong, protokol tidak ditentukan. Jika itu adalah _string_ yang tidak kosong, itu harus menentukan protokol yang terdaftar dalam "_WebSocket Subprotocol Name Registry_", didefinisikan dalam [RFC 6455](https://tools.ietf.org/html/rfc6455#page-61).
 
 ### DATA_CHANNEL_ACK
-This message is sent by the WebRTC Agent to acknowledge that this data channel has been opened.
+Pesan ini dikirim oleh _Agent_ WebRTC untuk mengakui bahwa _data channel_ ini telah dibuka.
 
-#### Packet Format
+#### Format Paket
 ```
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -94,68 +94,68 @@ This message is sent by the WebRTC Agent to acknowledge that this data channel h
 ```
 
 ## Stream Control Transmission Protocol
-SCTP is the real power behind WebRTC data channels. It provides all these features of the data channel:
+SCTP adalah kekuatan sebenarnya di balik _data channel_ WebRTC. Ini menyediakan semua fitur _data channel_ ini:
 
 * Multiplexing
-* Reliable delivery using a TCP-like retransmission mechanism
-* Partial-reliability options
-* Congestion Avoidance
-* Flow Control
+* Pengiriman andal menggunakan mekanisme retransmisi seperti TCP
+* Opsi keandalan parsial
+* _Congestion Avoidance_
+* _Flow Control_
 
-To understand SCTP we will explore it in three parts. The goal is that you will know enough to debug and learn the deep details of SCTP on your own after this chapter.
+Untuk memahami SCTP kita akan menjelajahinya dalam tiga bagian. Tujuannya adalah Anda akan tahu cukup untuk men-_debug_ dan mempelajari detail mendalam SCTP sendiri setelah bab ini.
 
-## Concepts
-SCTP is a feature rich protocol. This section is only going to cover the parts of SCTP that are used by WebRTC.
-Features in SCTP that are not used by WebRTC include multi-homing and path selection.
+## Konsep
+SCTP adalah protokol yang kaya fitur. Bagian ini hanya akan membahas bagian-bagian SCTP yang digunakan oleh WebRTC.
+Fitur dalam SCTP yang tidak digunakan oleh WebRTC termasuk _multi-homing_ dan _path selection_.
 
-With over twenty years of development SCTP can be hard to fully grasp.
+Dengan lebih dari dua puluh tahun pengembangan SCTP bisa sulit untuk sepenuhnya dipahami.
 
 ### Association
-Association is the term used for an SCTP Session. It is the state that is shared
-between two SCTP Agents while they communicate.
+_Association_ adalah istilah yang digunakan untuk Sesi SCTP. Ini adalah _state_ yang dibagikan
+antara dua _Agent_ SCTP saat mereka berkomunikasi.
 
 ### Streams
-A stream is one bi-directional sequence of user data. When you create a data channel you are actually just creating a SCTP stream. Each SCTP Association contains a list of streams. Each stream can be configured with different reliability types.
+_Stream_ adalah satu urutan data pengguna dua arah. Ketika Anda membuat _data channel_, Anda sebenarnya hanya membuat _stream_ SCTP. Setiap _Association_ SCTP berisi daftar _stream_. Setiap _stream_ dapat dikonfigurasi dengan jenis keandalan yang berbeda.
 
-WebRTC only allows you to configure on stream creation, but SCTP actually allows changing the configuration at anytime.
+WebRTC hanya memungkinkan Anda mengonfigurasi saat pembuatan _stream_, tetapi SCTP sebenarnya memungkinkan mengubah konfigurasi kapan saja.
 
-### Datagram Based
-SCTP frames data as datagrams and not as a byte stream. Sending and receiving data feels like using UDP instead of TCP.
-You don't need to add any extra code to transfer multiple files over one stream.
+### Berbasis Datagram
+SCTP membingkai data sebagai datagram dan bukan sebagai _byte stream_. Mengirim dan menerima data terasa seperti menggunakan UDP daripada TCP.
+Anda tidak perlu menambahkan kode tambahan untuk mentransfer beberapa file melalui satu _stream_.
 
-SCTP messages don't have size limits like UDP. A single SCTP message can be multiple gigabytes in size.
+Pesan SCTP tidak memiliki batas ukuran seperti UDP. Satu pesan SCTP bisa berukuran beberapa gigabyte.
 
 ### Chunks
-The SCTP protocol is made up of chunks. There are many different types of chunks. These chunks are used for all communication.
-User data, connection initialization, congestion control, and more are all done via chunks.
+Protokol SCTP terdiri dari _chunk_. Ada banyak jenis _chunk_ yang berbeda. _Chunk_ ini digunakan untuk semua komunikasi.
+Data pengguna, inisialisasi koneksi, _congestion control_, dan lainnya semuanya dilakukan melalui _chunk_.
 
-Each SCTP packet contains a list of chunks. So in one UDP packet you can have multiple chunks carrying messages from different streams.
+Setiap paket SCTP berisi daftar _chunk_. Jadi dalam satu paket UDP Anda dapat memiliki beberapa _chunk_ yang membawa pesan dari _stream_ yang berbeda.
 
 ### Transmission Sequence Number
-The Transmission Sequence Number (TSN) is a global unique identifier for DATA chunks. A DATA chunk is what carries all the messages a user wishes to send. The TSN is important because it helps a receiver determine if packets are lost or out of order.
+_Transmission Sequence Number_ (TSN) adalah pengidentifikasi unik global untuk _chunk_ DATA. _Chunk_ DATA adalah yang membawa semua pesan yang ingin dikirim pengguna. TSN penting karena membantu penerima menentukan apakah paket hilang atau tidak berurutan.
 
-If the receiver notices a missing TSN, it doesn't give the data to the user until it is fulfilled.
+Jika penerima menyadari TSN yang hilang, ia tidak memberikan data kepada pengguna sampai dipenuhi.
 
 ### Stream Identifier
-Each stream has a unique identifier. When you create a data channel with an explicit ID, it is actually just passed right into SCTP as the stream identifier. If you don't pass an ID the stream identifier is chosen for you.
+Setiap _stream_ memiliki pengidentifikasi unik. Ketika Anda membuat _data channel_ dengan ID eksplisit, itu sebenarnya hanya diteruskan langsung ke SCTP sebagai _stream identifier_. Jika Anda tidak memberikan ID, _stream identifier_ dipilih untuk Anda.
 
 ### Payload Protocol Identifier
-Each DATA chunk also has a Payload Protocol Identifier (PPID). This is used to uniquely identify what type of data is being exchanged.
-SCTP has many PPIDs, but WebRTC is only using the following five:
+Setiap _chunk_ DATA juga memiliki _Payload Protocol Identifier_ (PPID). Ini digunakan untuk mengidentifikasi secara unik jenis data apa yang sedang dipertukarkan.
+SCTP memiliki banyak PPID, tetapi WebRTC hanya menggunakan lima berikut:
 
-* `WebRTC DCEP` (`50`) - DCEP messages.
-* `WebRTC String` (`51`) - DataChannel string messages.
-* `WebRTC Binary` (`53`) - DataChannel binary messages.
-* `WebRTC String Empty` (`56`) - DataChannel string messages with 0 length.
-* `WebRTC Binary Empty` (`57`) - DataChannel binary messages with 0 length.
+* `WebRTC DCEP` (`50`) - Pesan DCEP.
+* `WebRTC String` (`51`) - Pesan _string_ DataChannel.
+* `WebRTC Binary` (`53`) - Pesan biner DataChannel.
+* `WebRTC String Empty` (`56`) - Pesan _string_ DataChannel dengan panjang 0.
+* `WebRTC Binary Empty` (`57`) - Pesan biner DataChannel dengan panjang 0.
 
-## Protocol
-The following are some of the chunks used by the SCTP protocol. This is
-not an exhaustive demonstration. This provides enough structures for the
-state machine to make sense.
+## Protokol
+Berikut adalah beberapa _chunk_ yang digunakan oleh protokol SCTP. Ini
+bukan demonstrasi lengkap. Ini memberikan cukup struktur agar _state
+machine_ masuk akal.
 
-Each Chunk starts with a `type` field. Before a list of chunks, you will
-also have a header.
+Setiap _Chunk_ dimulai dengan bidang `type`. Sebelum daftar _chunk_, Anda juga
+akan memiliki _header_.
 
 ### DATA Chunk
 ```
@@ -175,35 +175,35 @@ also have a header.
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
-The DATA chunk is how all user data is exchanged. When you send
-anything over the data channel, this is how it is exchanged.
+_Chunk_ DATA adalah bagaimana semua data pengguna dipertukarkan. Ketika Anda mengirim
+apa pun melalui _data channel_, ini adalah cara pertukaran.
 
-`U` bit is set if this is an unordered packet. We can ignore the
-Stream Sequence Number.
+_Bit_ `U` disetel jika ini adalah paket tidak berurutan. Kita dapat mengabaikan
+_Stream Sequence Number_.
 
-`B` and `E` are the beginning and end bits. If you want to send a
-message that is too large for one DATA chunk it needs to be fragmented into multiple DATA chunks sent in separate packets.
-With the `B` and `E` bit and Sequence Numbers SCTP is able to express
-this.
+`B` dan `E` adalah _bit_ awal dan akhir. Jika Anda ingin mengirim
+pesan yang terlalu besar untuk satu _chunk_ DATA, ia perlu difragmentasi menjadi beberapa _chunk_ DATA yang dikirim dalam paket terpisah.
+Dengan _bit_ `B` dan `E` dan _Sequence Number_ SCTP dapat mengekspresikan
+ini.
 
-* `B=1`, `E=0` - First piece of a fragmented user message.
-* `B=0`, `E=0` - Middle piece of a fragmented user message.
-* `B=0`, `E=1` - Last piece of a fragmented user message.
-* `B=1`, `E=1` - Unfragmented message.
+* `B=1`, `E=0` - Bagian pertama dari pesan pengguna yang terfragmentasi.
+* `B=0`, `E=0` - Bagian tengah dari pesan pengguna yang terfragmentasi.
+* `B=0`, `E=1` - Bagian terakhir dari pesan pengguna yang terfragmentasi.
+* `B=1`, `E=1` - Pesan yang tidak terfragmentasi.
 
-`TSN` is the Transmission Sequence Number. It is the global unique
-identifier for this DATA chunk. After 4,294,967,295 chunks this will wrap around to 0.
-The TSN is incremented for every chunk in a fragmented user message so that the receiver knows how to order the received chunks to reconstruct the original message.
+`TSN` adalah _Transmission Sequence Number_. Ini adalah pengidentifikasi unik global
+untuk _chunk_ DATA ini. Setelah 4.294.967.295 _chunk_ ini akan kembali ke 0.
+TSN ditambah untuk setiap _chunk_ dalam pesan pengguna yang terfragmentasi sehingga penerima tahu cara mengurutkan _chunk_ yang diterima untuk merekonstruksi pesan asli.
 
-`Stream Identifier` is the unique identifier for the stream this data belongs to.
+`Stream Identifier` adalah pengidentifikasi unik untuk _stream_ tempat data ini berada.
 
-`Stream Sequence Number` is a 16-bit number incremented every user message and included in the DATA message chunk header. After 65535 messages this will wrap around to 0. This number is used to decide the message order of delivery to the receiver if `U` is set to 0. Similar to the TSN, except the Stream Sequence Number is only incremented for each message as a whole and not each individual DATA chunk.
+`Stream Sequence Number` adalah angka 16-bit yang ditambah setiap pesan pengguna dan disertakan dalam _header chunk_ pesan DATA. Setelah 65535 pesan ini akan kembali ke 0. Angka ini digunakan untuk memutuskan urutan pengiriman pesan ke penerima jika `U` disetel ke 0. Mirip dengan TSN, kecuali _Stream Sequence Number_ hanya ditambah untuk setiap pesan secara keseluruhan dan bukan setiap _chunk_ DATA individual.
 
-`Payload Protocol Identifier` is the type of data that is flowing through
-this stream. For WebRTC, it is going to be DCEP, String or Binary.
+`Payload Protocol Identifier` adalah jenis data yang mengalir melalui
+_stream_ ini. Untuk WebRTC, itu akan menjadi DCEP, String atau Binary.
 
-`User Data` is what you are sending. All data you send via a WebRTC data channel
-is transmitted via a DATA chunk.
+`User Data` adalah apa yang Anda kirim. Semua data yang Anda kirim melalui _data channel_ WebRTC
+ditransmisikan melalui _chunk_ DATA.
 
 ### INIT Chunk
 ```
@@ -226,21 +226,20 @@ is transmitted via a DATA chunk.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-The INIT chunk starts the process of creating an association.
+_Chunk_ INIT memulai proses pembuatan _association_.
 
-`Initiate Tag` is used for cookie generation. Cookies are used for Man-In-The-Middle
-and Denial of Service protection. They are described in greater detail in the state
-machine section.
+`Initiate Tag` digunakan untuk pembuatan _cookie_. _Cookie_ digunakan untuk perlindungan _Man-In-The-Middle_
+dan _Denial of Service_. Mereka dijelaskan lebih detail di bagian _state
+machine_.
 
-`Advertised Receiver Window Credit` is used for SCTP's Congestion Control. This
-communicates how large of a buffer the receiver has allocated for this association.
+`Advertised Receiver Window Credit` digunakan untuk _Congestion Control_ SCTP. Ini
+mengomunikasikan seberapa besar _buffer_ yang dialokasikan penerima untuk _association_ ini.
 
-`Number of Outbound/Inbound Streams` notifies the remote of how many streams this
-agent supports.
+`Number of Outbound/Inbound Streams` memberi tahu _remote_ berapa banyak _stream_ yang didukung _agent_ ini.
 
-`Initial TSN` is a random `uint32` to start the local TSN at.
+`Initial TSN` adalah `uint32` acak untuk memulai TSN lokal.
 
-`Optional Parameters` allows SCTP to introduce new features to the protocol.
+`Optional Parameters` memungkinkan SCTP memperkenalkan fitur baru ke protokol.
 
 
 ### SACK Chunk
@@ -275,22 +274,22 @@ agent supports.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-The SACK (Selective Acknowledgment) Chunk is how a receiver notifies
-a sender it has gotten a packet. Until a sender gets a SACK for a TSN
-it will re-send the DATA chunk in question. A SACK does more than just
-update the TSN though.
+_Chunk_ SACK (_Selective Acknowledgment_) adalah bagaimana penerima memberi tahu
+pengirim bahwa ia telah mendapatkan paket. Sampai pengirim mendapat SACK untuk TSN
+ia akan mengirim ulang _chunk_ DATA yang dimaksud. SACK melakukan lebih dari sekedar
+memperbarui TSN.
 
-`Cumulative TSN ACK` the highest TSN that has been received.
+`Cumulative TSN ACK` TSN tertinggi yang telah diterima.
 
-`Advertised Receiver Window Credit` receiver buffer size. The receiver
-may change this during the session if more memory becomes available.
+`Advertised Receiver Window Credit` ukuran _buffer_ penerima. Penerima
+mungkin mengubah ini selama sesi jika lebih banyak memori menjadi tersedia.
 
-`Ack Blocks` TSNs that have been received after the `Cumulative TSN ACK`.
-This is used if there is a gap in packets delivered. Let's say DATA chunks with TSNs
-`100`, `102`, `103` and `104` are delivered. The `Cumulative TSN ACK` would be `100`, but
-`Ack Blocks` could be used to tell the sender it doesn't need to resend `102`, `103` or `104`.
+`Ack Blocks` TSN yang telah diterima setelah `Cumulative TSN ACK`.
+Ini digunakan jika ada kesenjangan dalam paket yang dikirim. Katakanlah _chunk_ DATA dengan TSN
+`100`, `102`, `103` dan `104` dikirim. `Cumulative TSN ACK` akan menjadi `100`, tetapi
+`Ack Blocks` dapat digunakan untuk memberi tahu pengirim bahwa ia tidak perlu mengirim ulang `102`, `103` atau `104`.
 
-`Duplicate TSN` informs the sender that it has received the following DATA chunks more than once.
+`Duplicate TSN` menginformasikan pengirim bahwa ia telah menerima _chunk_ DATA berikut lebih dari sekali.
 
 ### HEARTBEAT Chunk
 ```
@@ -305,9 +304,9 @@ This is used if there is a gap in packets delivered. Let's say DATA chunks with 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-The HEARTBEAT Chunk is used to assert the remote is still responding.
-Useful if you aren't sending any DATA chunks and need to keep a NAT
-mapping open.
+_Chunk_ HEARTBEAT digunakan untuk menegaskan _remote_ masih merespons.
+Berguna jika Anda tidak mengirim _chunk_ DATA apa pun dan perlu menjaga _mapping_ NAT
+tetap terbuka.
 
 ### ABORT Chunk
 ```
@@ -322,9 +321,9 @@ mapping open.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-An ABORT chunk abruptly shuts down the association. Used when
-one side enters an error state. Gracefully ending the connection uses
-the SHUTDOWN chunk.
+_Chunk_ ABORT menutup _association_ secara tiba-tiba. Digunakan ketika
+satu sisi memasuki _state_ kesalahan. Mengakhiri koneksi dengan anggun menggunakan
+_chunk_ SHUTDOWN.
 
 ### SHUTDOWN Chunk
 ```
@@ -337,14 +336,14 @@ the SHUTDOWN chunk.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-The SHUTDOWN Chunk starts a graceful shutdown of the SCTP association.
-Each agent informs the remote of the last TSN it sent. This ensures
-that no packets are lost. WebRTC doesn't do a graceful shutdown of
-the SCTP association. You need to tear down each data channel yourself
-to handle it gracefully.
+_Chunk_ SHUTDOWN memulai penutupan anggun dari _association_ SCTP.
+Setiap _agent_ menginformasikan _remote_ tentang TSN terakhir yang dikirimnya. Ini memastikan
+bahwa tidak ada paket yang hilang. WebRTC tidak melakukan penutupan anggun dari
+_association_ SCTP. Anda perlu merobohkan setiap _data channel_ sendiri
+untuk menanganinya dengan anggun.
 
-`Cumulative TSN ACK` is the last TSN that was sent. Each side knows
-not to terminate until they have received the DATA chunk with this TSN.
+`Cumulative TSN ACK` adalah TSN terakhir yang dikirim. Setiap sisi tahu
+untuk tidak mengakhiri sampai mereka menerima _chunk_ DATA dengan TSN ini.
 
 ### ERROR Chunk
 ```
@@ -359,8 +358,8 @@ not to terminate until they have received the DATA chunk with this TSN.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-An ERROR chunk is used to notify the remote SCTP Agent that a non-fatal
-error has occurred.
+_Chunk_ ERROR digunakan untuk memberi tahu _Agent_ SCTP _remote_ bahwa kesalahan non-fatal
+telah terjadi.
 
 ### FORWARD TSN Chunk
 ```
@@ -380,44 +379,43 @@ error has occurred.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-The `FORWARD TSN` chunk moves the global TSN forward. SCTP does this, 
-so you can skip some packets you don't care about anymore. Let's say
-you send `10 11 12 13 14 15` and these packets are only valid if they
-all arrive. This data is also real-time sensitive, so if it arrives
-late it isn't useful.
+_Chunk_ `FORWARD TSN` memindahkan TSN global ke depan. SCTP melakukan ini, 
+sehingga Anda dapat melewati beberapa paket yang tidak Anda pedulikan lagi. Katakanlah
+Anda mengirim `10 11 12 13 14 15` dan paket-paket ini hanya valid jika mereka
+semua tiba. Data ini juga sensitif terhadap _real-time_, jadi jika tiba
+terlambat itu tidak berguna.
 
-If you lose `12` and `13` there is no reason to send `14` and `15`!
-SCTP uses the `FORWARD TSN` chunk to achieve that. It tells the receiver
-that `14` and `15` aren't going to be delivered anymore.
+Jika Anda kehilangan `12` dan `13` tidak ada alasan untuk mengirim `14` dan `15`!
+SCTP menggunakan _chunk_ `FORWARD TSN` untuk mencapai itu. Ini memberi tahu penerima
+bahwa `14` dan `15` tidak akan dikirim lagi.
 
-`New Cumulative TSN` this is the new TSN of the connection. Any packets
-before this TSN will not be retained.
+`New Cumulative TSN` ini adalah TSN baru dari koneksi. Setiap paket
+sebelum TSN ini tidak akan dipertahankan.
 
-`Stream` and `Stream Sequence` are used to jump the `Stream Sequence Number`
-number ahead. Refer back to the DATA Chunk for the significance of this field.
+`Stream` dan `Stream Sequence` digunakan untuk melompat `Stream Sequence Number`
+nomor ke depan. Rujuk kembali ke DATA Chunk untuk signifikansi bidang ini.
 
 ## State Machine
-These are some interesting parts of the SCTP state machine. WebRTC doesn't use all
-the features of the SCTP state machine, so we have excluded those parts. We also have simplified some components to make them understandable on their own.
+Ini adalah beberapa bagian menarik dari _state machine_ SCTP. WebRTC tidak menggunakan semua
+fitur _state machine_ SCTP, jadi kami telah mengecualikan bagian-bagian itu. Kami juga telah menyederhanakan beberapa komponen untuk membuatnya dapat dipahami sendiri.
 
 ### Connection Establishment Flow
-The `INIT` and `INIT ACK` chunks are used to exchange the capabilities and configurations
-of each peer. SCTP uses a cookie during the handshake to validate the peer it is communicating with.
-This is to ensure that the handshake is not intercepted and to prevent DoS attacks.
+_Chunk_ `INIT` dan `INIT ACK` digunakan untuk bertukar kemampuan dan konfigurasi
+dari setiap _peer_. SCTP menggunakan _cookie_ selama _handshake_ untuk memvalidasi _peer_ yang berkomunikasi dengannya.
+Ini untuk memastikan bahwa _handshake_ tidak dicegat dan untuk mencegah serangan DoS.
 
-The `INIT ACK` chunk contains the cookie. The cookie is then returned to its creator
-using the `COOKIE ECHO`. If cookie verification is successful the `COOKIE ACK` is
-sent and DATA chunks are ready to be exchanged.
+_Chunk_ `INIT ACK` berisi _cookie_. _Cookie_ kemudian dikembalikan ke pembuatnya
+menggunakan `COOKIE ECHO`. Jika verifikasi _cookie_ berhasil, `COOKIE ACK` dikirim dan _chunk_ DATA siap untuk dipertukarkan.
 
 ![Connection establishment](../images/07-connection-establishment.png "Connection establishment")
 
 ### Connection Teardown Flow
-SCTP uses the `SHUTDOWN` chunk. When an agent receives a `SHUTDOWN` chunk it will wait until it
-receives the requested `Cumulative TSN ACK`. This allows a user to ensure that all data
-is delivered even if the connection is lossy.
+SCTP menggunakan _chunk_ `SHUTDOWN`. Ketika _agent_ menerima _chunk_ `SHUTDOWN` ia akan menunggu sampai ia
+menerima `Cumulative TSN ACK` yang diminta. Ini memungkinkan pengguna untuk memastikan bahwa semua data
+dikirim bahkan jika koneksi _lossy_.
 
 ### Keep-Alive Mechanism
-SCTP uses the `HEARTBEAT REQUEST` and `HEARTBEAT ACK` Chunks to keep the connection alive. These are sent
-on a configurable interval. SCTP also performs an exponential backoff if the packet hasn't arrived.
+SCTP menggunakan _Chunk_ `HEARTBEAT REQUEST` dan `HEARTBEAT ACK` untuk menjaga koneksi tetap hidup. Ini dikirim
+pada interval yang dapat dikonfigurasi. SCTP juga melakukan _exponential backoff_ jika paket belum tiba.
 
-The `HEARTBEAT` chunk also contains a time value. This allows two associations to compute trip time between two agents.
+_Chunk_ `HEARTBEAT` juga berisi nilai waktu. Ini memungkinkan dua _association_ menghitung waktu perjalanan antara dua _agent_.

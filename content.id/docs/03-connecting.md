@@ -6,112 +6,112 @@ weight: 4
 
 # Connecting
 
-## Why does WebRTC need a dedicated subsystem for connecting?
+## Mengapa WebRTC membutuhkan subsistem khusus untuk tersambung?
 
-Most applications deployed today establish client/server connections. A client/server connection requires the server to have a stable well-known transport address. A client contacts a server, and the server responds.
+Sebagian besar aplikasi yang digunakan saat ini membangun koneksi _client/server_. Koneksi _client/server_ mengharuskan _server_ memiliki alamat transpor yang stabil dan diketahui. _Client_ menghubungi _server_, dan _server_ merespons.
 
-WebRTC doesn't use a client/server model, it establishes peer-to-peer (P2P) connections. In a P2P connection the task of creating a connection is equally distributed to both peers. This is because a transport address (IP and port) in WebRTC can not be assumed, and may even change during the session. WebRTC will gather all the information it can and will go to great lengths to achieve bi-directional communication between two WebRTC Agents.
+WebRTC tidak menggunakan model _client/server_, melainkan membangun koneksi _peer-to-peer_ (P2P). Dalam koneksi P2P, tugas membuat koneksi didistribusikan secara merata ke kedua _peer_. Ini karena alamat transpor (IP dan _port_) di WebRTC tidak dapat diasumsikan, dan bahkan mungkin berubah selama sesi. WebRTC akan mengumpulkan semua informasi yang bisa didapat dan akan berusaha keras untuk mencapai komunikasi dua arah antara dua klien WebRTC.
 
-Establishing peer-to-peer connectivity can be difficult though. These agents could be in different networks with no direct connectivity. In situations where direct connectivity does exist you can still have other issues. In some cases, your clients don't speak the same network protocols (UDP <-> TCP) or maybe use different IP Versions (IPv4 <-> IPv6).
+Membangun konektivitas _peer-to-peer_ bisa sulit. Klien-klien ini bisa berada di jaringan yang berbeda tanpa konektivitas langsung. Dalam situasi di mana konektivitas langsung memang ada, Anda masih bisa menghadapi masalah lain. Dalam beberapa kasus, klien Anda tidak menggunakan protokol jaringan yang sama (UDP <-> TCP) atau mungkin menggunakan Versi IP yang berbeda (IPv4 <-> IPv6).
 
-Despite these difficulties in setting up a P2P connection, you get advantages over traditional Client/Server technology because of the following attributes that WebRTC offers.
+Terlepas dari kesulitan dalam mengatur koneksi P2P, Anda mendapatkan keuntungan dibanding teknologi Client/Server tradisional karena atribut berikut yang ditawarkan WebRTC.
 
-### Reduced Bandwidth Costs
+### Pengurangan Biaya _Bandwidth_
 
-Since media communication happens directly between peers you don't have to pay for, or host a separate server to relay media.
+Karena komunikasi media terjadi langsung antar _peer_, Anda tidak perlu membayar atau meng-_host_ _server_ terpisah untuk meneruskan media.
 
-### Lower Latency
+### Latensi Lebih Rendah
 
-Communication is faster when it is direct! When a user has to run everything through your server, it makes transmissions slower.
+Komunikasi lebih cepat ketika langsung! Ketika pengguna harus menjalankan semua melalui _server_ Anda, itu membuat transmisi lebih lambat.
 
-### Secure E2E Communication
+### Komunikasi E2E yang Aman
 
-Direct Communication is more secure. Since users aren't routing data through your server, they don't even need to trust you won't decrypt it.
+Komunikasi langsung lebih aman. Karena pengguna tidak merutekan data melalui _server_ Anda, mereka bahkan tidak perlu mempercayai Anda untuk tidak mendekripsinya.
 
-## How does it work?
+## Bagaimana cara kerjanya?
 
-The process described above is called Interactive Connectivity Establishment ([ICE](https://tools.ietf.org/html/rfc8445)). Another protocol that pre-dates WebRTC.
+Proses yang dijelaskan di atas disebut Interactive Connectivity Establishment ([ICE](https://tools.ietf.org/html/rfc8445)). Protokol lain yang sudah ada sebelum WebRTC.
 
-ICE is a protocol that tries to find the best way to communicate between two ICE Agents. Each ICE Agent publishes the ways it is reachable, these are known as candidates. A candidate is essentially a transport address of the agent that it believes the other peer can reach. ICE then determines the best pairing of candidates.
+ICE adalah protokol yang mencoba menemukan cara terbaik untuk berkomunikasi antara dua ICE Agent. Setiap ICE Agent mempublikasikan cara-cara ia dapat dijangkau, ini dikenal sebagai _candidate_. _Candidate_ pada dasarnya adalah alamat transpor dari _agent_ yang ia yakini dapat dijangkau oleh _peer_ lainnya. ICE kemudian menentukan pasangan _candidate_ terbaik.
 
-The actual ICE process is described in greater detail later in this chapter. To understand why ICE exists, it is useful to understand what network behaviors we are overcoming.
+Proses ICE yang sebenarnya dijelaskan lebih detail nanti di bab ini. Untuk memahami mengapa ICE ada, berguna untuk memahami perilaku jaringan apa yang kita atasi.
 
-## Networking real-world constraints
-ICE is all about overcoming the constraints of real-world networks. Before we explore the solution, let's talk about the actual problems.
+## Kendala jaringan di dunia nyata
+ICE adalah tentang mengatasi kendala jaringan di dunia nyata. Sebelum kita mengeksplorasi solusinya, mari kita bicarakan masalah sebenarnya.
 
-### Not in the same network
-Most of the time the other WebRTC Agent will not even be in the same network. A typical call is usually between two WebRTC Agents in different networks with no direct connectivity.
+### Tidak dalam jaringan yang sama
+Sebagian besar waktu, klien WebRTC lainnya bahkan tidak akan berada dalam jaringan yang sama. Panggilan khas biasanya terjadi antara dua klien WebRTC di jaringan yang berbeda tanpa konektivitas langsung.
 
-Below is a graph of two distinct networks, connected over public internet. In each network you have two hosts.
+Berikut adalah grafik dari dua jaringan yang berbeda, terhubung melalui internet publik. Di setiap jaringan Anda memiliki dua _host_.
 
 ![Two networks](../images/03-two-networks.png "Two networks")
 
-For the hosts in the same network it is very easy to connect. Communication between `192.168.0.1 -> 192.168.0.2` is easy to do! These two hosts can connect to each other without any outside help.
+Untuk _host_ dalam jaringan yang sama, sangat mudah untuk terhubung. Komunikasi antara `192.168.0.1 -> 192.168.0.2` mudah dilakukan! Kedua _host_ ini dapat terhubung satu sama lain tanpa bantuan luar.
 
-However, a host using `Router B` has no way to directly access anything behind `Router A`. How would you tell the difference between `192.168.0.1` behind `Router A` and the same IP behind `Router B`? They are private IPs! A host using `Router B` could send traffic directly to `Router A`, but the request would end there. How does `Router A` know which host it should forward the message to?
+Namun, _host_ yang menggunakan `Router B` tidak memiliki cara untuk langsung mengakses apapun di belakang `Router A`. Bagaimana Anda membedakan antara `192.168.0.1` di belakang `Router A` dan IP yang sama di belakang `Router B`? Mereka adalah IP pribadi! _Host_ yang menggunakan `Router B` dapat mengirim traffic langsung ke `Router A`, tetapi permintaan akan berakhir di situ. Bagaimana `Router A` tahu _host_ mana yang harus ia teruskan pesannya?
 
-### Protocol Restrictions
-Some networks don't allow UDP traffic at all, or maybe they don't allow TCP. Some networks may have a very low MTU (Maximum Transmission Unit). There are lots of variables that network administrators can change that can make communication difficult.
+### Pembatasan Protokol
+Beberapa jaringan tidak mengizinkan traffic UDP sama sekali, atau mungkin mereka tidak mengizinkan TCP. Beberapa jaringan mungkin memiliki MTU (Maximum Transmission Unit) yang sangat rendah. Ada banyak variabel yang dapat diubah oleh administrator jaringan yang dapat menyulitkan komunikasi.
 
-### Firewall/IDS Rules
-Another is "Deep Packet Inspection" and other intelligent filtering. Some network administrators will run software that tries to process every packet. Many times this software doesn't understand WebRTC, so it blocks it because it doesn't know what to do, e.g. treating WebRTC packets as suspicious UDP packets on an arbitrary port that is not whitelisted.
+### Aturan _Firewall_/IDS
+Lainnya adalah "Deep Packet Inspection" dan penyaringan cerdas lainnya. Beberapa administrator jaringan akan menjalankan perangkat lunak yang mencoba memproses setiap paket. Seringkali perangkat lunak ini tidak memahami WebRTC, jadi ia memblokirnya karena tidak tahu harus berbuat apa, misalnya memperlakukan paket WebRTC sebagai paket UDP yang mencurigakan pada _port_ acak yang tidak masuk _whitelist_.
 
-## NAT Mapping
-NAT (Network Address Translation) mapping is the magic that makes the connectivity of WebRTC possible. This is how WebRTC allows two peers in completely different subnets to communicate, addressing the "not in the same network" problem above. While it creates new challenges, let's explain how NAT mapping works in the first place.
+## Pemetaan NAT
+Pemetaan NAT (Network Address Translation) adalah keajaiban yang membuat konektivitas WebRTC mungkin. Inilah cara WebRTC memungkinkan dua _peer_ di subnet yang benar-benar berbeda untuk berkomunikasi, menangani masalah "tidak dalam jaringan yang sama" di atas. Meskipun ini menciptakan tantangan baru, mari kita jelaskan bagaimana pemetaan NAT bekerja pada awalnya.
 
-It doesn't use a relay, proxy, or server. Again we have `Agent 1` and `Agent 2` and they are in different networks. However, traffic is flowing completely through. Visualized it looks like this:
+Ini tidak menggunakan relay, proxy, atau _server_. Sekali lagi kita memiliki `Agent 1` dan `Agent 2` dan mereka berada di jaringan yang berbeda. Namun, traffic mengalir sepenuhnya. Divisualisasikan terlihat seperti ini:
 
 ![NAT mapping](../images/03-nat-mapping.png "NAT mapping")
 
-To make this communication happen you establish a NAT mapping. Agent 1 uses port 7000 to establish a WebRTC connection with Agent 2. This creates a binding of `192.168.0.1:7000` to `5.0.0.1:7000`. This then allows Agent 2 to reach Agent 1 by sending packets to `5.0.0.1:7000`. Creating a NAT mapping like in this example is like an automated version of doing port forwarding in your router.
+Untuk membuat komunikasi ini terjadi, Anda membentuk pemetaan NAT. Agent 1 menggunakan _port_ 7000 untuk membangun koneksi WebRTC dengan Agent 2. Ini menciptakan pengikatan dari `192.168.0.1:7000` ke `5.0.0.1:7000`. Ini kemudian memungkinkan Agent 2 untuk mencapai Agent 1 dengan mengirimkan paket ke `5.0.0.1:7000`. Membuat pemetaan NAT seperti dalam contoh ini seperti versi otomatis dari melakukan _port forwarding_ di _router_ Anda.
 
-The downside to NAT mapping is that there isn't a single form of mapping (e.g. static port forwarding), and the behavior is inconsistent between networks. ISPs and hardware manufacturers may do it in different ways. In some cases, network administrators may even disable it.
+Kelemahan pemetaan NAT adalah bahwa tidak ada satu bentuk pemetaan tunggal (misalnya _port forwarding_ statis), dan perilakunya tidak konsisten antar jaringan. ISP dan produsen perangkat keras mungkin melakukannya dengan cara berbeda. Dalam beberapa kasus, administrator jaringan bahkan mungkin menonaktifkannya.
 
-The good news is the full range of behaviors is understood and observable, so an ICE Agent is able to confirm it created a NAT mapping, and the attributes of the mapping.
+Kabar baiknya adalah rentang lengkap perilaku dipahami dan dapat diamati, sehingga ICE Agent mampu mengonfirmasi ia telah membuat pemetaan NAT, dan atribut pemetaan.
 
-The document that describes these behaviors is [RFC 4787](https://tools.ietf.org/html/rfc4787).
+Dokumen yang menjelaskan perilaku ini adalah [RFC 4787](https://tools.ietf.org/html/rfc4787).
 
-### Creating a mapping
-Creating a mapping is the easiest part. When you send a packet to an address outside your network, a mapping is created! A NAT mapping is just a temporary public IP and port that is allocated by your NAT. The outbound message will be rewritten to have its source address given by the newly mapping address. If a message is sent to the mapping, it will be automatically routed back to the host inside the NAT that created it. The details around mappings is where it gets complicated.
+### Membuat pemetaan
+Membuat pemetaan adalah bagian paling mudah. Ketika Anda mengirim paket ke alamat di luar jaringan Anda, pemetaan dibuat! Pemetaan NAT hanyalah IP publik sementara dan _port_ yang dialokasikan oleh NAT Anda. Pesan keluar akan ditulis ulang agar alamat sumbernya diberikan oleh alamat pemetaan yang baru. Jika pesan dikirim ke pemetaan, itu akan secara otomatis dirutekan kembali ke _host_ di dalam NAT yang membuatnya. Detail seputar pemetaan adalah di mana ia menjadi rumit.
 
-### Mapping Creation Behaviors
-Mapping creation falls into three different categories:
+### Perilaku Pembuatan Pemetaan
+Pembuatan pemetaan terbagi dalam tiga kategori berbeda:
 
 #### Endpoint-Independent Mapping
-One mapping is created for each sender inside the NAT. If you send two packets to two different remote addresses, the NAT mapping will be re-used. Both remote hosts would see the same source IP and port. If the remote hosts respond, it would be sent back to the same local listener.
+Satu pemetaan dibuat untuk setiap pengirim di dalam NAT. Jika Anda mengirim dua paket ke dua alamat _remote_ yang berbeda, pemetaan NAT akan digunakan kembali. Kedua _host remote_ akan melihat IP dan _port_ sumber yang sama. Jika _host remote_ merespons, itu akan dikirim kembali ke pendengar lokal yang sama.
 
-This is the best-case scenario. For a call to work, at least one side MUST be of this type.
+Ini adalah skenario terbaik. Agar panggilan berfungsi, setidaknya satu sisi HARUS dari tipe ini.
 
 #### Address Dependent Mapping
-A new mapping is created every time you send a packet to a new address. If you send two packets to different hosts, two mappings will be created. If you send two packets to the same remote host but different destination ports, a new mapping will NOT be created.
+Pemetaan baru dibuat setiap kali Anda mengirim paket ke alamat baru. Jika Anda mengirim dua paket ke _host_ yang berbeda, dua pemetaan akan dibuat. Jika Anda mengirim dua paket ke _host remote_ yang sama tetapi _port_ tujuan yang berbeda, pemetaan baru TIDAK akan dibuat.
 
 #### Address and Port Dependent Mapping
-A new mapping is created if the remote IP or port is different. If you send two packets to the same remote host, but different destination ports, a new mapping will be created.
+Pemetaan baru dibuat jika IP atau _port remote_ berbeda. Jika Anda mengirim dua paket ke _host remote_ yang sama, tetapi _port_ tujuan yang berbeda, pemetaan baru akan dibuat.
 
-### Mapping Filtering Behaviors
-Mapping filtering is the rules around who is allowed to use the mapping. They fall into three similar classifications:
+### Perilaku Penyaringan Pemetaan
+Penyaringan pemetaan adalah aturan tentang siapa yang diizinkan menggunakan pemetaan. Mereka terbagi dalam tiga klasifikasi serupa:
 
 #### Endpoint-Independent Filtering
-Anyone can use the mapping. You can share the mapping with multiple other peers, and they could all send traffic to it.
+Siapa saja dapat menggunakan pemetaan. Anda dapat membagikan pemetaan dengan beberapa _peer_ lain, dan mereka semua dapat mengirim traffic ke sana.
 
 #### Address Dependent Filtering
-Only the host the mapping was created for can use the mapping. If you send a packet to host `A` it can respond with as many packets as it wants. If host `B` attempts to send a packet to that mapping, it will be ignored.
+Hanya _host_ untuk siapa pemetaan dibuat yang dapat menggunakan pemetaan. Jika Anda mengirim paket ke _host_ `A` Anda hanya dapat mendapat respons dari _host_ yang sama. Jika _host_ `B` mencoba mengirim paket ke pemetaan itu, itu akan diabaikan.
 
 #### Address and Port Dependent Filtering
-Only the host and port for which the mapping was created for can use that mapping. If you send a packet to host `A:5000` it can respond with as many packets as it wants. If host `A:5001` attempts to send a packet to that mapping, it will be ignored.
+Hanya _host_ dan _port_ untuk siapa pemetaan dibuat yang dapat menggunakan pemetaan itu. Jika Anda mengirim paket ke `A:5000` Anda hanya dapat mendapat respons dari _host_ dan _port_ yang sama. Jika `A:5001` mencoba mengirim paket ke pemetaan itu, itu akan diabaikan.
 
-### Mapping Refresh
-It is recommended that if a mapping is unused for 5 minutes it should be destroyed. This is entirely up to the ISP or hardware manufacturer.
+### Penyegaran Pemetaan
+Disarankan agar jika pemetaan tidak digunakan selama 5 menit, pemetaan harus dihancurkan. Ini sepenuhnya tergantung pada ISP atau produsen perangkat keras.
 
 ## STUN
-STUN (Session Traversal Utilities for NAT) is a protocol that was created just for working with NATs. This is another technology that pre-dates WebRTC (and ICE!). It is defined by [RFC 8489](https://tools.ietf.org/html/rfc8489), which also defines the STUN packet structure. The STUN protocol is also used by ICE/TURN.
+STUN (Session Traversal Utilities for NAT) adalah protokol yang dibuat khusus untuk bekerja dengan NAT. Ini adalah teknologi lain yang sudah ada sebelum WebRTC (dan ICE!). Ini didefinisikan oleh [RFC 8489](https://tools.ietf.org/html/rfc8489), yang juga mendefinisikan struktur paket STUN. Protokol STUN juga digunakan oleh ICE/TURN.
 
-STUN is useful because it allows the programmatic creation of NAT Mappings. Before STUN, we were able to create a NAT mapping, but we had no idea what the IP and port of it was! STUN not only gives you the ability to create a mapping, but also gives you the details so that you can share them with others, so they can send traffic back to you via the mapping you just created.
+STUN berguna karena memungkinkan pembuatan pemetaan NAT secara programatik. Sebelum STUN, kita dapat membuat pemetaan NAT, tetapi kita tidak tahu apa IP dan _port_-nya! STUN tidak hanya memberi Anda kemampuan untuk membuat pemetaan, tetapi juga memberi Anda detailnya sehingga Anda dapat membagikannya dengan orang lain, sehingga mereka dapat mengirim traffic kembali kepada Anda melalui pemetaan yang baru saja Anda buat.
 
-Let's start with a basic description of STUN. Later, we will expand on TURN and ICE usage. For now, we are just going to describe the Request/Response flow to create a mapping. Then we will talk about how to get the details of it to share with others. This is the process that happens when you have a `stun:` server in your ICE URLs for a WebRTC PeerConnection. In a nutshell, STUN helps an endpoint behind a NAT figure out what mapping was created by asking a STUN server outside NAT to report what it observes.
+Mari kita mulai dengan deskripsi dasar STUN. Nanti, kita akan memperluas penggunaan TURN dan ICE. Untuk saat ini, kita hanya akan menjelaskan alur Request/Response untuk membuat pemetaan. Kemudian kita akan membicarakan cara mendapatkan detailnya untuk dibagikan dengan orang lain. Ini adalah proses yang terjadi ketika Anda memiliki _server_ `stun:` dalam ICE URL Anda untuk WebRTC PeerConnection. Singkatnya, STUN membantu _endpoint_ di belakang NAT mengetahui pemetaan apa yang dibuat dengan meminta _server_ STUN di luar NAT untuk melaporkan apa yang diamatinya.
 
-### Protocol Structure
-Every STUN packet has the following structure:
+### Struktur Protokol
+Setiap paket STUN memiliki struktur berikut:
 
 ```
  0                   1                   2                   3
@@ -130,24 +130,24 @@ Every STUN packet has the following structure:
 ```
 
 #### STUN Message Type
-Each STUN packet has a type. For now, we only care about the following:
+Setiap paket STUN memiliki tipe. Untuk saat ini, kita hanya peduli tentang yang berikut:
 
 * Binding Request - `0x0001`
 * Binding Response - `0x0101`
 
-To create a NAT mapping we make a `Binding Request`. Then the server responds with a `Binding Response`.
+Untuk membuat pemetaan NAT kita membuat `Binding Request`. Kemudian _server_ merespons dengan `Binding Response`.
 
 #### Message Length
-This is how long the `Data` section is. This section contains arbitrary data that is defined by the `Message Type`.
+Ini adalah panjang bagian `Data`. Bagian ini berisi data sembarang yang didefinisikan oleh `Message Type`.
 
 #### Magic Cookie
-The fixed value `0x2112A442` in network byte order, it helps distinguish STUN traffic from other protocols.
+Nilai tetap `0x2112A442` dalam urutan _byte_ jaringan, ini membantu membedakan traffic STUN dari protokol lain.
 
 #### Transaction ID
-A 96-bit identifier that uniquely identifies a request/response. This helps you pair up your requests and responses.
+Pengenal 96-bit yang secara unik mengidentifikasi _request/response_. Ini membantu Anda memasangkan _request_ dan _response_ Anda.
 
 #### Data
-Data will contain a list of STUN attributes. A STUN Attribute has the following structure:
+Data akan berisi daftar atribut STUN. Atribut STUN memiliki struktur berikut:
 
 ```
 0                   1                   2                   3
@@ -159,129 +159,129 @@ Data will contain a list of STUN attributes. A STUN Attribute has the following 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-The `STUN Binding Request` uses no attributes. This means a `STUN Binding Request` contains only the header.
+`STUN Binding Request` tidak menggunakan atribut. Ini berarti `STUN Binding Request` hanya berisi _header_.
 
-The `STUN Binding Response` uses a `XOR-MAPPED-ADDRESS (0x0020)`. This attribute contains an IP and port. This is the IP and port of the NAT mapping that is created!
+`STUN Binding Response` menggunakan `XOR-MAPPED-ADDRESS (0x0020)`. Atribut ini berisi IP dan _port_. Ini adalah IP dan _port_ dari pemetaan NAT yang dibuat!
 
-### Create a NAT Mapping
-Creating a NAT mapping using STUN just takes sending one request! You send a `STUN Binding Request` to the STUN Server. The STUN Server then responds with a `STUN Binding Response`.
-This `STUN Binding Response` will contain the `Mapped Address`. The `Mapped Address` is how the STUN Server sees you and is your `NAT mapping`.
-The `Mapped Address` is what you would share if you wanted someone to send packets to you.
+### Membuat Pemetaan NAT
+Membuat pemetaan NAT menggunakan STUN hanya memerlukan pengiriman satu _request_! Anda mengirim `STUN Binding Request` ke STUN Server. STUN Server kemudian merespons dengan `STUN Binding Response`.
+`STUN Binding Response` ini akan berisi `Mapped Address`. `Mapped Address` adalah bagaimana STUN Server melihat Anda dan merupakan `pemetaan NAT` Anda.
+`Mapped Address` adalah yang akan Anda bagikan jika Anda ingin seseorang mengirimkan paket kepada Anda.
 
-People will also call the `Mapped Address` your `Public IP` or `Server Reflexive Candidate`.
+Orang juga akan menyebut `Mapped Address` sebagai `Public IP` atau `Server Reflexive Candidate` Anda.
 
-### Determining NAT Type
-Unfortunately, the `Mapped Address` might not be useful in all cases. If it is `Address Dependent`, only the STUN server can send traffic back to you. If you shared it and another peer tried to send messages in they will be dropped. This makes it useless for communicating with others. You may find the `Address Dependent` case is in fact solvable, if the STUN server can also forward packets for you to the peer! This leads us to the solution using TURN below.
+### Menentukan Tipe NAT
+Sayangnya, `Mapped Address` mungkin tidak berguna dalam semua kasus. Jika itu adalah `Address Dependent`, hanya _server_ STUN yang dapat mengirim traffic kembali kepada Anda. Jika Anda membagikannya dan _peer_ lain mencoba mengirim pesan masuk, mereka akan dijatuhkan. Ini membuatnya tidak berguna untuk berkomunikasi dengan orang lain. Anda mungkin menemukan kasus `Address Dependent` sebenarnya dapat dipecahkan, jika _host_ yang menjalankan _server_ STUN juga dapat meneruskan paket untuk Anda ke _peer_! Ini membawa kita ke solusi menggunakan TURN di bawah ini.
 
-[RFC 5780](https://tools.ietf.org/html/rfc5780) defines a method for running a test to determine your NAT Type. This is useful because you would know ahead of time if direct connectivity is possible.
+[RFC 5780](https://tools.ietf.org/html/rfc5780) mendefinisikan metode untuk menjalankan tes untuk menentukan Tipe NAT Anda. Ini berguna karena Anda akan tahu sebelumnya apakah konektivitas langsung mungkin.
 
 ## TURN
-TURN (Traversal Using Relays around NAT) is defined in [RFC 8656](https://tools.ietf.org/html/rfc8656) is the solution when direct connectivity isn't possible. It could be because you have two NAT Types that are incompatible, or maybe can't speak the same protocol! TURN can also be used for privacy purposes. By running all your communication through TURN you obscure the client's actual address.
+TURN (Traversal Using Relays around NAT) didefinisikan dalam [RFC 8656](https://tools.ietf.org/html/rfc8656) adalah solusi ketika konektivitas langsung tidak mungkin. Ini bisa karena Anda memiliki dua Tipe NAT yang tidak kompatibel, atau mungkin tidak dapat berbicara dengan protokol yang sama! TURN juga dapat digunakan untuk tujuan privasi. Dengan menjalankan semua komunikasi Anda melalui TURN Anda menyembunyikan alamat sebenarnya klien.
 
-TURN uses a dedicated server. This server acts as a proxy for a client. The client connects to a TURN Server and creates an `Allocation`. By creating an allocation, a client gets a temporary IP/Port/Protocol that can be used to send traffic back to the client. This new listener is known as the `Relayed Transport Address`. Think of it as a forwarding address, you give this out so that others can send you traffic via TURN! For each peer you give the `Relay Transport Address` to, you must create a new `Permission` to allow communication with you.
+TURN menggunakan _server_ khusus. _Server_ ini bertindak sebagai proxy untuk klien. Klien terhubung ke TURN Server dan membuat `Allocation`. Dengan membuat alokasi, klien mendapatkan IP/Port/Protokol sementara yang dapat digunakan untuk mengirim traffic kembali ke klien. Pendengar baru ini dikenal sebagai `Relayed Transport Address`. Anggap itu sebagai alamat penerusan, Anda memberikan ini sehingga orang lain dapat mengirimkan traffic kepada Anda melalui TURN! Untuk setiap _peer_ yang Anda berikan `Relay Transport Address`, Anda harus membuat `Permission` baru untuk mengizinkan komunikasi dengan Anda.
 
-When you send outbound traffic via TURN it is sent via the `Relayed Transport Address`. When a remote peer gets traffic they see it coming from the TURN Server.
+Ketika Anda mengirim traffic keluar melalui TURN, itu dikirim melalui `Relayed Transport Address`. Ketika _peer remote_ mendapat traffic, mereka melihatnya datang dari TURN Server.
 
-### TURN Lifecycle
-The following is everything that a client who wishes to create a TURN allocation has to do. Communicating with someone who is using TURN requires no changes. The other peer gets an IP and port, and they communicate with it like any other host.
+### Siklus Hidup TURN
+Berikut adalah semua yang harus dilakukan oleh klien yang ingin membuat alokasi TURN. Berkomunikasi dengan seseorang yang menggunakan TURN tidak memerlukan perubahan. _Peer_ lain mendapat IP dan _port_, dan mereka berkomunikasi dengannya seperti _host_ lainnya.
 
 #### Allocations
-Allocations are at the core of TURN. An `allocation` is basically a "TURN Session". To create a TURN allocation you communicate with the TURN `Server Transport Address` (usually port `3478`).
+Allocation adalah inti dari TURN. `Allocation` pada dasarnya adalah "TURN Session". Untuk membuat alokasi TURN, Anda berkomunikasi dengan TURN `Server Transport Address` (biasanya _port_ `3478`).
 
-When creating an allocation, you need to provide the following:
-* Username/Password - Creating TURN allocations require authentication.
-* Allocation Transport - The transport protocol between the server (`Relayed Transport Address`) and the peers, can be UDP or TCP.
-* Even-Port - You can request sequential ports for multiple allocations, not relevant for WebRTC.
+Saat membuat alokasi, Anda perlu memberikan yang berikut:
+* Username/Password - Membuat alokasi TURN memerlukan autentikasi.
+* Allocation Transport - Protokol transpor antara _server_ (`Relayed Transport Address`) dan _peer_, bisa UDP atau TCP.
+* Even-Port - Anda dapat meminta _port_ berurutan untuk beberapa alokasi, tidak relevan untuk WebRTC.
 
-If the request succeeded, you get a response with the TURN Server with the following STUN Attributes in the Data section:
-* `XOR-MAPPED-ADDRESS` - `Mapped Address` of the `TURN Client`. When someone sends data to the `Relayed Transport Address` this is where it is forwarded to.
-* `RELAYED-ADDRESS` - This is the address that you give out to other clients. If someone sends a packet to this address, it is relayed to the TURN client.
-* `LIFETIME` - How long until this TURN Allocation is destroyed. You can extend the lifetime by sending a `Refresh` request.
+Jika _request_ berhasil, Anda mendapat respons dengan TURN Server dengan Atribut STUN berikut di bagian Data:
+* `XOR-MAPPED-ADDRESS` - `Mapped Address` dari `TURN Client`. Ketika seseorang mengirim data ke `Relayed Transport Address` ini adalah tempat ia diteruskan.
+* `RELAYED-ADDRESS` - Ini adalah alamat yang Anda berikan kepada klien lain. Jika seseorang mengirim paket ke alamat ini, itu diteruskan ke klien TURN.
+* `LIFETIME` - Berapa lama sampai Alokasi TURN ini dihancurkan. Anda dapat memperpanjang masa hidup dengan mengirim _request_ `Refresh`.
 
 #### Permissions
-A remote host can't send into your `Relayed Transport Address` until you create a permission for them. When you create a permission, you are telling the TURN server that this IP and port is allowed to send inbound traffic.
+_Host remote_ tidak dapat mengirim ke `Relayed Transport Address` Anda sampai Anda membuat izin untuk mereka. Ketika Anda membuat izin, Anda memberi tahu _server_ TURN bahwa IP dan _port_ ini diizinkan untuk mengirim traffic masuk.
 
-The remote host needs to give you the IP and port as it appears to the TURN server. This means it should send a `STUN Binding Request` to the TURN Server. A common error case is that a remote host will send a `STUN Binding Request` to a different server. They will then ask you to create a permission for this IP.
+_Host remote_ perlu memberi Anda IP dan _port_ seperti yang terlihat oleh _server_ TURN. Ini berarti ia harus mengirim `STUN Binding Request` ke TURN Server. Kasus kesalahan umum adalah bahwa _host remote_ akan mengirim `STUN Binding Request` ke _server_ yang berbeda. Mereka kemudian akan meminta Anda untuk membuat izin untuk IP ini.
 
-Let's say you want to create a permission for a host behind a `Address Dependent Mapping`. If you generate the `Mapped Address` from a different TURN server, all inbound traffic will be dropped. Every time they communicate with a different host it generates a new mapping. Permissions expire after 5 minutes if they are not refreshed.
+Katakanlah Anda ingin membuat izin untuk _host_ di belakang `Address Dependent Mapping`. Jika Anda menghasilkan `Mapped Address` dari _server_ TURN yang berbeda, semua traffic masuk akan dijatuhkan. Setiap kali mereka berkomunikasi dengan _host_ yang berbeda, itu menghasilkan pemetaan baru. Izin kedaluwarsa setelah 5 menit jika tidak disegarkan.
 
 #### SendIndication/ChannelData
-These two messages are for the TURN Client to send messages to a remote peer.
+Kedua pesan ini adalah untuk TURN Client mengirim pesan ke _peer remote_.
 
-SendIndication is a self-contained message. Inside it is the data you wish to send, and who you wish to send it to. This is wasteful if you are sending a lot of messages to a remote peer. If you send 1,000 messages you will repeat their IP Address 1,000 times!
+SendIndication adalah pesan yang berdiri sendiri. Di dalamnya adalah data yang ingin Anda kirim, dan kepada siapa Anda ingin mengirimnya. Ini boros jika Anda mengirim banyak pesan ke _peer remote_. Jika Anda mengirim 1.000 pesan, Anda akan mengulangi Alamat IP mereka 1.000 kali!
 
-ChannelData allows you to send data, but not repeat an IP Address. You create a Channel with an IP and port. You then send with the ChannelId, and the IP and port will be populated server side. This is the better choice if you are sending a lot of messages.
+ChannelData memungkinkan Anda mengirim data, tetapi tidak mengulangi Alamat IP. Anda membuat Channel dengan IP dan _port_. Anda kemudian mengirim dengan ChannelId, dan IP serta _port_ akan diisi di sisi _server_. Ini adalah pilihan yang lebih baik jika Anda mengirim banyak pesan.
 
 #### Refreshing
-Allocations will destroy themselves automatically. The TURN Client must refresh them sooner than the `LIFETIME` given when creating the allocation.
+Alokasi akan menghancurkan diri mereka sendiri secara otomatis. TURN Client harus menyegarkannya lebih cepat dari `LIFETIME` yang diberikan saat membuat alokasi.
 
-### TURN Usage
-TURN Usage exists in two forms. Usually, you have one peer acting as a "TURN Client" and the other side communicating directly. In some cases you might have TURN usage on both sides, for example because both clients are in networks that block UDP and therefore the connection to the respective TURN servers happens via TCP.
+### Penggunaan TURN
+Penggunaan TURN ada dalam dua bentuk. Biasanya, Anda memiliki satu _peer_ yang bertindak sebagai "TURN Client" dan sisi lain berkomunikasi langsung. Dalam beberapa kasus Anda mungkin memiliki penggunaan TURN di kedua sisi, misalnya karena kedua klien berada di jaringan yang memblokir UDP dan oleh karena itu koneksi ke _server_ TURN masing-masing terjadi melalui TCP.
 
-These diagrams help illustrate what that would look like.
+Diagram ini membantu menggambarkan seperti apa itu.
 
-#### One TURN Allocation for Communication
+#### Satu Alokasi TURN untuk Komunikasi
 
 ![One TURN allocation](../images/03-one-turn-allocation.png "One TURN allocation")
 
-#### Two TURN Allocations for Communication
+#### Dua Alokasi TURN untuk Komunikasi
 
 ![Two TURN allocations](../images/03-two-turn-allocations.png "Two TURN allocations")
 
 ## ICE
-ICE (Interactive Connectivity Establishment) is how WebRTC connects two Agents. Defined in [RFC 8445](https://tools.ietf.org/html/rfc8445), this is another technology that pre-dates WebRTC! ICE is a protocol for establishing connectivity. It determines all the possible routes between the two peers and then ensures you stay connected.
+ICE (Interactive Connectivity Establishment) adalah bagaimana WebRTC menghubungkan dua Agent. Didefinisikan dalam [RFC 8445](https://tools.ietf.org/html/rfc8445), ini adalah teknologi lain yang sudah ada sebelum WebRTC! ICE adalah protokol untuk membangun konektivitas. Ini menentukan semua rute yang mungkin antara kedua _peer_ dan kemudian memastikan Anda tetap terhubung.
 
-These routes are known as `Candidate Pairs`, which is a pairing of a local and remote transport address. This is where STUN and TURN come into play with ICE. These addresses can be your local IP Address plus a port, `NAT mapping`, or `Relayed Transport Address`. Each side gathers all the addresses they want to use, exchanges them, and then attempts to connect!
+Rute-rute ini dikenal sebagai `Candidate Pair`, yang merupakan pasangan alamat transpor lokal dan _remote_. Di sinilah STUN dan TURN ikut bermain dengan ICE. Alamat ini dapat berupa Alamat IP lokal Anda plus _port_, `pemetaan NAT`, atau `Relayed Transport Address`. Setiap sisi mengumpulkan semua alamat yang ingin mereka gunakan, menukarnya, dan kemudian mencoba untuk terhubung!
 
-Two ICE Agents communicate using ICE ping packets (or formally called the connectivity checks) to establish connectivity. After connectivity is established, they can send whatever data they want. It will be like using a normal socket. These checks use the STUN protocol.
+Dua ICE Agent berkomunikasi menggunakan paket ping ICE (atau secara resmi disebut pemeriksaan konektivitas) untuk membangun konektivitas. Setelah konektivitas terbentuk, mereka dapat mengirim data apa pun yang mereka inginkan. Ini akan seperti menggunakan _socket_ normal. Pemeriksaan ini menggunakan protokol STUN.
 
-### Creating an ICE Agent
-An ICE Agent is either `Controlling` or `Controlled`. The `Controlling` Agent is the one that decides the selected `Candidate Pair`. Usually, the peer sending the offer is the controlling side.
+### Membuat ICE Agent
+ICE Agent adalah `Controlling` atau `Controlled`. `Controlling` Agent adalah yang memutuskan `Candidate Pair` yang dipilih. Biasanya, _peer_ yang mengirim _offer_ adalah sisi _controlling_.
 
-Each side must have a `user fragment` and a `password`. These two values must be exchanged before connectivity checks can even begin. The `user fragment` is sent in plain text and is useful for demuxing multiple ICE Sessions.
-The `password` is used to generate a `MESSAGE-INTEGRITY` attribute. At the end of each STUN packet, there is an attribute that is a hash of the entire packet using the `password` as a key. This is used to authenticate the packet and ensure it hasn't been tampered with.
+Setiap sisi harus memiliki `user fragment` dan `password`. Kedua nilai ini harus ditukar sebelum pemeriksaan konektivitas bahkan dapat dimulai. `user fragment` dikirim dalam teks biasa dan berguna untuk demuxing beberapa Sesi ICE.
+`password` digunakan untuk menghasilkan atribut `MESSAGE-INTEGRITY`. Di akhir setiap paket STUN, ada atribut yang merupakan _hash_ dari seluruh paket menggunakan `password` sebagai kunci. Ini digunakan untuk mengautentikasi paket dan memastikan itu tidak dirusak.
 
-For WebRTC, all these values are distributed via the `Session Description` as described in the previous chapter.
+Untuk WebRTC, semua nilai ini didistribusikan melalui `Session Description` seperti dijelaskan di bab sebelumnya.
 
-### Candidate Gathering
-We now need to gather all the possible addresses we are reachable at. These addresses are known as candidates.
+### Pengumpulan _Candidate_
+Kita sekarang perlu mengumpulkan semua alamat yang mungkin di mana kita dapat dijangkau. Alamat ini dikenal sebagai _candidate_.
 
 #### Host
-A Host candidate is listening directly on a local interface. This can either be UDP or TCP.
+_Candidate Host_ mendengarkan langsung pada antarmuka lokal. Ini dapat berupa UDP atau TCP.
 
 #### mDNS
-An mDNS candidate is similar to a host candidate, but the IP address is obscured. Instead of informing the other side about your IP address, you give them a UUID as the hostname. You then set up a multicast listener, and respond if anyone requests the UUID you published.
+_Candidate_ mDNS mirip dengan _candidate host_, tetapi alamat IP-nya disamarkan. Alih-alih memberi tahu sisi lain tentang alamat IP Anda, Anda memberi mereka UUID sebagai _hostname_. Anda kemudian menyiapkan pendengar multicast, dan merespons jika ada yang meminta UUID yang Anda publikasikan.
 
-If you are in the same network as the agent, you can find each other via Multicast. If you are not in the same network, you will be unable to connect (unless the network administrator explicitly configured the network to allow Multicast packets to traverse).
+Jika Anda berada di jaringan yang sama dengan _agent_, Anda dapat menemukan satu sama lain melalui Multicast. Jika Anda tidak berada di jaringan yang sama, Anda tidak akan dapat terhubung (kecuali administrator jaringan secara eksplisit mengonfigurasi jaringan untuk mengizinkan paket Multicast melewati).
 
-This is useful for privacy purposes. A user could find out your local IP address via WebRTC with a Host candidate (without even trying to connect to you), but with an mDNS candidate, now they only get a random UUID.
+Ini berguna untuk tujuan privasi. Pengguna dapat mengetahui alamat IP lokal Anda melalui WebRTC dengan _candidate Host_ (tanpa bahkan mencoba terhubung kepada Anda), tetapi dengan _candidate_ mDNS, sekarang mereka hanya mendapat UUID acak.
 
 #### Server Reflexive
-A Server Reflexive candidate is generated by doing a `STUN Binding Request` to a STUN Server.
+_Candidate Server Reflexive_ dihasilkan dengan melakukan `STUN Binding Request` ke STUN Server.
 
-When you get the `STUN Binding Response`, the `XOR-MAPPED-ADDRESS` is your Server Reflexive Candidate.
+Ketika Anda mendapat `STUN Binding Response`, `XOR-MAPPED-ADDRESS` adalah _Candidate Server Reflexive_ Anda.
 
 #### Peer Reflexive
-A Peer Reflexive candidate is when you get an inbound request from an address that isn't known to you. Since ICE is an authenticated protocol, you know the traffic is valid. This just means the remote peer is communicating with you from an address it didn't know about.
+_Candidate Peer Reflexive_ dibuat ketika _peer remote_ menerima _request_ Anda dari alamat yang sebelumnya tidak diketahui oleh _peer_. Setelah menerima, _peer_ melaporkan (memantulkan) alamat yang disebutkan kembali kepada Anda. _Peer_ tahu bahwa _request_ dikirim oleh Anda dan bukan orang lain karena ICE adalah protokol yang terautentikasi.
 
-This commonly happens when a `Host Candidate` communicates with a `Server Reflexive Candidate`. A new `NAT mapping` was created because you are communicating outside your subnet. Remember we said the connectivity checks are in fact STUN packets? The format of STUN response naturally allows a peer to report back the peer-reflexive address.
+Ini umumnya terjadi ketika `Host Candidate` berkomunikasi dengan `Server Reflexive Candidate` yang berada di subnet yang berbeda, yang menghasilkan `pemetaan NAT` baru yang dibuat. Ingat kita mengatakan pemeriksaan konektivitas sebenarnya adalah paket STUN? Format respons STUN secara alami memungkinkan _peer_ untuk melaporkan kembali alamat _peer-reflexive_.
 
 #### Relay
-A Relay Candidate is generated by using a TURN Server.
+_Candidate Relay_ dihasilkan dengan menggunakan TURN Server.
 
-After the initial handshake with the TURN Server you are given a `RELAYED-ADDRESS`, this is your Relay Candidate.
+Setelah _handshake_ awal dengan TURN Server, Anda diberi `RELAYED-ADDRESS`, ini adalah _Candidate Relay_ Anda.
 
-### Connectivity Checks
-We now know the remote agent's `user fragment`, `password`, and candidates. We can now attempt to connect! Every candidate is paired with each other. So if you have 3 candidates on each side, you now have 9 candidate pairs.
+### Pemeriksaan Konektivitas
+Kita sekarang tahu `user fragment`, `password`, dan _candidate_ dari _agent remote_. Kita sekarang dapat mencoba untuk terhubung! Setiap _candidate_ dipasangkan satu sama lain. Jadi jika Anda memiliki 3 _candidate_ di setiap sisi, Anda sekarang memiliki 9 pasangan _candidate_.
 
-Visually it looks like this:
+Secara visual terlihat seperti ini:
 
 ![Connectivity checks](../images/03-connectivity-checks.png "Connectivity checks")
 
-### Candidate Selection
-The Controlling and Controlled Agent both start sending traffic on each pair. This is needed if one Agent is behind an `Address Dependent Mapping`, this will cause a `Peer Reflexive Candidate` to be created.
+### Pemilihan _Candidate_
+Controlling dan Controlled Agent keduanya mulai mengirim traffic pada setiap pasangan. Ini diperlukan jika satu Agent berada di belakang `Address Dependent Mapping`, ini akan menyebabkan `Peer Reflexive Candidate` dibuat.
 
-Each `Candidate Pair` that saw network traffic is then promoted to a `Valid Candidate` pair. The Controlling Agent then takes one `Valid Candidate` pair and nominates it. This becomes the `Nominated Pair`. The Controlling and Controlled Agent then attempt one more round of bi-directional communication. If that succeeds, the `Nominated Pair` becomes the `Selected Candidate Pair`! This pair is then used for the rest of the session.
+Setiap `Candidate Pair` yang melihat traffic jaringan kemudian dipromosikan ke pasangan `Valid Candidate`. Controlling Agent kemudian mengambil satu pasangan `Valid Candidate` dan menominasikannya. Ini menjadi `Nominated Pair`. Controlling dan Controlled Agent kemudian mencoba satu putaran lagi komunikasi dua arah. Jika itu berhasil, `Nominated Pair` menjadi `Selected Candidate Pair`! Pasangan ini kemudian digunakan untuk sisa sesi.
 
-### Restarts
-If the `Selected Candidate Pair` stops working for any reason (NAT mapping expires, TURN Server crashes) the ICE Agent will go to `Failed` state. Both agents can be restarted and will do the whole process all over again.
+### Restart
+Jika `Selected Candidate Pair` berhenti bekerja karena alasan apa pun (pemetaan NAT kedaluwarsa, TURN Server _crash_) ICE Agent akan masuk ke status `Failed`. Kedua _agent_ dapat di-_restart_ dan akan melakukan seluruh proses lagi.

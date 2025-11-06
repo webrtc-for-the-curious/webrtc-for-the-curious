@@ -6,58 +6,58 @@ weight: 7
 
 # Media Communication
 
-## What do I get from WebRTC's media communication?
+## Apa yang saya dapatkan dari komunikasi media WebRTC?
 
-WebRTC allows you to send and receive an unlimited amount of audio and video streams. You can add and remove these streams at anytime during a call. These streams could all be independent, or they could be bundled together! You could send a video feed of your desktop, and then include audio and video from your webcam.
+WebRTC memungkinkan Anda mengirim dan menerima jumlah _stream_ audio dan video yang tidak terbatas. Anda dapat menambah dan menghapus _stream_ ini kapan saja selama panggilan. _Stream_ ini semuanya bisa independen, atau bisa digabungkan bersama! Anda dapat mengirim _feed_ video desktop Anda, dan kemudian menyertakan audio dan video dari _webcam_ Anda.
 
-The WebRTC protocol is codec agnostic. The underlying transport supports everything, even things that don't exist yet! However, the WebRTC Agent you are communicating with may not have the necessary tools to accept it.
+Protokol WebRTC adalah _codec agnostic_. Transpor yang mendasarinya mendukung semuanya, bahkan hal-hal yang belum ada! Namun, _Agent_ WebRTC yang berkomunikasi dengan Anda mungkin tidak memiliki alat yang diperlukan untuk menerimanya.
 
-WebRTC is also designed to handle dynamic network conditions. During a call your bandwidth might increase, or decrease. Maybe you suddenly experience lots of packet loss. The protocol is designed to handle all of this. WebRTC responds to network conditions and tries to give you the best experience possible with the resources available.
+WebRTC juga dirancang untuk menangani kondisi jaringan yang dinamis. Selama panggilan _bandwidth_ Anda mungkin meningkat, atau menurun. Mungkin Anda tiba-tiba mengalami banyak _packet loss_. Protokol ini dirancang untuk menangani semua ini. WebRTC merespons kondisi jaringan dan mencoba memberi Anda pengalaman terbaik yang mungkin dengan sumber daya yang tersedia.
 
-## How does it work?
-WebRTC uses two preexisting protocols RTP and RTCP, both defined in [RFC 1889](https://tools.ietf.org/html/rfc1889).
+## Bagaimana cara kerjanya?
+WebRTC menggunakan dua protokol yang sudah ada sebelumnya RTP dan RTCP, keduanya didefinisikan dalam [RFC 1889](https://tools.ietf.org/html/rfc1889).
 
-RTP (Real-time Transport Protocol) is the protocol that carries the media. It was designed to allow for real-time delivery of video. It does not stipulate any rules around latency or reliability, but gives you the tools to implement them. RTP gives you streams, so you can run multiple media feeds over one connection. It also gives you the timing and ordering information you need to feed a media pipeline.
+RTP (_Real-time Transport Protocol_) adalah protokol yang membawa media. Ini dirancang untuk memungkinkan pengiriman video _real-time_. Ini tidak menetapkan aturan apa pun mengenai latensi atau keandalan, tetapi memberi Anda alat untuk mengimplementasikannya. RTP memberi Anda _stream_, sehingga Anda dapat menjalankan beberapa _feed_ media melalui satu koneksi. Ini juga memberi Anda informasi _timing_ dan pengurutan yang Anda butuhkan untuk memberi makan _pipeline_ media.
 
-RTCP (RTP Control Protocol) is the protocol that communicates metadata about the call. The format is very flexible and allows you to add any metadata you want. This is used to communicate statistics about the call. It is also used to handle packet loss and to implement congestion control. It gives you the bi-directional communication necessary to respond to changing network conditions.
+RTCP (_RTP Control Protocol_) adalah protokol yang mengomunikasikan metadata tentang panggilan. Formatnya sangat fleksibel dan memungkinkan Anda menambahkan metadata apa pun yang Anda inginkan. Ini digunakan untuk mengomunikasikan statistik tentang panggilan. Ini juga digunakan untuk menangani _packet loss_ dan untuk mengimplementasikan _congestion control_. Ini memberi Anda komunikasi dua arah yang diperlukan untuk merespons kondisi jaringan yang berubah.
 
-## Latency vs Quality
-Real-time media is about making trade-offs between latency and quality. The more latency you are willing to tolerate, the higher quality video you can expect.
+## Latensi vs Kualitas
+Media _real-time_ adalah tentang membuat _trade-off_ antara latensi dan kualitas. Semakin banyak latensi yang bersedia Anda toleransi, semakin tinggi kualitas video yang dapat Anda harapkan.
 
-### Real World Limitations
-These constraints are all caused by the limitations of the real world. They are all characteristics of your network that you will need to overcome.
+### Keterbatasan Dunia Nyata
+Batasan ini semua disebabkan oleh keterbatasan dunia nyata. Ini semua adalah karakteristik jaringan Anda yang perlu Anda atasi.
 
-### Video is Complex
-Transporting video isn't easy. To store 30 minutes of uncompressed 720 8-bit video you need about 110 GB. With those numbers, a 4-person conference call isn't going to happen. We need a way to make it smaller, and the answer is video compression. That doesn't come without downsides though.
+### Video itu Kompleks
+Mengangkut video tidaklah mudah. Untuk menyimpan 30 menit video 720 8-bit yang tidak dikompresi, Anda memerlukan sekitar 110 GB. Dengan angka-angka itu, panggilan konferensi 4 orang tidak akan terjadi. Kita memerlukan cara untuk membuatnya lebih kecil, dan jawabannya adalah kompresi video. Itu tidak datang tanpa kekurangan.
 
 ## Video 101
-We aren't going to cover video compression in depth, but just enough to understand why RTP is designed the way it is. Video compression encodes video into a new format that requires fewer bits to represent the same video.
+Kami tidak akan membahas kompresi video secara mendalam, tetapi cukup untuk memahami mengapa RTP dirancang seperti itu. Kompresi video mengenkode video ke dalam format baru yang memerlukan lebih sedikit bit untuk merepresentasikan video yang sama.
 
-### Lossy and Lossless compression
-You can encode video to be lossless (no information is lost) or lossy (information may be lost). Because lossless encoding requires more data to be sent to a peer, making for a higher latency stream and more dropped packets, RTP typically uses lossy compression even though the video quality won’t be as good.
+### Kompresi _Lossy_ dan _Lossless_
+Anda dapat mengenkode video menjadi _lossless_ (tidak ada informasi yang hilang) atau _lossy_ (informasi mungkin hilang). Karena pengkodean _lossless_ memerlukan lebih banyak data yang dikirim ke _peer_, membuat _stream_ latensi lebih tinggi dan lebih banyak paket yang dijatuhkan, RTP biasanya menggunakan kompresi _lossy_ meskipun kualitas videonya tidak akan sebaik itu.
 
-### Intra and Inter frame compression
-Video compression comes in two types. The first is intra-frame. Intra-frame compression reduces the bits used to describe a single video frame. The same techniques are used to compress still pictures, like the JPEG compression method.
+### Kompresi _Intra_ dan _Inter frame_
+Kompresi video hadir dalam dua jenis. Yang pertama adalah _intra-frame_. Kompresi _intra-frame_ mengurangi bit yang digunakan untuk mendeskripsikan satu _frame_ video. Teknik yang sama digunakan untuk mengompresi gambar diam, seperti metode kompresi JPEG.
 
-The second type is inter-frame compression. Since video is made up of many pictures we look for ways to not send the same information twice.
+Jenis kedua adalah kompresi _inter-frame_. Karena video terdiri dari banyak gambar, kita mencari cara untuk tidak mengirim informasi yang sama dua kali.
 
-### Inter-frame types
-You then have three frame types:
+### Jenis _Inter-frame_
+Anda kemudian memiliki tiga jenis _frame_:
 
-* **I-Frame** - A complete picture, can be decoded without anything else.
-* **P-Frame** - A partial picture, containing only changes from the previous picture.
-* **B-Frame** - A partial picture, is a modification of previous and future pictures.
+* **I-Frame** - Gambar lengkap, dapat didekode tanpa apa pun.
+* **P-Frame** - Gambar parsial, hanya berisi perubahan dari gambar sebelumnya.
+* **B-Frame** - Gambar parsial, adalah modifikasi dari gambar sebelumnya dan masa depan.
 
-The following is visualization of the three frame types.
+Berikut adalah visualisasi dari tiga jenis _frame_.
 
 ![Frame types](../images/06-frame-types.png "Frame types")
 
-### Video is delicate
-Video compression is incredibly stateful, making it difficult to transfer over the internet. What happens If you lose part of an I-Frame? How does a P-Frame know what to modify? As video compression gets more complex, this is becoming even more of a problem. Luckily RTP and RTCP have the solution.
+### Video itu rapuh
+Kompresi video sangat _stateful_, membuatnya sulit untuk ditransfer melalui internet. Apa yang terjadi jika Anda kehilangan bagian dari I-Frame? Bagaimana P-Frame tahu apa yang harus dimodifikasi? Seiring kompresi video menjadi lebih kompleks, ini menjadi masalah yang lebih besar. Untungnya RTP dan RTCP memiliki solusinya.
 
 ## RTP
-### Packet Format
-Every RTP packet has the following structure:
+### Format Paket
+Setiap paket RTP memiliki struktur berikut:
 
 ```
  0                   1                   2                   3
@@ -77,54 +77,54 @@ Every RTP packet has the following structure:
 ```
 
 #### Version (V)
-`Version` is always `2`
+`Version` selalu `2`
 
 #### Padding (P)
-`Padding` is a bool that controls if the payload has padding.
+`Padding` adalah _bool_ yang mengontrol apakah _payload_ memiliki _padding_.
 
-The last byte of the payload contains a count of how many padding bytes were added.
+_Byte_ terakhir dari _payload_ berisi hitungan berapa banyak _byte padding_ yang ditambahkan.
 
 #### Extension (X)
-If set, the RTP header will have extensions. This is described in greater detail below.
+Jika disetel, _header_ RTP akan memiliki ekstensi. Ini dijelaskan lebih detail di bawah ini.
 
 #### CSRC count (CC)
-The amount of `CSRC` identifiers that follow after the `SSRC`, and before the payload.
+Jumlah pengidentifikasi `CSRC` yang mengikuti setelah `SSRC`, dan sebelum _payload_.
 
 #### Marker (M)
-The marker bit has no pre-set meaning, and can be used however the user likes.
+_Marker bit_ tidak memiliki arti yang telah ditetapkan, dan dapat digunakan sesuai keinginan pengguna.
 
-In some cases it is set when a user is speaking. It is also commonly used to mark a keyframe.
+Dalam beberapa kasus, ini disetel ketika pengguna sedang berbicara. Ini juga biasanya digunakan untuk menandai _keyframe_.
 
 #### Payload Type (PT)
-`Payload Type` is a unique identifier for what codec is being carried by this packet.
+`Payload Type` adalah pengidentifikasi unik untuk _codec_ apa yang dibawa oleh paket ini.
 
-For WebRTC the `Payload Type` is dynamic. VP8 in one call may be different from another. The offerer in the call determines the mapping of `Payload Types` to codecs in the `Session Description`.
+Untuk WebRTC, `Payload Type` adalah dinamis. VP8 dalam satu panggilan mungkin berbeda dari yang lain. _Offerer_ dalam panggilan menentukan pemetaan `Payload Types` ke _codec_ dalam `Session Description`.
 
 #### Sequence Number
-`Sequence Number` is used for ordering packets in a stream. Every time a packet is sent the `Sequence Number` is incremented by one.
+`Sequence Number` digunakan untuk mengurutkan paket dalam _stream_. Setiap kali paket dikirim, `Sequence Number` ditambah satu.
 
-RTP is designed to be useful over lossy networks. This gives the receiver a way to detect when packets have been lost.
+RTP dirancang agar berguna melalui jaringan yang _lossy_. Ini memberi penerima cara untuk mendeteksi kapan paket telah hilang.
 
 #### Timestamp
-The sampling instant for this packet. This is not a global clock, but how much time has passed in the media stream. Several RTP packets can have the same timestamp if they for example are all part of the same video frame.
+Momen pengambilan sampel untuk paket ini. Ini bukan jam global, tetapi berapa banyak waktu yang telah berlalu dalam _stream_ media. Beberapa paket RTP dapat memiliki _timestamp_ yang sama jika mereka misalnya semua bagian dari _frame_ video yang sama.
 
 #### Synchronization Source (SSRC)
-An `SSRC` is the unique identifier for this stream. This allows you to run multiple streams of media over a single RTP stream.
+`SSRC` adalah pengidentifikasi unik untuk _stream_ ini. Ini memungkinkan Anda menjalankan beberapa _stream_ media melalui satu _stream_ RTP.
 
 #### Contributing Source (CSRC)
-A list that communicates what `SSRC`es contributed to this packet.
+Daftar yang mengomunikasikan `SSRC` mana yang berkontribusi pada paket ini.
 
-This is commonly used for talking indicators. Let's say server side you combined multiple audio feeds into a single RTP stream. You could then use this field to say "Input stream A and C were talking at this moment".
+Ini biasanya digunakan untuk indikator berbicara. Katakanlah _server side_ Anda menggabungkan beberapa _feed_ audio menjadi satu _stream_ RTP. Anda kemudian dapat menggunakan bidang ini untuk mengatakan "Input _stream_ A dan C sedang berbicara pada saat ini".
 
 #### Payload
-The actual payload data. Might end with the count of how many padding bytes were added, if the padding flag is set.
+Data _payload_ yang sebenarnya. Mungkin diakhiri dengan hitungan berapa banyak _byte padding_ yang ditambahkan, jika _flag padding_ disetel.
 
 ### Extensions
 
 ## RTCP
 
-### Packet Format
-Every RTCP packet has the following structure:
+### Format Paket
+Setiap paket RTCP memiliki struktur berikut:
 
 ```
  0                   1                   2                   3
@@ -137,18 +137,18 @@ Every RTCP packet has the following structure:
 ```
 
 #### Version (V)
-`Version` is always `2`.
+`Version` selalu `2`.
 
 #### Padding (P)
-`Padding` is a bool that controls if the payload has padding.
+`Padding` adalah _bool_ yang mengontrol apakah _payload_ memiliki _padding_.
 
-The last byte of the payload contains a count of how many padding bytes were added.
+_Byte_ terakhir dari _payload_ berisi hitungan berapa banyak _byte padding_ yang ditambahkan.
 
 #### Reception Report Count (RC)
-The number of reports in this packet. A single RTCP packet can contain multiple events.
+Jumlah laporan dalam paket ini. Satu paket RTCP dapat berisi beberapa _event_.
 
 #### Packet Type (PT)
-Unique Identifier for what type of RTCP Packet this is. A WebRTC Agent doesn't need to support all these types, and support between Agents can be different. These are the ones you may commonly see though:
+Pengidentifikasi Unik untuk jenis paket RTCP apa ini. _Agent_ WebRTC tidak perlu mendukung semua jenis ini, dan dukungan antar _Agent_ dapat berbeda. Ini adalah yang mungkin sering Anda lihat:
 
 * `192` - Full INTRA-frame Request (`FIR`)
 * `193` - Negative ACKnowledgements (`NACK`)
@@ -157,267 +157,252 @@ Unique Identifier for what type of RTCP Packet this is. A WebRTC Agent doesn't n
 * `205` - Generic RTP Feedback
 * `206` - Payload Specific Feedback
 
-The significance of these packet types will be described in greater detail below.
+Signifikansi jenis paket ini akan dijelaskan lebih detail di bawah ini.
 
-### Full INTRA-frame Request (FIR) and Picture Loss Indication (PLI)
-Both `FIR` and `PLI` messages serve a similar purpose. These messages request a full key frame from the sender.
-`PLI` is used when partial frames were given to the decoder, but it was unable to decode them.
-This could happen because you had lots of packet loss, or maybe the decoder crashed.
+### Full INTRA-frame Request (FIR) dan Picture Loss Indication (PLI)
+Pesan `FIR` dan `PLI` melayani tujuan yang serupa. Pesan-pesan ini meminta _key frame_ penuh dari pengirim.
+`PLI` digunakan ketika _frame_ parsial diberikan ke _decoder_, tetapi tidak dapat mendekodenya.
+Ini bisa terjadi karena Anda memiliki banyak _packet loss_, atau mungkin _decoder_ crash.
 
-According to [RFC 5104](https://tools.ietf.org/html/rfc5104#section-4.3.1.2), `FIR` shall not be used when packets or frames are lost. That is  `PLI`s job. `FIR` requests a key frame for reasons other than packet loss - for example when a new member enters a video conference. They need a full key frame to start decoding video stream, the decoder will be discarding frames until key frame arrives.
+Menurut [RFC 5104](https://tools.ietf.org/html/rfc5104#section-4.3.1.2), `FIR` tidak boleh digunakan ketika paket atau _frame_ hilang. Itu adalah tugas `PLI`. `FIR` meminta _key frame_ untuk alasan selain _packet loss_ - misalnya ketika anggota baru memasuki konferensi video. Mereka memerlukan _key frame_ penuh untuk mulai mendekode _stream_ video, _decoder_ akan membuang _frame_ sampai _key frame_ tiba.
 
-It is a good idea for a receiver to request a full key frame right after connecting, this minimizes the delay between connecting, and an image showing up on the user's screen.
+Ini adalah ide yang baik bagi penerima untuk meminta _key frame_ penuh segera setelah terhubung, ini meminimalkan penundaan antara koneksi, dan gambar yang muncul di layar pengguna.
 
-`PLI` packets are a part of Payload Specific Feedback messages.
+Paket `PLI` adalah bagian dari pesan _Payload Specific Feedback_.
 
-In practice, software that is able to handle both `PLI` and `FIR` packets will act the same way in both cases. It will send a signal to the encoder to produce a new full key frame.
+Dalam praktiknya, perangkat lunak yang dapat menangani paket `PLI` dan `FIR` akan bertindak dengan cara yang sama dalam kedua kasus. Ini akan mengirim sinyal ke _encoder_ untuk menghasilkan _key frame_ penuh yang baru.
 
 ### Negative Acknowledgment
-A `NACK` requests that a sender re-transmits a single RTP packet. This is usually caused by an RTP packet getting lost, but could also happen because it is late.
+`NACK` meminta pengirim mengirim ulang satu paket RTP. Ini biasanya disebabkan oleh paket RTP yang hilang, tetapi juga bisa terjadi karena terlambat.
 
-`NACK`s are much more bandwidth efficient than requesting that the whole frame get sent again. Since RTP breaks up packets into very small chunks, you are really just requesting one small missing piece. The receiver crafts an RTCP message with the SSRC and Sequence Number. If the sender does not have this RTP packet available to re-send, it just ignores the message.
+`NACK` jauh lebih efisien _bandwidth_ daripada meminta seluruh _frame_ dikirim lagi. Karena RTP memecah paket menjadi potongan yang sangat kecil, Anda benar-benar hanya meminta satu bagian kecil yang hilang. Penerima membuat pesan RTCP dengan SSRC dan _Sequence Number_. Jika pengirim tidak memiliki paket RTP ini tersedia untuk dikirim ulang, ia hanya mengabaikan pesan tersebut.
 
-### Sender and Receiver Reports
-These reports are used to send statistics between agents. This communicates the amount of packets actually received and jitter.
+### Sender dan Receiver Reports
+Laporan ini digunakan untuk mengirim statistik antar _agent_. Ini mengomunikasikan jumlah paket yang benar-benar diterima dan _jitter_.
 
-The reports can be used for diagnostics and congestion control.
+Laporan dapat digunakan untuk diagnostik dan _congestion control_.
 
-## How RTP/RTCP solve problems together
-RTP and RTCP then work together to solve all the problems caused by networks. These techniques are still constantly changing!
+## Bagaimana RTP/RTCP menyelesaikan masalah bersama-sama
+RTP dan RTCP kemudian bekerja sama untuk menyelesaikan semua masalah yang disebabkan oleh jaringan. Teknik-teknik ini masih terus berubah!
 
 ### Forward Error Correction
-Also known as FEC. Another method of dealing with packet loss. FEC is when you send the same data multiple times, without it even being requested. This is done at the RTP level, or even lower with the codec.
+Juga dikenal sebagai FEC. Metode lain untuk menangani _packet loss_. FEC adalah ketika Anda mengirim data yang sama beberapa kali, tanpa diminta. Ini dilakukan pada level RTP, atau bahkan lebih rendah dengan _codec_.
 
-If the packet loss for a call is steady then FEC is a much lower latency solution than NACK. The round trip time of having to request, and then re-transmit the missing packet can be significant for NACKs.
+Jika _packet loss_ untuk panggilan stabil maka FEC adalah solusi latensi yang jauh lebih rendah daripada NACK. _Round trip time_ untuk meminta, dan kemudian mengirim ulang paket yang hilang bisa signifikan untuk NACK.
 
-### Adaptive Bitrate and Bandwidth Estimation
-As discussed in the [Real-time networking](../05-real-time-networking/) chapter, networks are unpredictable and unreliable. Bandwidth availability can change multiple times throughout a session.
-It is not uncommon to see available bandwidth change dramatically (orders of magnitude) within a second.
+### Adaptive Bitrate dan Bandwidth Estimation
+Seperti yang dibahas dalam bab [Real-time networking](../05-real-time-networking/), jaringan tidak dapat diprediksi dan tidak dapat diandalkan. Ketersediaan _bandwidth_ dapat berubah beberapa kali sepanjang sesi.
+Tidak jarang melihat _bandwidth_ yang tersedia berubah secara dramatis (beberapa kali lipat) dalam satu detik.
 
-The main idea is to adjust encoding bitrate based on predicted, current, and future available network bandwidth.
-This ensures that video and audio signal of the best possible quality is transmitted, and the connection does not get dropped because of network congestion.
-Heuristics that model the network behavior and tries to predict it is known as Bandwidth estimation.
+Ide utamanya adalah menyesuaikan _bitrate_ pengkodean berdasarkan _bandwidth_ jaringan yang tersedia yang diprediksi, saat ini, dan masa depan.
+Ini memastikan bahwa sinyal video dan audio dengan kualitas terbaik yang mungkin ditransmisikan, dan koneksi tidak terputus karena kemacetan jaringan.
+Heuristik yang memodelkan perilaku jaringan dan mencoba memprediksinya dikenal sebagai _Bandwidth estimation_.
 
-There is a lot of nuance to this, so let's explore in greater detail.
+Ada banyak nuansa untuk ini, jadi mari kita jelajahi lebih detail.
 
-## Identifying and Communicating Network Status
-RTP/RTCP runs over all types of different networks, and as a result, it's common for some
-communication to be dropped on its way from the sender to the receiver. Being built on top of UDP,
-there is no built-in mechanism for packet retransmission, let alone handling congestion control.
+## Mengidentifikasi dan Mengomunikasikan Status Jaringan
+RTP/RTCP berjalan di atas semua jenis jaringan yang berbeda, dan sebagai hasilnya, adalah umum untuk beberapa
+komunikasi dijatuhkan dalam perjalanan dari pengirim ke penerima. Dibangun di atas UDP,
+tidak ada mekanisme bawaan untuk retransmisi paket, apalagi menangani _congestion control_.
 
-To provide users the best experience, WebRTC must estimate qualities about the network path, and
-adapt to how those qualities change over time. The key traits to monitor include: available
-bandwidth (in each direction, as it may not be symmetric), round trip time, and jitter (fluctuations
-in round trip time). It needs to account for packet loss, and communicate changes in these
-properties as network conditions evolve.
+Untuk memberikan pengalaman terbaik kepada pengguna, WebRTC harus memperkirakan kualitas tentang jalur jaringan, dan
+beradaptasi dengan bagaimana kualitas tersebut berubah dari waktu ke waktu. Sifat kunci untuk dipantau meliputi: _bandwidth_ yang tersedia (di setiap arah, karena mungkin tidak simetris), _round trip time_, dan _jitter_ (fluktuasi
+dalam _round trip time_). Ini perlu memperhitungkan _packet loss_, dan mengomunikasikan perubahan dalam properti ini seiring kondisi jaringan berkembang.
 
-There are two primary objectives for these protocols:
+Ada dua tujuan utama untuk protokol ini:
 
-1. Estimate the available bandwidth (in each direction) supported by the network.
-2. Communicate network characteristics between sender and receiver.
+1. Memperkirakan _bandwidth_ yang tersedia (di setiap arah) yang didukung oleh jaringan.
+2. Mengomunikasikan karakteristik jaringan antara pengirim dan penerima.
 
-RTP/RTCP has three different approaches to address this problem. They all have their pros and cons,
-and generally each generation has improved over its predecessors. Which implementation you use will
-depend primarily on the software stack available to your clients and the libraries available for
-building your application.
+RTP/RTCP memiliki tiga pendekatan berbeda untuk mengatasi masalah ini. Semuanya memiliki pro dan kontra,
+dan umumnya setiap generasi telah meningkat dari pendahulunya. Implementasi mana yang Anda gunakan akan
+bergantung terutama pada _stack_ perangkat lunak yang tersedia untuk klien Anda dan _library_ yang tersedia untuk
+membangun aplikasi Anda.
 
 ### Receiver Reports / Sender Reports
-The first implementation is the pair of Receiver Reports and its complement, Sender Reports. These
-RTCP messages are defined in [RFC 3550](https://tools.ietf.org/html/rfc3550#section-6.4), and are
-responsible for communicating network status between endpoints. Receiver Reports focuses on
-communicating qualities about the network (including packet loss, round-trip time, and jitter), and
-it pairs with other algorithms that are then responsible for estimating available bandwidth based on
-these reports.
+Implementasi pertama adalah pasangan _Receiver Reports_ dan komplemennya, _Sender Reports_. Ini
+pesan RTCP didefinisikan dalam [RFC 3550](https://tools.ietf.org/html/rfc3550#section-6.4), dan
+bertanggung jawab untuk mengomunikasikan status jaringan antar _endpoint_. _Receiver Reports_ berfokus pada
+mengomunikasikan kualitas tentang jaringan (termasuk _packet loss_, _round-trip time_, dan _jitter_), dan
+berpasangan dengan algoritma lain yang kemudian bertanggung jawab untuk memperkirakan _bandwidth_ yang tersedia berdasarkan
+laporan ini.
 
-Sender and Receiver reports (SR and RR) together paint a picture of the network quality. They are
-sent on a schedule for each SSRC, and they are the inputs used when estimating available
-bandwidth. Those estimates are made by the sender after receiving the RR data, containing the
-following fields:
+_Sender_ dan _Receiver report_ (SR dan RR) bersama-sama melukiskan gambaran kualitas jaringan. Mereka
+dikirim sesuai jadwal untuk setiap SSRC, dan mereka adalah input yang digunakan saat memperkirakan _bandwidth_ yang tersedia. Perkiraan tersebut dibuat oleh pengirim setelah menerima data RR, yang berisi
+bidang-bidang berikut:
 
-* **Fraction Lost** - What percentage of packets have been lost since the last Receiver Report.
-* **Cumulative Number of Packets Lost** - How many packets have been lost during the entire call.
-* **Extended Highest Sequence Number Received** - What was the last Sequence Number received, and
-  how many times has it rolled over.
-* **Interarrival Jitter** - The rolling Jitter for the entire call.
-* **Last Sender Report Timestamp** - Last known time on sender, used for round-trip time
-  calculation.
+* **Fraction Lost** - Berapa persentase paket yang hilang sejak _Receiver Report_ terakhir.
+* **Cumulative Number of Packets Lost** - Berapa banyak paket yang hilang selama seluruh panggilan.
+* **Extended Highest Sequence Number Received** - Apa _Sequence Number_ terakhir yang diterima, dan
+  berapa kali telah berputar.
+* **Interarrival Jitter** - _Jitter_ bergulir untuk seluruh panggilan.
+* **Last Sender Report Timestamp** - Waktu terakhir yang diketahui pada pengirim, digunakan untuk perhitungan _round-trip time_.
 
-SR and RR work together to compute round-trip time.
+SR dan RR bekerja bersama untuk menghitung _round-trip time_.
 
-The sender includes its local time, `sendertime1` in SR. When the receiver gets an SR packet, it
-sends back RR. Among other things, the RR includes `sendertime1` just received from the sender.
-There will be a delay between receiving the SR and sending the RR. Because of that, the RR also
-includes a "delay since last sender report" time - `DLSR`. The `DLSR` is used to adjust the
-round-trip time estimate later on in the process. Once the sender receives the RR it subtracts
-`sendertime1` and `DLSR` from the current time `sendertime2`. This time delta is called round-trip
-propagation delay or round-trip time.
+Pengirim menyertakan waktu lokalnya, `sendertime1` dalam SR. Ketika penerima mendapat paket SR, ia
+mengirim kembali RR. Di antara hal-hal lain, RR menyertakan `sendertime1` yang baru saja diterima dari pengirim.
+Akan ada penundaan antara menerima SR dan mengirim RR. Karena itu, RR juga
+menyertakan waktu "delay since last sender report" - `DLSR`. `DLSR` digunakan untuk menyesuaikan
+perkiraan _round-trip time_ nanti dalam proses. Setelah pengirim menerima RR, ia mengurangi
+`sendertime1` dan `DLSR` dari waktu saat ini `sendertime2`. Delta waktu ini disebut _round-trip
+propagation delay_ atau _round-trip time_.
 
 `rtt = sendertime2 - sendertime1 - DLSR`
 
-Round-trip time in plain English:
-- I send you a message with my clock's current reading, say it is 4:20pm, 42 seconds and 420 milliseconds.
-- You send me this same timestamp back.
-- You also include the time elapsed from reading my message to sending the message back, say 5 milliseconds.
-- Once I receive the time back, I look at the clock again.
-- Now my clock says 4:20pm, 42 seconds 690 milliseconds.
-- It means that it took 265 milliseconds (690 - 420 - 5) to reach you and return back to me.
-- Therefore, the round-trip time is 265 milliseconds.
+_Round-trip time_ dalam bahasa Inggris sederhana:
+- Saya mengirim Anda pesan dengan pembacaan jam saya saat ini, katakanlah jam 4:20 sore, 42 detik dan 420 milidetik.
+- Anda mengirim saya _timestamp_ yang sama ini kembali.
+- Anda juga menyertakan waktu yang berlalu dari membaca pesan saya hingga mengirim pesan kembali, katakanlah 5 milidetik.
+- Setelah saya menerima waktu kembali, saya melihat jam lagi.
+- Sekarang jam saya mengatakan jam 4:20 sore, 42 detik 690 milidetik.
+- Itu berarti dibutuhkan 265 milidetik (690 - 420 - 5) untuk mencapai Anda dan kembali ke saya.
+- Oleh karena itu, _round-trip time_ adalah 265 milidetik.
 
 ![Round-trip time](../images/06-rtt.png "Round-trip time")
 
 <!-- Missing: What is an example congestion-control alg that pairs with RR/SR? -->
 
-### TMMBR, TMMBN, REMB and TWCC, paired with GCC
+### TMMBR, TMMBN, REMB dan TWCC, dipasangkan dengan GCC
 
 #### Google Congestion Control (GCC)
-The Google Congestion Control (GCC) algorithm (outlined in
-[draft-ietf-rmcat-gcc-02](https://tools.ietf.org/html/draft-ietf-rmcat-gcc-02)) addresses the
-challenge of bandwidth estimation. It pairs with a variety of other protocols to facilitate the
-associated communication requirements. Consequently, it is well-suited to run on either the
-receiving side (when run with TMMBR/TMMBN or REMB) or on the sending side (when run with TWCC).
+Algoritma _Google Congestion Control_ (GCC) (dijelaskan dalam
+[draft-ietf-rmcat-gcc-02](https://tools.ietf.org/html/draft-ietf-rmcat-gcc-02)) mengatasi
+tantangan estimasi _bandwidth_. Ini berpasangan dengan berbagai protokol lain untuk memfasilitasi
+persyaratan komunikasi terkait. Akibatnya, ini sangat cocok untuk berjalan baik di sisi
+penerima (ketika dijalankan dengan TMMBR/TMMBN atau REMB) atau di sisi pengirim (ketika dijalankan dengan TWCC).
 
-To arrive at estimates for available bandwidth, GCC focuses on packet loss and fluctuations in frame
-arrival time as its two primary metrics. It runs these metrics through two linked controllers: the
-loss-based controller and the delay-based controller.
+Untuk mencapai perkiraan untuk _bandwidth_ yang tersedia, GCC berfokus pada _packet loss_ dan fluktuasi dalam waktu
+kedatangan _frame_ sebagai dua metrik utamanya. Ini menjalankan metrik ini melalui dua _controller_ yang terhubung:
+_controller_ berbasis kehilangan dan _controller_ berbasis penundaan.
 
-GCC's first component, the loss-based controller, is simple:
+Komponen pertama GCC, _loss-based controller_, sederhana:
 
-* If packet loss is above 10%, the bandwidth estimate is reduced.
-* If packet loss is between 2-10%, the bandwidth estimate stays the same.
-* If packet loss is below 2%, the bandwidth estimate is increased.
+* Jika _packet loss_ di atas 10%, perkiraan _bandwidth_ dikurangi.
+* Jika _packet loss_ antara 2-10%, perkiraan _bandwidth_ tetap sama.
+* Jika _packet loss_ di bawah 2%, perkiraan _bandwidth_ ditingkatkan.
 
-Packet loss measurements are taken frequently. Depending on the paired communication protocol,
-packet loss may be either be explicitly communicated (as with TWCC) or inferred (as with TMMBR/TMMBN
-and REMB). These percentages are evaluated over time windows of around one second.
+Pengukuran _packet loss_ dilakukan dengan sering. Tergantung pada protokol komunikasi berpasangan,
+_packet loss_ dapat dikomunikasikan secara eksplisit (seperti dengan TWCC) atau disimpulkan (seperti dengan TMMBR/TMMBN
+dan REMB). Persentase ini dievaluasi melalui jendela waktu sekitar satu detik.
 
-The second function cooperates with the loss-based controller, and looks at the variations in packet
-arrival time. This delay-based controller aims to identify when network links are becoming
-increasingly congested, and may reduce bandwidth estimates even before packet loss occurs. The
-theory is that the busiest network interface along the path will continue queuing up packets up
-until the interface runs out of capacity inside its buffers. If that interface continues to receive
-more traffic than it is able to send, it will be forced to drop all packets that it cannot fit into
-its buffer space. This type of packet loss is particularly disruptive for low-latency/real-time
-communication, but it can also degrade throughput for all communication over that link and should
-ideally be avoided. Thus, GCC tries to figure out if network links are growing larger and larger
-queue depths _before_ packet loss actually occurs. It will reduce the bandwidth usage if it observes
-increased queuing delays over time.
+_Delay-based controller_ bekerja sama dengan _loss-based controller_, dan melihat variasi dalam 
+waktu kedatangan paket. _Delay-based controller_ ini bertujuan untuk mengidentifikasi kapan tautan jaringan menjadi
+semakin padat, dan dapat mengurangi perkiraan _bandwidth_ bahkan sebelum _packet loss_ terjadi.
+Teorinya adalah bahwa antarmuka jaringan yang paling sibuk di sepanjang jalur akan terus mengantri paket
+sampai antarmuka kehabisan kapasitas di dalam _buffer_-nya. Jika antarmuka itu terus menerima
+lebih banyak lalu lintas daripada yang dapat dikirimnya, ia akan dipaksa untuk menjatuhkan semua paket yang tidak dapat masuk ke dalam
+ruang _buffer_-nya. Jenis _packet loss_ ini sangat mengganggu untuk komunikasi latensi rendah/_real-time_,
+tetapi juga dapat menurunkan throughput untuk semua komunikasi melalui tautan itu dan idealnya
+harus dihindari. Dengan demikian, GCC mencoba mencari tahu apakah tautan jaringan menumbuhkan kedalaman antrian yang semakin besar dan lebih besar _sebelum_ _packet loss_ benar-benar terjadi. Ini akan mengurangi penggunaan _bandwidth_ jika mengamati
+peningkatan penundaan antrian dari waktu ke waktu.
 
-To achieve this, GCC tries to infer increases in queue depth by measuring subtle increases in round
-trip time. It records frames' "inter-arrival time", `t(i) - t(i-1)`: the difference in arrival time
-of two groups of packets (generally, consecutive video frames). These packet groups frequently
-depart at regular time intervals (e.g. every 1/24 seconds for a 24 fps video). As a result,
-measuring inter-arrival time is then as simple as recording the time difference between the start of
-the first packet group (i.e. frame) and the first frame of the next.
+Untuk mencapai ini, GCC mencoba menyimpulkan peningkatan kedalaman antrian dengan mengukur peningkatan halus dalam _round
+trip time_. Ini mencatat "inter-arrival time" _frame_, `t(i) - t(i-1)`: perbedaan waktu kedatangan
+dari dua kelompok paket (umumnya, _frame_ video berturut-turut). Kelompok paket ini sering
+berangkat pada interval waktu yang teratur (misalnya setiap 1/24 detik untuk video 24 fps). Sebagai hasilnya,
+mengukur _inter-arrival time_ kemudian sesederhana merekam perbedaan waktu antara awal dari
+kelompok paket pertama (yaitu _frame_) dan _frame_ pertama dari yang berikutnya.
 
-In the diagram below, the median inter-packet delay increase is +20 msec, a clear indicator of
-network congestion.
+Dalam diagram di bawah ini, peningkatan penundaan _inter-packet_ median adalah +20 milidetik, indikator yang jelas dari
+kemacetan jaringan.
 
 ![TWCC with delay](../images/06-twcc.png "TWCC with delay")
 
-If inter-arrival time increases over time, that is presumed evidence of increased queue depth on
-connecting network interfaces and considered to be network congestion. (Note: GCC is smart enough to
-control these measurements for fluctuations in frame byte sizes.) GCC refines its latency
-measurements using a [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) and takes many
-measurements of network round-trip times (and its variations) before flagging congestion. One can
-think of GCC's Kalman filter as taking the place of a linear regression: helping to make accurate
-predictions even when jitter adds noise into the timing measurements. Upon flagging congestion, GCC
-will reduce the available bitrate. Alternatively, under steady network conditions, it can slowly
-increase its bandwidth estimates to test out higher load values.
+Jika _inter-arrival time_ meningkat dari waktu ke waktu, itu dianggap bukti peningkatan kedalaman antrian pada
+antarmuka jaringan yang menghubungkan dan dianggap kemacetan jaringan. (Catatan: GCC cukup pintar untuk
+mengontrol pengukuran ini untuk fluktuasi dalam ukuran _byte frame_.) GCC memperbaiki pengukuran latensinya menggunakan [filter Kalman](https://en.wikipedia.org/wiki/Kalman_filter) dan mengambil banyak
+pengukuran _round-trip time_ jaringan (dan variasinya) sebelum menandai kemacetan. Orang dapat
+menganggap filter Kalman GCC sebagai pengganti regresi linier: membantu membuat prediksi yang akurat
+bahkan ketika _jitter_ menambahkan kebisingan ke dalam pengukuran _timing_. Setelah menandai kemacetan, GCC
+akan mengurangi _bitrate_ yang tersedia. Atau, dalam kondisi jaringan yang stabil, ia dapat perlahan-lahan
+meningkatkan perkiraan _bandwidth_-nya untuk menguji nilai beban yang lebih tinggi.
 
-#### TMMBR, TMMBN, and REMB
-For TMMBR/TMMBN and REMB, the receiving side first estimates available inbound bandwidth (using a
-protocol such as GCC), and then communicates these bandwidth estimates to the remote senders. They
-do not need to exchange details about packet loss or other qualities about network congestion
-because operating on the receiving side allows them to measure inter-arrival time and packet loss
-directly. Instead, TMMBR, TMMBN, and REMB exchange just the bandwidth estimates themselves:
+#### TMMBR, TMMBN, dan REMB
+Untuk TMMBR/TMMBN dan REMB, sisi penerima pertama-tama memperkirakan _bandwidth_ masuk yang tersedia (menggunakan
+protokol seperti GCC), dan kemudian mengomunikasikan perkiraan _bandwidth_ ini ke pengirim _remote_. Mereka
+tidak perlu bertukar detail tentang _packet loss_ atau kualitas lain tentang kemacetan jaringan
+karena beroperasi di sisi penerima memungkinkan mereka mengukur _inter-arrival time_ dan _packet loss_
+secara langsung. Sebaliknya, TMMBR, TMMBN, dan REMB hanya bertukar perkiraan _bandwidth_ itu sendiri:
 
-* **Temporary Maximum Media Stream Bit Rate Request** - A mantissa/exponent of a requested bitrate
-  for a single SSRC.
-* **Temporary Maximum Media Stream Bit Rate Notification** - A message to notify that a TMMBR has
-  been received.
-* **Receiver Estimated Maximum Bitrate** - A mantissa/exponent of a requested bitrate for the
-  entire session.
+* **Temporary Maximum Media Stream Bit Rate Request** - Mantissa/eksponen dari _bitrate_ yang diminta
+  untuk satu SSRC.
+* **Temporary Maximum Media Stream Bit Rate Notification** - Pesan untuk memberi tahu bahwa TMMBR telah
+  diterima.
+* **Receiver Estimated Maximum Bitrate** - Mantissa/eksponen dari _bitrate_ yang diminta untuk
+  seluruh sesi.
 
-TMMBR and TMMBN came first and are defined in [RFC 5104](https://tools.ietf.org/html/rfc5104). REMB
-came later, there was a draft submitted in
-[draft-alvestrand-rmcat-remb](https://tools.ietf.org/html/draft-alvestrand-rmcat-remb-03), but it
-was never standardized.
+TMMBR dan TMMBN datang pertama dan didefinisikan dalam [RFC 5104](https://tools.ietf.org/html/rfc5104). REMB
+datang kemudian, ada _draft_ yang diajukan dalam
+[draft-alvestrand-rmcat-remb](https://tools.ietf.org/html/draft-alvestrand-rmcat-remb-03), tetapi
+tidak pernah distandarisasi.
 
-An example session that uses REMB might behave like the following:
+Contoh sesi yang menggunakan REMB mungkin berperilaku seperti berikut:
 
 ![REMB](../images/06-remb.png "REMB")
 
-This method works great on paper. The Sender receives estimation from the receiver, sets encoder bitrate to the received value. Tada! We've adjusted to the network conditions.
+Metode ini bekerja dengan baik di atas kertas. Pengirim menerima estimasi dari penerima, mengatur _bitrate encoder_ ke nilai yang diterima. Tada! Kami telah menyesuaikan dengan kondisi jaringan.
 
-However in practice, the REMB approach has multiple drawbacks.
+Namun dalam praktiknya, pendekatan REMB memiliki beberapa kekurangan.
 
-Encoder inefficiency is the first. When you set a bitrate for the encoder, it won't necessarily
-output the exact bitrate you requested. Encoding may output more or fewer bits, depending on the
-encoder settings and the frame being encoded.
+Ketidakefisienan _encoder_ adalah yang pertama. Ketika Anda menetapkan _bitrate_ untuk _encoder_, itu tidak selalu
+menghasilkan _bitrate_ yang tepat yang Anda minta. Pengkodean dapat menghasilkan lebih banyak atau lebih sedikit bit, tergantung pada
+pengaturan _encoder_ dan _frame_ yang dikode.
 
-For example, using the x264 encoder with `tune=zerolatency` can significantly deviate from the specified target bitrate. Here is a possible scenario:
+Misalnya, menggunakan _encoder_ x264 dengan `tune=zerolatency` dapat secara signifikan menyimpang dari _target bitrate_ yang ditentukan. Berikut adalah skenario yang mungkin:
 
-- Let's say we start off by setting the bitrate to 1000 kbps.
-- The encoder outputs only 700 kbps, because there is not enough high frequency features to encode. (AKA - "staring at a wall".)
-- Let's also imagine that the receiver gets the 700 kbps video at zero packet loss. It then applies REMB rule 1 to increase the incoming bitrate by 8%.
-- The receiver sends a REMB packet with a 756 kbps suggestion (700 kbps * 1.08) to the sender.
-- The sender sets the encoder bitrate to 756 kbps.
-- The encoder outputs an even lower bitrate.
-- This process continues to repeat itself, lowering the bitrate to the absolute minimum.
+- Katakanlah kita mulai dengan mengatur _bitrate_ ke 1000 kbps.
+- _Encoder_ hanya menghasilkan 700 kbps, karena tidak ada cukup fitur frekuensi tinggi untuk dikode. (AKA - "menatap dinding".)
+- Mari kita juga bayangkan bahwa penerima mendapat video 700 kbps dengan nol _packet loss_. Kemudian ia menerapkan aturan REMB 1 untuk meningkatkan _bitrate_ masuk sebesar 8%.
+- Penerima mengirim paket REMB dengan saran 756 kbps (700 kbps * 1.08) ke pengirim.
+- Pengirim mengatur _bitrate encoder_ ke 756 kbps.
+- _Encoder_ menghasilkan _bitrate_ yang lebih rendah lagi.
+- Proses ini terus berulang, menurunkan _bitrate_ ke minimum absolut.
 
-You can see how this would cause heavy encoder parameter tuning, and surprise users with unwatchable video even on a great connection.
+Anda dapat melihat bagaimana ini akan menyebabkan penyetelan parameter _encoder_ yang berat, dan mengejutkan pengguna dengan video yang tidak dapat ditonton bahkan pada koneksi yang bagus.
 
 #### Transport Wide Congestion Control
-Transport Wide Congestion Control is the latest development in RTCP network status
-communication. It is defined in
+_Transport Wide Congestion Control_ adalah perkembangan terbaru dalam komunikasi status jaringan RTCP. Ini didefinisikan dalam
 [draft-holmer-rmcat-transport-wide-cc-extensions-01](https://datatracker.ietf.org/doc/html/draft-holmer-rmcat-transport-wide-cc-extensions-01),
-but has also never been standardized.
+tetapi juga tidak pernah distandarisasi.
 
-TWCC uses a quite simple principle:
+TWCC menggunakan prinsip yang cukup sederhana:
 
 ![TWCC](../images/06-twcc-idea.png "TWCC")
 
-With REMB, the receiver instructs the sending side in the available download bitrate. It uses
-precise measurements about inferred packet loss and data only it has about inter-packet arrival
-time.
+Dengan REMB, penerima menginstruksikan sisi pengirim dalam _bitrate download_ yang tersedia. Ini menggunakan
+pengukuran yang tepat tentang _packet loss_ yang disimpulkan dan data hanya yang dimilikinya tentang waktu kedatangan _inter-packet_.
 
-TWCC is almost a hybrid approach between the SR/RR and REMB generations of protocols. It brings the
-bandwidth estimates back to the sender side (similar to SR/RR), but its bandwidth estimate technique
-more closely resembles the REMB generation.
+TWCC hampir merupakan pendekatan hibrida antara SR/RR dan generasi protokol REMB. Ini membawa
+perkiraan _bandwidth_ kembali ke sisi pengirim (mirip dengan SR/RR), tetapi teknik estimasi _bandwidth_-nya
+lebih mirip dengan generasi REMB.
 
-With TWCC, the receiver lets the sender know the arrival time of each packet. This is enough
-information for the sender to measure inter-packet arrival delay variation, as well as identifying
-which packets were dropped or arrived too late to contribute to the audio/video feed. With this data
-being exchanged frequently, the sender able to quickly adjust to changing network conditions and
-vary its output bandwidth using an algorithm such GCC.
+Dengan TWCC, penerima memberi tahu pengirim waktu kedatangan setiap paket. Ini adalah informasi yang cukup
+untuk pengirim mengukur variasi penundaan kedatangan _inter-packet_, serta mengidentifikasi
+paket mana yang dijatuhkan atau tiba terlambat untuk berkontribusi pada _feed_ audio/video. Dengan data ini
+yang dipertukarkan dengan sering, pengirim dapat dengan cepat menyesuaikan dengan kondisi jaringan yang berubah dan
+bervariasi _output bandwidth_-nya menggunakan algoritma seperti GCC.
 
-The sender keeps track of sent packets, their sequence numbers, sizes and timestamps. When the
-sender receives RTCP messages from the receiver, it compares the send inter-packet delays with
-the receive delays. If the receive delays increase, it signals network congestion, and the sender
-must take corrective measures.
+Pengirim melacak paket yang dikirim, nomor urutnya, ukuran dan _timestamp_. Ketika
+pengirim menerima pesan RTCP dari penerima, ia membandingkan penundaan _inter-packet_ pengiriman dengan
+penundaan penerimaan. Jika penundaan penerimaan meningkat, ini menandakan kemacetan jaringan, dan pengirim
+harus mengambil tindakan korektif.
 
-By providing the sender with the raw data, TWCC provides an excellent view into real time network
-conditions:
-- Almost instant packet loss behavior, down to the individual lost packets
-- Accurate send bitrate
-- Accurate receive bitrate
-- Jitter measurement
-- Differences between send and receive packet delays
-- Description of how the network tolerated bursty or steady bandwidth delivery
+Dengan memberikan pengirim data mentah, TWCC menyediakan pandangan yang sangat baik ke dalam kondisi jaringan _real time_:
+- Perilaku _packet loss_ hampir instan, hingga paket individual yang hilang
+- _Bitrate_ pengiriman yang akurat
+- _Bitrate_ penerimaan yang akurat
+- Pengukuran _jitter_
+- Perbedaan antara penundaan paket pengiriman dan penerimaan
+- Deskripsi tentang bagaimana jaringan mentolerir pengiriman _bandwidth_ yang _bursty_ atau stabil
 
-One of the most significant contributions of TWCC is the flexibility it affords to WebRTC
-developers. By consolidating the congestion control algorithm to the sending side, it allows simple
-client code that can be widely used and requires minimal enhancements over time. The complex
-congestion control algorithms can then be iterated more quickly on the hardware they directly
-control (like the Selective Forwarding Unit, discussed in section 8). In the case of browsers and
-mobile devices, this means those clients can benefit from algorithm enhancements without having to
-await standardization or browser updates (which can take quite a long time to be widely available).
+Salah satu kontribusi paling signifikan dari TWCC adalah fleksibilitas yang diberikannya kepada _developer_ WebRTC. Dengan mengkonsolidasikan algoritma _congestion control_ ke sisi pengirim, ini memungkinkan kode klien sederhana yang dapat digunakan secara luas dan memerlukan peningkatan minimal dari waktu ke waktu. Algoritma _congestion control_ yang kompleks kemudian dapat diiterasi lebih cepat pada perangkat keras yang mereka kontrol langsung (seperti _Selective Forwarding Unit_, dibahas di bagian 8). Dalam kasus peramban dan perangkat seluler, ini berarti klien tersebut dapat mengambil manfaat dari peningkatan algoritma tanpa harus menunggu standardisasi atau pembaruan peramban (yang dapat memakan waktu cukup lama untuk tersedia secara luas).
 
-## Bandwidth Estimation Alternatives
-The most deployed implementation is "A Google Congestion Control Algorithm for Real-Time
-Communication" defined in
+## Alternatif Bandwidth Estimation
+Implementasi yang paling banyak diterapkan adalah "A Google Congestion Control Algorithm for Real-Time
+Communication" yang didefinisikan dalam
 [draft-alvestrand-rmcat-congestion](https://tools.ietf.org/html/draft-alvestrand-rmcat-congestion-02).
 
-There are several alternatives to GCC, for example [NADA: A Unified Congestion Control Scheme for
-Real-Time Media](https://tools.ietf.org/html/draft-zhu-rmcat-nada-04) and [SCReAM - Self-Clocked
+Ada beberapa alternatif untuk GCC, misalnya [NADA: A Unified Congestion Control Scheme for
+Real-Time Media](https://tools.ietf.org/html/draft-zhu-rmcat-nada-04) dan [SCReAM - Self-Clocked
 Rate Adaptation for Multimedia](https://tools.ietf.org/html/draft-johansson-rmcat-scream-cc-05).

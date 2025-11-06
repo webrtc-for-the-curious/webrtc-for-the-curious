@@ -6,365 +6,347 @@ weight: 11
 
 
 # History
-When learning WebRTC developers often feel frustrated by the complexity. They
-see
-WebRTC features irrelevant to their current project and wish WebRTC was
-simpler. The issue
-is that everyone has a different set of use cases. Real-time communications has
-a rich
-history with lots of different people building many different things.
+Ketika mempelajari WebRTC, _developer_ sering merasa frustrasi dengan kompleksitasnya. Mereka
+melihat fitur WebRTC yang tidak relevan dengan proyek mereka saat ini dan berharap WebRTC lebih
+sederhana. Masalahnya adalah bahwa setiap orang memiliki set kasus penggunaan yang berbeda. Komunikasi _real-time_ memiliki
+sejarah yang kaya dengan banyak orang yang berbeda membangun banyak hal yang berbeda.
 
-This chapter contains interviews with the authors of the protocols that make up
-WebRTC.
-It gives insight into the designs made when building each protocol, and
-finishes with an
-interview about WebRTC itself. If you understand the intentions and designs of
-the software
-you can build more effective systems with it.
+Bab ini berisi wawancara dengan penulis protokol yang membentuk WebRTC.
+Ini memberikan wawasan tentang desain yang dibuat saat membangun setiap protokol, dan
+diakhiri dengan wawancara tentang WebRTC itu sendiri. Jika Anda memahami niat dan desain dari
+perangkat lunak, Anda dapat membangun sistem yang lebih efektif dengannya.
 
 ## RTP
-RTP and RTCP is the protocol that handles all media transport for WebRTC. It
-was defined in [RFC 1889](https://tools.ietf.org/html/rfc1889) in January 1996.
-We are very lucky to have one of the authors [Ron
-Frederick](https://github.com/ronf) talk about it himself. Ron recently uploaded
-[Network Video tool](https://github.com/ronf/nv) to GitHub, a project that
-informed RTP.
+RTP dan RTCP adalah protokol yang menangani semua transpor media untuk WebRTC. Ini
+didefinisikan dalam [RFC 1889](https://tools.ietf.org/html/rfc1889) pada Januari 1996.
+Kami sangat beruntung memiliki salah satu penulis [Ron
+Frederick](https://github.com/ronf) berbicara tentang itu sendiri. Ron baru-baru ini mengunggah
+[Network Video tool](https://github.com/ronf/nv) ke GitHub, sebuah proyek yang
+menginformasikan RTP.
 
-### In his own words
+### Dengan kata-katanya sendiri
 
-In October of 1992, I began to experiment with the Sun VideoPix frame grabber
-card, with the idea of writing a network videoconferencing tool based upon IP
-multicast. It was modeled after "vat" -- an audioconferencing tool developed
-at LBL, in that it used a similar lightweight session protocol for users
-joining into conferences, where you simply sent data to a particular
-multicast group and watched that group for any traffic from other group
-members.
+Pada Oktober 1992, saya mulai bereksperimen dengan kartu _frame grabber_ Sun VideoPix, dengan ide menulis alat konferensi video jaringan berdasarkan _multicast_ IP. Ini dimodelkan setelah "vat" -- alat konferensi audio yang dikembangkan
+di LBL, karena menggunakan protokol sesi _lightweight_ yang serupa untuk pengguna
+bergabung ke konferensi, di mana Anda cukup mengirim data ke grup _multicast_ tertentu dan menonton grup itu untuk lalu lintas apa pun dari anggota grup
+lainnya.
 
-In order for the program to really be successful, it needed to compress the
-video data before putting it out on the network. My goal was to make an
-acceptable looking stream of data that would fit in about 128 kbps, or the
-bandwidth available on a standard home ISDN line. I also hoped to produce
-something that was still watchable that fit in half this bandwidth. This
-meant I needed approximately a factor of 20 in compression for the particular
-image size and frame rate I was working with. I was able to achieve this
-compression and filed for a patent on the techniques I used, later granted
-as patent [US5485212A][1]: Software video compression for teleconferencing.
+Agar program benar-benar berhasil, ia perlu mengompresi
+data video sebelum menempatkannya di jaringan. Tujuan saya adalah membuat
+_stream_ data yang terlihat dapat diterima yang akan masuk dalam sekitar 128 kbps, atau _bandwidth_ yang tersedia pada jalur ISDN rumah standar. Saya juga berharap menghasilkan
+sesuatu yang masih dapat ditonton yang masuk dalam setengah _bandwidth_ ini. Ini
+berarti saya memerlukan faktor kompresi sekitar 20 untuk ukuran
+gambar dan _frame rate_ tertentu yang saya kerjakan. Saya dapat mencapai kompresi ini dan mengajukan paten untuk teknik yang saya gunakan, kemudian diberikan
+sebagai paten [US5485212A][1]: Kompresi video perangkat lunak untuk konferensi telepon.
 
 [1]: https://patents.google.com/patent/US5485212A
 
-In early November of 1992, I released the videoconferencing tool "nv" (in
-binary form) to the Internet community. After some initial testing, it was used
-to videocast parts of the November Internet Engineering Task Force all around
-the world. Approximately 200 subnets in 15 countries were capable of
-receiving this broadcast, and approximately 50-100 people received video using
-"nv" at some point in the week.
+Pada awal November 1992, saya merilis alat konferensi video "nv" (dalam
+bentuk biner) ke komunitas Internet. Setelah beberapa pengujian awal, itu digunakan
+untuk _videocast_ bagian dari _Internet Engineering Task Force_ November ke seluruh
+dunia. Sekitar 200 subnet di 15 negara mampu
+menerima siaran ini, dan sekitar 50-100 orang menerima video menggunakan
+"nv" di beberapa titik dalam minggu itu.
 
-Over the next couple of months, three other workshops and some smaller
-meetings used "nv" to broadcast to the Internet at large, including the
-Australian NetWorkshop, the MCNC Packet Audio and Video workshop, and the
-MultiG workshop on distributed virtual realities in Sweden.
+Selama beberapa bulan berikutnya, tiga _workshop_ lain dan beberapa pertemuan yang lebih kecil
+menggunakan "nv" untuk menyiarkan ke Internet secara luas, termasuk
+_Australian NetWorkshop_, _workshop MCNC Packet Audio and Video_, dan
+_workshop_ MultiG tentang realitas virtual terdistribusi di Swedia.
 
-A source code release of "nv" followed in February of 1993, and in March I
-released a version of the tool where I introduced a new wavelet-based
-compression scheme. In May of 1993, I added support for color video.
+Rilis _source code_ dari "nv" mengikuti pada Februari 1993, dan pada Maret saya
+merilis versi alat di mana saya memperkenalkan skema kompresi berbasis _wavelet_ yang baru. Pada Mei 1993, saya menambahkan dukungan untuk video berwarna.
 
-The network protocol used for "nv" and other Internet conferencing tools
-became the basis of the Realtime Transport Protocol (RTP), standardized
-through the Internet Engineering Task Force (IETF), first published in
-RFCs [1889][2]-[1890][3] and later revised in RFCs [3550][4]-[3551][5]
-along with various other RFCs that covered profiles for carrying specific
-formats of audio and video.
+Protokol jaringan yang digunakan untuk "nv" dan alat konferensi Internet lainnya
+menjadi dasar dari _Realtime Transport Protocol_ (RTP), distandarisasi
+melalui _Internet Engineering Task Force_ (IETF), pertama kali diterbitkan dalam
+RFC [1889][2]-[1890][3] dan kemudian direvisi dalam RFC [3550][4]-[3551][5]
+bersama dengan berbagai RFC lain yang mencakup profil untuk membawa format
+audio dan video tertentu.
 
 [2]: https://tools.ietf.org/html/rfc1889
 [3]: https://tools.ietf.org/html/rfc1890
 [4]: https://tools.ietf.org/html/rfc3550
 [5]: https://tools.ietf.org/html/rfc3551
 
-Over the next couple of years, work continued on "nv", porting the tool
-to a number of additional hardware platforms and video capture devices.
-It continued to be used as one of the primary tools for broadcasting
-conferences on the Internet at the time, including being selected by NASA
-to broadcast live coverage of shuttle missions online.
+Selama beberapa tahun berikutnya, pekerjaan berlanjut pada "nv", mem-_port_ alat
+ke sejumlah platform perangkat keras dan perangkat pengambilan video tambahan.
+Ini terus digunakan sebagai salah satu alat utama untuk menyiarkan
+konferensi di Internet pada saat itu, termasuk dipilih oleh NASA
+untuk menyiarkan liputan langsung misi _shuttle_ secara _online_.
 
-In 1994, I added support in "nv" for supporting video compression algorithms
-developed by others, including some hardware compression schemes such as
-the CellB format supported by the SunVideo video capture card. This also
-allowed "nv" to send video in CUSeeMe format, to send video to users
-running CUSeeMe on Macs and PCs.
+Pada 1994, saya menambahkan dukungan dalam "nv" untuk mendukung algoritma kompresi video
+yang dikembangkan oleh orang lain, termasuk beberapa skema kompresi perangkat keras seperti
+format CellB yang didukung oleh kartu pengambilan video SunVideo. Ini juga
+memungkinkan "nv" untuk mengirim video dalam format CUSeeMe, untuk mengirim video ke pengguna
+yang menjalankan CUSeeMe pada Mac dan PC.
 
-The last publicly released version of "nv" was version 3.3beta, released
-in July of 1994. I was working on a "4.0alpha" release that was intended
-to migrate "nv" over to version 2 of the RTP protocol, but this work was
-never completed due to my moving on to other projects. A copy of the 4.0
-alpha code is included in the [Network Video tool](https://github.com/ronf/nv)
-archive for completeness, but it is unfinished and there are known issues
-with it, particularly in the incomplete RTPv2 support.
+Versi yang dirilis secara publik terakhir dari "nv" adalah versi 3.3beta, dirilis
+pada Juli 1994. Saya sedang mengerjakan rilis "4.0alpha" yang dimaksudkan
+untuk memigrasikan "nv" ke versi 2 dari protokol RTP, tetapi pekerjaan ini tidak
+pernah selesai karena saya pindah ke proyek lain. Salinan kode 4.0
+alpha disertakan dalam arsip [Network Video tool](https://github.com/ronf/nv)
+untuk kelengkapan, tetapi tidak lengkap dan ada masalah yang diketahui
+dengannya, terutama dalam dukungan RTPv2 yang tidak lengkap.
 
-The framework provided in "nv" later went on to become the basis of video
-conferencing in the "Jupiter multi-media MOO" project at Xerox PARC, which
-eventually became the basis for a spin-off company "PlaceWare", later
-acquired by Microsoft. It was also used as the basis for a number of
-hardware video conferencing projects that allowed sending of full NTSC
-broadcast quality video over high-bandwidth Ethernet and ATM networks.
-I also later used some of this code as the basis for "Mediastore", which
-was a network-based video recording and playback service.
+_Framework_ yang disediakan dalam "nv" kemudian menjadi dasar konferensi video
+dalam proyek "Jupiter _multi-media_ MOO" di Xerox PARC, yang
+akhirnya menjadi dasar untuk perusahaan _spin-off_ "PlaceWare", kemudian
+diakuisisi oleh Microsoft. Ini juga digunakan sebagai dasar untuk sejumlah
+proyek konferensi video perangkat keras yang memungkinkan pengiriman video berkualitas siaran NTSC penuh melalui _Ethernet_ dan jaringan ATM _bandwidth_ tinggi.
+Saya juga kemudian menggunakan beberapa kode ini sebagai dasar untuk "Mediastore", yang
+adalah layanan perekaman dan pemutaran video berbasis jaringan.
 
-### Do you remember the motivations/ideas of the other people on the draft?
+### Apakah Anda ingat motivasi/ide orang lain di _draft_?
 
-We were all researchers working on IP multicast, and helping to create
-the Internet multicast backbone (aka MBONE). The MBONE was created by
-Steve Deering (who first developed IP multicast), Van Jacobson, and Steve
-Casner. Steve Deering and I had the same advisor at Stanford, and Steve
-ended up going to work at Xerox PARC when he left Stanford, I spent a
-summer at Xerox PARC as an intern working on IP multicast-related projects
-and continued to work for them part time while at Stanford and later full
-time. Van Jacobson and Steve Casner were two of the four authors on
-the initial RTP RFCs, along with Henning Schulzrinne and myself. We all
-had MBONE tools that we were working on that allowed for various forms of
-online collaboration, and trying to come up with a common base protocol
-all these tools could use was what led to RTP.
+Kami semua adalah peneliti yang bekerja pada _multicast_ IP, dan membantu membuat
+_Internet multicast backbone_ (alias MBONE). MBONE diciptakan oleh
+Steve Deering (yang pertama kali mengembangkan _multicast_ IP), Van Jacobson, dan Steve
+Casner. Steve Deering dan saya memiliki penasihat yang sama di Stanford, dan Steve
+akhirnya pergi bekerja di Xerox PARC ketika ia meninggalkan Stanford, saya menghabiskan
+musim panas di Xerox PARC sebagai _intern_ yang bekerja pada proyek terkait _multicast_ IP
+dan terus bekerja untuk mereka paruh waktu saat di Stanford dan kemudian penuh
+waktu. Van Jacobson dan Steve Casner adalah dua dari empat penulis pada
+RFC RTP awal, bersama dengan Henning Schulzrinne dan saya sendiri. Kami semua
+memiliki alat MBONE yang kami kerjakan yang memungkinkan berbagai bentuk
+kolaborasi _online_, dan mencoba untuk menghasilkan protokol dasar umum
+yang dapat digunakan semua alat ini adalah yang mengarah pada RTP.
 
-### Multicast is super fascinating. WebRTC is entirely unicast, mind expanding on that?
+### _Multicast_ sangat menarik. WebRTC sepenuhnya _unicast_, bisakah Anda menjelaskan tentang itu?
 
-Before getting to Stanford and learning about IP multicast, I had a
-long history working on ways to use computers as a way for people to
-communicate with one another. This started in the early 80s for me
-where I ran a dial-up bulletin board system where people could log on
-and leave messages for one another, both private (sort of the equivalent
-of e-mail) and public (discussion groups). Around the same time, I also
-learned about the online service provider CompuServe. One of the cool
-features on CompuServe was something called a “CB Simulator” where people
-could talk to one another in real-time. It was all text-based, but it
-had a notion of “channels” like a real CB radio, and multiple people
-could see what others typed, as long as they were in the same channel.
-I built my own version of CB which ran on a timesharing system I had
-access to which let users on that system send messages to one another
-in real-time, and over the next few years I worked with friends to
-develop more sophisticated versions of real-time communication tools
-on several different computer systems and networks. In fact, one of those
-systems is still operational, and I use it talk every day to folks I went
-to college with 30+ years ago!
+Sebelum sampai ke Stanford dan belajar tentang _multicast_ IP, saya memiliki
+sejarah panjang bekerja pada cara menggunakan komputer sebagai cara bagi orang untuk
+berkomunikasi satu sama lain. Ini dimulai pada awal 80-an untuk saya
+di mana saya menjalankan sistem _bulletin board dial-up_ di mana orang dapat masuk
+dan meninggalkan pesan untuk satu sama lain, baik pribadi (semacam setara
+dengan e-mail) dan publik (grup diskusi). Sekitar waktu yang sama, saya juga
+belajar tentang penyedia layanan _online_ CompuServe. Salah satu fitur keren
+pada CompuServe adalah sesuatu yang disebut "CB Simulator" di mana orang
+dapat berbicara satu sama lain secara _real-time_. Itu semua berbasis teks, tetapi memiliki
+gagasan tentang "saluran" seperti radio CB nyata, dan beberapa orang
+dapat melihat apa yang diketik orang lain, selama mereka berada di saluran yang sama.
+Saya membangun versi CB saya sendiri yang berjalan pada sistem _timesharing_ yang saya miliki
+akses ke yang memungkinkan pengguna pada sistem itu mengirim pesan satu sama lain
+secara _real-time_, dan selama beberapa tahun berikutnya saya bekerja dengan teman-teman untuk
+mengembangkan versi yang lebih canggih dari alat komunikasi _real-time_
+pada beberapa sistem komputer dan jaringan yang berbeda. Bahkan, salah satu dari sistem itu masih beroperasi, dan saya menggunakannya untuk berbicara setiap hari kepada orang-orang yang saya
+kuliah bersama 30+ tahun yang lalu!
 
-All of those tools were text based, since computers at the time generally
-didn't have any audio/video capabilities, but when I got to Stanford and
-learned about IP multicast, I was intrigued by the notion of using multicast
-to get something more like a true “radio” where you could send a signal
-out onto the network that wasn't directed at anyone in particular, but
-everyone who tuned to that “channel” could receive it. As it happened, the
-computer I was porting the IP multicast code to what was the first generation
-SPARC-station from Sun, and it actually had built-in telephone-quality audio
-hardware! You could digitize sound from a microphone and play it back over
-built-in speakers (or via a headphone output). So, my first thought was to
-figure out how to send that audio out onto the network in real-time using
-IP multicast, and see if I could build a “CB radio” equivalent with actual
-audio instead of text.
+Semua alat itu berbasis teks, karena komputer pada saat itu umumnya
+tidak memiliki kemampuan audio/video apa pun, tetapi ketika saya sampai ke Stanford dan
+belajar tentang _multicast_ IP, saya tertarik dengan gagasan menggunakan _multicast_
+untuk mendapatkan sesuatu yang lebih seperti "radio" nyata di mana Anda dapat mengirim sinyal
+keluar ke jaringan yang tidak ditujukan kepada siapa pun khususnya, tetapi
+semua orang yang menyetel ke "saluran" itu dapat menerimanya. Kebetulan,
+komputer tempat saya mem-_port_ kode _multicast_ IP adalah generasi pertama
+SPARC-station dari Sun, dan itu sebenarnya memiliki perangkat keras audio berkualitas telepon bawaan! Anda dapat mendigitalkan suara dari mikrofon dan memutarnya kembali melalui
+_speaker_ bawaan (atau melalui output _headphone_). Jadi, pikiran pertama saya adalah untuk
+mencari tahu bagaimana mengirim audio itu keluar ke jaringan secara _real-time_ menggunakan
+_multicast_ IP, dan melihat apakah saya dapat membangun setara "radio CB" dengan audio
+aktual alih-alih teks.
 
-There were some tricky things to work out, like the fact that the computer
-could only play one audio stream at a time, so if multiple people were talking
-you needed to mathematically “mix” multiple audio streams into one before
-you could play it, but that could all be done in software once you understood
-how the audio sampling worked. That audio application led me to working on
-the MBONE and eventually moving from audio to video with “nv”.
+Ada beberapa hal rumit yang harus diselesaikan, seperti fakta bahwa komputer
+hanya dapat memutar satu _stream_ audio pada satu waktu, jadi jika beberapa orang berbicara
+Anda perlu secara matematis "mencampur" beberapa _stream_ audio menjadi satu sebelum
+Anda dapat memutarnya, tetapi itu semua dapat dilakukan dalam perangkat lunak setelah Anda memahami
+bagaimana pengambilan sampel audio bekerja. Aplikasi audio itu membawa saya untuk bekerja pada
+MBONE dan akhirnya berpindah dari audio ke video dengan "nv".
 
-### Anything that got left out of the protocol that you wish you had added? Anything in the protocol you regret?
+### Apakah ada yang tertinggal dari protokol yang Anda harap Anda tambahkan? Apakah ada dalam protokol yang Anda sesali?
 
-I wouldn't say I regret it, but one of the big complaints people ended up
-having about RTP was the complexity of implementing RTCP, the control protocol
-that ran in parallel with the main RTP data traffic. I think that complexity
-was a large part of why RTP wasn't more widely adopted, particularly in the
-unicast case where there wasn't as much need for some of RTCP's features.
-As network bandwidth became less scarce and congestion wasn't as big a
-problem, a lot of people just ended up streaming audio & video over plain
-TCP (and later HTTP), and generally speaking it worked “well enough” that
-it wasn't worth dealing with RTP.
+Saya tidak akan mengatakan saya menyesalinya, tetapi salah satu keluhan besar yang akhirnya dimiliki orang
+tentang RTP adalah kompleksitas mengimplementasikan RTCP, protokol kontrol
+yang berjalan paralel dengan lalu lintas data RTP utama. Saya pikir kompleksitas itu
+adalah bagian besar mengapa RTP tidak lebih banyak diadopsi, terutama dalam
+kasus _unicast_ di mana tidak ada banyak kebutuhan untuk beberapa fitur RTCP.
+Karena _bandwidth_ jaringan menjadi kurang langka dan kemacetan bukan masalah besar,
+banyak orang hanya akhirnya _streaming_ audio & video melalui TCP biasa
+(dan kemudian HTTP), dan secara umum itu bekerja "cukup baik" sehingga
+tidak layak berurusan dengan RTP.
 
-Unfortunately, using TCP or HTTP meant that multi-party audio and video
-applications had to send the same data over the network multiple times,
-to each of the peers that needed to receive it, making it much less
-efficient from a bandwidth perspective. I sometimes wish we had pushed
-harder to get IP multicast adopted beyond just the research community.
-I think we could have seen the transition from cable and broadcast
-television to Internet-based audio and video much sooner if we had.
+Sayangnya, menggunakan TCP atau HTTP berarti bahwa aplikasi audio dan video multi-pihak
+harus mengirim data yang sama melalui jaringan beberapa kali,
+ke setiap _peer_ yang perlu menerimanya, membuatnya jauh kurang
+efisien dari perspektif _bandwidth_. Saya kadang-kadang berharap kami telah mendorong
+lebih keras untuk mendapatkan _multicast_ IP yang diadopsi di luar hanya komunitas penelitian.
+Saya pikir kami bisa melihat transisi dari televisi kabel dan siaran
+ke audio dan video berbasis Internet jauh lebih cepat jika kami melakukannya.
 
-### What things did you imagine being built with RTP? Do have any cool RTP projects/ideas that got lost to time?
+### Hal-hal apa yang Anda bayangkan dibangun dengan RTP? Apakah Anda memiliki proyek/ide RTP keren yang hilang dalam waktu?
 
-One of the fun things I built was a version of the classic “Spacewar” game
-which used IP multicast. Without having any kind of central server, multiple
-clients could each run the spacewar binary and start broadcasting their
-ship's location, velocity, the direction it was facing, and similar
-information for any “bullets” it had fired, and all of the other instances
-would pick up that information and render it locally, allowing users to all
-see each other's ships and bullets, with ships “exploding” if they crashed
-into each other or bullets hit them. I even made the “debris” from the
-explosion a live object that could take out other ships, sometimes leading
-to fun chain reactions!
+Salah satu hal yang menyenangkan yang saya bangun adalah versi dari permainan klasik "Spacewar"
+yang menggunakan _multicast_ IP. Tanpa memiliki jenis _server_ pusat apa pun, beberapa
+klien dapat masing-masing menjalankan _binary spacewar_ dan mulai menyiarkan
+lokasi kapal mereka, kecepatan, arah yang dihadapi, dan informasi serupa
+untuk "peluru" apa pun yang telah mereka tembakkan, dan semua _instance_ lain
+akan mengambil informasi itu dan merendernya secara lokal, memungkinkan pengguna untuk semua
+melihat kapal dan peluru satu sama lain, dengan kapal "meledak" jika mereka menabrak
+satu sama lain atau peluru mengenai mereka. Saya bahkan membuat "puing-puing" dari
+ledakan objek hidup yang dapat mengeluarkan kapal lain, kadang-kadang mengarah ke
+reaksi berantai yang menyenangkan!
 
-In the spirit of the original game, I rendered it using simulated vector
-graphics, so you could do things like zooming your view in & out and
-everything would scale up/down. The ships themselves were a bunch of
-line segments in vector form that I had some of my colleagues at PARC
-helped me to design, so everyone's ship had a unique look to it.
+Dalam semangat permainan asli, saya merendernya menggunakan grafik vektor
+yang disimulasikan, jadi Anda dapat melakukan hal-hal seperti memperbesar tampilan Anda masuk & keluar dan
+semuanya akan naik/turun skala. Kapal-kapal itu sendiri adalah sekelompok
+segmen garis dalam bentuk vektor yang saya minta beberapa rekan saya di PARC
+bantu saya desain, jadi kapal setiap orang memiliki tampilan unik padanya.
 
-Basically, anything that could benefit from a real-time data stream that
-didn't need perfect in-order delivery could benefit from RTP. So, in addition
-to audio & video we could build things like a shared whiteboard. Even file
-transfers could benefit from RTP, especially in conjunction with IP multicast.
+Pada dasarnya, apa pun yang dapat mengambil manfaat dari _stream_ data _real-time_ yang
+tidak memerlukan pengiriman _in-order_ yang sempurna dapat mengambil manfaat dari RTP. Jadi, selain
+audio & video kami dapat membangun hal-hal seperti _shared whiteboard_. Bahkan transfer file
+dapat mengambil manfaat dari RTP, terutama dalam hubungannya dengan _multicast_ IP.
 
-Imagine something like BitTorrent but where you didn't need all the data
-going point-to-point between peers. The original seeder could send a multicast
-stream to all of the leeches at once, and any packet losses along the way
-could be quickly cleaned up by a retransmission from any peer that
-successfully received the data. You could even scope your retransmission
-requests so that some peer nearby delivered the copy of the data, and that
-too could be multicast to others in that region, since a packet loss in
-the middle of the network would tend to mean a bunch of clients
-downstream of that point all missed the same data.
+Bayangkan sesuatu seperti BitTorrent tetapi di mana Anda tidak memerlukan semua data
+yang berjalan _point-to-point_ antara _peer_. _Seeder_ asli dapat mengirim _stream multicast_
+ke semua _leeche_ sekaligus, dan kehilangan paket apa pun di sepanjang jalan
+dapat dengan cepat dibersihkan oleh retransmisi dari _peer_ apa pun yang
+berhasil menerima data. Anda bahkan dapat membatasi permintaan retransmisi Anda
+sehingga beberapa _peer_ di dekatnya mengirimkan salinan data, dan itu
+juga dapat di-_multicast_ ke orang lain di wilayah itu, karena kehilangan paket di
+tengah jaringan akan cenderung berarti sekelompok klien
+_downstream_ dari titik itu semua melewatkan data yang sama.
 
-### Why did you have to roll your own video compression. Was nothing else available at the time?
+### Mengapa Anda harus membuat kompresi video Anda sendiri. Tidak ada yang tersedia pada saat itu?
 
-At the time I began to build “nv”, the only systems I know of that did
-videoconferencing were very expensive specialized hardware. For instance,
-Steve Casner had access to a system from BBN that was called "DVC" (and
-later commercialized as “PictureWindow”). The compression required
-specialized hardware, but the decompression could be done in software.
-What made “nv” somewhat unique was that both compression and decompression
-was being done in software, with the only hardware requirement being
-something to digitize an incoming analog video signal.
+Pada saat saya mulai membangun "nv", satu-satunya sistem yang saya tahu yang melakukan
+konferensi video adalah perangkat keras khusus yang sangat mahal. Misalnya,
+Steve Casner memiliki akses ke sistem dari BBN yang disebut "DVC" (dan
+kemudian dikomersialisasikan sebagai "PictureWindow"). Kompresi memerlukan
+perangkat keras khusus, tetapi dekompresi dapat dilakukan dalam perangkat lunak.
+Apa yang membuat "nv" agak unik adalah bahwa baik kompresi dan dekompresi
+dilakukan dalam perangkat lunak, dengan satu-satunya persyaratan perangkat keras adalah
+sesuatu untuk mendigitalkan sinyal video analog yang masuk.
 
-Many of the basic concepts about how to compress video existed by then, with
-things like the MPEG-1 standard appearing right around the same time “nv”
-did, but real-time encoding with MPEG-1 was definitely NOT possible at
-the time. The changes I made were all about taking those basic concepts and
-approximating them with much cheaper algorithms, where I avoided things like
-cosine transforms and floating point, and even avoided integer multiplications
-since those were very slow on SPARC-stations. I tried to do everything I could
-with just additions/subtractions and bit masking and shifting, and that got
-back enough speed to still feel somewhat like video.
+Banyak konsep dasar tentang cara mengompresi video ada pada saat itu, dengan
+hal-hal seperti standar MPEG-1 muncul tepat pada waktu yang sama dengan "nv",
+tetapi pengkodean _real-time_ dengan MPEG-1 jelas TIDAK mungkin pada
+saat itu. Perubahan yang saya buat adalah semua tentang mengambil konsep dasar itu dan
+memperkirakan mereka dengan algoritma yang jauh lebih murah, di mana saya menghindari hal-hal seperti
+transformasi kosinus dan _floating point_, dan bahkan menghindari perkalian integer
+karena itu sangat lambat pada SPARC-station. Saya mencoba melakukan semua yang saya bisa
+dengan hanya penambahan/pengurangan dan _masking_ dan _shifting_ bit, dan itu mendapatkan
+kembali cukup kecepatan untuk masih terasa agak seperti video.
 
-Within a year or two of the release of "nv", there were many different audio
-and video tools to choose from, not only on the MBONE but in other places
-like the CU-SeeMe tool built on the Mac. So, it was clearly an idea whose
-time had come. I actually ended up making “nv” interoperate with many of
-these tools, and in a few cases other tools picked up my “nv” codecs, so
-they could interoperate when using my compression scheme.
+Dalam satu atau dua tahun setelah rilis "nv", ada banyak alat audio
+dan video yang berbeda untuk dipilih, tidak hanya di MBONE tetapi di tempat lain
+seperti alat CU-SeeMe yang dibangun di Mac. Jadi, itu jelas merupakan ide yang
+waktunya telah tiba. Saya sebenarnya akhirnya membuat "nv" interoperasi dengan banyak
+alat ini, dan dalam beberapa kasus alat lain mengambil _codec_ "nv" saya, jadi
+mereka dapat berinteroperasi ketika menggunakan skema kompresi saya.
 
 ## WebRTC
-WebRTC required a standardization effort that dwarfs all of the other efforts
-described in this chapter. It required cooperation across two different
-standards bodies (IETF and W3C) and hundreds of individuals across many
-companies and countries. To give us a look inside the motivations and
-monumental effort it took to make WebRTC happen we have
+WebRTC memerlukan upaya standardisasi yang mengerdilkan semua upaya lain
+yang dijelaskan dalam bab ini. Ini memerlukan kerja sama di dua
+badan standar yang berbeda (IETF dan W3C) dan ratusan individu di banyak
+perusahaan dan negara. Untuk memberi kami pandangan ke dalam motivasi dan
+upaya monumental yang diperlukan untuk membuat WebRTC terjadi kami memiliki
 [Serge Lachapelle](https://twitter.com/slac).
 
-Serge is a product manager at Google, currently serving as a product manager
-for Google Workspace. This is my summary of the interview.
+Serge adalah _product manager_ di Google, saat ini melayani sebagai _product manager_
+untuk Google Workspace. Ini adalah ringkasan saya dari wawancara.
 
-### What led you to work on WebRTC?
-I have been passionate about building communications software since I was in
-college. In the 90s the technology like [nv](https://github.com/ronf/nv)
-started to appear, but was difficult to use. I created a project that allowed
-you to join a video call right from your browser. I also ported it to Windows.
+### Apa yang membawa Anda untuk bekerja pada WebRTC?
+Saya telah bersemangat tentang membangun perangkat lunak komunikasi sejak saya di
+perguruan tinggi. Pada tahun 90-an teknologi seperti [nv](https://github.com/ronf/nv)
+mulai muncul, tetapi sulit digunakan. Saya membuat proyek yang memungkinkan
+Anda untuk bergabung dengan panggilan video langsung dari peramban Anda. Saya juga mem-_port_-nya ke Windows.
 
-I took this experience to Marratech, a company I co-founded. We created
-software for group video conferencing. Technologically the landscape
-was so different. The cutting edge in video was based on multicast networking.
-A user could depend on the network to deliver to a video packet to everyone in
-the call. This meant that we had very simple servers. This had a big downside
-though, networks had to be designed to accommodate it. The industry moved away
-from multicast to packet shufflers, more commonly known as SFUs.
+Saya membawa pengalaman ini ke Marratech, sebuah perusahaan yang saya ikut dirikan. Kami membuat
+perangkat lunak untuk konferensi video grup. Secara teknologi lanskap
+sangat berbeda. Ujung tombak dalam video didasarkan pada jaringan _multicast_.
+Pengguna dapat bergantung pada jaringan untuk mengirimkan paket video ke semua orang dalam
+panggilan. Ini berarti bahwa kami memiliki _server_ yang sangat sederhana. Ini memiliki kelemahan besar
+meskipun, jaringan harus dirancang untuk mengakomodasi itu. Industri bergerak menjauh
+dari _multicast_ ke _packet shuffler_, lebih umum dikenal sebagai SFU.
 
-Marratech was acquired by Google in 2007. I would then go on to work on the
-project that would inform WebRTC.
+Marratech diakuisisi oleh Google pada 2007. Saya kemudian akan bekerja pada
+proyek yang akan menginformasikan WebRTC.
 
-### The first Google project
-The first project that the future WebRTC team worked on was Gmail voice and
-video chat. Getting audio and video into the browser was no easy task. It
-required specialty components that we had to license from different companies.
-Audio was licensed from GIPs, video was licensed for Vidyo and the networking
-was libjingle. The magic was then making all of them work together.
+### Proyek Google pertama
+Proyek pertama yang dikerjakan oleh tim WebRTC masa depan adalah _chat_ suara dan
+video Gmail. Mendapatkan audio dan video ke dalam peramban bukanlah tugas yang mudah. Ini
+memerlukan komponen khusus yang harus kami lisensikan dari perusahaan yang berbeda.
+Audio dilisensikan dari GIPs, video dilisensikan untuk Vidyo dan jaringan
+adalah libjingle. Keajaibannya kemudian membuat semuanya bekerja bersama.
 
-Each subsystem has completely different APIs, and assumed you were solving
-different problems. To make it all work together you need working knowledge
-of networking, cryptography, media and more.
-[Justin Uberti](https://juberti.com) was the person that took on this work.
-He brought these components together to make a usable product.
+Setiap subsistem memiliki API yang sangat berbeda, dan mengasumsikan Anda memecahkan
+masalah yang berbeda. Untuk membuat semuanya bekerja bersama Anda memerlukan pengetahuan kerja
+tentang jaringan, kriptografi, media dan banyak lagi.
+[Justin Uberti](https://juberti.com) adalah orang yang mengambil pekerjaan ini.
+Dia membawa komponen-komponen ini bersama untuk membuat produk yang dapat digunakan.
 
-Rendering real-time in the browser was also really hard. We had to use the
-NPAPI (Netscape Plugin API) and do lots of clever things to make it work.
-The lessons we learned from this project greatly influenced WebRTC.
+Rendering _real-time_ di peramban juga sangat sulit. Kami harus menggunakan
+NPAPI (_Netscape Plugin API_) dan melakukan banyak hal cerdas untuk membuatnya bekerja.
+Pelajaran yang kami pelajari dari proyek ini sangat mempengaruhi WebRTC.
 
 ### Chrome
-At the same time the Chrome project started inside of Google. There was
-so much excitement, and this project had huge goals. There was talk about
-WebGL, Offline, Database capabilities, low latency input for gaming just
-to name a few.
+Pada saat yang sama proyek Chrome dimulai di dalam Google. Ada
+begitu banyak kegembiraan, dan proyek ini memiliki tujuan besar. Ada pembicaraan tentang
+WebGL, Offline, kemampuan _Database_, input latensi rendah untuk permainan hanya
+untuk beberapa nama.
 
-Moving away from NPAPI became a big focus. It is a powerful API, but comes with
-big security consequences. Chrome uses a sandbox design to keep users safe.
-Operations that can be potentially unsafe are run in different processes.
-Even if something goes wrong an attacker still doesn't have access to the
-user data.
+Bergerak menjauh dari NPAPI menjadi fokus besar. Ini adalah API yang kuat, tetapi datang dengan
+konsekuensi keamanan yang besar. Chrome menggunakan desain _sandbox_ untuk menjaga pengguna tetap aman.
+Operasi yang berpotensi tidak aman dijalankan dalam proses yang berbeda.
+Bahkan jika sesuatu yang salah terjadi, penyerang masih tidak memiliki akses ke
+data pengguna.
 
-### WebRTC is born
-For me WebRTC was born with a few motivations. Combined they gave birth to the
-effort.
+### WebRTC lahir
+Bagi saya WebRTC lahir dengan beberapa motivasi. Digabungkan mereka melahirkan
+upaya.
 
-It shouldn't be this hard to build RTC experiences. So much effort is wasted
-re-implementing the same thing by different developers. We should solve these
-frustrating integration problems once, and focus on other things.
+Seharusnya tidak sesulit ini untuk membangun pengalaman RTC. Begitu banyak upaya terbuang
+mengimplementasikan ulang hal yang sama oleh _developer_ yang berbeda. Kami harus menyelesaikan masalah integrasi yang membuat frustrasi ini sekali, dan fokus pada hal-hal lain.
 
-Human communication should be unhampered and should be open. How is it ok for
-text and HTML to be open, but my voice and my image in real-time not to be?
+Komunikasi manusia harus tidak terhalangi dan harus terbuka. Bagaimana oke untuk
+teks dan HTML menjadi terbuka, tetapi suara saya dan gambar saya secara _real-time_ tidak?
 
-Security is a priority. Using the NPAPI wasn't best for users. This was also
-a chance to make a protocol that was secure by default.
+Keamanan adalah prioritas. Menggunakan NPAPI bukan yang terbaik untuk pengguna. Ini juga
+adalah kesempatan untuk membuat protokol yang aman secara default.
 
-To make WebRTC happen Google acquired and Open Sourced the components we had
-used before. [On2](https://en.wikipedia.org/wiki/On2_Technologies) was
-acquired for it’s video technology and
+Untuk membuat WebRTC terjadi Google mengakuisisi dan Open Source komponen yang telah kami
+gunakan sebelumnya. [On2](https://en.wikipedia.org/wiki/On2_Technologies) diakuisisi untuk teknologi videonya dan
 [Global IP Solutions](https://en.wikipedia.org/wiki/Global_IP_Solutions)
-for its RTC technology. I was in charge of the effort of acquiring GIPS.
-We got to work combining these and making them easy to use in and outside
-the browser.
+untuk teknologi RTC-nya. Saya bertanggung jawab atas upaya mengakuisisi GIPS.
+Kami bekerja menggabungkan ini dan membuatnya mudah digunakan di dalam dan di luar
+peramban.
 
-### Standardization
-Standardizing WebRTC was something we really wanted to do, but not something I
-had done before nor anyone on our immediate team. For this we were really
-fortunate to have Harald Alvestrand at Google. He had done extensive work in
-the IETF already and started the WebRTC standardization process.
+### Standardisasi
+Standardisasi WebRTC adalah sesuatu yang benar-benar kami ingin lakukan, tetapi bukan sesuatu yang
+pernah saya lakukan sebelumnya maupun siapa pun di tim langsung kami. Untuk ini kami benar-benar
+beruntung memiliki Harald Alvestrand di Google. Dia telah melakukan pekerjaan ekstensif di
+IETF sudah dan memulai proses standardisasi WebRTC.
 
-In summer 2010 an informal lunch was scheduled in Maastricht. Developers from
-many companies came together to discuss what WebRTC should be. The lunch had
-engineers from Google, Cisco, Ericsson, Skype, Mozilla, Linden Labs and more.
-You can find the full attendance and presenter slides on
+Pada musim panas 2010 makan siang informal dijadwalkan di Maastricht. _Developer_ dari
+banyak perusahaan datang bersama untuk mendiskusikan apa yang seharusnya WebRTC. Makan siang memiliki
+_engineer_ dari Google, Cisco, Ericsson, Skype, Mozilla, Linden Labs dan lainnya.
+Anda dapat menemukan kehadiran penuh dan slide presenter di
 [rtc-web.alvestrand.com](http://rtc-web.alvestrand.com).
 
-Skype also provided some great guidance because of the work they had done with
-Opus in the IETF.
+Skype juga memberikan beberapa panduan hebat karena pekerjaan yang mereka lakukan dengan
+Opus di IETF.
 
-### Standing on the shoulders of giants
-When working in the IETF you are extending the work that has come before you.
-With WebRTC we were lucky that so many things existed. We didn't have to take
-on every problem because they already were solved. If you don't like the
-pre-existing technology it can be frustrating though. There has to be a pretty
-big reason to disregard existing work, so rolling your own isn't an option.
+### Berdiri di bahu raksasa
+Ketika bekerja di IETF Anda memperluas pekerjaan yang telah datang sebelum Anda.
+Dengan WebRTC kami beruntung bahwa begitu banyak hal ada. Kami tidak harus mengambil
+setiap masalah karena mereka sudah terpecahkan. Jika Anda tidak suka
+teknologi yang sudah ada sebelumnya, itu bisa membuat frustrasi. Harus ada alasan yang cukup
+besar untuk mengabaikan pekerjaan yang ada, jadi membuat sendiri bukan pilihan.
 
-We also consciously didn't attempt to re-standardize things like signaling.
-This had already been solved with SIP and other non-IETF efforts, and it
-felt like it could end up being very political. In the end it just didn't
-feel like there was much value to add to the space.
+Kami juga secara sadar tidak mencoba untuk standarisasi ulang hal-hal seperti _signaling_.
+Ini sudah diselesaikan dengan SIP dan upaya non-IETF lainnya, dan
+terasa seperti bisa berakhir sangat politik. Pada akhirnya itu hanya tidak
+terasa seperti ada banyak nilai untuk ditambahkan ke ruang.
 
-I didn't stay as involved in standardization as Justin and Harald, but I
-enjoyed my time doing it. I was more excited about returning to building
-things for users.
+Saya tidak tetap terlibat dalam standardisasi seperti Justin dan Harald, tetapi saya
+menikmati waktu saya melakukannya. Saya lebih bersemangat tentang kembali membangun
+hal-hal untuk pengguna.
 
-### The future
-WebRTC is in a great place today. There are lots of iterative changes
-happening, but nothing in particular I have been working on.
+### Masa depan
+WebRTC berada di tempat yang bagus hari ini. Ada banyak perubahan berulang
+terjadi, tetapi tidak ada yang khususnya yang telah saya kerjakan.
 
-I am most excited about what cloud computing can do for communication. Using
-advanced algorithms we can remove background noise from a call and make
-communication possible where it wasn't before. We are also seeing WebRTC
-extend far beyond communications… Who knew that it would be powering cloud
-based gaming 9 years later? All of this wouldn't be possible without the
-foundation of WebRTC.
+Saya paling bersemangat tentang apa yang dapat dilakukan _cloud computing_ untuk komunikasi. Menggunakan
+algoritma canggih kami dapat menghapus kebisingan latar belakang dari panggilan dan membuat
+komunikasi mungkin di mana tidak mungkin sebelumnya. Kami juga melihat WebRTC
+memperluas jauh melampaui komunikasi… Siapa yang tahu bahwa itu akan menggerakkan _gaming_ berbasis _cloud_ 9 tahun kemudian? Semua ini tidak akan mungkin tanpa
+fondasi WebRTC.

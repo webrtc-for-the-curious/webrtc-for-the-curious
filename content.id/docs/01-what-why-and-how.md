@@ -48,6 +48,10 @@ Setiap tahapan ditulis dalam masing-masing bab, tetapi akan sangat membantu untu
 
 Pada dasarnya setiap klien WebRTC tidak tahu bagaimana cara berkomunikasi dan apa yang akan dikomunikasikan dengan klien lainnya. Untuk itulah _signaling_ hadir untuk memecahkan masalah tersebut! _Signaling_ digunakan untuk membangun komunikasi sehingga dua atau lebih klien WebRTC dapat saling berinteraksi.
 
+<!-- Source code of the diagram:
+https://www.mermaidchart.com/d/f366d7bf-a952-46b3-b7e7-c09c00b19d5a -->
+![Gambaran umum urutan signaling](../images/01-signaling-sequence-overview.png "Gambaran umum urutan signaling")
+
 _Signaling_ menggunakan protokol SDP yang sudah ada sebelumnya. SDP merupakan protokol berbasis teks. Setiap pesan SDP disusun atas pasangan _key/value_ dan berisi sekumpulan daftar "informasi media". SDP yang digunakan oleh dua klien WebRTC untuk saling berkomunikasi biasanya terdiri dari:
 
 * Daftar alamat IP dan _port_ di mana klient tersebut dapat dihubungi (_candidates_).
