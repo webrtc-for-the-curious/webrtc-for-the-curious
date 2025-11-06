@@ -46,6 +46,10 @@ WebRTC の特徴の一つは、各ステップが実のところ他の多くの�
 
 ### シグナリング: WebRTCでピアがお互いを見つける方法
 
+<!-- Source code of the diagram:
+https://www.mermaidchart.com/d/f366d7bf-a952-46b3-b7e7-c09c00b19d5a -->
+![シグナリング手順概要](../../../docs/images/01-signaling-sequence-overview.png "シグナリング手順概要")
+
 WebRTC エージェントが起動したとき、WebRTC エージェントは誰と何の通信をするのかを知りません。この問題を解決するのがシグナリングです。シグナリングは、2 つの WebRTC エージェントが通信を開始できるようにするために使用されます。
 
 シグナリングは、既存のプロトコルである SDP（Session Description Protocol）を使用します。SDP はプレーンテキストのプロトコルです。各 SDP メッセージは、キー／バリューペアで構成され、「メディアセクション」のリストを含んでいます。2 つの WebRTC エージェント間で交換する SDP には、以下のような詳細情報が含まれています。
