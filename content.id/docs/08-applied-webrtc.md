@@ -5,168 +5,168 @@ weight: 9
 ---
 
 # Applied WebRTC
-Now that you know how WebRTC works it is time to build with it! This chapter explores what people are
-building with WebRTC, and how they are building it. You will learn all the interesting things that are
-happening with WebRTC. The power of WebRTC comes at a cost. Building production grade WebRTC services is
-challenging. This chapter will try to explain those challenges before you hit them.
+Sekarang setelah Anda mengetahui bagaimana WebRTC bekerja, saatnya untuk membangun dengannya! Bab ini mengeksplorasi apa yang orang
+bangun dengan WebRTC, dan bagaimana mereka membangunnya. Anda akan mempelajari semua hal menarik yang terjadi
+dengan WebRTC. Kekuatan WebRTC datang dengan biaya. Membangun layanan WebRTC tingkat produksi adalah
+menantang. Bab ini akan mencoba menjelaskan tantangan tersebut sebelum Anda menghadapinya.
 
-## By Use Case
-Many think WebRTC is just a technology for conferencing in the web browser. It is so much more than that though!
-WebRTC is used in a wide range of applications. New use cases are showing up all the time. In this chapter we will list some common ones and how WebRTC is revolutionizing them.
+## Berdasarkan Kasus Penggunaan
+Banyak yang berpikir WebRTC hanyalah teknologi untuk konferensi di peramban web. Namun itu jauh lebih dari itu!
+WebRTC digunakan dalam berbagai aplikasi. Kasus penggunaan baru muncul sepanjang waktu. Dalam bab ini kami akan mencantumkan beberapa yang umum dan bagaimana WebRTC merevolusi mereka.
 
 ### Conferencing
-Conferencing is the original use case for WebRTC. The protocol contains a few necessary features that no other protocol offers
-in the browser. You could build a conferencing system with WebSockets and it may work in optimal conditions. If you want
-something that can be deployed in real world network conditions, WebRTC is the best choice.
+_Conferencing_ adalah kasus penggunaan asli untuk WebRTC. Protokol ini berisi beberapa fitur yang diperlukan yang tidak ditawarkan protokol lain
+di peramban. Anda bisa membangun sistem konferensi dengan WebSocket dan mungkin bekerja dalam kondisi optimal. Jika Anda ingin
+sesuatu yang dapat digunakan dalam kondisi jaringan dunia nyata, WebRTC adalah pilihan terbaik.
 
-WebRTC provides congestion control and adaptive bitrate for media. As the conditions of the network change, users will still get the
-best experience possible. Developers don't have to write any additional code to measure these conditions either.
+WebRTC menyediakan _congestion control_ dan _adaptive bitrate_ untuk media. Seiring kondisi jaringan berubah, pengguna masih akan mendapatkan
+pengalaman terbaik yang mungkin. _Developer_ juga tidak perlu menulis kode tambahan untuk mengukur kondisi ini.
 
-Participants can send and receive multiple streams. They can also add and remove those streams at any time during the call. Codecs are negotiated
-as well. All of this functionality is provided by the browser, no custom code is required to be written by the developer.
+Peserta dapat mengirim dan menerima beberapa _stream_. Mereka juga dapat menambah dan menghapus _stream_ tersebut kapan saja selama panggilan. _Codec_ juga dinegosiasikan.
+Semua fungsi ini disediakan oleh peramban, tidak ada kode khusus yang perlu ditulis oleh _developer_.
 
-Conferencing also benefits from data channels. Users can send metadata or share documents. You can create multiple streams
-and configure them if you need performance more than reliability.
+_Conferencing_ juga mendapat manfaat dari _data channel_. Pengguna dapat mengirim metadata atau berbagi dokumen. Anda dapat membuat beberapa _stream_
+dan mengonfigurasinya jika Anda membutuhkan performa lebih daripada keandalan.
 
-### Broadcasting
-Lots of new projects are starting to appear in the broadcast space that use WebRTC. The protocol has a lot to offer for both the publisher
-and consumer of media.
+### _Broadcasting_
+Banyak proyek baru mulai muncul di ruang siaran yang menggunakan WebRTC. Protokol ini menawarkan banyak hal baik untuk penerbit
+dan konsumen media.
 
-WebRTC being in the browser makes it easy for users to publish video. It removes the requirement for users to download a new client.
-Any platform that has a web browser can publish video. Publishers can then send multiple tracks and modify or remove them at anytime. This is
-a huge improvement over legacy protocols that only allowed one audio or one video track per connection.
+WebRTC yang berada di peramban memudahkan pengguna untuk menerbitkan video. Ini menghilangkan keharusan bagi pengguna untuk mengunduh klien baru.
+Platform apa pun yang memiliki peramban web dapat menerbitkan video. Penerbit kemudian dapat mengirim beberapa _track_ dan memodifikasi atau menghapusnya kapan saja. Ini adalah
+peningkatan besar dibanding protokol lama yang hanya mengizinkan satu audio atau satu _track_ video per koneksi.
 
-WebRTC gives developers greater control over the latency versus quality trade-offs. If it is more important that latency never exceeds a
-certain threshold, and you are willing to tolerate some decoding artifacts. You can configure the viewer to play media as soon as it
-arrives. With other protocols that run over TCP, that isn't as easy. In the browser you can request data and that is it.
+WebRTC memberi _developer_ kontrol yang lebih besar atas _trade-off_ latensi versus kualitas. Jika lebih penting bahwa latensi tidak pernah melebihi
+ambang batas tertentu, dan Anda bersedia mentolerir beberapa artefak dekoding. Anda dapat mengonfigurasi penonton untuk memutar media segera setelah
+tiba. Dengan protokol lain yang berjalan melalui TCP, itu tidak semudah itu. Di peramban Anda dapat meminta data dan itu saja.
 
-### Remote Access
-Remote Access is when you remotely access another computer via WebRTC. You could have complete control of the remote host, or maybe just a
-single application. This is great for running computationally expensive tasks when the local hardware can't do it. Like running a new video game, or
-CAD software. WebRTC was able to revolutionize the space in three ways.
+### _Remote Access_
+_Remote Access_ adalah ketika Anda mengakses komputer lain dari jarak jauh melalui WebRTC. Anda bisa memiliki kendali penuh atas _host remote_, atau mungkin hanya
+satu aplikasi. Ini bagus untuk menjalankan tugas yang mahal secara komputasi ketika perangkat keras lokal tidak dapat melakukannya. Seperti menjalankan video game baru, atau
+perangkat lunak CAD. WebRTC mampu merevolusi ruang ini dalam tiga cara.
 
-WebRTC can be used to remotely access a host that isn't world routable. With NAT Traversal you can access a computer that is only available
-via STUN. This is great for security and privacy. Your users don't have to route video through an ingest, or a "jump box". NAT Traversal also
-makes deployments easier. You don't have to worry about port forwarding or setting up a static IP ahead of time.
+WebRTC dapat digunakan untuk mengakses _host_ dari jarak jauh yang tidak dapat di-_route_ secara global. Dengan NAT _Traversal_ Anda dapat mengakses komputer yang hanya tersedia
+melalui STUN. Ini bagus untuk keamanan dan privasi. Pengguna Anda tidak perlu merutekan video melalui _ingest_, atau "jump box". NAT _Traversal_ juga
+membuat penerapan lebih mudah. Anda tidak perlu khawatir tentang _port forwarding_ atau mengatur IP statis sebelumnya.
 
-Data channels are really powerful as well in this scenario. They can be configured so that only the latest data is accepted. With TCP you run the
-risk of encountering Head-of-line blocking. An old mouse click or keypress could arrive late, and block the subsequent ones from being accepted.
-WebRTC's data channels are designed to handle this and can be configured to not resend lost packets. You can also measure the backpressure and
-make sure that you aren't sending more data than your network supports.
+_Data channel_ juga sangat kuat dalam skenario ini. Mereka dapat dikonfigurasi sehingga hanya data terbaru yang diterima. Dengan TCP Anda menjalankan
+risiko mengalami _Head-of-line blocking_. Klik mouse atau penekanan tombol lama bisa tiba terlambat, dan memblokir yang berikutnya agar tidak diterima.
+_Data channel_ WebRTC dirancang untuk menangani ini dan dapat dikonfigurasi untuk tidak mengirim ulang paket yang hilang. Anda juga dapat mengukur _backpressure_ dan
+memastikan bahwa Anda tidak mengirim lebih banyak data daripada yang didukung jaringan Anda.
 
-WebRTC being available in the browser has been a huge quality of life improvement. You don't have to download a proprietary client to start the
-session. More and more clients are coming with WebRTC bundled, smart TVs are getting full web browsers now.
+WebRTC yang tersedia di peramban telah menjadi peningkatan kualitas hidup yang besar. Anda tidak perlu mengunduh klien propriet untuk memulai
+sesi. Semakin banyak klien yang dilengkapi dengan WebRTC, Smart TV sekarang mendapatkan peramban web lengkap.
 
-### File Sharing and Censorship Circumvention
-File Sharing and Censorship Circumvention are dramatically different problems. However, WebRTC solves the same problems for them both. It makes
-them both easily available and harder to block.
+### Berbagi File dan Penghindaran Sensor
+Berbagi File dan Penghindaran Sensor adalah masalah yang sangat berbeda. Namun, WebRTC menyelesaikan masalah yang sama untuk keduanya. Ini membuat
+keduanya mudah tersedia dan lebih sulit untuk diblokir.
 
-The first problem that WebRTC solves is getting the client. If you want to join a file sharing network, you need to download the client. Even if
-the network is distributed, you still need to get the client first. In a restricted network the download will often be blocked. Even if you
-can download it, the user may not be able to install and run the client. WebRTC is available in every web browser already making it readily available.
+Masalah pertama yang diselesaikan WebRTC adalah mendapatkan klien. Jika Anda ingin bergabung dengan jaringan berbagi file, Anda perlu mengunduh klien. Bahkan jika
+jaringan terdistribusi, Anda masih perlu mendapatkan klien terlebih dahulu. Dalam jaringan yang dibatasi, unduhan sering diblokir. Bahkan jika Anda
+dapat mengunduhnya, pengguna mungkin tidak dapat menginstal dan menjalankan klien. WebRTC tersedia di setiap peramban web yang membuatnya mudah tersedia.
 
-The second problem that WebRTC solves is your traffic being blocked. If you use a protocol that is just for file sharing or censorship circumvention
-it is much easier to block it. Since WebRTC is a general purpose protocol, blocking it would impact everyone. Blocking WebRTC might prevent other
-users of the network from joining conference calls.
+Masalah kedua yang diselesaikan WebRTC adalah traffic Anda yang diblokir. Jika Anda menggunakan protokol yang hanya untuk berbagi file atau penghindaran sensor
+lebih mudah untuk memblokirnya. Karena WebRTC adalah protokol tujuan umum, memblokirnya akan berdampak pada semua orang. Memblokir WebRTC mungkin mencegah
+pengguna jaringan lain dari bergabung dengan panggilan konferensi.
 
 ### Internet of Things
-Internet of Things (IoT) covers a few different use cases. For many this means network connected security cameras. Using WebRTC you can stream the video to another WebRTC
-peer like your phone or a browser. Another use case is having devices connect and exchange sensor data. You can have two devices in your LAN
-exchange climate, noise or light readings.
+Internet of Things (IoT) mencakup beberapa kasus penggunaan yang berbeda. Bagi banyak orang ini berarti kamera keamanan yang terhubung ke jaringan. Menggunakan WebRTC Anda dapat melakukan _streaming_ video ke _peer_ WebRTC lain
+seperti ponsel Anda atau peramban. Kasus penggunaan lainnya adalah memiliki perangkat yang terhubung dan bertukar data sensor. Anda dapat memiliki dua perangkat di LAN Anda
+bertukar pembacaan iklim, kebisingan, atau cahaya.
 
-WebRTC has a huge privacy advantage here over legacy video stream protocols. Since WebRTC supports P2P connectivity the camera can send the video
-directly to your browser. There is no reason for your video to be sent to a 3rd party server. Even when video is encrypted, an attacker can make
-assumptions from the metadata of the call.
+WebRTC memiliki keuntungan privasi besar di sini dibandingkan protokol _stream_ video lama. Karena WebRTC mendukung konektivitas P2P, kamera dapat mengirim video
+langsung ke peramban Anda. Tidak ada alasan untuk video Anda dikirim ke _server_ pihak ketiga. Bahkan ketika video dienkripsi, penyerang dapat membuat
+asumsi dari metadata panggilan.
 
-Interoperability is another advantage for the IoT space. WebRTC is available in lots of different languages; C#, C++, C, Go, Java, Python, Rust
-and TypeScript. This means you can use the language that works best for you. You also don't have to turn to proprietary protocols or formats
-to be able to connect your clients.
+Interoperabilitas adalah keuntungan lain untuk ruang IoT. WebRTC tersedia dalam banyak bahasa berbeda; C#, C++, C, Go, Java, Python, Rust
+dan TypeScript. Ini berarti Anda dapat menggunakan bahasa yang paling cocok untuk Anda. Anda juga tidak perlu beralih ke protokol atau format proprietary
+untuk dapat menghubungkan klien Anda.
 
-### Media Protocol Bridging
-You have existing hardware and software that is producing video, but you can't upgrade it yet. Expecting users to download a proprietary
-client to watch videos is frustrating. The answer is to run a WebRTC bridge. The bridge translates between the two protocols so users can use the
-browser with your legacy setup.
+### _Media Protocol Bridging_
+Anda memiliki perangkat keras dan perangkat lunak yang ada yang menghasilkan video, tetapi Anda belum dapat mengupgradenya. Mengharapkan pengguna untuk mengunduh klien proprietary
+untuk menonton video itu membuat frustrasi. Jawabannya adalah menjalankan _bridge_ WebRTC. _Bridge_ menerjemahkan antara dua protokol sehingga pengguna dapat menggunakan
+peramban dengan pengaturan lama Anda.
 
-Many of the formats that developers bridge with use the same protocols as WebRTC. SIP is commonly exposed via WebRTC and allows users to make phone calls
-from their browser. RTSP is used in lots of legacy security cameras. They both use the same underlying protocols (RTP and SDP) so it is computationally cheap
-to run. The bridge is just required to add or remove things that are WebRTC specific.
+Banyak format yang di-_bridge_ oleh _developer_ menggunakan protokol yang sama dengan WebRTC. SIP umumnya diekspos melalui WebRTC dan memungkinkan pengguna untuk melakukan panggilan telepon
+dari peramban mereka. RTSP digunakan di banyak kamera keamanan lama. Keduanya menggunakan protokol dasar yang sama (RTP dan SDP) sehingga murah secara komputasi
+untuk dijalankan. _Bridge_ hanya diperlukan untuk menambahkan atau menghapus hal-hal yang spesifik untuk WebRTC.
 
-### Data Protocol Bridging
-A web browser is only able to speak a constrained set of protocols. You can use HTTP, WebSockets, WebRTC and QUIC. If you want to connect
-to anything else, you need to use a protocol bridge. A protocol bridge is a server that converts foreign traffic into something the browser
-can access. A popular example is using SSH from your browser to access a server. WebRTC's data channels have two advantages over the competition.
+### _Data Protocol Bridging_
+Peramban web hanya dapat berbicara dengan set protokol yang terbatas. Anda dapat menggunakan HTTP, WebSocket, WebRTC dan QUIC. Jika Anda ingin terhubung
+ke hal lain, Anda perlu menggunakan _protocol bridge_. _Protocol bridge_ adalah _server_ yang mengonversi traffic asing menjadi sesuatu yang dapat diakses peramban.
+Contoh populer adalah menggunakan SSH dari peramban Anda untuk mengakses _server_. _Data channel_ WebRTC memiliki dua keuntungan dibanding kompetisi.
 
-WebRTC's data channels allow unreliable and unordered delivery. In cases where low latency is critical this is needed. You don't want new data to be
-blocked by old data, this is known as head-of-line blocking. Imagine you are playing a multiplayer First-person shooter. Do you really care where the
-player was two seconds ago? If that data didn't arrive in time, it doesn't make sense to keep trying to send it. Unreliable and unordered delivery allows
-you to use the data as soon as it arrives.
+_Data channel_ WebRTC memungkinkan pengiriman tidak andal dan tidak terurut. Dalam kasus di mana latensi rendah kritis ini diperlukan. Anda tidak ingin data baru
+diblokir oleh data lama, ini dikenal sebagai _head-of-line blocking_. Bayangkan Anda bermain game _First-person shooter_ multipemain. Apakah Anda benar-benar peduli di mana
+pemain berada dua detik yang lalu? Jika data itu tidak tiba tepat waktu, tidak masuk akal untuk terus mencoba mengirimnya. Pengiriman tidak andal dan tidak terurut memungkinkan
+Anda menggunakan data segera setelah tiba.
 
-Data channels also provide feedback pressure. This tells you if you are sending data faster than your connection can support. You then have two
-choices when this happens. The data channel can either be configured to buffer and deliver the data late, or you can drop the data that hasn't arrived
-in real-time.
+_Data channel_ juga menyediakan _feedback pressure_. Ini memberi tahu Anda jika Anda mengirim data lebih cepat daripada yang dapat didukung koneksi Anda. Anda kemudian memiliki dua
+pilihan ketika ini terjadi. _Data channel_ dapat dikonfigurasi untuk _buffer_ dan mengirimkan data terlambat, atau Anda dapat menjatuhkan data yang belum tiba
+dalam _real-time_.
 
 ### Teleoperation
-Teleoperation is the act of controlling a device remotely via WebRTC data channels, and sending the video back via RTP. Developers are driving cars remotely
-via WebRTC today! This is used to control robots at construction sites and deliver packages. Using WebRTC for these problems makes sense for two reasons.
+_Teleoperation_ adalah tindakan mengendalikan perangkat dari jarak jauh melalui _data channel_ WebRTC, dan mengirim video kembali melalui RTP. _Developer_ mengemudikan mobil dari jarak jauh
+melalui WebRTC hari ini! Ini digunakan untuk mengendalikan robot di lokasi konstruksi dan mengirim paket. Menggunakan WebRTC untuk masalah ini masuk akal karena dua alasan.
 
-The ubiquity of WebRTC makes it easy to give users control. All the user needs is a web browser and an input device. Browsers even
-support taking input from joysticks and gamepads. WebRTC completely removes the need to install an additional client on the user's device.
+Keberadaan WebRTC di mana-mana memudahkan untuk memberikan kontrol kepada pengguna. Yang dibutuhkan pengguna hanyalah peramban web dan perangkat input. Peramban bahkan
+mendukung pengambilan input dari _joystick_ dan _gamepad_. WebRTC sepenuhnya menghilangkan kebutuhan untuk menginstal klien tambahan di perangkat pengguna.
 
-### Distributed CDN
-Distributed CDNs are a subset of file sharing. The files being distributed are configured by the CDN operator instead. When users join the CDN network
-they can download and share the allowed files. Users get all the same benefits as file sharing.
+### CDN Terdistribusi
+CDN terdistribusi adalah subset dari berbagi file. File yang didistribusikan dikonfigurasi oleh operator CDN sebagai gantinya. Ketika pengguna bergabung dengan jaringan CDN
+mereka dapat mengunduh dan berbagi file yang diizinkan. Pengguna mendapat semua manfaat yang sama seperti berbagi file.
 
-These CDNs work great when you are at an office with poor external connectivity, but great LAN connectivity. You can have one user download a video, and
-then share it with everyone else. Since everyone isn't attempting to fetch the same file via the external network, the transfer will complete faster.
+CDN ini bekerja dengan baik ketika Anda berada di kantor dengan konektivitas eksternal yang buruk, tetapi konektivitas LAN yang bagus. Anda dapat memiliki satu pengguna mengunduh video, dan
+kemudian membagikannya dengan orang lain. Karena tidak semua orang mencoba mengambil file yang sama melalui jaringan eksternal, transfer akan selesai lebih cepat.
 
-## WebRTC Topologies
-WebRTC is a protocol for connecting two agents, so how are developers connecting hundreds of people at once? There are a few different
-ways you can do it, and they all have pros and cons. These solutions broadly fall into two categories; Peer-to-Peer or Client/Server. WebRTC's
-flexibility allows us to create both.
+## Topologi WebRTC
+WebRTC adalah protokol untuk menghubungkan dua _agent_, jadi bagaimana _developer_ menghubungkan ratusan orang sekaligus? Ada beberapa cara berbeda
+yang dapat Anda lakukan, dan semuanya memiliki pro dan kontra. Solusi ini secara luas terbagi dalam dua kategori; _Peer-to-Peer_ atau _Client/Server_. Fleksibilitas WebRTC
+memungkinkan kita untuk membuat keduanya.
 
-### One-To-One
-One-to-One is the first connection type you will use with WebRTC. You connect two WebRTC Agents directly and they can send bi-directional media and data.
-The connection looks like this.
+### _One-To-One_
+_One-to-One_ adalah tipe koneksi pertama yang akan Anda gunakan dengan WebRTC. Anda menghubungkan dua klien WebRTC secara langsung dan mereka dapat mengirim media dan data dua arah.
+Koneksi terlihat seperti ini.
 
 ![One-to-One](../images/08-one-to-one.png "One-to-One")
 
-### Full Mesh
-Full mesh is the answer if you want to build a conference call or a multiplayer game. In this topology each user establishes a connection
-with every other user directly. This allows you to build your application, but it comes with some downsides.
+### _Full Mesh_
+_Full mesh_ adalah jawabannya jika Anda ingin membangun panggilan konferensi atau game multipemain. Dalam topologi ini setiap pengguna membuat koneksi
+dengan setiap pengguna lain secara langsung. Ini memungkinkan Anda membangun aplikasi Anda, tetapi datang dengan beberapa kekurangan.
 
-In a Full Mesh topology each user is connected directly. That means you have to encode and upload video independently for each member of the call.
-The network conditions between each connection will be different, so you can't reuse the same video. Error handling is also difficult in these
-deployments. You need to carefully consider if you have lost complete connectivity, or just connectivity with one remote peer.
+Dalam topologi _Full Mesh_ setiap pengguna terhubung langsung. Itu berarti Anda harus mengenkode dan mengunggah video secara independen untuk setiap anggota panggilan.
+Kondisi jaringan antara setiap koneksi akan berbeda, jadi Anda tidak dapat menggunakan kembali video yang sama. Penanganan kesalahan juga sulit dalam
+penerapan ini. Anda perlu mempertimbangkan dengan hati-hati apakah Anda telah kehilangan konektivitas lengkap, atau hanya konektivitas dengan satu _peer remote_.
 
-Because of these concerns, a Full Mesh is best used for small groups. For anything larger a client/server topology is best.
+Karena masalah ini, _Full Mesh_ paling baik digunakan untuk grup kecil. Untuk apa pun yang lebih besar, topologi _client/server_ adalah yang terbaik.
 
 ![Full mesh](../images/08-full-mesh.png "Full mesh")
 
-### Hybrid Mesh
-Hybrid Mesh is an alternative to Full Mesh that can alleviate some of the Full Mesh's issues. In a Hybrid Mesh connections aren't established
-between every user. Instead, media is relayed through peers in the network. This means that the creator of the media doesn't have to use as
-much bandwidth to distribute media.
+### _Hybrid Mesh_
+_Hybrid Mesh_ adalah alternatif untuk _Full Mesh_ yang dapat meringankan beberapa masalah _Full Mesh_. Dalam _Hybrid Mesh_ koneksi tidak dibuat
+antara setiap pengguna. Sebaliknya, media direlai melalui _peer_ di jaringan. Ini berarti bahwa pencipta media tidak perlu menggunakan sebanyak
+_bandwidth_ untuk mendistribusikan media.
 
-This does have some downsides. In this set up, the original creator of the media has no idea who its video is being sent too, and if
-it arrived successfully. You also will have an increase in latency with every hop in your Hybrid Mesh network.
+Ini memiliki beberapa kekurangan. Dalam pengaturan ini, pencipta asli media tidak tahu kepada siapa videonya dikirim, atau apakah
+tiba dengan sukses. Anda juga akan memiliki peningkatan latensi dengan setiap _hop_ di jaringan _Hybrid Mesh_ Anda.
 
 ![Hybrid mesh](../images/08-hybrid-mesh.png "Hybrid mesh")
 
-### Selective Forwarding Unit
-An SFU (Selective Forwarding Unit) also solves the issues of Full Mesh, but in an entirely different way. An SFU implements a client/server topology, instead of P2P.
-Each WebRTC peer connects to the SFU and uploads its media. The SFU then forwards this media out to each connected client.
+### _Selective Forwarding Unit_
+SFU (_Selective Forwarding Unit_) juga menyelesaikan masalah _Full Mesh_, tetapi dengan cara yang sama sekali berbeda. SFU mengimplementasikan topologi _client/server_, bukannya P2P.
+Setiap _peer_ WebRTC terhubung ke SFU dan mengunggah medianya. SFU kemudian meneruskan media ini ke setiap klien yang terhubung.
 
-With an SFU each WebRTC Agent only has to encode and upload their video once. The burden of distributing it to all the viewers is on the SFU.
-Connectivity with an SFU is much easier than P2P as well. You can run an SFU on a world routable address, making it much easier for clients to connect.
-You don't need to worry about NAT Mappings. You do still need to make sure your SFU is available via TCP (either via ICE-TCP or TURN).
+Dengan SFU setiap klien WebRTC hanya perlu mengenkode dan mengunggah video mereka sekali. Beban mendistribusikannya ke semua penonton ada pada SFU.
+Konektivitas dengan SFU juga jauh lebih mudah daripada P2P. Anda dapat menjalankan SFU pada alamat yang dapat di-_route_ secara global, membuatnya jauh lebih mudah bagi klien untuk terhubung.
+Anda tidak perlu khawatir tentang _NAT Mapping_. Anda masih perlu memastikan SFU Anda tersedia melalui TCP (baik melalui ICE-TCP atau TURN).
 
-Building a simple SFU can be done in a weekend. Building a good SFU that can handle all types of clients is never ending. Tuning the Congestion Control, Error
-Correction and Performance is a never ending task.
+Membangun SFU sederhana dapat dilakukan dalam satu akhir pekan. Membangun SFU yang baik yang dapat menangani semua jenis klien tidak pernah berakhir. Menyetel _Congestion Control_, _Error
+Correction_ dan Kinerja adalah tugas yang tidak pernah berakhir.
 
 ![Selective Forwarding Unit](../images/08-sfu.png "Selective Forwarding Unit")
 
 ### MCU
-A MCU (Multi-point Conferencing Unit) is a client/server topology like an SFU, but composites the output streams. Instead of distributing the outbound media
-unmodified it re-encodes them as one feed.
+MCU (_Multi-point Conferencing Unit_) adalah topologi _client/server_ seperti SFU, tetapi menyusun _stream_ output. Alih-alih mendistribusikan media keluar
+yang tidak dimodifikasi, ia mengenkodekannya kembali sebagai satu _feed_.
 
 ![Multi-point Conferencing Unit](../images/08-mcu.png "Multi-point Conferencing Unit")

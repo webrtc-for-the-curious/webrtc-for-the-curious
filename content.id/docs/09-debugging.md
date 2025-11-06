@@ -6,21 +6,21 @@ weight: 10
 
 
 # Debugging
-Debugging WebRTC can be a daunting task. There are a lot of moving parts, and they all can break independently. If you aren't careful, you can lose weeks of time looking at the wrong things. When you do finally find the part that is broken, you will need to learn a bit to understand why.
+_Debugging_ WebRTC bisa menjadi tugas yang menakutkan. Ada banyak bagian yang bergerak, dan semuanya bisa rusak secara independen. Jika Anda tidak hati-hati, Anda dapat kehilangan berminggu-minggu waktu melihat hal yang salah. Ketika Anda akhirnya menemukan bagian yang rusak, Anda perlu belajar sedikit untuk memahami mengapa.
 
-This chapter will get you in the mindset to debug WebRTC. It will show you how to break down the problem. After we know the problem, we will give a quick tour of the popular debugging tools.
+Bab ini akan membawa Anda ke pola pikir untuk men-_debug_ WebRTC. Ini akan menunjukkan kepada Anda cara memecah masalah. Setelah kami mengetahui masalahnya, kami akan memberikan tur singkat dari alat _debugging_ yang populer.
 
-## Isolate The Problem
+## Isolasi Masalah
 
-When debugging, you need to isolate where the issue is coming from. Start from the beginning of the...
+Saat men-_debug_, Anda perlu mengisolasi dari mana masalah berasal. Mulai dari awal...
 
-### Signaling Failure
+### Kegagalan Signaling
 
-### Networking Failure
+### Kegagalan Jaringan
 
-Test your STUN server using netcat:
+Uji _server_ STUN Anda menggunakan netcat:
 
-1. Prepare the **20-byte** binding request packet:
+1. Siapkan paket permintaan pengikatan **20-byte**:
 
     ```
     echo -ne "\x00\x01\x00\x00\x21\x12\xA4\x42TESTTESTTEST" | hexdump -C
@@ -29,13 +29,13 @@ Test your STUN server using netcat:
     00000014
     ```
 
-    Interpretation:
-    - `00 01` is the message type.
-    - `00 00` is the length of the data section.
-    - `21 12 a4 42` is the magic cookie.
-    - and `54 45 53 54 54 45 53 54 54 45 53 54` (Decodes to ASCII: `TESTTESTTEST`) is the 12-byte transaction ID.
+    Interpretasi:
+    - `00 01` adalah tipe pesan.
+    - `00 00` adalah panjang bagian data.
+    - `21 12 a4 42` adalah _magic cookie_.
+    - dan `54 45 53 54 54 45 53 54 54 45 53 54` (Dekode ke ASCII: `TESTTESTTEST`) adalah _transaction ID_ 12-byte.
 
-2. Send the request and wait for the **32 byte** response:
+2. Kirim permintaan dan tunggu respons **32 byte**:
 
     ```
     stunserver=stun1.l.google.com;stunport=19302;listenport=20000;echo -ne "\x00\x01\x00\x00\x21\x12\xA4\x42TESTTESTTEST" | nc -u -p $listenport $stunserver $stunport -w 1 | hexdump -C
@@ -44,20 +44,20 @@ Test your STUN server using netcat:
     00000020
     ```
 
-    Interpretation:
-    - `01 01` is the message type
-    - `00 0c` is the length of the data section which decodes to 12 in decimal
-    - `21 12 a4 42` is the magic cookie
-    - and `54 45 53 54 54 45 53 54 54 45 53 54` (Decodes to ASCII: `TESTTESTTEST`) is the 12-byte transaction ID.
-    - `00 20 00 08 00 01 6f 32 7f 36 de 89` is the 12-byte data, interpretation:
-        - `00 20` is the type: `XOR-MAPPED-ADDRESS`
-        - `00 08` is the length of the value section which decodes to 8 in decimal
-        - `00 01 6f 32 7f 36 de 89` is the data value, interpretation:
-            - `00 01` is the address type (IPv4)
-            - `6f 32` is the XOR-mapped port
-            - `7f 36 de 89` is the XOR-mapped IP address
+    Interpretasi:
+    - `01 01` adalah tipe pesan
+    - `00 0c` adalah panjang bagian data yang didekode menjadi 12 dalam desimal
+    - `21 12 a4 42` adalah _magic cookie_
+    - dan `54 45 53 54 54 45 53 54 54 45 53 54` (Dekode ke ASCII: `TESTTESTTEST`) adalah _transaction ID_ 12-byte.
+    - `00 20 00 08 00 01 6f 32 7f 36 de 89` adalah data 12-byte, interpretasi:
+        - `00 20` adalah tipenya: `XOR-MAPPED-ADDRESS`
+        - `00 08` adalah panjang bagian nilai yang didekode menjadi 8 dalam desimal
+        - `00 01 6f 32 7f 36 de 89` adalah nilai data, interpretasi:
+            - `00 01` adalah tipe alamat (IPv4)
+            - `6f 32` adalah _port_ yang di-_XOR-mapped_
+            - `7f 36 de 89` adalah alamat IP yang di-_XOR-mapped_
 
-Decoding the XOR-mapped section is cumbersome, but we can trick the stun server to perform a dummy XOR-mapping, by supplying an (invalid) dummy magic cookie set to `00 00 00 00`:
+Mendekode bagian _XOR-mapped_ merepotkan, tetapi kita dapat mengelabui _server stun_ untuk melakukan _dummy XOR-mapping_, dengan memberikan _dummy magic cookie_ (tidak valid) yang disetel ke `00 00 00 00`:
 
 ```
 stunserver=stun1.l.google.com;stunport=19302;listenport=20000;echo -ne "\x00\x01\x00\x00\x00\x00\x00\x00TESTTESTTEST" | nc -u -p $listenport $stunserver $stunport -w 1 | hexdump -C
@@ -66,147 +66,147 @@ stunserver=stun1.l.google.com;stunport=19302;listenport=20000;echo -ne "\x00\x01
 00000020
 ```
 
-XOR-ing against the dummy magic cookie is idempotent, so the port and address will be in clear in the response. This will not work in all situations, because some routers manipulate the passing packets, cheating on the IP address. If we look at the returned data value (last eight bytes):
+_XOR-ing_ terhadap _dummy magic cookie_ adalah idempoten, jadi _port_ dan alamat akan jelas dalam respons. Ini tidak akan bekerja dalam semua situasi, karena beberapa _router_ memanipulasi paket yang lewat, curang pada alamat IP. Jika kita melihat nilai data yang dikembalikan (delapan _byte_ terakhir):
 
-  - `00 01 4e 20 5e 24 7a cb` is the data value, interpretation:
-    - `00 01` is the address type (IPv4)
-    - `4e 20` is the mapped port, which decodes to 20000 in decimal
-    - `5e 24 7a cb` is the IP address, which decodes to `94.36.122.203` in dotted-decimal notation.
+  - `00 01 4e 20 5e 24 7a cb` adalah nilai data, interpretasi:
+    - `00 01` adalah tipe alamat (IPv4)
+    - `4e 20` adalah _port_ yang di-_mapped_, yang didekode menjadi 20000 dalam desimal
+    - `5e 24 7a cb` adalah alamat IP, yang didekode menjadi `94.36.122.203` dalam notasi _dotted-decimal_.
 
-### Security Failure
+### Kegagalan Keamanan
 
-### Media Failure
+### Kegagalan Media
 
-### Data Failure
+### Kegagalan Data
 
-## Tools of the trade
+## Alat perdagangan
 
 ### netcat (nc)
 
-[netcat](https://en.wikipedia.org/wiki/Netcat) is command-line networking utility for reading from and writing to network connections using TCP or UDP. It is typically available as the `nc` command.
+[netcat](https://en.wikipedia.org/wiki/Netcat) adalah utilitas jaringan _command-line_ untuk membaca dari dan menulis ke koneksi jaringan menggunakan TCP atau UDP. Ini biasanya tersedia sebagai perintah `nc`.
 
 ### tcpdump
 
-[tcpdump](https://en.wikipedia.org/wiki/Tcpdump) is a command-line data-network packet analyzer.
+[tcpdump](https://en.wikipedia.org/wiki/Tcpdump) adalah penganalisis paket jaringan data _command-line_.
 
-Common commands:
-- Capture UDP packets to and from port 19302, print a hexdump of the packet content:
+Perintah umum:
+- Tangkap paket UDP ke dan dari _port_ 19302, cetak _hexdump_ dari konten paket:
 
     `sudo tcpdump 'udp port 19302' -xx`
 
-- Same, but save packets in a PCAP (packet capture) file for later inspection:
+- Sama, tetapi simpan paket dalam file PCAP (_packet capture_) untuk inspeksi nanti:
 
     `sudo tcpdump 'udp port 19302' -w stun.pcap`
 
-  The PCAP file can be opened with the Wireshark application: `wireshark stun.pcap`
+  File PCAP dapat dibuka dengan aplikasi Wireshark: `wireshark stun.pcap`
 
 ### Wireshark
 
-[Wireshark](https://www.wireshark.org) is a widely-used network protocol analyzer.
+[Wireshark](https://www.wireshark.org) adalah penganalisis protokol jaringan yang banyak digunakan.
 
-### webrtc-internals
+### Alat peramban WebRTC
 
-Chrome comes with a built-in WebRTC statistics page available at [chrome://webrtc-internals](chrome://webrtc-internals).
+Peramban dilengkapi dengan alat bawaan yang dapat Anda gunakan untuk memeriksa koneksi yang Anda buat. Chrome memiliki [`chrome://webrtc-internals`](chrome://webrtc-internals) dan [`chrome://webrtc-logs`](chrome://webrtc-logs). Firefox memiliki [`about:webrtc`](about:webrtc).
 
-## Latency
-How do you know you have high latency? You may have noticed that your video is lagging, but do you know precisely how much it is lagging? 
-To be able to reduce this latency, you have to start by measuring it first.
+## Latensi
+Bagaimana Anda tahu Anda memiliki latensi tinggi? Anda mungkin telah memperhatikan bahwa video Anda tertinggal, tetapi apakah Anda tahu persis berapa banyak tertinggal? 
+Untuk dapat mengurangi latensi ini, Anda harus mulai dengan mengukurnya terlebih dahulu.
 
-True latency is supposed to be measured end-to-end. That means not just the latency of the network path between the sender and the receiver, but the combined latency of camera capture, frame encoding, transmission, receiving, decoding and displaying, as well as possible queueing between any of these steps.
+Latensi sejati seharusnya diukur _end-to-end_. Itu berarti tidak hanya latensi jalur jaringan antara pengirim dan penerima, tetapi latensi gabungan dari pengambilan kamera, pengkodean _frame_, transmisi, penerimaan, dekoding dan tampilan, serta kemungkinan antrian antara salah satu langkah ini.
 
-End-to-end latency is not a simple sum of latencies of each component.
+Latensi _end-to-end_ bukan jumlah sederhana dari latensi setiap komponen.
 
-While you could theoretically measure the latency of the components of a live video transmission pipeline separately and then add them together, in practice, at least some components will be either inaccessible for instrumentation, or produce significantly different results when measured outside the pipeline.
-Variable queue depths between pipeline stages, network topology and camera exposure changes are just a few examples of components affecting end-to-end latency.
+Meskipun Anda secara teoritis dapat mengukur latensi komponen dari _pipeline_ transmisi video langsung secara terpisah dan kemudian menambahkannya bersama-sama, dalam praktiknya, setidaknya beberapa komponen akan tidak dapat diakses untuk instrumentasi, atau menghasilkan hasil yang sangat berbeda ketika diukur di luar _pipeline_.
+Kedalaman antrian variabel antara tahap _pipeline_, topologi jaringan dan perubahan eksposur kamera hanyalah beberapa contoh komponen yang mempengaruhi latensi _end-to-end_.
 
-The intrinsic latency of each component in your live-streaming system can change and affect downstream components.
-Even the content of captured video affects latency. 
-For example, many more bits are required for high frequency features such as tree branches, compared to a low frequency clear blue sky.
-A camera with auto exposure turned on may take _much_ longer than the expected 33 milliseconds to capture a frame, even if when the capture rate is set to 30 frames per second.
-Transmission over the network, especially so cellular, is also very dynamic due to changing demand. 
-More users introduce more chatter on the air. 
-Your physical location (notorious low signal zones) and multiple other factors increase packet loss and latency.
-What happens when you send a packet to a network interface, say WiFi adapter or an LTE modem for delivery?
-If it can not be immediately delivered it is queued on the interface, the larger the queue the more latency such network interface introduces.
+Latensi intrinsik dari setiap komponen dalam sistem _live-streaming_ Anda dapat berubah dan mempengaruhi komponen _downstream_.
+Bahkan konten video yang ditangkap mempengaruhi latensi. 
+Misalnya, lebih banyak bit diperlukan untuk fitur frekuensi tinggi seperti cabang pohon, dibandingkan dengan langit biru yang jelas dengan frekuensi rendah.
+Kamera dengan eksposur otomatis yang diaktifkan mungkin memakan waktu _jauh_ lebih lama daripada 33 milidetik yang diharapkan untuk menangkap _frame_, bahkan jika ketika tingkat pengambilan disetel ke 30 _frame_ per detik.
+Transmisi melalui jaringan, terutama seluler, juga sangat dinamis karena permintaan yang berubah. 
+Lebih banyak pengguna memperkenalkan lebih banyak obrolan di udara. 
+Lokasi fisik Anda (zona sinyal rendah yang terkenal) dan beberapa faktor lain meningkatkan _packet loss_ dan latensi.
+Apa yang terjadi ketika Anda mengirim paket ke antarmuka jaringan, katakanlah adaptor WiFi atau modem LTE untuk pengiriman?
+Jika tidak dapat segera dikirim, ia akan diantrekan pada antarmuka, semakin besar antrian semakin banyak latensi yang diperkenalkan antarmuka jaringan tersebut.
 
-### Manual end-to-end latency measurement
-When we talk about end-to-end latency, we mean the time between an event happening and it being observed, meaning video frames appearing on the screen.
+### Pengukuran latensi _end-to-end_ manual
+Ketika kita berbicara tentang latensi _end-to-end_, yang kami maksud adalah waktu antara _event_ terjadi dan diamati, artinya _frame_ video muncul di layar.
 
 ```
 EndToEndLatency = T(observe) - T(happen)
 ```
 
-A naive approach is to record the time when an event happens and subtract it from the time at observation.
-However, as precision goes down to milliseconds time synchronization becomes an issue.
-Trying to synchronize clocks across distributed systems is mostly futile, even a small error in time sync produces unreliable latency measurement.
+Pendekatan naif adalah merekam waktu ketika _event_ terjadi dan menguranginya dari waktu pengamatan.
+Namun, karena presisi turun ke milidetik sinkronisasi waktu menjadi masalah.
+Mencoba menyinkronkan jam di seluruh sistem terdistribusi sebagian besar sia-sia, bahkan kesalahan kecil dalam sinkronisasi waktu menghasilkan pengukuran latensi yang tidak dapat diandalkan.
 
-A simple workaround for clock sync issues is to use the same clock.
-Put sender and receiver in the same frame of reference.
+Solusi sederhana untuk masalah sinkronisasi jam adalah menggunakan jam yang sama.
+Tempatkan pengirim dan penerima dalam kerangka referensi yang sama.
 
-Imagine you have a ticking millisecond clock or any other event source really.
-You want to measure latency in a system that live streams the clock to a remote screen by pointing a camera at it.
-An obvious way to measure time between the millisecond timer ticking (T<sub>`happen`</sub>) and video frames of the clock appear on screen (T<sub>`observe`</sub>) is the following:
-- Point your camera at the millisecond clock.
-- Send video frames to a receiver that is in the same physical location.
-- Take a picture (use your phone) of the millisecond timer and the received video on screen.
-- Subtract two times.
+Bayangkan Anda memiliki jam milidetik yang berdetak atau sumber _event_ lainnya sebenarnya.
+Anda ingin mengukur latensi dalam sistem yang melakukan _live stream_ jam ke layar _remote_ dengan mengarahkan kamera padanya.
+Cara yang jelas untuk mengukur waktu antara _timer_ milidetik berdetak (T<sub>`happen`</sub>) dan _frame_ video jam muncul di layar (T<sub>`observe`</sub>) adalah sebagai berikut:
+- Arahkan kamera Anda ke jam milidetik.
+- Kirim _frame_ video ke penerima yang berada di lokasi fisik yang sama.
+- Ambil gambar (gunakan ponsel Anda) dari _timer_ milidetik dan video yang diterima di layar.
+- Kurangi dua waktu.
 
-That is the most true-to-yourself end-to-end latency measurement.
-It accounts for all components latencies (camera, encoder, network, decoder) and does not rely on any clock synchronization.
+Itu adalah pengukuran latensi _end-to-end_ yang paling benar untuk diri Anda sendiri.
+Ini memperhitungkan semua latensi komponen (kamera, _encoder_, jaringan, _decoder_) dan tidak bergantung pada sinkronisasi jam apa pun.
 
 ![DIY Latency](../images/09-diy-latency.png "DIY Latency Measurement").
 ![DIY Latency Example](../images/09-diy-latency-happen-observe.png "DIY Latency Measurement Example")
-In the photo above measured end-to-end latency is 101 msec. Event happening right now is 10:16:02.862, but the live-streaming system observer sees 10:16:02.761. 
+Dalam foto di atas latensi _end-to-end_ yang diukur adalah 101 milidetik. _Event_ yang terjadi sekarang adalah 10:16:02.862, tetapi pengamat sistem _live-streaming_ melihat 10:16:02.761. 
 
-### Automatic end-to-end latency measurement
-As of the time of writing (May 2021) the WebRTC standard for end-to-end delay is being actively [discussed](https://github.com/w3c/webrtc-stats/issues/537).
-Firefox implemented a set of APIs to let users create automatic latency measurement on top of standard WebRTC APIs.
-However in this paragraph, we discuss the most compatible way to automatically measure latency.
+### Pengukuran latensi _end-to-end_ otomatis
+Pada saat penulisan (Mei 2021) standar WebRTC untuk penundaan _end-to-end_ sedang aktif [dibahas](https://github.com/w3c/webrtc-stats/issues/537).
+Firefox mengimplementasikan satu set API untuk membiarkan pengguna membuat pengukuran latensi otomatis di atas API WebRTC standar.
+Namun dalam paragraf ini, kami membahas cara yang paling kompatibel untuk mengukur latensi secara otomatis.
 
 ![NTP Style Latency Measurement](../images/09-ntp-latency.png "NTP Style Latency Measurement")
 
-Roundtrip time in a nutshell: I send you my time `tR1`, when I receive back my `tR1` at time `tR2`, I know round trip time is `tR2 - tR1`.
+_Roundtrip time_ dalam singkatnya: Saya mengirim Anda waktu saya `tR1`, ketika saya menerima kembali `tR1` saya pada waktu `tR2`, saya tahu _round trip time_ adalah `tR2 - tR1`.
 
-Given a communication channel between sender and receiver (e.g. [DataChannel](https://webrtc.org/getting-started/data-channels)), the receiver may model the sender's monotonic clock by following the steps below:
-1. At time `tR1`, the receiver sends a message with its local monotonic clock timestamp.
-2. When it is received at the sender with local time `tS1`, the sender responds with a copy of `tR1` as well as the sender’s `tS1` and the sender's video track time `tSV1`.
-3. At time `tR2` on the receiving end, round trip time is calculated by subtracting the message's send and receive times: `RTT = tR2 - tR1`.
-4. Round trip time `RTT` together with sender local timestamp `tS1` is enough to create an estimation of the sender's monotonic clock. Current time on the sender at time `tR2` would be equal to `tS1` plus half of round trip time.  
-5. Sender's local clock timestamp `tS1` paired with video track timestamp `tSV1` together with round trip time `RTT` is therefore enough to sync receiver video track time to the sender video track. 
+Diberikan saluran komunikasi antara pengirim dan penerima (misalnya [DataChannel](https://webrtc.org/getting-started/data-channels)), penerima dapat memodelkan jam _monotonic_ pengirim dengan mengikuti langkah-langkah di bawah ini:
+1. Pada waktu `tR1`, penerima mengirim pesan dengan _timestamp_ jam _monotonic_ lokalnya.
+2. Ketika diterima di pengirim dengan waktu lokal `tS1`, pengirim merespons dengan salinan `tR1` serta `tS1` pengirim dan waktu _track video_ pengirim `tSV1`.
+3. Pada waktu `tR2` di sisi penerima, _round trip time_ dihitung dengan mengurangi waktu pengiriman dan penerimaan pesan: `RTT = tR2 - tR1`.
+4. _Round trip time_ `RTT` bersama dengan _timestamp_ lokal pengirim `tS1` cukup untuk membuat estimasi jam _monotonic_ pengirim. Waktu saat ini pada pengirim pada waktu `tR2` akan sama dengan `tS1` ditambah setengah dari _round trip time_.  
+5. _Timestamp_ jam lokal pengirim `tS1` dipasangkan dengan _timestamp track video_ `tSV1` bersama dengan _round trip time_ `RTT` karena itu cukup untuk menyinkronkan waktu _track video_ penerima ke _track video_ pengirim. 
 
-Now that we know how much time has passed since the last known sender video frame time `tSV1`, we can approximate the latency by subtracting the currently displayed video frame's time (`actual_video_time`) from the expected time:
+Sekarang kita tahu berapa banyak waktu telah berlalu sejak waktu _frame video_ pengirim yang dikenal terakhir `tSV1`, kita dapat memperkirakan latensi dengan mengurangi waktu _frame video_ yang ditampilkan saat ini (`actual_video_time`) dari waktu yang diharapkan:
 
 ```
 expected_video_time = tSV1 + time_since(tSV1)
 latency = expected_video_time - actual_video_time
 ```
 
-This method's drawback is that it does not include the camera's intrinsic latency.
-Most video systems consider the frame capture timestamp to be the time when the frame from the camera is delivered to the main memory, which will be a few moments after the event being recorded actually happened.
+Kelemahan metode ini adalah tidak termasuk latensi intrinsik kamera.
+Sebagian besar sistem video menganggap _timestamp_ pengambilan _frame_ adalah waktu ketika _frame_ dari kamera dikirim ke memori utama, yang akan beberapa saat setelah _event_ yang direkam benar-benar terjadi.
 
-#### Example latency estimation
-A sample implementation opens a `latency` data channel on the receiver and periodically sends the receiver's monotonic timer timestamps to the sender. The sender responds back with a JSON message and the receiver calculates the latency based the message.
+#### Contoh estimasi latensi
+Implementasi sampel membuka _data channel_ `latency` pada penerima dan secara berkala mengirim _timestamp timer monotonic_ penerima ke pengirim. Pengirim merespons kembali dengan pesan JSON dan penerima menghitung latensi berdasarkan pesan.
 
 ```json
 {
-    "received_time": 64714,       // Timestamp sent by receiver, sender reflects the timestamp. 
-    "delay_since_received": 46,   // Time elapsed since last `received_time` received on sender.
-    "local_clock": 1597366470336, // The sender's current monotonic clock time.
+    "received_time": 64714,       // Timestamp dikirim oleh penerima, pengirim memantulkan timestamp. 
+    "delay_since_received": 46,   // Waktu yang berlalu sejak `received_time` terakhir diterima di pengirim.
+    "local_clock": 1597366470336, // Waktu jam monotonic pengirim saat ini.
     "track_times_msec": {
         "myvideo_track1": [
-            13100,        // Video frame RTP timestamp (in milliseconds).
-            1597366470289 // Video frame monotonic clock timestamp.
+            13100,        // Timestamp RTP frame video (dalam milidetik).
+            1597366470289 // Timestamp jam monotonic frame video.
         ]
     }
 }
 ```
 
-Open the data channel on the receiver:
+Buka _data channel_ pada penerima:
 ```javascript
 dataChannel = peerConnection.createDataChannel('latency');
 ```
 
-Send the receiver's time `tR1` periodically. This example uses 2 seconds for no particular reason:
+Kirim waktu penerima `tR1` secara berkala. Contoh ini menggunakan 2 detik tanpa alasan tertentu:
 ```javascript
 setInterval(() => {
     let tR1 = Math.trunc(performance.now());
@@ -214,7 +214,7 @@ setInterval(() => {
 }, 2000);
 ```
 
-Handle incoming message from receiver on sender:
+Tangani pesan masuk dari penerima di pengirim:
 ```javascript
 // Assuming event.data is a string like "1234567".
 tR1 = event.data
@@ -232,7 +232,7 @@ msg = {
 dataChannel.send(JSON.stringify(msg));
 ```
 
-Handle incoming message from the sender and print the estimated latency to the `console`:
+Tangani pesan masuk dari pengirim dan cetak latensi yang diestimasi ke `console`:
 ```javascript
 let tR2 = performance.now();
 let fromSender = JSON.parse(event.data);
@@ -255,25 +255,25 @@ VIDEO.requestVideoFrameCallback((now, framemeta) => {
 });
 ```
 
-#### Actual video time in browser
-> `<video>.requestVideoFrameCallback()` allows web authors to be notified when a frame has been presented for composition.
+#### Waktu video aktual di peramban
+> `<video>.requestVideoFrameCallback()` memungkinkan penulis web untuk diberi tahu ketika _frame_ telah disajikan untuk komposisi.
 
-Until very recently (May 2020), it was next to impossible to reliably get a timestamp of the currently displayed video frame in browsers. Workaround methods based on `video.currentTime` existed, but were not particularly precise. 
-Both the Chrome and Mozilla browser developers [supported](https://github.com/mozilla/standards-positions/issues/250) the introduction of a new W3C standard, [`HTMLVideoElement.requestVideoFrameCallback()`](https://wicg.github.io/video-rvfc/), that adds an API callback to access the current video frame time.
-While the addition sounds trivial, it has enabled multiple advanced media applications on the web that require audio and video synchronization.
-Specifically for WebRTC, the callback will include the `rtpTimestamp` field, the RTP timestamp associated with the current video frame. 
-This should be present for WebRTC applications, but absent otherwise.
+Sampai sangat baru-baru ini (Mei 2020), hampir tidak mungkin untuk mendapatkan _timestamp_ dari _frame video_ yang ditampilkan saat ini di peramban dengan andal. Metode solusi berdasarkan `video.currentTime` ada, tetapi tidak terlalu tepat. 
+Baik pengembang peramban Chrome dan Mozilla [mendukung](https://github.com/mozilla/standards-positions/issues/250) pengenalan standar W3C baru, [`HTMLVideoElement.requestVideoFrameCallback()`](https://wicg.github.io/video-rvfc/), yang menambahkan _callback_ API untuk mengakses waktu _frame video_ saat ini.
+Meskipun penambahan terdengar sepele, ini telah memungkinkan beberapa aplikasi media lanjutan di web yang memerlukan sinkronisasi audio dan video.
+Khusus untuk WebRTC, _callback_ akan menyertakan bidang `rtpTimestamp`, _timestamp_ RTP yang terkait dengan _frame video_ saat ini. 
+Ini harus ada untuk aplikasi WebRTC, tetapi tidak ada selain itu.
 
-### Latency Debugging Tips
-Since debugging is likely to affect the measured latency, the general rule is to simplify your setup to the smallest possible one that can still reproduce the issue.
-The more components you can remove, the easier it will be to figure out which component is causing the latency problem.
+### Tips _Debugging_ Latensi
+Karena _debugging_ kemungkinan akan mempengaruhi latensi yang diukur, aturan umum adalah menyederhanakan pengaturan Anda ke yang terkecil yang mungkin yang masih dapat mereproduksi masalah.
+Semakin banyak komponen yang dapat Anda hapus, semakin mudah untuk mencari tahu komponen mana yang menyebabkan masalah latensi.
 
-#### Camera latency
-Depending on camera settings camera latency may vary.
-Check auto exposure, auto focus and auto white balance settings.
-All the "auto" features of web cameras take some extra time to analyse the captured image before making it available to the WebRTC stack.
+#### Latensi kamera
+Tergantung pada pengaturan kamera latensi kamera mungkin bervariasi.
+Periksa pengaturan eksposur otomatis, fokus otomatis dan keseimbangan putih otomatis.
+Semua fitur "auto" dari kamera web memerlukan waktu ekstra untuk menganalisis gambar yang ditangkap sebelum membuatnya tersedia untuk _stack_ WebRTC.
 
-If you are on Linux, you can use the `v4l2-ctl` command line tool to control camera settings:
+Jika Anda di Linux, Anda dapat menggunakan alat _command line_ `v4l2-ctl` untuk mengontrol pengaturan kamera:
 ```bash
 # Disable autofocus:
 v4l2-ctl -d /dev/video0 -c focus_auto=0
@@ -281,67 +281,67 @@ v4l2-ctl -d /dev/video0 -c focus_auto=0
 v4l2-ctl -d /dev/video0 -c focus_absolute=0
 ```
 
-You can also use the graphical UI tool `guvcview` to quickly check and tweak camera settings.
+Anda juga dapat menggunakan alat UI grafis `guvcview` untuk dengan cepat memeriksa dan men-_tweak_ pengaturan kamera.
 
-#### Encoder latency
-Most modern encoders will buffer some frames before outputting an encoded one.
-Their first priority is a balance between the quality of the produced picture and bitrate. 
-Multipass encoding is an extreme example of an encoder's disregard for output latency.
-During the first pass encoder ingests the entire video and only after that starts outputting frames.
+#### Latensi _encoder_
+Sebagian besar _encoder_ modern akan _buffer_ beberapa _frame_ sebelum mengeluarkan yang dikode.
+Prioritas pertama mereka adalah keseimbangan antara kualitas gambar yang dihasilkan dan _bitrate_. 
+Pengkodean _multipass_ adalah contoh ekstrem dari pengabaian latensi output _encoder_.
+Selama _pass_ pertama _encoder_ mencerna seluruh video dan hanya setelah itu mulai mengeluarkan _frame_.
 
-However, with proper tuning people have achieved sub-frame latencies.
-Make sure your encoder does not use excessive reference frames or rely on B-frames.
-Every codec's latency tuning settings are different, but for x264 we recommend using `tune=zerolatency` and `profile=baseline` for the lowest frame output latency.
+Namun, dengan penyetelan yang tepat orang telah mencapai latensi _sub-frame_.
+Pastikan _encoder_ Anda tidak menggunakan _reference frame_ yang berlebihan atau bergantung pada _B-frame_.
+Pengaturan penyetelan latensi setiap _codec_ berbeda, tetapi untuk x264 kami merekomendasikan menggunakan `tune=zerolatency` dan `profile=baseline` untuk latensi output _frame_ terendah.
 
-#### Network latency
-Network latency is the one you can arguably do least about, other than upgrading to a better network connection.
-Network latency is very much like the weather - you can't stop the rain, but you can check the forecast and take an umbrella.
-WebRTC is measuring network conditions with millisecond precision.
-Important metrics are:
-- Round-trip time.
-- Packet loss and packet retransmissions.
+#### Latensi jaringan
+Latensi jaringan adalah salah satu yang dapat Anda lakukan paling sedikit, selain meningkatkan ke koneksi jaringan yang lebih baik.
+Latensi jaringan sangat mirip dengan cuaca - Anda tidak dapat menghentikan hujan, tetapi Anda dapat memeriksa prakiraan dan membawa payung.
+WebRTC mengukur kondisi jaringan dengan presisi milidetik.
+Metrik penting adalah:
+- _Round-trip time_.
+- _Packet loss_ dan retransmisi paket.
 
 **Round-Trip Time**
 
-The WebRTC stack has a built-in network round trip time (RTT) measurement [mechanism](https://www.w3.org/TR/webrtc-stats/#dom-rtcremoteinboundrtpstreamstats-roundtriptime).
-A good-enough approximation of latency is half of the RTT. It assumes that it takes the same time to send and receive a packet, which is not always the case.
-RTT sets the lower bound on the end-to-end latency.
-Your video frames can not reach the receiver faster than `RTT/2`, no matter how optimized your camera to encoder pipeline is.
+_Stack_ WebRTC memiliki mekanisme pengukuran _round trip time_ (RTT) jaringan bawaan [mechanism](https://www.w3.org/TR/webrtc-stats/#dom-rtcremoteinboundrtpstreamstats-roundtriptime).
+Perkiraan latensi yang cukup baik adalah setengah dari RTT. Ini mengasumsikan bahwa dibutuhkan waktu yang sama untuk mengirim dan menerima paket, yang tidak selalu terjadi.
+RTT menetapkan batas bawah pada latensi _end-to-end_.
+_Frame video_ Anda tidak dapat mencapai penerima lebih cepat dari `RTT/2`, tidak peduli seberapa dioptimalkan _pipeline_ kamera ke _encoder_ Anda.
 
-The built-in RTT mechanism is based on special RTCP packets called sender/receiver reports.
-Sender sends its time reading to receiver, the receiver in turn reflects the same timestamp to the sender. 
-Thereby the sender knows how much time it took for the packet to travel to the receiver and return back.
-Refer to [Sender/Receiver Reports](../06-media-communication/#senderreceiver-reports) chapter for more details of RTT measurement. 
+Mekanisme RTT bawaan didasarkan pada paket RTCP khusus yang disebut _sender/receiver reports_.
+Pengirim mengirim pembacaan waktunya ke penerima, penerima pada gilirannya memantulkan _timestamp_ yang sama ke pengirim. 
+Dengan demikian pengirim tahu berapa banyak waktu yang dibutuhkan paket untuk melakukan perjalanan ke penerima dan kembali.
+Lihat bab [Sender/Receiver Reports](../06-media-communication/#senderreceiver-reports) untuk lebih detail tentang pengukuran RTT. 
 
-**Packet loss and packet retransmissions**
+**Packet loss dan retransmisi paket**
 
-Both RTP and RTCP are protocols based on UDP, which does not have any guarantee of ordering, successful delivery, or non-duplication.
-All of the above can and does happen in real world WebRTC applications.
-An unsophisticated decoder implementation expects all packets of a frame to be delivered for the decoder to successfully reassemble the image.
-In presence of packet loss decoding artifacts may appear if packets of a [P-frame](../06-media-communication/#inter-frame-types) are lost.
-If I-frame packets are lost then all of its dependent frames will either get heavy artifacts or won't be decoded at all. 
-Most likely this will make the video "freeze" for a moment.
+Baik RTP dan RTCP adalah protokol berdasarkan UDP, yang tidak memiliki jaminan pengurutan, pengiriman yang berhasil, atau non-duplikasi.
+Semua hal di atas dapat dan memang terjadi dalam aplikasi WebRTC dunia nyata.
+Implementasi _decoder_ yang tidak canggih mengharapkan semua paket dari _frame_ dikirim agar _decoder_ berhasil merakit gambar.
+Dalam kehadiran _packet loss_ artefak dekoding mungkin muncul jika paket dari [P-frame](../06-media-communication/#inter-frame-types) hilang.
+Jika paket I-frame hilang maka semua _frame_ dependen akan mendapatkan artefak berat atau tidak akan didekode sama sekali. 
+Kemungkinan besar ini akan membuat video "membeku" untuk sesaat.
 
-To avoid (well, at least to try to avoid) video freezing or decoding artifacts, WebRTC uses negative acknowledgement messages ([NACK](../06-media-communication/#negative-acknowledgment)).
-When the receiver does not get an expected RTP packet, it returns a NACK message to tell the sender to send the missing packet again.
-The receiver _waits_ for the retransmission of the packet.
-Such retransmissions cause increased latency.
-The number of NACK packets sent and received is recorded in WebRTC's built-in stats fields [outbound stream nackCount](https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-nackcount) and [inbound stream nackCount](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-nackcount).
+Untuk menghindari (yah, setidaknya untuk mencoba menghindari) pembekuan video atau artefak dekoding, WebRTC menggunakan pesan pengakuan negatif ([NACK](../06-media-communication/#negative-acknowledgment)).
+Ketika penerima tidak mendapatkan paket RTP yang diharapkan, ia mengembalikan pesan NACK untuk memberi tahu pengirim untuk mengirim paket yang hilang lagi.
+Penerima _menunggu_ untuk retransmisi paket.
+Retransmisi seperti itu menyebabkan peningkatan latensi.
+Jumlah paket NACK yang dikirim dan diterima dicatat dalam bidang statistik bawaan WebRTC [outbound stream nackCount](https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-nackcount) dan [inbound stream nackCount](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-nackcount).
 
-You can see nice graphs of inbound and outbound `nackCount` on the [webrtc internals page](#webrtc-internals). 
-If you see the `nackCount` increasing, it means the network is experiencing high packet loss, and the WebRTC stack is doing its best to create a smooth video/audio experience despite that.
+Anda dapat melihat grafik bagus dari `nackCount` _inbound_ dan _outbound_ di [halaman webrtc internals](#webrtc-browser-tools). 
+Jika Anda melihat `nackCount` meningkat, itu berarti jaringan mengalami _packet loss_ tinggi, dan _stack_ WebRTC melakukan yang terbaik untuk membuat pengalaman video/audio yang mulus meskipun itu.
 
-When packet loss is so high that the decoder is unable to produce an image, or subsequent dependent images like in the case of a fully lost I-frame, all future P-frames will not be decoded. 
-The receiver will try to mitigate that by sending a special Picture Loss Indication message ([PLI](../06-media-communication/#full-intra-frame-request-fir-and-picture-loss-indication-pli)).
-Once the sender receives a `PLI`, it will produce a new I-frame to help the receiver's decoder.
-I-frames are normally larger in size than P-frames. This increases the number of packets that need to be transmitted.
-Like with NACK messages, the receiver will need to wait for the new I-frame, introducing additional latency.
+Ketika _packet loss_ sangat tinggi sehingga _decoder_ tidak dapat menghasilkan gambar, atau gambar dependen berikutnya seperti dalam kasus I-frame yang hilang sepenuhnya, semua P-frame masa depan tidak akan didekode. 
+Penerima akan mencoba mengurangi itu dengan mengirim pesan _Picture Loss Indication_ khusus ([PLI](../06-media-communication/#full-intra-frame-request-fir-and-picture-loss-indication-pli)).
+Setelah pengirim menerima `PLI`, ia akan menghasilkan I-frame baru untuk membantu _decoder_ penerima.
+I-frame biasanya lebih besar dalam ukuran daripada P-frame. Ini meningkatkan jumlah paket yang perlu ditransmisikan.
+Seperti dengan pesan NACK, penerima perlu menunggu I-frame baru, memperkenalkan latensi tambahan.
 
-Watch for `pliCount` on the [webrtc internals page](#webrtc-internals). If it increases, tweak your encoder to produce less packets or enable a more error resilient mode.
+Perhatikan `pliCount` di [halaman webrtc internals](#webrtc-browser-tools). Jika meningkat, _tweak encoder_ Anda untuk menghasilkan lebih sedikit paket atau aktifkan mode yang lebih tahan kesalahan.
 
-#### Receiver side latency
-Latency will be affected by packets arriving out of order.
-If the bottom half of the image packet comes before the top you would have to wait for the top before decoding.
-This is explained in the [Solving Jitter](05-real-time-networking/#solving-jitter) chapter in great detail.
+#### Latensi sisi penerima
+Latensi akan dipengaruhi oleh paket yang tiba tidak berurutan.
+Jika paket setengah bawah gambar datang sebelum atas Anda harus menunggu atas sebelum dekoding.
+Ini dijelaskan dalam bab [Solving Jitter](../05-real-time-networking/#solving-jitter) dengan sangat detail.
 
-You can also refer to the built-in [jitterBufferDelay](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-jitterbufferdelay) metric to see how long a frame was held in the receive buffer, waiting for all of its packets until it was released to the decoder.
+Anda juga dapat merujuk ke metrik bawaan [jitterBufferDelay](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-jitterbufferdelay) untuk melihat berapa lama _frame_ ditahan di _buffer_ penerimaan, menunggu semua paketnya sampai dilepaskan ke _decoder_.

@@ -6,60 +6,60 @@ weight: 3
 
 # Signaling
 
-## What is WebRTC Signaling?
+## Apa itu _Signaling_ pada WebRTC?
 
-When you create a WebRTC agent, it knows nothing about the other peer. It has no idea who it is going to connect with or what they are going to send!
-Signaling is the initial bootstrapping that makes a call possible. After these values are exchanged, the WebRTC agents can communicate directly with each other.
+Ketika Anda membuat klien WebRTC, pada dasarnya klien tersebut tidak mengetahui apapun tentang _peer_ lainnya. Ia tidak tahu dengan siapa ia akan terhubung dan apa yang akan mereka kirimkan!
+_Signaling_ adalah proses awal yang memungkinkan sebuah panggilan terjadi. Setelah nilai-nilai ini dipertukarkan, klien WebRTC dapat berkomunikasi langsung satu sama lain.
 
-Signaling messages are just text. The WebRTC agents don't care how they are transported. They are commonly shared via Websockets, but that is not a requirement.
+Pesan _signaling_ hanyalah teks biasa. Klien WebRTC tidak peduli bagaimana pesan tersebut dikirimkan. Pesan ini umumnya dikirim melalui WebSocket, namun itu bukan keharusan.
 
-## How does WebRTC signaling work?
+## Bagaimana _signaling_ WebRTC bekerja?
 
-WebRTC uses an existing protocol called the Session Description Protocol. Via this protocol, the two WebRTC Agents will share all the state required to establish a connection. The protocol itself is simple to read and understand.
-The complexity comes from understanding all the values that WebRTC populates it with.
+WebRTC menggunakan protokol yang sudah ada sebelumnya yang disebut Session Description Protocol. Melalui protokol ini, dua klien WebRTC akan berbagi semua informasi yang diperlukan untuk membangun sebuah koneksi. Protokol ini sendiri cukup sederhana untuk dibaca dan dipahami.
+Kompleksitasnya datang dari memahami semua nilai yang diisi oleh WebRTC ke dalamnya.
 
-This protocol is not specific to WebRTC. We will learn the Session Description Protocol first without even talking about WebRTC. WebRTC only really takes advantage of a subset of the protocol, so we are only going to cover what we need.
-After we understand the protocol, we will move on to its applied usage in WebRTC.
+Protokol ini tidak spesifik untuk WebRTC saja. Kita akan mempelajari Session Description Protocol terlebih dahulu tanpa membahas WebRTC. WebRTC sebenarnya hanya memanfaatkan sebagian kecil dari protokol ini, jadi kita hanya akan membahas apa yang kita butuhkan.
+Setelah kita memahami protokolnya, kita akan beralih ke penggunaannya dalam WebRTC.
 
-## What is the *Session Description Protocol* (SDP)?
-The Session Description Protocol is defined in [RFC 8866](https://tools.ietf.org/html/rfc8866). It is a key/value protocol with a newline after each value. It will feel similar to an INI file.
-A Session Description contains zero or more Media Descriptions. Mentally you can model it as a Session Description that contains an array of Media Descriptions.
+## Apa itu *Session Description Protocol* (SDP)?
+Session Description Protocol didefinisikan dalam [RFC 8866](https://tools.ietf.org/html/rfc8866). Ini adalah protokol _key/value_ dengan baris baru setelah setiap nilai. Terasa mirip dengan file INI.
+Sebuah Session Description berisi nol atau lebih Media Description. Secara mental Anda dapat memodelkannya sebagai Session Description yang berisi array dari Media Description.
 
-A Media Description usually maps to a single stream of media. So if you wanted to describe a call with three video streams and two audio tracks you would have five Media Descriptions.
+Sebuah Media Description biasanya dipetakan ke satu _stream_ media tunggal. Jadi jika Anda ingin menggambarkan panggilan dengan tiga _stream_ video dan dua _track_ audio, Anda akan memiliki lima Media Description.
 
-### How to read the SDP
-Every line in a Session Description will start with a single character, this is your key. It will then be followed by an equal sign. Everything after that equal sign is the value. After the value is complete, you will have a newline.
+### Cara membaca SDP
+Setiap baris dalam Session Description akan dimulai dengan satu karakter, ini adalah _key_ Anda. Kemudian akan diikuti dengan tanda sama dengan. Semua yang ada setelah tanda sama dengan adalah nilainya. Setelah nilai selesai, akan ada baris baru.
 
-The Session Description Protocol defines all the keys that are valid. You can only use letters for keys as defined in the protocol. These keys all have significant meaning, which will be explained later.
+Session Description Protocol mendefinisikan semua _key_ yang valid. Anda hanya dapat menggunakan huruf untuk _key_ sebagaimana didefinisikan dalam protokol. _Key_ ini semuanya memiliki arti penting, yang akan dijelaskan nanti.
 
-Take this Session Description excerpt:
+Perhatikan cuplikan Session Description berikut:
 
 ```
 a=my-sdp-value
 a=second-value
 ```
 
-You have two lines. Each with the key `a`. The first line has the value `my-sdp-value`, the second line has the value `second-value`.
+Anda memiliki dua baris. Masing-masing dengan _key_ `a`. Baris pertama memiliki nilai `my-sdp-value`, baris kedua memiliki nilai `second-value`.
 
-### WebRTC only uses some SDP keys
-Not all key values defined by the Session Description Protocol are used by WebRTC. Only keys used in the JavaScript Session Establishment Protocol (JSEP), defined in [RFC 8829](https://datatracker.ietf.org/doc/html/rfc8829), are important. The following seven keys are the only ones you need to understand right now:
+### WebRTC hanya menggunakan beberapa _key_ SDP
+Tidak semua nilai _key_ yang didefinisikan oleh Session Description Protocol digunakan oleh WebRTC. Hanya _key_ yang digunakan dalam JavaScript Session Establishment Protocol (JSEP), yang didefinisikan dalam [RFC 8829](https://datatracker.ietf.org/doc/html/rfc8829), yang penting. Tujuh _key_ berikut adalah satu-satunya yang perlu Anda pahami saat ini:
 
-* `v` - Version, should be equal to `0`.
-* `o` - Origin, contains a unique ID useful for renegotiations.
-* `s` - Session Name, should be equal to `-`.
-* `t` - Timing, should be equal to `0 0`.
-* `m` - Media Description (`m=<media> <port> <proto> <fmt> ...`), described in detail below.
-* `a` - Attribute, a free text field. This is the most common line in WebRTC.
-* `c` - Connection Data, should be equal to `IN IP4 0.0.0.0`.
+* `v` - Version, harus sama dengan `0`.
+* `o` - Origin, berisi ID unik yang berguna untuk renegosiasi.
+* `s` - Session Name, harus sama dengan `-`.
+* `t` - Timing, harus sama dengan `0 0`.
+* `m` - Media Description (`m=<media> <port> <proto> <fmt> ...`), dijelaskan secara detail di bawah.
+* `a` - Attribute, sebuah _field_ teks bebas. Ini adalah baris yang paling umum dalam WebRTC.
+* `c` - Connection Data, harus sama dengan `IN IP4 0.0.0.0`.
 
-### Media Descriptions in a Session Description
+### Media Description dalam Session Description
 
-A Session Description can contain an unlimited number of Media Descriptions.
+Sebuah Session Description dapat berisi jumlah Media Description yang tidak terbatas.
 
-A Media Description definition contains a list of formats. These formats map to RTP Payload Types. The actual codec is then defined by an Attribute with the value `rtpmap` in the Media Description.
-The importance of RTP and RTP Payload Types is discussed later in the Media chapter. Each Media Description can contain an unlimited number of attributes.
+Definisi Media Description berisi daftar format. Format ini dipetakan ke RTP Payload Type. _Codec_ sebenarnya kemudian didefinisikan oleh Attribute dengan nilai `rtpmap` dalam Media Description.
+Pentingnya RTP dan RTP Payload Type dibahas kemudian dalam bab Media. Setiap Media Description dapat berisi jumlah atribut yang tidak terbatas.
 
-Take this Session Description excerpt as an example:
+Perhatikan cuplikan Session Description sebagai contoh:
 
 ```
 v=0
@@ -70,13 +70,13 @@ a=rtpmap:96 VP8/90000
 a=my-sdp-value
 ```
 
-You have two Media Descriptions, one of type audio with fmt `111` and one of type video with the format `96`. The first Media Description has only one attribute. This attribute maps the Payload Type `111` to Opus.
-The second Media Description has two attributes. The first attribute maps the Payload Type `96` to be VP8, and the second attribute is just `my-sdp-value`.
+Anda memiliki dua Media Description, satu berjenis audio dengan fmt `111` dan satu berjenis video dengan format `96`. Media Description pertama hanya memiliki satu atribut. Atribut ini memetakan Payload Type `111` ke Opus.
+Media Description kedua memiliki dua atribut. Atribut pertama memetakan Payload Type `96` menjadi VP8, dan atribut kedua hanyalah `my-sdp-value`.
 
-### Full Example
+### Contoh Lengkap
 
-The following brings all the concepts we have talked about together. These are all the features of the Session Description Protocol that WebRTC uses.
-If you can read this, you can read any WebRTC Session Description!
+Berikut ini menggabungkan semua konsep yang telah kita bicarakan. Ini adalah semua fitur Session Description Protocol yang digunakan WebRTC.
+Jika Anda dapat membaca ini, Anda dapat membaca Session Description WebRTC apapun!
 
 ```
 v=0
@@ -90,74 +90,74 @@ m=video 4002 RTP/AVP 96
 a=rtpmap:96 VP8/90000
 ```
 
-* `v`, `o`, `s`, `c`, `t` are defined, but they do not affect the WebRTC session.
-* You have two Media Descriptions. One of type `audio` and one of type `video`.
-* Each of those has one attribute. This attribute configures details of the RTP pipeline, which is discussed in the "Media Communication" chapter.
+* `v`, `o`, `s`, `c`, `t` didefinisikan, tetapi tidak mempengaruhi sesi WebRTC.
+* Anda memiliki dua Media Description. Satu berjenis `audio` dan satu berjenis `video`.
+* Masing-masing memiliki satu atribut. Atribut ini mengonfigurasi detail _pipeline_ RTP, yang dibahas dalam bab "Media Communication".
 
-## How *Session Description Protocol* and WebRTC work together
+## Bagaimana *Session Description Protocol* dan WebRTC bekerja bersama
 
-The next piece of the puzzle is understanding _how_ WebRTC uses the Session Description Protocol.
+Bagian selanjutnya dari teka-teki adalah memahami _bagaimana_ WebRTC menggunakan Session Description Protocol.
 
-### What are Offers and Answers?
+### Apa itu _Offer_ dan _Answer_?
 
-WebRTC uses an offer/answer model. All this means is that one WebRTC Agent makes an "Offer" to start a call, and the other WebRTC Agents "Answers" if it is willing to accept what has been offered.
+WebRTC menggunakan model _offer/answer_. Artinya, satu klien WebRTC membuat "Offer" untuk memulai panggilan, dan klien WebRTC lainnya "Answer" jika bersedia menerima apa yang ditawarkan.
 
-This gives the answerer a chance to reject unsupported codecs in the Media Descriptions. This is how two peers can understand what formats they are willing to exchange.
+Ini memberi penjawab kesempatan untuk menolak _codec_ yang tidak didukung dalam Media Description. Inilah cara dua _peer_ dapat memahami format apa yang bersedia mereka pertukarkan.
 
-### Transceivers are for sending and receiving
+### _Transceiver_ untuk mengirim dan menerima
 
-Transceivers is a WebRTC specific concept that you will see in the API. What it is doing is exposing the "Media Description" to the JavaScript API. Each Media Description becomes a Transceiver.
-Every time you create a Transceiver a new Media Description is added to the local Session Description.
+_Transceiver_ adalah konsep khusus WebRTC yang akan Anda lihat di API. Ini mengekspos "Media Description" ke API JavaScript. Setiap Media Description menjadi _Transceiver_.
+Setiap kali Anda membuat _Transceiver_, Media Description baru akan ditambahkan ke Session Description lokal.
 
-Each Media Description in WebRTC will have a direction attribute. This allows a WebRTC Agent to declare "I am going to send you this codec, but I am not willing to accept anything back". There are four valid values:
+Setiap Media Description dalam WebRTC akan memiliki atribut arah. Ini memungkinkan klien WebRTC untuk menyatakan "Saya akan mengirimkan _codec_ ini kepada Anda, tetapi saya tidak bersedia menerima apapun kembali". Ada empat nilai yang valid:
 
 * `send`
 * `recv`
 * `sendrecv`
 * `inactive`
 
-### SDP Values used by WebRTC
+### Nilai SDP yang digunakan oleh WebRTC
 
-This is a list of some common attributes that you will see in a Session Description from a WebRTC Agent. Many of these values control the subsystems that we haven't discussed yet.
+Ini adalah daftar beberapa atribut umum yang akan Anda lihat dalam Session Description dari klien WebRTC. Banyak dari nilai ini mengontrol subsistem yang belum kita bahas.
 
 #### `group:BUNDLE`
-Bundling is an act of running multiple types of traffic over one connection. Some WebRTC implementations use a dedicated connection per media stream. Bundling should be preferred.
+_Bundling_ adalah tindakan menjalankan beberapa jenis traffic melalui satu koneksi. Beberapa implementasi WebRTC menggunakan koneksi khusus per _media stream_. _Bundling_ harus lebih diutamakan.
 
 #### `fingerprint:sha-256`
-This is a hash of the certificate a peer is using for DTLS. After the DTLS handshake is completed, you compare this to the actual certificate to confirm you are communicating with whom you expect.
+Ini adalah _hash_ dari sertifikat yang digunakan _peer_ untuk DTLS. Setelah _handshake_ DTLS selesai, Anda membandingkannya dengan sertifikat sebenarnya untuk mengonfirmasi bahwa Anda berkomunikasi dengan siapa yang Anda harapkan.
 
 #### `setup:`
-This controls the DTLS Agent behavior. This determines if it runs as a client or server after ICE has connected. The possible values are:
+Ini mengontrol perilaku DTLS Agent. Ini menentukan apakah ia berjalan sebagai _client_ atau _server_ setelah ICE terhubung. Nilai yang mungkin adalah:
 
-* `setup:active` - Run as DTLS Client.
-* `setup:passive` - Run as DTLS Server.
-* `setup:actpass` - Ask the other WebRTC Agent to choose.
+* `setup:active` - Berjalan sebagai DTLS Client.
+* `setup:passive` - Berjalan sebagai DTLS Server.
+* `setup:actpass` - Minta klien WebRTC lainnya untuk memilih.
 
 #### `mid`
-The "mid" attribute is used for identifying media streams within a session description.
+Atribut "mid" digunakan untuk mengidentifikasi _media stream_ dalam _session description_.
 
 #### `ice-ufrag`
-This is the user fragment value for the ICE Agent. Used for the authentication of ICE Traffic.
+Ini adalah nilai _user fragment_ untuk ICE Agent. Digunakan untuk autentikasi traffic ICE.
 
 #### `ice-pwd`
-This is the password for the ICE Agent. Used for authentication of ICE Traffic.
+Ini adalah _password_ untuk ICE Agent. Digunakan untuk autentikasi traffic ICE.
 
 #### `rtpmap`
-This value is used to map a specific codec to an RTP Payload Type. Payload types are not static, so for every call the offerer decides the payload types for each codec.
+Nilai ini digunakan untuk memetakan _codec_ tertentu ke RTP Payload Type. Payload Type tidak statis, jadi untuk setiap panggilan, pemberi _offer_ memutuskan Payload Type untuk setiap _codec_.
 
 #### `fmtp`
-Defines additional values for one Payload Type. This is useful to communicate a specific video profile or encoder setting.
+Mendefinisikan nilai tambahan untuk satu Payload Type. Ini berguna untuk mengkomunikasikan _video profile_ tertentu atau pengaturan _encoder_.
 
 #### `candidate`
-This is an ICE Candidate that comes from the ICE Agent. This is one possible address that the WebRTC Agent is available on. These are fully explained in the next chapter.
+Ini adalah ICE Candidate yang berasal dari ICE Agent. Ini adalah satu alamat yang mungkin di mana klien WebRTC tersedia. Ini dijelaskan sepenuhnya di bab berikutnya.
 
 #### `ssrc`
-A Synchronization Source (SSRC) defines a single media stream track.
+_Synchronization Source_ (SSRC) mendefinisikan satu _media stream track_ tunggal.
 
-`label` is the ID for this individual stream. `mslabel` is the ID for a container that can have multiple streams inside it.
+`label` adalah ID untuk _stream_ individual ini. `mslabel` adalah ID untuk kontainer yang dapat memiliki beberapa _stream_ di dalamnya.
 
-### Example of a WebRTC Session Description
-The following is a complete Session Description generated by a WebRTC Client:
+### Contoh Session Description WebRTC
+Berikut adalah Session Description lengkap yang dihasilkan oleh klien WebRTC:
 
 ```
 v=0
@@ -204,15 +204,15 @@ a=msid:XHbOTNRFnLtesHwJ JgtwEhBWNEiOnhuW
 a=sendrecv
 ```
 
-This is what we know from this message:
+Inilah yang kita ketahui dari pesan ini:
 
-* We have two media sections, one audio and one video.
-* Both of them are `sendrecv` transceivers. We are getting two streams, and we can send two back.
-* We have ICE Candidates and Authentication details, so we can attempt to connect.
-* We have a certificate fingerprint, so we can have a secure call.
+* Kita memiliki dua _media section_, satu audio dan satu video.
+* Keduanya adalah _transceiver_ `sendrecv`. Kita menerima dua _stream_, dan kita dapat mengirim dua kembali.
+* Kita memiliki ICE Candidate dan detail autentikasi, jadi kita dapat mencoba untuk terhubung.
+* Kita memiliki _fingerprint_ sertifikat, jadi kita dapat melakukan panggilan yang aman.
 
-### Further Topics
-In later versions of this book, the following topics will also be addressed:
+### Topik Lebih Lanjut
+Dalam versi selanjutnya dari buku ini, topik berikut juga akan dibahas:
 
 * Renegotiation
 * Simulcast
