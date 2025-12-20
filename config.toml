@@ -63,6 +63,9 @@ DefaultContentLanguage = "en"
     weight = 9
 
 [params]
+  # automatically match the user's system color scheme preference.
+  BookTheme = 'auto'
+
   # source repository location.
   # Used for 'Last Modified' and 'Edit this page' links.
   BookRepo = 'https://github.com/webrtc-for-the-curious/webrtc-for-the-curious'
