@@ -48,7 +48,7 @@ WebRTC の特徴の一つは、各ステップが実のところ他の多くの�
 
 <!-- Source code of the diagram:
 https://www.mermaidchart.com/d/f366d7bf-a952-46b3-b7e7-c09c00b19d5a -->
-![シグナリング手順概要](../../images/01-signaling-sequence-overview.png "シグナリング手順概要")
+![シグナリング手順概要](../images/01-signaling-sequence-overview.png "シグナリング手順概要")
 
 WebRTC エージェントが起動したとき、WebRTC エージェントは誰と何の通信をするのかを知りません。この問題を解決するのがシグナリングです。シグナリングは、2 つの WebRTC エージェントが通信を開始できるようにするために使用されます。
 
@@ -97,7 +97,7 @@ WebRTC は多くの問題を解決していて、一見過剰な技術とさえ�
 
 これにより、私たちは圧倒されることなく、各部分を個別に検討し、学ぶことができるのです。「WebRTC エージェント」とは、実際には多くの異なるプロトコルを組み合わせたものに過ぎないということです。
 
-![WebRTC Agent](../../images/01-webrtc-agent.png "WebRTC Agent Diagram")
+![WebRTC Agent](../images/01-webrtc-agent.png "WebRTC Agent Diagram")
 
 ## WebRTC (API) はどのように動作するか
 
