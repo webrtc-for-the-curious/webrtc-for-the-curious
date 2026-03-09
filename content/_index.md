@@ -46,7 +46,7 @@ of expert level details.
 
 ## Availability and License
 
-- Available on [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious) and [WebRTCforTheCurious.com](https://webrtcforthecurious.com)
+- Available on [GitHub](https://github.com/webrtc-for-the-curious/webrtc-for-the-curious) and [WebRTCForTheCurious.com](https://webrtcforthecurious.com)
 - Downloadable as [ePub](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.epub) and [PDF](https://webrtcforthecurious.com/docs/webrtc-for-the-curious.pdf)
 - Licensed under CC0 (no attribution required)
 
