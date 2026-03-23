@@ -90,7 +90,7 @@ Now we are done! We have successfully established bi-directional and secure comm
 
 Now that we have two WebRTC agents connected and secure, bi-directional communication established, let's start communicating! Again, WebRTC will use two pre-existing protocols: RTP (Real-time Transport Protocol), and SCTP (Stream Control Transmission Protocol). We use RTP to exchange media encrypted with SRTP, and we use SCTP to send and receive DataChannel messages encrypted with DTLS.
 
-RTP is quite a minimal protocol, but it provides the necessary tools to implement real-time streaming. The most important thing about RTP is that it gives flexibility to the developer, allowing them to handle latency, package loss, and congestion as they please. We will discuss this further in the media chapter.
+RTP is quite a minimal protocol, but it provides the necessary tools to implement real-time streaming. The most important thing about RTP is that it gives flexibility to the developer, allowing them to handle latency, packet loss, and congestion as they please. We will discuss this further in the media chapter.
 
 The final protocol in the stack is SCTP. The important thing about SCTP is that you can turn off reliable and in order message delivery (among many different options). This allows developers to ensure the necessary latency for real-time systems.
 
