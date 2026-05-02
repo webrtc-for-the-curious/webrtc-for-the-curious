@@ -108,6 +108,14 @@ Common commands:
 
 Browsers come with built-in tools that you can use to inspect the connections you make. Chrome has [`chrome://webrtc-internals`](chrome://webrtc-internals) and [`chrome://webrtc-logs`](chrome://webrtc-logs). Firefox has [`about:webrtc`](about:webrtc).
 
+### rtcStats
+
+[rtcStats](https://rtcstats.com) is an open source collection layer and analysis tool for WebRTC sessions. The client SDK [rtcstats-js](https://github.com/rtcstats/rtcstats-js) instruments your application's `getStats()` calls, and the self-hosted [rtcstats-server](https://github.com/rtcstats/rtcstats-server) collects and forwards sessions for analysis. You can also upload a webrtc-internals export directly.
+
+Given a session, rtcStats produces a set of Observations (the moments that mattered), Deductions (what those signals indicate about call quality), an Experience Score, and a plain-English summary. This is useful when you need to analyze sessions at scale or want structured pattern recognition on top of raw `getStats()` output rather than reading it manually.
+
+The collection layer is self-hosted. You decide which sessions to capture and forward. A free plan is available at [rtcstats.com](https://rtcstats.com) if you want to upload a dump and see the analysis without setting up the SDK first.
+
 ## Latency
 How do you know you have high latency? You may have noticed that your video is lagging, but do you know precisely how much it is lagging? 
 To be able to reduce this latency, you have to start by measuring it first.
