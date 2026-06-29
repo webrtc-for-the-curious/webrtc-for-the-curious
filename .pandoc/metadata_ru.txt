@@ -1,0 +1,7 @@
+---
+title: WebRTC для любопытных
+author: https://github.com/webrtc-for-the-curious/webrtc-for-the-curious
+rights: Creative Commons Zero v1.0 Universal
+language: ru-RU
+cover-image: content.ru/docs/images/epub-cover.png
+...

@@ -18,6 +18,7 @@ jobs:
       - run: |
           echo "FILELIST=\"content/_index.md\" $(printf '"%s" ' content/docs/*.md)" >> $GITHUB_ENV
           echo "FILELIST_SV=\"content.sv/_index.md\" $(printf '"%s" ' content.sv/docs/*.md)" >> $GITHUB_ENV
+          echo "FILELIST_RU=\"content.ru/_index.md\" $(printf '"%s" ' content.ru/docs/*.md)" >> $GITHUB_ENV
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
@@ -43,6 +44,18 @@ jobs:
       - uses: docker://pandoc/latex:3.8
         with:
           args: --output=public/docs/webrtc-for-the-curious-sv.epub --resource-path=.:./content.sv:./content.sv/docs/images --toc ${{ env.FILELIST_SV }} .pandoc/metadata_sv.txt
+
+      - name: Build Russian PDF
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/data" \
+            --entrypoint /bin/sh \
+            pandoc/latex:3.8 \
+            -c "apk add --no-cache font-dejavu && pandoc --pdf-engine=xelatex --output=public/docs/webrtc-for-the-curious-ru.pdf --resource-path=.:./content.ru:./content.ru/docs/images --toc $FILELIST_RU .pandoc/metadata_pdf_ru.txt"
+
+      - uses: docker://pandoc/latex:3.8
+        with:
+          args: --output=public/docs/webrtc-for-the-curious-ru.epub --resource-path=.:./content.ru:./content.ru/docs/images --toc ${{ env.FILELIST_RU }} .pandoc/metadata_ru.txt
 
       - name: Copy images
         run: cp -r ./content/docs/images public/docs/
