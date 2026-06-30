@@ -90,7 +90,7 @@ Chapters are numbered markdown files in `content/docs/`:
 
 ### Hugo Static Site Generator
 
-This project uses Hugo with the "book" theme. Hugo is required in its "extended" version (currently 0.131.0 in CI) to support advanced features.
+This project uses Hugo with the "book" theme. Hugo is required in its "extended" version (currently 0.163.3 in CI) to support advanced features.
 
 ### Multi-language Support
 
