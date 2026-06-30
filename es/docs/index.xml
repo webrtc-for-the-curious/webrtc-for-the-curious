@@ -1,11 +1,322 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Docs on WebRTC para los curiosos</title><link>https://webrtcforthecurious.com/es/docs/</link><description>Recent content in Docs on WebRTC para los curiosos</description><generator>Hugo</generator><language>es</language><atom:link href="https://webrtcforthecurious.com/es/docs/index.xml" rel="self" type="application/rss+xml"/><item><title>¿Qué, Por qué y Cómo?</title><link>https://webrtcforthecurious.com/es/docs/01-what-why-and-how/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/01-what-why-and-how/</guid><description>¿Qué, Por qué y Cómo? # ¿Qué es WebRTC? # WebRTC, es la abreviatura de Web Real-Time Communication, es una API como un Protocolo. El protocolo WebRTC es un conjunto de reglas para que dos Agentes WebRTC negocien una comunicación bidireccional segura en tiempo real. Mientras que la WebRTC API permite a los desarrolladores usar el protocolo WebRTC. La WebRTC API es solo para JavaScript.
-Una relación similar sería entre HTTP y la Fetch API.</description></item><item><title>Señalización</title><link>https://webrtcforthecurious.com/es/docs/02-signaling/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/02-signaling/</guid><description>Señalización # ¿Qué es la Señalización de WebRTC? # Cuando creas un agente WebRTC, no sabe nada sobre el otro par. ¡No tiene idea de con quién se va a conectar o qué van a enviar! La señalización es el proceso inicial de arranque que hace posible una llamada. Después de que estos valores se intercambian, los agentes WebRTC pueden comunicarse directamente entre sí.
-Los mensajes de señalización son simplemente texto.</description></item><item><title>Conexión</title><link>https://webrtcforthecurious.com/es/docs/03-connecting/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/03-connecting/</guid><description>Conexión # ¿Por qué WebRTC necesita un subsistema dedicado para conectarse? # La mayoría de las aplicaciones implementadas hoy en día establecen conexiones cliente/servidor. Una conexión cliente/servidor requiere que el servidor tenga una dirección de transporte estable y bien conocida. Un cliente contacta a un servidor, y el servidor responde.
-WebRTC no usa un modelo cliente/servidor, establece conexiones peer-to-peer (P2P). En una conexión P2P, la tarea de crear una conexión se distribuye equitativamente entre ambos pares.</description></item><item><title>Seguridad</title><link>https://webrtcforthecurious.com/es/docs/04-securing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/04-securing/</guid><description>Seguridad # ¿Qué seguridad tiene WebRTC? # Cada conexión WebRTC está autenticada y cifrada. Puedes estar seguro de que un tercero no puede ver lo que estás enviando ni insertar mensajes falsos. También puedes estar seguro de que el Agente WebRTC que generó la Descripción de Sesión es con quien te estás comunicando.
-Es muy importante que nadie manipule esos mensajes. Está bien si un tercero lee la Descripción de Sesión en tránsito.</description></item><item><title>Redes en Tiempo Real</title><link>https://webrtcforthecurious.com/es/docs/05-real-time-networking/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/05-real-time-networking/</guid><description>Redes en Tiempo Real # ¿Por qué las redes son tan importantes en la comunicación en tiempo real? # Las redes son el factor limitante en la comunicación en tiempo real. En un mundo ideal tendríamos ancho de banda ilimitado y los paquetes llegarían instantáneamente. Sin embargo, este no es el caso. Las redes son limitadas, y las condiciones pueden cambiar en cualquier momento. Medir y observar las condiciones de la red también es un problema difícil.</description></item><item><title>Comunicación de Medios</title><link>https://webrtcforthecurious.com/es/docs/06-media-communication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/06-media-communication/</guid><description>Comunicación de Medios # ¿Qué obtengo de la comunicación de medios de WebRTC? # WebRTC te permite enviar y recibir una cantidad ilimitada de flujos de audio y video. Puedes agregar y eliminar estos flujos en cualquier momento durante una llamada. Estos flujos podrían ser todos independientes, o podrían estar agrupados juntos. Podrías enviar una transmisión de video de tu escritorio, y luego incluir audio y video de tu cámara web.</description></item><item><title>Comunicación de Datos</title><link>https://webrtcforthecurious.com/es/docs/07-data-communication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/07-data-communication/</guid><description>Comunicación de Datos # ¿Qué obtengo de la comunicación de datos de WebRTC? # WebRTC proporciona canales de datos para la comunicación de datos. Entre dos pares puedes abrir 65,534 canales de datos. Un canal de datos está basado en datagramas, y cada uno tiene su propia configuración de durabilidad. Por defecto, cada canal de datos tiene entrega ordenada garantizada.
-Si te acercas a WebRTC desde un trasfondo de medios, los canales de datos pueden parecer derro chadores.</description></item><item><title>WebRTC Aplicado</title><link>https://webrtcforthecurious.com/es/docs/08-applied-webrtc/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/08-applied-webrtc/</guid><description>WebRTC Aplicado # Ahora que sabes cómo funciona WebRTC, ¡es hora de construir con él! Este capítulo explora qué están construyendo las personas con WebRTC y cómo lo están construyendo. Aprenderás todas las cosas interesantes que están sucediendo con WebRTC. El poder de WebRTC viene con un costo. Construir servicios WebRTC de grado producción es desafiante. Este capítulo intentará explicar esos desafíos antes de que los encuentres.
-Por Caso de Uso # Muchos piensan que WebRTC es solo una tecnología para conferencias en el navegador web.</description></item><item><title>Depuración</title><link>https://webrtcforthecurious.com/es/docs/09-debugging/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/09-debugging/</guid><description>Depuración # Depurar WebRTC puede ser una tarea desalentadora. Hay muchas partes en movimiento, y todas pueden romperse independientemente. Si no tienes cuidado, puedes perder semanas mirando las cosas equivocadas. Cuando finalmente encuentres la parte que está rota, necesitarás aprender un poco para entender por qué.
-Este capítulo te pondrá en la mentalidad para depurar WebRTC. Te mostrará cómo desglosar el problema. Después de que conozcamos el problema, daremos un recorrido rápido por las herramientas de depuración populares.</description></item><item><title>Historia</title><link>https://webrtcforthecurious.com/es/docs/10-history-of-webrtc/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/10-history-of-webrtc/</guid><description>Historia # Al aprender WebRTC, los desarrolladores a menudo se sienten frustrados por la complejidad. Ven características de WebRTC irrelevantes para su proyecto actual y desean que WebRTC fuera más simple. El problema es que todos tienen un conjunto diferente de casos de uso. La comunicación en tiempo real tiene una historia rica con muchas personas diferentes construyendo muchas cosas diferentes.
-Este capítulo contiene entrevistas con los autores de los protocolos que componen WebRTC.</description></item><item><title>FAQ</title><link>https://webrtcforthecurious.com/es/docs/11-faq/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/11-faq/</guid><description>FAQ # ¿Por qué WebRTC usa UDP? La NAT Transversal requiere UDP. Sin la NAT Transversal, establecer una conexión P2P no sería posible. UDP no provee una &amp;ldquo;entrega garantizada&amp;rdquo; como TCP, así que WebRTC lo hace a nivel de usuario.
-Mira Conexión para más información.
-¿Qué tantos DataChannel puedo tener? 65534 canales como identificador de flujo tiene 16 bits. Puedes cerrar y abrir uno nuevo cuando quieras ¿WebRTC tiene limites en el ancho de banda?</description></item><item><title>Glosario</title><link>https://webrtcforthecurious.com/es/docs/12-glossary/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/12-glossary/</guid><description>Glosario # ACK: Reconocimiento (Acknowledgment) AVP: Perfil de Audio y Video (Audio and Video profile) B-Frame: Cuadro Predicho Bidireccional. Una imagen parcial, es una modificación de imágenes anteriores y futuras. DCEP: Protocolo de Establecimiento de Canal de Datos definido en RFC 8832 DeMux: Desmultiplexor (Demultiplexer) DLSR: Retardo desde el último informe del remitente (Delay since last sender report) DTLS: Seguridad de la Capa de Transporte de Datagramas definido en RFC 6347 E2E: Extremo a Extremo (End-to-End) FEC: Corrección de Errores hacia Adelante FIR: Solicitud de Cuadro INTRA Completo G.</description></item><item><title>Referencia</title><link>https://webrtcforthecurious.com/es/docs/13-reference/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/13-reference/</guid><description>Referencia # WebRTC(W3C) # WebRTC 1.0: Real-Time Communication Between Browsers [26 January 2021] (Estado: Recommendation) Web Real-Time Communications Working Group - Publications WebRTC(RFC) # RFC8825: Overview: Real-Time Protocols for Browser-Based Applications H. Alvestrand [January 2021] (Estado: PROPOSED STANDARD) RFC8826: Security Considerations for WebRTC E. Rescorla [January 2021] (Estado: PROPOSED STANDARD) RFC8836: Congestion Control Requirements for Interactive Real-Time Media R. Jesup, Z. Sarker [January 2021] (Estado: INFORMATIONAL) RFC8854: WebRTC Forward Error Correction Requirements J.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Docs on WebRTC para los curiosos</title><link>https://webrtcforthecurious.com/es/docs/</link><description>Recent content in Docs on WebRTC para los curiosos</description><generator>Hugo</generator><language>es</language><atom:link href="https://webrtcforthecurious.com/es/docs/index.xml" rel="self" type="application/rss+xml"/><item><title>¿Qué, Por qué y Cómo?</title><link>https://webrtcforthecurious.com/es/docs/01-what-why-and-how/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/01-what-why-and-how/</guid><description>&lt;h1 id="qué-por-qué-y-cómo"&gt;
+ ¿Qué, Por qué y Cómo?
+ &lt;a class="anchor" href="#qu%c3%a9-por-qu%c3%a9-y-c%c3%b3mo"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="qué-es-webrtc"&gt;
+ ¿Qué es WebRTC?
+ &lt;a class="anchor" href="#qu%c3%a9-es-webrtc"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;WebRTC, es la abreviatura de Web Real-Time Communication, es una API como un Protocolo. El protocolo WebRTC es un conjunto de reglas para que dos Agentes WebRTC
+negocien una comunicación bidireccional segura en tiempo real. Mientras que la WebRTC API permite a los desarrolladores usar el protocolo WebRTC.
+La WebRTC API es solo para JavaScript.&lt;/p&gt;
+&lt;p&gt;Una relación similar sería entre HTTP y la Fetch API. El protocolo WebRTC sería HTTP, y la WebRTC API sería la Fetch API.&lt;/p&gt;</description></item><item><title>Señalización</title><link>https://webrtcforthecurious.com/es/docs/02-signaling/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/02-signaling/</guid><description>&lt;h1 id="señalización"&gt;
+ Señalización
+ &lt;a class="anchor" href="#se%c3%b1alizaci%c3%b3n"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="qué-es-la-señalización-de-webrtc"&gt;
+ ¿Qué es la Señalización de WebRTC?
+ &lt;a class="anchor" href="#qu%c3%a9-es-la-se%c3%b1alizaci%c3%b3n-de-webrtc"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;Cuando creas un agente WebRTC, no sabe nada sobre el otro par. ¡No tiene idea de con quién se va a conectar o qué van a enviar!
+La señalización es el proceso inicial de arranque que hace posible una llamada. Después de que estos valores se intercambian, los agentes WebRTC pueden comunicarse directamente entre sí.&lt;/p&gt;
+&lt;p&gt;Los mensajes de señalización son simplemente texto. A los agentes WebRTC no les importa cómo se transportan. Comúnmente se comparten a través de Websockets, pero eso no es un requisito.&lt;/p&gt;</description></item><item><title>Conexión</title><link>https://webrtcforthecurious.com/es/docs/03-connecting/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/03-connecting/</guid><description>&lt;h1 id="conexión"&gt;
+ Conexión
+ &lt;a class="anchor" href="#conexi%c3%b3n"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="por-qué-webrtc-necesita-un-subsistema-dedicado-para-conectarse"&gt;
+ ¿Por qué WebRTC necesita un subsistema dedicado para conectarse?
+ &lt;a class="anchor" href="#por-qu%c3%a9-webrtc-necesita-un-subsistema-dedicado-para-conectarse"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;La mayoría de las aplicaciones implementadas hoy en día establecen conexiones cliente/servidor. Una conexión cliente/servidor requiere que el servidor tenga una dirección de transporte estable y bien conocida. Un cliente contacta a un servidor, y el servidor responde.&lt;/p&gt;
+&lt;p&gt;WebRTC no usa un modelo cliente/servidor, establece conexiones peer-to-peer (P2P). En una conexión P2P, la tarea de crear una conexión se distribuye equitativamente entre ambos pares. Esto se debe a que una dirección de transporte (IP y puerto) en WebRTC no se puede asumir, e incluso puede cambiar durante la sesión. WebRTC recopilará toda la información que pueda e irá a grandes esfuerzos para lograr comunicación bidireccional entre dos Agentes WebRTC.&lt;/p&gt;</description></item><item><title>Seguridad</title><link>https://webrtcforthecurious.com/es/docs/04-securing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/04-securing/</guid><description>&lt;h1 id="seguridad"&gt;
+ Seguridad
+ &lt;a class="anchor" href="#seguridad"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="qué-seguridad-tiene-webrtc"&gt;
+ ¿Qué seguridad tiene WebRTC?
+ &lt;a class="anchor" href="#qu%c3%a9-seguridad-tiene-webrtc"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;Cada conexión WebRTC está autenticada y cifrada. Puedes estar seguro de que un tercero no puede ver lo que estás enviando ni insertar mensajes falsos. También puedes estar seguro de que el Agente WebRTC que generó la Descripción de Sesión es con quien te estás comunicando.&lt;/p&gt;
+&lt;p&gt;Es muy importante que nadie manipule esos mensajes. Está bien si un tercero lee la Descripción de Sesión en tránsito. Sin embargo, WebRTC no tiene protección contra su modificación. Un atacante podría realizar un ataque de intermediario (man-in-the-middle) cambiando los Candidatos ICE y actualizando la Huella Digital del Certificado.&lt;/p&gt;</description></item><item><title>Redes en Tiempo Real</title><link>https://webrtcforthecurious.com/es/docs/05-real-time-networking/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/05-real-time-networking/</guid><description>&lt;h1 id="redes-en-tiempo-real"&gt;
+ Redes en Tiempo Real
+ &lt;a class="anchor" href="#redes-en-tiempo-real"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="por-qué-las-redes-son-tan-importantes-en-la-comunicación-en-tiempo-real"&gt;
+ ¿Por qué las redes son tan importantes en la comunicación en tiempo real?
+ &lt;a class="anchor" href="#por-qu%c3%a9-las-redes-son-tan-importantes-en-la-comunicaci%c3%b3n-en-tiempo-real"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;Las redes son el factor limitante en la comunicación en tiempo real. En un mundo ideal tendríamos ancho de banda ilimitado
+y los paquetes llegarían instantáneamente. Sin embargo, este no es el caso. Las redes son limitadas, y las condiciones
+pueden cambiar en cualquier momento. Medir y observar las condiciones de la red también es un problema difícil. Puedes obtener diferentes comportamientos
+dependiendo del hardware, software y su configuración.&lt;/p&gt;</description></item><item><title>Comunicación de Medios</title><link>https://webrtcforthecurious.com/es/docs/06-media-communication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/06-media-communication/</guid><description>&lt;h1 id="comunicación-de-medios"&gt;
+ Comunicación de Medios
+ &lt;a class="anchor" href="#comunicaci%c3%b3n-de-medios"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="qué-obtengo-de-la-comunicación-de-medios-de-webrtc"&gt;
+ ¿Qué obtengo de la comunicación de medios de WebRTC?
+ &lt;a class="anchor" href="#qu%c3%a9-obtengo-de-la-comunicaci%c3%b3n-de-medios-de-webrtc"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;WebRTC te permite enviar y recibir una cantidad ilimitada de flujos de audio y video. Puedes agregar y eliminar estos flujos en cualquier momento durante una llamada. Estos flujos podrían ser todos independientes, o podrían estar agrupados juntos. Podrías enviar una transmisión de video de tu escritorio, y luego incluir audio y video de tu cámara web.&lt;/p&gt;</description></item><item><title>Comunicación de Datos</title><link>https://webrtcforthecurious.com/es/docs/07-data-communication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/07-data-communication/</guid><description>&lt;h1 id="comunicación-de-datos"&gt;
+ Comunicación de Datos
+ &lt;a class="anchor" href="#comunicaci%c3%b3n-de-datos"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="qué-obtengo-de-la-comunicación-de-datos-de-webrtc"&gt;
+ ¿Qué obtengo de la comunicación de datos de WebRTC?
+ &lt;a class="anchor" href="#qu%c3%a9-obtengo-de-la-comunicaci%c3%b3n-de-datos-de-webrtc"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;WebRTC proporciona canales de datos para la comunicación de datos. Entre dos pares puedes abrir 65,534 canales de datos.
+Un canal de datos está basado en datagramas, y cada uno tiene su propia configuración de durabilidad. Por defecto, cada canal de datos tiene entrega ordenada garantizada.&lt;/p&gt;
+&lt;p&gt;Si te acercas a WebRTC desde un trasfondo de medios, los canales de datos pueden parecer derro chadores. ¿Por qué necesito todo este subsistema cuando podría simplemente usar HTTP o WebSockets?&lt;/p&gt;</description></item><item><title>WebRTC Aplicado</title><link>https://webrtcforthecurious.com/es/docs/08-applied-webrtc/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/08-applied-webrtc/</guid><description>&lt;h1 id="webrtc-aplicado"&gt;
+ WebRTC Aplicado
+ &lt;a class="anchor" href="#webrtc-aplicado"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;p&gt;Ahora que sabes cómo funciona WebRTC, ¡es hora de construir con él! Este capítulo explora qué están
+construyendo las personas con WebRTC y cómo lo están construyendo. Aprenderás todas las cosas interesantes que están
+sucediendo con WebRTC. El poder de WebRTC viene con un costo. Construir servicios WebRTC de grado producción es
+desafiante. Este capítulo intentará explicar esos desafíos antes de que los encuentres.&lt;/p&gt;
+&lt;h2 id="por-caso-de-uso"&gt;
+ Por Caso de Uso
+ &lt;a class="anchor" href="#por-caso-de-uso"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;Muchos piensan que WebRTC es solo una tecnología para conferencias en el navegador web. ¡Es mucho más que eso!
+WebRTC se usa en una amplia gama de aplicaciones. Nuevos casos de uso están apareciendo todo el tiempo. En este capítulo enumeraremos algunos comunes y cómo WebRTC los está revolucionando.&lt;/p&gt;</description></item><item><title>Depuración</title><link>https://webrtcforthecurious.com/es/docs/09-debugging/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/09-debugging/</guid><description>&lt;h1 id="depuración"&gt;
+ Depuración
+ &lt;a class="anchor" href="#depuraci%c3%b3n"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;p&gt;Depurar WebRTC puede ser una tarea desalentadora. Hay muchas partes en movimiento, y todas pueden romperse independientemente. Si no tienes cuidado, puedes perder semanas mirando las cosas equivocadas. Cuando finalmente encuentres la parte que está rota, necesitarás aprender un poco para entender por qué.&lt;/p&gt;
+&lt;p&gt;Este capítulo te pondrá en la mentalidad para depurar WebRTC. Te mostrará cómo desglosar el problema. Después de que conozcamos el problema, daremos un recorrido rápido por las herramientas de depuración populares.&lt;/p&gt;</description></item><item><title>Historia</title><link>https://webrtcforthecurious.com/es/docs/10-history-of-webrtc/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/10-history-of-webrtc/</guid><description>&lt;h1 id="historia"&gt;
+ Historia
+ &lt;a class="anchor" href="#historia"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;p&gt;Al aprender WebRTC, los desarrolladores a menudo se sienten frustrados por la complejidad. Ven
+características de WebRTC irrelevantes para su proyecto actual y desean que WebRTC fuera
+más simple. El problema
+es que todos tienen un conjunto diferente de casos de uso. La comunicación en tiempo real tiene una
+historia rica con muchas personas diferentes construyendo muchas cosas diferentes.&lt;/p&gt;
+&lt;p&gt;Este capítulo contiene entrevistas con los autores de los protocolos que componen
+WebRTC.
+Da una visión de los diseños realizados al construir cada protocolo, y
+termina con una
+entrevista sobre WebRTC en sí. Si entiendes las intenciones y diseños del software
+puedes construir sistemas más efectivos con él.&lt;/p&gt;</description></item><item><title>FAQ</title><link>https://webrtcforthecurious.com/es/docs/11-faq/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/11-faq/</guid><description>&lt;h1 id="faq"&gt;
+ FAQ
+ &lt;a class="anchor" href="#faq"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;details &gt;&lt;summary&gt;¿Por qué WebRTC usa UDP?&lt;/summary&gt;
+ &lt;div class="markdown-inner"&gt;
+ &lt;p&gt;La NAT Transversal requiere UDP. Sin la NAT Transversal, establecer una conexión P2P
+no sería posible. UDP no provee una &amp;ldquo;entrega garantizada&amp;rdquo; como TCP, así que WebRTC lo hace a nivel de
+usuario.&lt;/p&gt;
+&lt;p&gt;Mira &lt;a href="https://webrtcforthecurious.com/es/docs/03-connecting/"&gt;Conexión&lt;/a&gt; para más información.&lt;/p&gt;
+
+ &lt;/div&gt;
+&lt;/details&gt;
+
+&lt;details &gt;&lt;summary&gt;¿Qué tantos DataChannel puedo tener?&lt;/summary&gt;
+ &lt;div class="markdown-inner"&gt;
+ 65534 canales como identificador de flujo tiene 16 bits. Puedes cerrar y abrir uno nuevo cuando quieras
+ &lt;/div&gt;
+&lt;/details&gt;
+
+&lt;details &gt;&lt;summary&gt;¿WebRTC tiene limites en el ancho de banda?&lt;/summary&gt;
+ &lt;div class="markdown-inner"&gt;
+ Tanto los DataChannels y RTP usan un control de congestión. Esto significa que WebRTC mide activamente
+tu ancho de banda e intenta usar la cantidad óptima. Es un balance entre mandar cuanto más se pueda,
+sin sobrecargar la conexión.
+ &lt;/div&gt;
+&lt;/details&gt;
+
+&lt;details &gt;&lt;summary&gt;¿Puedo mandar datos binarios?&lt;/summary&gt;
+ &lt;div class="markdown-inner"&gt;
+ Si, puedes mandar tanto datos en texto o binario vía DataChannels.
+ &lt;/div&gt;
+&lt;/details&gt;
+
+&lt;details &gt;&lt;summary&gt;¿Qué latencia puedo esperar con WebRTC?&lt;/summary&gt;
+ &lt;div class="markdown-inner"&gt;
+ &lt;p&gt;Para medios no sintonizados, puedes esperar menos de 500 milisegundos. Si esperar sintonizar o sacrificar
+la calidad por latencia, los desarrolladores han conseguido menos de 100 milisegundos de latencia.&lt;/p&gt;</description></item><item><title>Glosario</title><link>https://webrtcforthecurious.com/es/docs/12-glossary/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/12-glossary/</guid><description>&lt;h1 id="glosario"&gt;
+ Glosario
+ &lt;a class="anchor" href="#glosario"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;ACK: Reconocimiento (Acknowledgment)&lt;/li&gt;
+&lt;li&gt;AVP: Perfil de Audio y Video (Audio and Video profile)&lt;/li&gt;
+&lt;li&gt;B-Frame: &lt;a href="../06-media-communication/#intra-and-inter-frame-compression"&gt;Cuadro Predicho Bidireccional&lt;/a&gt;. Una imagen parcial, es una modificación de imágenes anteriores y futuras.&lt;/li&gt;
+&lt;li&gt;DCEP: &lt;a href="../07-data-communication/#dcep"&gt;Protocolo de Establecimiento de Canal de Datos&lt;/a&gt; definido en &lt;a href="https://datatracker.ietf.org/doc/html/rfc8832"&gt;RFC 8832&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;DeMux: Desmultiplexor (Demultiplexer)&lt;/li&gt;
+&lt;li&gt;DLSR: Retardo desde el último informe del remitente (Delay since last sender report)&lt;/li&gt;
+&lt;li&gt;DTLS: &lt;a href="../04-securing/#dtls"&gt;Seguridad de la Capa de Transporte de Datagramas&lt;/a&gt; definido en &lt;a href="https://datatracker.ietf.org/doc/html/rfc6347"&gt;RFC 6347&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;E2E: Extremo a Extremo (End-to-End)&lt;/li&gt;
+&lt;li&gt;FEC: &lt;a href="../06-media-communication/#forward-error-correction"&gt;Corrección de Errores hacia Adelante&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;FIR: &lt;a href="../06-media-communication/#full-intra-frame-request-fir-and-picture-loss-indication-pli"&gt;Solicitud de Cuadro INTRA Completo&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;G.711: Un códec de audio de banda estrecha&lt;/li&gt;
+&lt;li&gt;GCC: &lt;a href="../06-media-communication/#google-congestion-control-gcc"&gt;Control de Congestión de Google&lt;/a&gt; definido en &lt;a href="https://datatracker.ietf.org/doc/html/draft-ietf-rmcat-gcc-02"&gt;draft-ietf-rmcat-gcc-02&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;H.264: Codificación de video avanzada para servicios audiovisuales genéricos&lt;/li&gt;
+&lt;li&gt;H.265: Especificación de conformidad para codificación de video de alta eficiencia ITU-T H.265&lt;/li&gt;
+&lt;li&gt;HEVC: Codificación de Video de Alta Eficiencia (High Efficiency Video Coding)&lt;/li&gt;
+&lt;li&gt;HTTP: Protocolo de Transferencia de Hipertexto (Hypertext Transfer Protocol)&lt;/li&gt;
+&lt;li&gt;HTTPS: HTTP sobre TLS, definido en &lt;a href="https://datatracker.ietf.org/doc/html/rfc2818"&gt;RFC 2818&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;I-Frame: &lt;a href="../06-media-communication/#intra-and-inter-frame-compression"&gt;Cuadro Intra-codificado&lt;/a&gt;. Una imagen completa, puede ser decodificada sin nada más.&lt;/li&gt;
+&lt;li&gt;ICE: &lt;a href="../03-connecting/#ice"&gt;Establecimiento de Conectividad Interactiva&lt;/a&gt; definido en &lt;a href="https://datatracker.ietf.org/doc/html/rfc8445"&gt;RFC 8445&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;INIT: Iniciar (Initiate)&lt;/li&gt;
+&lt;li&gt;IoT: Internet de las Cosas (Internet of Things)&lt;/li&gt;
+&lt;li&gt;IPv4: Protocolo de Internet, Versión 4 (Internet Protocol, Version 4)&lt;/li&gt;
+&lt;li&gt;IPv6: Protocolo de Internet, Versión 6 (Internet Protocol, Version 6)&lt;/li&gt;
+&lt;li&gt;ITU-T: Sector de Normalización de las Telecomunicaciones de la Unión Internacional de Telecomunicaciones&lt;/li&gt;
+&lt;li&gt;JSEP: &lt;a href="../02-signaling/#what-is-the-session-description-protocol-sdp"&gt;Protocolo de Establecimiento de Sesión JavaScript&lt;/a&gt; definido en &lt;a href="https://datatracker.ietf.org/doc/html/rfc8829"&gt;RFC 8829&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;MCU: &lt;a href="../08-applied-webrtc/#mcu"&gt;Unidad de Conferencia Multipunto&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;mDNS: &lt;a href="../03-connecting/#mdns"&gt;DNS Multicast&lt;/a&gt; definido en &lt;a href="https://datatracker.ietf.org/doc/html/rfc6762"&gt;RFC 6762&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;MITM: Hombre en el Medio (Man-In-The-Middle)&lt;/li&gt;
+&lt;li&gt;MTU: Unidad Máxima de Transmisión, el tamaño del paquete&lt;/li&gt;
+&lt;li&gt;MUX: Multiplexación (Multiplexing)&lt;/li&gt;
+&lt;li&gt;NACK: Reconocimiento Negativo (Negative Acknowledgment)&lt;/li&gt;
+&lt;li&gt;NAT: &lt;a href="../03-connecting/#nat-mapping"&gt;Traducción de Direcciones de Red&lt;/a&gt; definido en &lt;a href="https://datatracker.ietf.org/doc/html/rfc4787"&gt;RFC 4787&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Opus: Un códec de audio totalmente abierto, libre de regalías, altamente versátil&lt;/li&gt;
+&lt;li&gt;P-Frame: &lt;a href="../06-media-communication/#intra-and-inter-frame-compression"&gt;Cuadro Predicho&lt;/a&gt;. Una imagen parcial, que contiene solo cambios de la imagen anterior.&lt;/li&gt;
+&lt;li&gt;P2P: Par a Par (Peer-to-Peer)&lt;/li&gt;
+&lt;li&gt;PLI: &lt;a href="../06-media-communication/#full-intra-frame-request-fir-and-picture-loss-indication-pli"&gt;Indicación de Pérdida de Imagen&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;PPID: &lt;a href="../07-data-communication/#payload-protocol-identifier"&gt;Identificador de Protocolo de Carga Útil&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;REMB: &lt;a href="../06-media-communication/#tmmbr-tmmbn-and-remb"&gt;Tasa de Bits Máxima Estimada del Receptor&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;RFC: Solicitud de Comentarios (Request for Comments)&lt;/li&gt;
+&lt;li&gt;RR: Informe del Receptor (Receiver Report)&lt;/li&gt;
+&lt;li&gt;RTCP: &lt;a href="../10-history-of-webrtc/#rtp"&gt;Protocolo de Control RTP&lt;/a&gt; definido en &lt;a href="https://datatracker.ietf.org/doc/html/rfc3550"&gt;RFC 3550&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;RTP: &lt;a href="../10-history-of-webrtc/#rtp"&gt;Protocolo de transporte en tiempo real&lt;/a&gt; definido en &lt;a href="https://datatracker.ietf.org/doc/html/rfc3550"&gt;RFC 3550&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;RTT: Tiempo de Ida y Vuelta (Round-Trip Time)&lt;/li&gt;
+&lt;li&gt;SACK: Reconocimiento Selectivo (Selective Acknowledgment)&lt;/li&gt;
+&lt;li&gt;SCTP: &lt;a href="../07-data-communication/#stream-control-transmission-protocol"&gt;Protocolo de Transmisión de Control de Flujo&lt;/a&gt; definido en &lt;a href="https://datatracker.ietf.org/doc/html/rfc4960"&gt;RFC 4960&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SDP: &lt;a href="../02-signaling/#what-is-the-session-description-protocol-sdp"&gt;Protocolo de Descripción de Sesión&lt;/a&gt; definido en &lt;a href="https://datatracker.ietf.org/doc/html/rfc8866"&gt;RFC 8866&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SFU: &lt;a href="../08-applied-webrtc/#selective-forwarding-unit"&gt;Unidad de Reenvío Selectivo&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SR: Informe del Remitente (Sender Report)&lt;/li&gt;
+&lt;li&gt;SRTP: &lt;a href="../04-securing/#srtp"&gt;Protocolo de Transporte en Tiempo Real Seguro&lt;/a&gt; definido en &lt;a href="https://datatracker.ietf.org/doc/html/rfc3711"&gt;RFC 3711&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SSRC: Fuente de Sincronización (Synchronization Source)&lt;/li&gt;
+&lt;li&gt;STUN: &lt;a href="../03-connecting/#stun"&gt;Utilidades de Traversal de Sesión para NAT&lt;/a&gt; definido en &lt;a href="https://datatracker.ietf.org/doc/html/rfc8489"&gt;RFC 8489&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TCP: Protocolo de Control de Transmisión (Transmission Control Protocol)&lt;/li&gt;
+&lt;li&gt;TLS: Seguridad de la Capa de Transporte definido en &lt;a href="https://datatracker.ietf.org/doc/html/rfc8446"&gt;RFC 8446&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TMMBN: &lt;a href="../06-media-communication/#tmmbr-tmmbn-and-remb"&gt;Notificación Temporal de Tasa de Bits Máxima de Flujo de Medios&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TMMBR: &lt;a href="../06-media-communication/#tmmbr-tmmbn-and-remb"&gt;Solicitud Temporal de Tasa de Bits Máxima de Flujo de Medios&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TSN: &lt;a href="../07-data-communication/#transmission-sequence-number"&gt;Número de Secuencia de Transmisión&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TURN: &lt;a href="../03-connecting/#turn"&gt;Traversal Usando Relés alrededor de NAT&lt;/a&gt; definido en &lt;a href="https://datatracker.ietf.org/doc/html/rfc8656"&gt;RFC 8656&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TWCC: &lt;a href="../06-media-communication/#transport-wide-congestion-control"&gt;Control de Congestión de Transporte Amplio&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;UDP: Protocolo de Datagramas de Usuario (User Datagram Protocol)&lt;/li&gt;
+&lt;li&gt;VP8, VP9: Tecnologías de compresión de video altamente eficientes (video &amp;ldquo;códecs&amp;rdquo;) desarrolladas por el Proyecto WebM. Cualquiera puede usar estos códecs libre de regalías.&lt;/li&gt;
+&lt;li&gt;WebM: Un formato de archivo de medios abierto diseñado para la web.&lt;/li&gt;
+&lt;li&gt;WebRTC: Comunicaciones en Tiempo Real en la Web (Web Real-Time Communications). &lt;a href="https://www.w3.org/TR/webrtc/"&gt;W3C WebRTC 1.0: Comunicación en Tiempo Real entre Navegadores&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Referencia</title><link>https://webrtcforthecurious.com/es/docs/13-reference/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/es/docs/13-reference/</guid><description>&lt;h1 id="referencia"&gt;
+ Referencia
+ &lt;a class="anchor" href="#referencia"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="webrtcw3c"&gt;
+ WebRTC(W3C)
+ &lt;a class="anchor" href="#webrtcw3c"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.w3.org/TR/webrtc/"&gt;WebRTC 1.0: Real-Time Communication Between Browsers&lt;/a&gt; [26 January 2021] (Estado: Recommendation)&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.w3.org/groups/wg/webrtc/publications"&gt;Web Real-Time Communications Working Group - Publications&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="webrtcrfc"&gt;
+ WebRTC(RFC)
+ &lt;a class="anchor" href="#webrtcrfc"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8825"&gt;RFC8825&lt;/a&gt;: Overview: Real-Time Protocols for Browser-Based Applications H. Alvestrand [January 2021] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8826"&gt;RFC8826&lt;/a&gt;: Security Considerations for WebRTC E. Rescorla [January 2021] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8836"&gt;RFC8836&lt;/a&gt;: Congestion Control Requirements for Interactive Real-Time Media R. Jesup, Z. Sarker [January 2021] (Estado: INFORMATIONAL)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8854"&gt;RFC8854&lt;/a&gt;: WebRTC Forward Error Correction Requirements J. Uberti [January 2021] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="dtls"&gt;
+ DTLS
+ &lt;a class="anchor" href="#dtls"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc6347"&gt;RFC6347&lt;/a&gt;: Datagram Transport Layer Security Version 1.2 E. Rescorla, N. Modadugu [January 2012] (Obsoletes &lt;a href="http://www.rfc-editor.org/info/rfc4347"&gt;RFC4347&lt;/a&gt;) (Obsoleted-By &lt;a href="http://www.rfc-editor.org/info/rfc9147"&gt;RFC9147&lt;/a&gt;) (Updated-By &lt;a href="http://www.rfc-editor.org/info/rfc7507"&gt;RFC7507&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc7905"&gt;RFC7905&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8996"&gt;RFC8996&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc9146"&gt;RFC9146&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc9147"&gt;RFC9147&lt;/a&gt;: The Datagram Transport Layer Security (DTLS) Protocol Version 1.3 E. Rescorla, H. Tschofenig, N. Modadugu [April 2022] (Obsoletes &lt;a href="http://www.rfc-editor.org/info/rfc6347"&gt;RFC6347&lt;/a&gt;) (Estado: PROPOSED STANDARD) (See also: &lt;a href="https://github.com/openssl/openssl/issues/13900"&gt;OpenSSL DTLS 1.3 status&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="datachannel"&gt;
+ DataChannel
+ &lt;a class="anchor" href="#datachannel"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8831"&gt;RFC8831&lt;/a&gt;: WebRTC Data Channels R. Jesup, S. Loreto, M. Tüxen [January 2021] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8832"&gt;RFC8832&lt;/a&gt;: WebRTC Data Channel Establishment Protocol R. Jesup, S. Loreto, M. Tüxen [January 2021] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8864"&gt;RFC8864&lt;/a&gt;: Negotiation Data Channels Using the Session Description Protocol (SDP) K. Drage, M. Makaraju, R. Ejzak, J. Marcon, R. Even [January 2021] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="mediatransport"&gt;
+ MediaTransport
+ &lt;a class="anchor" href="#mediatransport"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8834"&gt;RFC8834&lt;/a&gt;: Media Transport and Use of RTP in WebRTC C. Perkins, M. Westerlund, J. Ott [January 2021] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8837"&gt;RFC8837&lt;/a&gt;: Differentiated Services Code Point (DSCP) Packet Markings for WebRTC QoS P. Jones, S. Dhesikan, C. Jennings, D. Druta [January 2021] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="sctp"&gt;
+ SCTP
+ &lt;a class="anchor" href="#sctp"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc3758"&gt;RFC3758&lt;/a&gt;: Stream Control Transmission Protocol (SCTP) Partial Reliability Extension R. Stewart, M. Ramalho, Q. Xie, M. Tuexen, P. Conrad [May 2004] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc5061"&gt;RFC5061&lt;/a&gt;: Stream Control Transmission Protocol (SCTP) Dynamic Address Reconfiguration R. Stewart, Q. Xie, M. Tuexen, S. Maruyama, M. Kozuka [September 2007] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc5827"&gt;RFC5827&lt;/a&gt;: Early Retransmit for TCP and Stream Control Transmission Protocol (SCTP) M. Allman, K. Avrachenkov, U. Ayesta, J. Blanton, P. Hurtig [May 2010] (Estado: EXPERIMENTAL)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc6083"&gt;RFC6083&lt;/a&gt;: Datagram Transport Layer Security (DTLS) for Stream Control Transmission Protocol (SCTP) M. Tuexen, R. Seggelmann, E. Rescorla [January 2011] (Updated-By &lt;a href="http://www.rfc-editor.org/info/rfc8996"&gt;RFC8996&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc6525"&gt;RFC6525&lt;/a&gt;: Stream Control Transmission Protocol (SCTP) Stream Reconfiguration R. Stewart, M. Tuexen, P. Lei [February 2012] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc6951"&gt;RFC6951&lt;/a&gt;: UDP Encapsulation of Stream Control Transmission Protocol (SCTP) Packets for End-Host to End-Host Communication M. Tuexen, R. Stewart [May 2013] (Updated-By &lt;a href="http://www.rfc-editor.org/info/rfc8899"&gt;RFC8899&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc7765"&gt;RFC7765&lt;/a&gt;: TCP and Stream Control Transmission Protocol (SCTP) RTO Restart P. Hurtig, A. Brunstrom, A. Petlund, M. Welzl [February 2016] (Estado: EXPERIMENTAL)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8260"&gt;RFC8260&lt;/a&gt;: Stream Schedulers and User Message Interleaving for the Stream Control Transmission Protocol R. Stewart, M. Tuexen, S. Loreto, R. Seggelmann [November 2017] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8261"&gt;RFC8261&lt;/a&gt;: Datagram Transport Layer Security (DTLS) Encapsulation of SCTP Packets M. Tuexen, R. Stewart, R. Jesup, S. Loreto [November 2017] (Updated-By &lt;a href="http://www.rfc-editor.org/info/rfc8899"&gt;RFC8899&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8996"&gt;RFC8996&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8841"&gt;RFC8841&lt;/a&gt;: Session Description Protocol (SDP) Offer/Answer Procedures for Stream Control Transmission Protocol (SCTP) over Datagram Transport Layer Security (DTLS) Transport C. Holmberg, R. Shpount, S. Loreto, G. Camarillo [January 2021] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8899"&gt;RFC8899&lt;/a&gt;: Packetization Layer Path MTU Discovery for Datagram Transports G. Fairhurst, T. Jones, M. Tüxen, I. Rüngeler, T. Völker [September 2020] (Updates &lt;a href="http://www.rfc-editor.org/info/rfc4821"&gt;RFC4821&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc4960"&gt;RFC4960&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc6951"&gt;RFC6951&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8085"&gt;RFC8085&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8261"&gt;RFC8261&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc9260"&gt;RFC9260&lt;/a&gt;: Stream Control Transmission Protocol R. Stewart, M. Tüxen, K. Nielsen [June 2022] (Obsoletes &lt;a href="http://www.rfc-editor.org/info/rfc4460"&gt;RFC4460&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc4960"&gt;RFC4960&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc6096"&gt;RFC6096&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc7053"&gt;RFC7053&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8540"&gt;RFC8540&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="sdp"&gt;
+ SDP
+ &lt;a class="anchor" href="#sdp"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8829"&gt;RFC8829&lt;/a&gt;: JavaScript Session Establishment Protocol (JSEP) J. Uberti, C. Jennings, E. Rescorla [January 2021] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8830"&gt;RFC8830&lt;/a&gt;: WebRTC MediaStream Identification in the Session Description Protocol H. Alvestrand [January 2021] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8839"&gt;RFC8839&lt;/a&gt;: Session Description Protocol (SDP) Offer/Answer Procedures for Interactive Connectivity Establishment (ICE) M. Petit-Huguenin, S. Nandakumar, C. Holmberg, A. Keränen, R. Shpount [January 2021] (Obsoletes &lt;a href="http://www.rfc-editor.org/info/rfc5245"&gt;RFC5245&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc6336"&gt;RFC6336&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8841"&gt;RFC8841&lt;/a&gt;: Session Description Protocol (SDP) Offer/Answer Procedures for Stream Control Transmission Protocol (SCTP) over Datagram Transport Layer Security (DTLS) Transport C. Holmberg, R. Shpount, S. Loreto, G. Camarillo [January 2021] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8843"&gt;RFC8843&lt;/a&gt;: Negotiating Media Multiplexing Using the Session Description Protocol (SDP) C. Holmberg, H. Alvestrand, C. Jennings [January 2021] (Obsoleted-By &lt;a href="http://www.rfc-editor.org/info/rfc9143"&gt;RFC9143&lt;/a&gt;) (Updates &lt;a href="http://www.rfc-editor.org/info/rfc3264"&gt;RFC3264&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc5888"&gt;RFC5888&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc7941"&gt;RFC7941&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8844"&gt;RFC8844&lt;/a&gt;: Unknown Key-Share Attacks on Uses of TLS with the Session Description Protocol (SDP) M. Thomson, E. Rescorla [January 2021] (Updates &lt;a href="http://www.rfc-editor.org/info/rfc8122"&gt;RFC8122&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8851"&gt;RFC8851&lt;/a&gt;: RTP Payload Format Restrictions A.B. Roach [January 2021] (Updates &lt;a href="http://www.rfc-editor.org/info/rfc4855"&gt;RFC4855&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8852"&gt;RFC8852&lt;/a&gt;: RTP Stream Identifier Source Description (SDES) A.B. Roach, S. Nandakumar, P. Thatcher [January 2021] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8853"&gt;RFC8853&lt;/a&gt;: Using Simulcast in Session Description Protocol (SDP) and RTP Sessions B. Burman, M. Westerlund, S. Nandakumar, M. Zanaty [January 2021] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8866"&gt;RFC8866&lt;/a&gt;: SDP: Session Description Protocol A. Begen, P. Kyzivat, C. Perkins, M. Handley [January 2021] (Obsoletes &lt;a href="http://www.rfc-editor.org/info/rfc4566"&gt;RFC4566&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="rtp"&gt;
+ RTP
+ &lt;a class="anchor" href="#rtp"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc3550"&gt;RFC3550&lt;/a&gt;: RTP: A Transport Protocol for Real-Time Applications H. Schulzrinne, S. Casner, R. Frederick, V. Jacobson [July 2003] (Obsoletes &lt;a href="http://www.rfc-editor.org/info/rfc1889"&gt;RFC1889&lt;/a&gt;) (Updated-By &lt;a href="http://www.rfc-editor.org/info/rfc5506"&gt;RFC5506&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc5761"&gt;RFC5761&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc6051"&gt;RFC6051&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc6222"&gt;RFC6222&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc7022"&gt;RFC7022&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc7160"&gt;RFC7160&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc7164"&gt;RFC7164&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8083"&gt;RFC8083&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8108"&gt;RFC8108&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8860"&gt;RFC8860&lt;/a&gt;) (Also &lt;a href="http://www.rfc-editor.org/info/std0064"&gt;STD0064&lt;/a&gt;) (Estado: INTERNET STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc3611"&gt;RFC3611&lt;/a&gt;: RTP Control Protocol Extended Reports (RTCP XR) T. Friedman, R. Caceres, A. Clark [November 2003] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc3711"&gt;RFC3711&lt;/a&gt;: The Secure Real-time Transport Protocol (SRTP) M. Baugher, D. McGrew, M. Naslund, E. Carrara, K. Norrman [March 2004] (Updated-By &lt;a href="http://www.rfc-editor.org/info/rfc5506"&gt;RFC5506&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc6904"&gt;RFC6904&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc4585"&gt;RFC4585&lt;/a&gt;: Extended RTP Profile for Real-time Transport Control Protocol (RTCP)-Based Feedback (RTP/AVPF) J. Ott, S. Wenger, N. Sato, C. Burmeister, J. Rey [July 2006] (Updated-By &lt;a href="http://www.rfc-editor.org/info/rfc5506"&gt;RFC5506&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8108"&gt;RFC8108&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc5104"&gt;RFC5104&lt;/a&gt;: Codec Control Messages in the RTP Audio-Visual Profile with Feedback (AVPF) S. Wenger, U. Chandra, M. Westerlund, B. Burman [February 2008] (Updated-By &lt;a href="http://www.rfc-editor.org/info/rfc7728"&gt;RFC7728&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8082"&gt;RFC8082&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc5764"&gt;RFC5764&lt;/a&gt;: Datagram Transport Layer Security (DTLS) Extension to Establish Keys for the Secure Real-time Transport Protocol (SRTP) D. McGrew, E. Rescorla [May 2010] (Updated-By &lt;a href="http://www.rfc-editor.org/info/rfc7983"&gt;RFC7983&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc6904"&gt;RFC6904&lt;/a&gt;: Encryption of Header Extensions in the Secure Real-time Transport Protocol (SRTP) J. Lennox [April 2013] (Updates &lt;a href="http://www.rfc-editor.org/info/rfc3711"&gt;RFC3711&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc7741"&gt;RFC7741&lt;/a&gt;: RTP Payload Format for VP8 Video P. Westin, H. Lundin, M. Glover, J. Uberti, F. Galligan [March 2016] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8285"&gt;RFC8285&lt;/a&gt;: A General Mechanism for RTP Header Extensions D. Singer, H. Desineni, R. Even [October 2017] (Obsoletes &lt;a href="http://www.rfc-editor.org/info/rfc5285"&gt;RFC5285&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8852"&gt;RFC8852&lt;/a&gt;: RTP Stream Identifier Source Description (SDES) A.B. Roach, S. Nandakumar, P. Thatcher [January 2021] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8858"&gt;RFC8858&lt;/a&gt;: Indicating Exclusive Support of RTP and RTP Control Protocol (RTCP) Multiplexing Using the Session Description Protocol (SDP) C. Holmberg [January 2021] (Updates &lt;a href="http://www.rfc-editor.org/info/rfc5761"&gt;RFC5761&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8860"&gt;RFC8860&lt;/a&gt;: Sending Multiple Types of Media in a Single RTP Session M. Westerlund, C. Perkins, J. Lennox [January 2021] (Updates &lt;a href="http://www.rfc-editor.org/info/rfc3550"&gt;RFC3550&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc3551"&gt;RFC3551&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8867"&gt;RFC8867&lt;/a&gt;: Test Cases for Evaluating Congestion Control for Interactive Real-Time Media Z. Sarker, V. Singh, X. Zhu, M. Ramalho [January 2021] (Estado: INFORMATIONAL)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8868"&gt;RFC8868&lt;/a&gt;: Evaluating Congestion Control for Interactive Real-Time Media V. Singh, J. Ott, S. Holmer [January 2021] (Estado: INFORMATIONAL)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8869"&gt;RFC8869&lt;/a&gt;: Evaluation Test Cases for Interactive Real-Time Media over Wireless Networks Z. Sarker, X. Zhu, J. Fu [January 2021] (Estado: INFORMATIONAL)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8872"&gt;RFC8872&lt;/a&gt;: Guidelines for Using the Multiplexing Features of RTP to Support Multiple Media Streams M. Westerlund, B. Burman, C. Perkins, H. Alvestrand, R. Even [January 2021] (Estado: INFORMATIONAL)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8888"&gt;RFC8888&lt;/a&gt;: RTP Control Protocol (RTCP) Feedback for Congestion Control Z. Sarker, C. Perkins, V. Singh, M. Ramalho [January 2021] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="ice-turn-y-stun"&gt;
+ ICE, TURN y STUN
+ &lt;a class="anchor" href="#ice-turn-y-stun"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc5780"&gt;RFC5780&lt;/a&gt;: NAT Behavior Discovery Using Session Traversal Utilities for NAT (STUN) D. MacDonald, B. Lowekamp [May 2010] (Updated-By &lt;a href="http://www.rfc-editor.org/info/rfc8553"&gt;RFC8553&lt;/a&gt;) (Estado: EXPERIMENTAL)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8445"&gt;RFC8445&lt;/a&gt;: Interactive Connectivity Establishment (ICE): A Protocol for Network Address Translator (NAT) Traversal A. Keranen, C. Holmberg, J. Rosenberg [July 2018] (Obsoletes &lt;a href="http://www.rfc-editor.org/info/rfc5245"&gt;RFC5245&lt;/a&gt;) (Updated-By &lt;a href="http://www.rfc-editor.org/info/rfc8863"&gt;RFC8863&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8489"&gt;RFC8489&lt;/a&gt;: Session Traversal Utilities for NAT (STUN) M. Petit-Huguenin, G. Salgueiro, J. Rosenberg, D. Wing, R. Mahy, P. Matthews [February 2020] (Obsoletes &lt;a href="http://www.rfc-editor.org/info/rfc5389"&gt;RFC5389&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8656"&gt;RFC8656&lt;/a&gt;: Traversal Using Relays around NAT (TURN): Relay Extensions to Session Traversal Utilities for NAT (STUN) T. Reddy, A. Johnston, P. Matthews, J. Rosenberg [February 2020] (Obsoletes &lt;a href="http://www.rfc-editor.org/info/rfc5766"&gt;RFC5766&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc6156"&gt;RFC6156&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8835"&gt;RFC8835&lt;/a&gt;: Transports for WebRTC H. Alvestrand [January 2021] (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8838"&gt;RFC8838&lt;/a&gt;: Trickle ICE: Incremental Provisioning of Candidates for the Interactive Connectivity Establishment (ICE) Protocol E. Ivov, J. Uberti, P. Saint-Andre [January 2021] (Updated-By &lt;a href="http://www.rfc-editor.org/info/rfc8863"&gt;RFC8863&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8839"&gt;RFC8839&lt;/a&gt;: Session Description Protocol (SDP) Offer/Answer Procedures for Interactive Connectivity Establishment (ICE) M. Petit-Huguenin, S. Nandakumar, C. Holmberg, A. Keränen, R. Shpount [January 2021] (Obsoletes &lt;a href="http://www.rfc-editor.org/info/rfc5245"&gt;RFC5245&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc6336"&gt;RFC6336&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8863"&gt;RFC8863&lt;/a&gt;: Interactive Connectivity Establishment Patiently Awaiting Connectivity (ICE PAC) C. Holmberg, J. Uberti [January 2021] (Updates &lt;a href="http://www.rfc-editor.org/info/rfc8445"&gt;RFC8445&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8838"&gt;RFC8838&lt;/a&gt;) (Estado: PROPOSED STANDARD)&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

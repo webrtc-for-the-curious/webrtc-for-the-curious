@@ -1,16 +1,323 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Giriş on WebRTC Meraklıları İçin</title><link>https://webrtcforthecurious.com/tr/</link><description>Recent content in Giriş on WebRTC Meraklıları İçin</description><generator>Hugo</generator><language>tr</language><atom:link href="https://webrtcforthecurious.com/tr/index.xml" rel="self" type="application/rss+xml"/><item><title>Ne, Neden ve Nasıl</title><link>https://webrtcforthecurious.com/tr/docs/01-what-why-and-how/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/01-what-why-and-how/</guid><description>Ne, Neden ve Nasıl # WebRTC Nedir? # WebRTC, Web Real-Time Communication&amp;rsquo;ın kısaltması olarak hem bir API hem de bir Protokoldür. WebRTC protokolü, iki WebRTC aracısının çift yönlü güvenli gerçek zamanlı iletişim müzakere etmesi için bir dizi kuraldan oluşur. WebRTC API&amp;rsquo;si ise geliştiricilerin WebRTC protokolünü kullanmasına olanak tanır. WebRTC API&amp;rsquo;si yalnızca JavaScript için belirtilmiştir.
-Benzer bir ilişki HTTP ve Fetch API arasındaki ilişki olacaktır. WebRTC protokolü HTTP olurken, WebRTC API&amp;rsquo;si Fetch API olur.</description></item><item><title>Sinyalleşme</title><link>https://webrtcforthecurious.com/tr/docs/02-signaling/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/02-signaling/</guid><description>Sinyalleşme # WebRTC Sinyalleşme Nedir? # Bir WebRTC ajanı oluşturduğunuzda, diğer eş hakkında hiçbir şey bilmez. Kiminle bağlantı kuracağını veya ne göndereceklerini bilmez! Sinyalleşme, bir çağrıyı mümkün kılan ilk önyüklemedir. Bu değerler değiş tokuş edildikten sonra, WebRTC ajanları doğrudan birbirleriyle iletişim kurabilir.
-Sinyalleşme mesajları sadece metindir. WebRTC ajanları bunların nasıl taşındığını umursamaz. Genellikle Websocket&amp;rsquo;ler aracılığıyla paylaşılırlar, ancak bu bir gereklilik değildir.
-WebRTC sinyalleşme nasıl çalışır? # WebRTC, Oturum Tanımlama Protokolü adlı mevcut bir protokol kullanır.</description></item><item><title>Bağlanma</title><link>https://webrtcforthecurious.com/tr/docs/03-connecting/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/03-connecting/</guid><description>Bağlanma # WebRTC neden bağlanma için özel bir alt sisteme ihtiyaç duyar? # Bugün dağıtılan çoğu uygulama istemci/sunucu bağlantıları kurar. Bir istemci/sunucu bağlantısı, sunucunun kararlı, iyi bilinen bir aktarım adresine sahip olmasını gerektirir. Bir istemci sunucuyla iletişime geçer ve sunucu yanıt verir.
-WebRTC bir istemci/sunucu modeli kullanmaz, eşten-eşe (P2P) bağlantılar kurar. P2P bağlantısında, bağlantı oluşturma görevi her iki eşe eşit olarak dağıtılır. Bunun nedeni, WebRTC&amp;rsquo;de bir aktarım adresinin (IP ve port) varsayılamayacak olması ve hatta oturum sırasında değişebilmesidir.</description></item><item><title>Güvenlik</title><link>https://webrtcforthecurious.com/tr/docs/04-securing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/04-securing/</guid><description>Güvenlik # WebRTC hangi güvenlik özelliklerine sahip? # Her WebRTC bağlantısı kimlik doğrulamalı ve şifrelidir. Üçüncü bir tarafın gönderdiğiniz şeyleri göremeyeceğinden veya sahte mesajlar ekleyemeyeceğinden emin olabilirsiniz. Ayrıca Oturum Tanımını oluşturan WebRTC Ajanının iletişim kurduğunuz kişi olduğundan da emin olabilirsiniz.
-Bu mesajlarla kimsenin oynamaması çok önemlidir. Üçüncü bir tarafın geçiş sırasında Oturum Tanımını okuması sorun değil. Ancak, WebRTC&amp;rsquo;nin değiştirilmesine karşı koruması yoktur. Bir saldırgan, ICE Adaylarını değiştirip Sertifika Parmak İzini güncelleyerek size ortadaki adam saldırısı gerçekleştirebilir.</description></item><item><title>Gerçek Zamanlı Ağ İletişimi</title><link>https://webrtcforthecurious.com/tr/docs/05-real-time-networking/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/05-real-time-networking/</guid><description>Gerçek Zamanlı Ağ İletişimi # Gerçek zamanlı iletişimde ağ iletişimi neden bu kadar önemli? # Ağlar gerçek zamanlı iletişimde sınırlayıcı faktördür. İdeal bir dünyada sınırsız bant genişliğine sahip olurduk ve paketler anında ulaşırdı. Ancak durum böyle değil. Ağlar sınırlıdır ve koşullar her an değişebilir. Ağ koşullarını ölçmek ve gözlemlemek de zor bir problemdir. Donanım, yazılım ve bunların konfigürasyonuna bağlı olarak farklı davranışlar alabilirsiniz.
-Gerçek zamanlı iletişim ayrıca diğer çoğu alanda bulunmayan bir problem yaratır.</description></item><item><title>Medya İletişimi</title><link>https://webrtcforthecurious.com/tr/docs/06-media-communication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/06-media-communication/</guid><description>Medya İletişimi # WebRTC&amp;rsquo;nin medya iletişiminden ne elde ederim? # WebRTC size sınırsız miktarda ses ve video akışı gönderip almanıza izin verir. Bu akışları bir çağrı sırasında istediğiniz zaman ekleyip çıkarabilirsiniz. Bu akışların hepsi bağımsız olabilir veya birlikte paketlenmiş olabilir! Masaüstünüzün video beslemesini gönderebilir ve ardından web kameranızdan ses ve video ekleyebilirsiniz.
-WebRTC protokolü codec agnostiktir. Alttaki aktarım her şeyi destekler, henüz var olmayan şeyleri bile! Ancak, iletişim kurduğunuz WebRTC Ajanı bunu kabul etmek için gerekli araçlara sahip olmayabilir.</description></item><item><title>Veri İletişimi</title><link>https://webrtcforthecurious.com/tr/docs/07-data-communication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/07-data-communication/</guid><description>Veri İletişimi # WebRTC&amp;rsquo;nin veri iletişiminden ne elde ederim? # WebRTC, veri iletişimi için veri kanalları sağlar. İki eş arasında 65.534 veri kanalı açabilirsiniz. Veri kanalı datagram tabanlıdır ve her birinin kendi dayanıklılık ayarları vardır. Varsayılan olarak, her veri kanalının garantili sıralı teslimatı vardır.
-WebRTC&amp;rsquo;ye medya geçmişinden yaklaşıyorsanız veri kanalları savurgan görünebilir. HTTP veya WebSocket&amp;rsquo;leri kullanabileceğim zaman neden bu alt sisteme ihtiyacım var?
-Veri kanallarının gerçek gücü, onları sırasız/kayıplı teslimatla UDP gibi davranacak şekilde yapılandırabilmenizdir.</description></item><item><title>Uygulamalı WebRTC</title><link>https://webrtcforthecurious.com/tr/docs/08-applied-webrtc/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/08-applied-webrtc/</guid><description>Uygulamalı WebRTC # Artık WebRTC&amp;rsquo;nin nasıl çalıştığını bildiğinize göre, onunla geliştirme zamanı! Bu bölüm insanların WebRTC ile ne geliştirdiğini ve nasıl geliştirdiğini araştırıyor. WebRTC ile olan tüm ilginç gelişmeleri öğreneceksiniz. WebRTC&amp;rsquo;nin gücü bir bedelle gelir. Üretim kalitesi WebRTC hizmetleri geliştirmek zorludur. Bu bölüm size bu zorlukları karşılaşmadan önce açıklamaya çalışacaktır.
-Kullanım Durumuna Göre # Birçoğu WebRTC&amp;rsquo;nin sadece web tarayıcısında konferans için bir teknoloji olduğunu düşünür. Ama çok daha fazlasıdır! WebRTC geniş bir uygulama yelpazesinde kullanılır.</description></item><item><title>Hata Ayıklama</title><link>https://webrtcforthecurious.com/tr/docs/09-debugging/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/09-debugging/</guid><description>Hata Ayıklama # WebRTC hata ayıklama göz korkutucu bir görev olabilir. Çok sayıda hareketli parça vardır ve hepsi bağımsız olarak bozulabilir. Dikkatli olmazsanız, yanlış şeylere bakarak haftalar kaybedebilirsiniz. Sonunda bozuk olan kısmı bulduğunuzda, nedenini anlamak için biraz öğrenmeniz gerekecek.
-Bu bölüm sizi WebRTC hata ayıklama zihniyetine sokacaktır. Size problemi nasıl parçalara ayıracağınızı gösterecektir. Problemi öğrendikten sonra, popüler hata ayıklama araçlarının hızlı bir turunu vereceğiz.
-Problemi İzole Edin # Hata ayıklama yaparken, sorunun nereden geldiğini izole etmeniz gerekir.</description></item><item><title>Tarihçe</title><link>https://webrtcforthecurious.com/tr/docs/10-history-of-webrtc/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/10-history-of-webrtc/</guid><description>Tarihçe # WebRTC öğrenirken geliştiriciler genellikle karmaşıklık nedeniyle hayal kırıklığı yaşarlar. Mevcut projelerine alakasız WebRTC özelliklerini görür ve WebRTC&amp;rsquo;nin daha basit olmasını dilerler. Sorun herkesin farklı bir kullanım durumu setine sahip olmasıdır. Gerçek zamanlı iletişimin zengin bir geçmişi vardır ve birçok farklı insan birçok farklı şey inşa eder.
-Bu bölüm WebRTC&amp;rsquo;yi oluşturan protokollerin yazarlarıyla yapılan röportajları içerir. Her protokolü inşa ederken yapılan tasarımlara dair içgörü verir ve WebRTC&amp;rsquo;nin kendisi hakkında bir röportajla biter.</description></item><item><title>SSS</title><link>https://webrtcforthecurious.com/tr/docs/11-faq/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/11-faq/</guid><description>SSS (Sıkça Sorulan Sorular) # WebRTC neden UDP kullanıyor? NAT Geçişi UDP gerektirir. NAT Geçişi olmadan P2P bağlantı kurmak mümkün olmazdı. UDP, TCP gibi &amp;ldquo;garantili teslimat&amp;rdquo; sağlamaz, bu yüzden WebRTC bunu kullanıcı seviyesinde sağlar.
-Daha fazla bilgi için Bağlanma bölümüne bakın.
-Kaç tane DataChannel&amp;rsquo;ım olabilir? Akış tanımlayıcısı 16 bit olduğu için 65534 kanal. İstediğiniz zaman kapatıp yeni bir tane açabilirsiniz. WebRTC bant genişliği sınırları koyuyor mu? Hem DataChannel&amp;rsquo;lar hem de RTP tıkanıklık kontrolü kullanır.</description></item><item><title>Sözlük</title><link>https://webrtcforthecurious.com/tr/docs/12-glossary/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/12-glossary/</guid><description>Sözlük # ACK: Onay (Acknowledgment) AVP: Ses ve Video profili (Audio and Video profile) B-Frame: Çift Yönlü Tahminli Çerçeve. Kısmi bir resim, önceki ve gelecekteki resimlerin modifikasyonudur. DCEP: Veri Kanalı Kurma Protokolü RFC 8832&amp;lsquo;de tanımlanmıştır DeMux: Çoklayıcı çözücü (Demultiplexer) DLSR: Son gönderen raporundan beri gecikme (Delay since last sender report) DTLS: Datagram Aktarım Katmanı Güvenliği RFC 6347&amp;lsquo;de tanımlanmıştır E2E: Uçtan Uca (End-to-End) FEC: İleri Hata Düzeltme FIR: Tam INTRA-çerçeve İsteği G.</description></item><item><title>Referans</title><link>https://webrtcforthecurious.com/tr/docs/13-reference/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/13-reference/</guid><description>Referans # WebRTC(W3C) # WebRTC 1.0: Tarayıcılar Arası Gerçek Zamanlı İletişim [26 Ocak 2021] (Durum: Öneri) Web Gerçek Zamanlı İletişim Çalışma Grubu - Yayınlar WebRTC(RFC) # RFC8825: Genel Bakış: Tarayıcı Tabanlı Uygulamalar için Gerçek Zamanlı Protokoller H. Alvestrand [Ocak 2021] (Durum: ÖNERİLEN STANDART) RFC8826: WebRTC için Güvenlik Değerlendirmeleri E. Rescorla [Ocak 2021] (Durum: ÖNERİLEN STANDART) RFC8836: Etkileşimli Gerçek Zamanlı Medya için Tıkanıklık Kontrol Gereksinimleri R. Jesup, Z. Sarker [Ocak 2021] (Durum: BİLGİLENDİRME) RFC8854: WebRTC İleri Hata Düzeltme Gereksinimleri J.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Giriş on WebRTC Meraklıları İçin</title><link>https://webrtcforthecurious.com/tr/</link><description>Recent content in Giriş on WebRTC Meraklıları İçin</description><generator>Hugo</generator><language>tr</language><atom:link href="https://webrtcforthecurious.com/tr/index.xml" rel="self" type="application/rss+xml"/><item><title>Ne, Neden ve Nasıl</title><link>https://webrtcforthecurious.com/tr/docs/01-what-why-and-how/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/01-what-why-and-how/</guid><description>&lt;h1 id="ne-neden-ve-nasıl"&gt;
+ Ne, Neden ve Nasıl
+ &lt;a class="anchor" href="#ne-neden-ve-nas%c4%b1l"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="webrtc-nedir"&gt;
+ WebRTC Nedir?
+ &lt;a class="anchor" href="#webrtc-nedir"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;WebRTC, Web Real-Time Communication&amp;rsquo;ın kısaltması olarak hem bir API hem de bir Protokoldür. WebRTC protokolü, iki WebRTC aracısının çift yönlü güvenli gerçek zamanlı iletişim müzakere etmesi için bir dizi kuraldan oluşur. WebRTC API&amp;rsquo;si ise geliştiricilerin WebRTC protokolünü kullanmasına olanak tanır. WebRTC API&amp;rsquo;si yalnızca JavaScript için belirtilmiştir.&lt;/p&gt;
+&lt;p&gt;Benzer bir ilişki HTTP ve Fetch API arasındaki ilişki olacaktır. WebRTC protokolü HTTP olurken, WebRTC API&amp;rsquo;si Fetch API olur.&lt;/p&gt;</description></item><item><title>Sinyalleşme</title><link>https://webrtcforthecurious.com/tr/docs/02-signaling/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/02-signaling/</guid><description>&lt;h1 id="sinyalleşme"&gt;
+ Sinyalleşme
+ &lt;a class="anchor" href="#sinyalle%c5%9fme"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="webrtc-sinyalleşme-nedir"&gt;
+ WebRTC Sinyalleşme Nedir?
+ &lt;a class="anchor" href="#webrtc-sinyalle%c5%9fme-nedir"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;Bir WebRTC ajanı oluşturduğunuzda, diğer eş hakkında hiçbir şey bilmez. Kiminle bağlantı kuracağını veya ne göndereceklerini bilmez!
+Sinyalleşme, bir çağrıyı mümkün kılan ilk önyüklemedir. Bu değerler değiş tokuş edildikten sonra, WebRTC ajanları doğrudan birbirleriyle iletişim kurabilir.&lt;/p&gt;
+&lt;p&gt;Sinyalleşme mesajları sadece metindir. WebRTC ajanları bunların nasıl taşındığını umursamaz. Genellikle Websocket&amp;rsquo;ler aracılığıyla paylaşılırlar, ancak bu bir gereklilik değildir.&lt;/p&gt;
+&lt;h2 id="webrtc-sinyalleşme-nasıl-çalışır"&gt;
+ WebRTC sinyalleşme nasıl çalışır?
+ &lt;a class="anchor" href="#webrtc-sinyalle%c5%9fme-nas%c4%b1l-%c3%a7al%c4%b1%c5%9f%c4%b1r"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;WebRTC, Oturum Tanımlama Protokolü adlı mevcut bir protokol kullanır. Bu protokol aracılığıyla, iki WebRTC Ajanı bir bağlantı kurmak için gerekli tüm durumu paylaşacaktır. Protokolün kendisi okumak ve anlamak için basittir.
+Karmaşıklık, WebRTC&amp;rsquo;nin onunla doldurduğu tüm değerleri anlamaktan gelir.&lt;/p&gt;</description></item><item><title>Bağlanma</title><link>https://webrtcforthecurious.com/tr/docs/03-connecting/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/03-connecting/</guid><description>&lt;h1 id="bağlanma"&gt;
+ Bağlanma
+ &lt;a class="anchor" href="#ba%c4%9flanma"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="webrtc-neden-bağlanma-için-özel-bir-alt-sisteme-ihtiyaç-duyar"&gt;
+ WebRTC neden bağlanma için özel bir alt sisteme ihtiyaç duyar?
+ &lt;a class="anchor" href="#webrtc-neden-ba%c4%9flanma-i%c3%a7in-%c3%b6zel-bir-alt-sisteme-ihtiya%c3%a7-duyar"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;Bugün dağıtılan çoğu uygulama istemci/sunucu bağlantıları kurar. Bir istemci/sunucu bağlantısı, sunucunun kararlı, iyi bilinen bir aktarım adresine sahip olmasını gerektirir. Bir istemci sunucuyla iletişime geçer ve sunucu yanıt verir.&lt;/p&gt;
+&lt;p&gt;WebRTC bir istemci/sunucu modeli kullanmaz, eşten-eşe (P2P) bağlantılar kurar. P2P bağlantısında, bağlantı oluşturma görevi her iki eşe eşit olarak dağıtılır. Bunun nedeni, WebRTC&amp;rsquo;de bir aktarım adresinin (IP ve port) varsayılamayacak olması ve hatta oturum sırasında değişebilmesidir. WebRTC tüm toplayabileceği bilgileri toplayacak ve iki WebRTC Ajanı arasında çift yönlü iletişim sağlamak için büyük çaba gösterecektir.&lt;/p&gt;</description></item><item><title>Güvenlik</title><link>https://webrtcforthecurious.com/tr/docs/04-securing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/04-securing/</guid><description>&lt;h1 id="güvenlik"&gt;
+ Güvenlik
+ &lt;a class="anchor" href="#g%c3%bcvenlik"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="webrtc-hangi-güvenlik-özelliklerine-sahip"&gt;
+ WebRTC hangi güvenlik özelliklerine sahip?
+ &lt;a class="anchor" href="#webrtc-hangi-g%c3%bcvenlik-%c3%b6zelliklerine-sahip"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;Her WebRTC bağlantısı kimlik doğrulamalı ve şifrelidir. Üçüncü bir tarafın gönderdiğiniz şeyleri göremeyeceğinden veya sahte mesajlar ekleyemeyeceğinden emin olabilirsiniz. Ayrıca Oturum Tanımını oluşturan WebRTC Ajanının iletişim kurduğunuz kişi olduğundan da emin olabilirsiniz.&lt;/p&gt;
+&lt;p&gt;Bu mesajlarla kimsenin oynamaması çok önemlidir. Üçüncü bir tarafın geçiş sırasında Oturum Tanımını okuması sorun değil. Ancak, WebRTC&amp;rsquo;nin değiştirilmesine karşı koruması yoktur. Bir saldırgan, ICE Adaylarını değiştirip Sertifika Parmak İzini güncelleyerek size ortadaki adam saldırısı gerçekleştirebilir.&lt;/p&gt;</description></item><item><title>Gerçek Zamanlı Ağ İletişimi</title><link>https://webrtcforthecurious.com/tr/docs/05-real-time-networking/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/05-real-time-networking/</guid><description>&lt;h1 id="gerçek-zamanlı-ağ-iletişimi"&gt;
+ Gerçek Zamanlı Ağ İletişimi
+ &lt;a class="anchor" href="#ger%c3%a7ek-zamanl%c4%b1-a%c4%9f-ileti%c5%9fimi"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="gerçek-zamanlı-iletişimde-ağ-iletişimi-neden-bu-kadar-önemli"&gt;
+ Gerçek zamanlı iletişimde ağ iletişimi neden bu kadar önemli?
+ &lt;a class="anchor" href="#ger%c3%a7ek-zamanl%c4%b1-ileti%c5%9fimde-a%c4%9f-ileti%c5%9fimi-neden-bu-kadar-%c3%b6nemli"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;Ağlar gerçek zamanlı iletişimde sınırlayıcı faktördür. İdeal bir dünyada sınırsız bant genişliğine sahip olurduk ve paketler anında ulaşırdı. Ancak durum böyle değil. Ağlar sınırlıdır ve koşullar her an değişebilir. Ağ koşullarını ölçmek ve gözlemlemek de zor bir problemdir. Donanım, yazılım ve bunların konfigürasyonuna bağlı olarak farklı davranışlar alabilirsiniz.&lt;/p&gt;
+&lt;p&gt;Gerçek zamanlı iletişim ayrıca diğer çoğu alanda bulunmayan bir problem yaratır. Bir web geliştirici için web sitenizin bazı ağlarda daha yavaş olması ölümcül değildir. Tüm veriler ulaştığı sürece kullanıcılar mutludur. WebRTC ile verileriniz geç gelirse işe yaramaz. Kimse 5 saniye önce bir konferans görüşmesinde söylenenleri umursamaz. Dolayısıyla gerçek zamanlı iletişim sistemi geliştirirken bir ödünleşim yapmanız gerekir. Zaman sınırım nedir ve ne kadar veri gönderebilirim?&lt;/p&gt;</description></item><item><title>Medya İletişimi</title><link>https://webrtcforthecurious.com/tr/docs/06-media-communication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/06-media-communication/</guid><description>&lt;h1 id="medya-iletişimi"&gt;
+ Medya İletişimi
+ &lt;a class="anchor" href="#medya-ileti%c5%9fimi"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="webrtcnin-medya-iletişiminden-ne-elde-ederim"&gt;
+ WebRTC&amp;rsquo;nin medya iletişiminden ne elde ederim?
+ &lt;a class="anchor" href="#webrtcnin-medya-ileti%c5%9fiminden-ne-elde-ederim"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;WebRTC size sınırsız miktarda ses ve video akışı gönderip almanıza izin verir. Bu akışları bir çağrı sırasında istediğiniz zaman ekleyip çıkarabilirsiniz. Bu akışların hepsi bağımsız olabilir veya birlikte paketlenmiş olabilir! Masaüstünüzün video beslemesini gönderebilir ve ardından web kameranızdan ses ve video ekleyebilirsiniz.&lt;/p&gt;
+&lt;p&gt;WebRTC protokolü codec agnostiktir. Alttaki aktarım her şeyi destekler, henüz var olmayan şeyleri bile! Ancak, iletişim kurduğunuz WebRTC Ajanı bunu kabul etmek için gerekli araçlara sahip olmayabilir.&lt;/p&gt;</description></item><item><title>Veri İletişimi</title><link>https://webrtcforthecurious.com/tr/docs/07-data-communication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/07-data-communication/</guid><description>&lt;h1 id="veri-iletişimi"&gt;
+ Veri İletişimi
+ &lt;a class="anchor" href="#veri-ileti%c5%9fimi"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="webrtcnin-veri-iletişiminden-ne-elde-ederim"&gt;
+ WebRTC&amp;rsquo;nin veri iletişiminden ne elde ederim?
+ &lt;a class="anchor" href="#webrtcnin-veri-ileti%c5%9fiminden-ne-elde-ederim"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;WebRTC, veri iletişimi için veri kanalları sağlar. İki eş arasında 65.534 veri kanalı açabilirsiniz.
+Veri kanalı datagram tabanlıdır ve her birinin kendi dayanıklılık ayarları vardır. Varsayılan olarak, her veri kanalının garantili sıralı teslimatı vardır.&lt;/p&gt;
+&lt;p&gt;WebRTC&amp;rsquo;ye medya geçmişinden yaklaşıyorsanız veri kanalları savurgan görünebilir. HTTP veya WebSocket&amp;rsquo;leri kullanabileceğim zaman neden bu alt sisteme ihtiyacım var?&lt;/p&gt;
+&lt;p&gt;Veri kanallarının gerçek gücü, onları sırasız/kayıplı teslimatla UDP gibi davranacak şekilde yapılandırabilmenizdir.
+Bu, düşük gecikme ve yüksek performans durumları için gereklidir. Backpressure&amp;rsquo;ı ölçebilir ve sadece ağınızın desteklediği kadar gönderdüğinizden emin olabilirsiniz.&lt;/p&gt;</description></item><item><title>Uygulamalı WebRTC</title><link>https://webrtcforthecurious.com/tr/docs/08-applied-webrtc/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/08-applied-webrtc/</guid><description>&lt;h1 id="uygulamalı-webrtc"&gt;
+ Uygulamalı WebRTC
+ &lt;a class="anchor" href="#uygulamal%c4%b1-webrtc"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;p&gt;Artık WebRTC&amp;rsquo;nin nasıl çalıştığını bildiğinize göre, onunla geliştirme zamanı! Bu bölüm insanların
+WebRTC ile ne geliştirdiğini ve nasıl geliştirdiğini araştırıyor. WebRTC ile olan tüm ilginç gelişmeleri öğreneceksiniz. WebRTC&amp;rsquo;nin gücü bir bedelle gelir. Üretim kalitesi WebRTC hizmetleri geliştirmek
+zorludur. Bu bölüm size bu zorlukları karşılaşmadan önce açıklamaya çalışacaktır.&lt;/p&gt;
+&lt;h2 id="kullanım-durumuna-göre"&gt;
+ Kullanım Durumuna Göre
+ &lt;a class="anchor" href="#kullan%c4%b1m-durumuna-g%c3%b6re"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;Birçoğu WebRTC&amp;rsquo;nin sadece web tarayıcısında konferans için bir teknoloji olduğunu düşünür. Ama çok daha fazlasıdır!
+WebRTC geniş bir uygulama yelpazesinde kullanılır. Yeni kullanım durumları sürekli ortaya çıkıyor. Bu bölümde bazı yaygın olanları ve WebRTC&amp;rsquo;nin bunları nasıl devrimleştirdiğini listeleyeceğiz.&lt;/p&gt;</description></item><item><title>Hata Ayıklama</title><link>https://webrtcforthecurious.com/tr/docs/09-debugging/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/09-debugging/</guid><description>&lt;h1 id="hata-ayıklama"&gt;
+ Hata Ayıklama
+ &lt;a class="anchor" href="#hata-ay%c4%b1klama"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;p&gt;WebRTC hata ayıklama göz korkutucu bir görev olabilir. Çok sayıda hareketli parça vardır ve hepsi bağımsız olarak bozulabilir. Dikkatli olmazsanız, yanlış şeylere bakarak haftalar kaybedebilirsiniz. Sonunda bozuk olan kısmı bulduğunuzda, nedenini anlamak için biraz öğrenmeniz gerekecek.&lt;/p&gt;
+&lt;p&gt;Bu bölüm sizi WebRTC hata ayıklama zihniyetine sokacaktır. Size problemi nasıl parçalara ayıracağınızı gösterecektir. Problemi öğrendikten sonra, popüler hata ayıklama araçlarının hızlı bir turunu vereceğiz.&lt;/p&gt;
+&lt;h2 id="problemi-izole-edin"&gt;
+ Problemi İzole Edin
+ &lt;a class="anchor" href="#problemi-izole-edin"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;Hata ayıklama yaparken, sorunun nereden geldiğini izole etmeniz gerekir. Başlangıçtan başlayın&amp;hellip;&lt;/p&gt;</description></item><item><title>Tarihçe</title><link>https://webrtcforthecurious.com/tr/docs/10-history-of-webrtc/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/10-history-of-webrtc/</guid><description>&lt;h1 id="tarihçe"&gt;
+ Tarihçe
+ &lt;a class="anchor" href="#tarih%c3%a7e"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;p&gt;WebRTC öğrenirken geliştiriciler genellikle karmaşıklık nedeniyle hayal kırıklığı yaşarlar.
+Mevcut projelerine alakasız WebRTC özelliklerini görür ve WebRTC&amp;rsquo;nin
+daha basit olmasını dilerler. Sorun
+herkesin farklı bir kullanım durumu setine sahip olmasıdır. Gerçek zamanlı iletişimin zengin
+bir geçmişi vardır ve birçok farklı insan birçok farklı şey inşa eder.&lt;/p&gt;
+&lt;p&gt;Bu bölüm WebRTC&amp;rsquo;yi oluşturan protokollerin yazarlarıyla yapılan röportajları içerir.
+Her protokolü inşa ederken yapılan tasarımlara dair içgörü verir ve
+WebRTC&amp;rsquo;nin kendisi hakkında bir röportajla biter. Yazılımın
+niyetlerini ve tasarımlarını anlarsanız onunla daha etkili sistemler inşa edebilirsiniz.&lt;/p&gt;</description></item><item><title>SSS</title><link>https://webrtcforthecurious.com/tr/docs/11-faq/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/11-faq/</guid><description>&lt;h1 id="sss-sıkça-sorulan-sorular"&gt;
+ SSS (Sıkça Sorulan Sorular)
+ &lt;a class="anchor" href="#sss-s%c4%b1k%c3%a7a-sorulan-sorular"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;details &gt;&lt;summary&gt;WebRTC neden UDP kullanıyor?&lt;/summary&gt;
+ &lt;div class="markdown-inner"&gt;
+ &lt;p&gt;NAT Geçişi UDP gerektirir. NAT Geçişi olmadan P2P bağlantı kurmak
+mümkün olmazdı. UDP, TCP gibi &amp;ldquo;garantili teslimat&amp;rdquo; sağlamaz, bu yüzden WebRTC bunu
+kullanıcı seviyesinde sağlar.&lt;/p&gt;
+&lt;p&gt;Daha fazla bilgi için &lt;a href="https://webrtcforthecurious.com/tr/docs/03-connecting/"&gt;Bağlanma&lt;/a&gt; bölümüne bakın.&lt;/p&gt;
+
+ &lt;/div&gt;
+&lt;/details&gt;
+
+&lt;details &gt;&lt;summary&gt;Kaç tane DataChannel&amp;rsquo;ım olabilir?&lt;/summary&gt;
+ &lt;div class="markdown-inner"&gt;
+ Akış tanımlayıcısı 16 bit olduğu için 65534 kanal. İstediğiniz zaman kapatıp yeni bir tane açabilirsiniz.
+ &lt;/div&gt;
+&lt;/details&gt;
+
+&lt;details &gt;&lt;summary&gt;WebRTC bant genişliği sınırları koyuyor mu?&lt;/summary&gt;
+ &lt;div class="markdown-inner"&gt;
+ Hem DataChannel&amp;rsquo;lar hem de RTP tıkanıklık kontrolü kullanır. Bu, WebRTC&amp;rsquo;nin aktif olarak
+bant genişliğinizi ölçtüğü ve optimal miktarı kullanmaya çalıştığı anlamına gelir. Bu, mümkün olduğu kadar fazla gönderme ile bağlantıyı bunaltmama arasında bir dengedir.
+ &lt;/div&gt;
+&lt;/details&gt;
+
+&lt;details &gt;&lt;summary&gt;Binary veri gönderebilir miyim?&lt;/summary&gt;
+ &lt;div class="markdown-inner"&gt;
+ Evet, DataChannel&amp;rsquo;lar aracılığıyla hem metin hem de binary veri gönderebilirsiniz.
+ &lt;/div&gt;
+&lt;/details&gt;
+
+&lt;details &gt;&lt;summary&gt;WebRTC ile ne kadar gecikme bekleyebilirim?&lt;/summary&gt;
+ &lt;div class="markdown-inner"&gt;
+ &lt;p&gt;Ayarlanmamış medya için 500 milisaniyenin altında gecikme bekleyebilirsiniz. Gecikme için kaliteyi ayarlamaya veya feda etmeye istekliyseniz, geliştiriciler 100ms&amp;rsquo;nin altında gecikme elde etmişlerdir.&lt;/p&gt;</description></item><item><title>Sözlük</title><link>https://webrtcforthecurious.com/tr/docs/12-glossary/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/12-glossary/</guid><description>&lt;h1 id="sözlük"&gt;
+ Sözlük
+ &lt;a class="anchor" href="#s%c3%b6zl%c3%bck"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;ACK: Onay (Acknowledgment)&lt;/li&gt;
+&lt;li&gt;AVP: Ses ve Video profili (Audio and Video profile)&lt;/li&gt;
+&lt;li&gt;B-Frame: &lt;a href="../06-media-communication/#intra-and-inter-frame-compression"&gt;Çift Yönlü Tahminli Çerçeve&lt;/a&gt;. Kısmi bir resim, önceki ve gelecekteki resimlerin modifikasyonudur.&lt;/li&gt;
+&lt;li&gt;DCEP: &lt;a href="../07-data-communication/#dcep"&gt;Veri Kanalı Kurma Protokolü&lt;/a&gt; &lt;a href="https://datatracker.ietf.org/doc/html/rfc8832"&gt;RFC 8832&lt;/a&gt;&amp;lsquo;de tanımlanmıştır&lt;/li&gt;
+&lt;li&gt;DeMux: Çoklayıcı çözücü (Demultiplexer)&lt;/li&gt;
+&lt;li&gt;DLSR: Son gönderen raporundan beri gecikme (Delay since last sender report)&lt;/li&gt;
+&lt;li&gt;DTLS: &lt;a href="../04-securing/#dtls"&gt;Datagram Aktarım Katmanı Güvenliği&lt;/a&gt; &lt;a href="https://datatracker.ietf.org/doc/html/rfc6347"&gt;RFC 6347&lt;/a&gt;&amp;lsquo;de tanımlanmıştır&lt;/li&gt;
+&lt;li&gt;E2E: Uçtan Uca (End-to-End)&lt;/li&gt;
+&lt;li&gt;FEC: &lt;a href="../06-media-communication/#forward-error-correction"&gt;İleri Hata Düzeltme&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;FIR: &lt;a href="../06-media-communication/#full-intra-frame-request-fir-and-picture-loss-indication-pli"&gt;Tam INTRA-çerçeve İsteği&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;G.711: Dar bant ses codec&amp;rsquo;i&lt;/li&gt;
+&lt;li&gt;GCC: &lt;a href="../06-media-communication/#google-congestion-control-gcc"&gt;Google Tıkanıklık Kontrolü&lt;/a&gt; &lt;a href="https://datatracker.ietf.org/doc/html/draft-ietf-rmcat-gcc-02"&gt;draft-ietf-rmcat-gcc-02&lt;/a&gt;&amp;lsquo;de tanımlanmıştır&lt;/li&gt;
+&lt;li&gt;H.264: Genel görsel-işitsel hizmetler için gelişmiş video kodlama&lt;/li&gt;
+&lt;li&gt;H.265: ITU-T H.265 yüksek verimli video kodlama için uygunluk spesifikasyonu&lt;/li&gt;
+&lt;li&gt;HEVC: Yüksek Verimli Video Kodlama (High Efficiency Video Coding)&lt;/li&gt;
+&lt;li&gt;HTTP: Hipermetin Aktarım Protokolü (Hypertext Transfer Protocol)&lt;/li&gt;
+&lt;li&gt;HTTPS: TLS Üzerinden HTTP, &lt;a href="https://datatracker.ietf.org/doc/html/rfc2818"&gt;RFC 2818&lt;/a&gt;&amp;lsquo;de tanımlanmıştır&lt;/li&gt;
+&lt;li&gt;I-Frame: &lt;a href="../06-media-communication/#intra-and-inter-frame-compression"&gt;Çerçeve içi Kodlanmış Çerçeve&lt;/a&gt;. Tam bir resim, başka hiçbir şey olmadan dekod edilebilir.&lt;/li&gt;
+&lt;li&gt;ICE: &lt;a href="../03-connecting/#ice"&gt;Etkileşimli Bağlantı Kurma&lt;/a&gt; &lt;a href="https://datatracker.ietf.org/doc/html/rfc8445"&gt;RFC 8445&lt;/a&gt;&amp;rsquo;te tanımlanmıştır&lt;/li&gt;
+&lt;li&gt;INIT: Başlat (Initiate)&lt;/li&gt;
+&lt;li&gt;IoT: Nesnelerin İnterneti (Internet of Things)&lt;/li&gt;
+&lt;li&gt;IPv4: İnternet Protokolü, Sürüm 4&lt;/li&gt;
+&lt;li&gt;IPv6: İnternet Protokolü, Sürüm 6&lt;/li&gt;
+&lt;li&gt;ITU-T: Uluslararası Telekomünikasyon Birliği Telekomünikasyon Standardizasyon Sektörü&lt;/li&gt;
+&lt;li&gt;JSEP: &lt;a href="../02-signaling/#what-is-the-session-description-protocol-sdp"&gt;JavaScript Oturum Kurma Protokolü&lt;/a&gt; &lt;a href="https://datatracker.ietf.org/doc/html/rfc8829"&gt;RFC 8829&lt;/a&gt;&amp;lsquo;da tanımlanmıştır&lt;/li&gt;
+&lt;li&gt;MCU: &lt;a href="../08-applied-webrtc/#mcu"&gt;Çok Nokta Konferans Birimi&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;mDNS: &lt;a href="../03-connecting/#mdns"&gt;Multicast DNS&lt;/a&gt; &lt;a href="https://datatracker.ietf.org/doc/html/rfc6762"&gt;RFC 6762&lt;/a&gt;&amp;lsquo;de tanımlanmıştır&lt;/li&gt;
+&lt;li&gt;MITM: Ortadaki Adam (Man-In-The-Middle)&lt;/li&gt;
+&lt;li&gt;MTU: Maksimum İletim Birimi, paket boyutu&lt;/li&gt;
+&lt;li&gt;MUX: Çoklama (Multiplexing)&lt;/li&gt;
+&lt;li&gt;NACK: Negatif Onay (Negative Acknowledgment)&lt;/li&gt;
+&lt;li&gt;NADA: &lt;a href="../06-media-communication/#bandwidth-estimation-alternatives"&gt;ağ destekli dinamik adaptasyon&lt;/a&gt; &lt;a href="https://tools.ietf.org/html/draft-zhu-rmcat-nada-04"&gt;draft-zhu-rmcat-nada-04&lt;/a&gt;&amp;rsquo;te tanımlanmıştır&lt;/li&gt;
+&lt;li&gt;NAT: &lt;a href="../03-connecting/#nat-mapping"&gt;Ağ Adresi Çevirisi&lt;/a&gt; &lt;a href="https://datatracker.ietf.org/doc/html/rfc4787"&gt;RFC 4787&lt;/a&gt;&amp;lsquo;de tanımlanmıştır&lt;/li&gt;
+&lt;li&gt;Opus: Tamamen açık, telif hakkı ücretsiz, son derece çok yönlü ses codec&amp;rsquo;i&lt;/li&gt;
+&lt;li&gt;P-Frame: &lt;a href="../06-media-communication/#intra-and-inter-frame-compression"&gt;Tahminli Çerçeve&lt;/a&gt;. Kısmi bir resim, sadece önceki resimden değişiklikleri içerir.&lt;/li&gt;
+&lt;li&gt;P2P: Eşten-Eşe (Peer-to-Peer)&lt;/li&gt;
+&lt;li&gt;PLI: &lt;a href="../06-media-communication/#full-intra-frame-request-fir-and-picture-loss-indication-pli"&gt;Resim Kaybı Göstergesi&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;PPID: &lt;a href="../07-data-communication/#payload-protocol-identifier"&gt;Yük Protokolü Tanımlayıcısı&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;REMB: &lt;a href="../06-media-communication/#tmmbr-tmmbn-and-remb"&gt;Alıcı Tahmini Maksimum Bit Hızı&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;RFC: Yorum İsteği (Request for Comments)&lt;/li&gt;
+&lt;li&gt;RMCAT: &lt;a href="../06-media-communication/#generating-a-bandwidth-estimate"&gt;RTP Medya Tıkanıklık Önleme Teknikleri&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;RR: Alıcı Raporu (Receiver Report)&lt;/li&gt;
+&lt;li&gt;RTCP: &lt;a href="../10-history-of-webrtc/#rtp"&gt;RTP Kontrol Protokolü&lt;/a&gt; &lt;a href="https://datatracker.ietf.org/doc/html/rfc3550"&gt;RFC 3550&lt;/a&gt;&amp;lsquo;de tanımlanmıştır&lt;/li&gt;
+&lt;li&gt;RTP: &lt;a href="../10-history-of-webrtc/#rtp"&gt;Gerçek zamanlı aktarım protokolü&lt;/a&gt; &lt;a href="https://datatracker.ietf.org/doc/html/rfc3550"&gt;RFC 3550&lt;/a&gt;&amp;lsquo;de tanımlanmıştır&lt;/li&gt;
+&lt;li&gt;RTT: Gidiş-Geliş Süresi (Round-Trip Time)&lt;/li&gt;
+&lt;li&gt;SACK: Seçici Onay (Selective Acknowledgment)&lt;/li&gt;
+&lt;li&gt;SCReAM: &lt;a href="../06-media-communication/#bandwidth-estimation-alternatives"&gt;Multimedya için Kendinden Saatli Hız Adaptasyonu&lt;/a&gt; &lt;a href="https://tools.ietf.org/html/draft-johansson-rmcat-scream-cc-05"&gt;draft-johansson-rmcat-scream-cc-05&lt;/a&gt;&amp;rsquo;te tanımlanmıştır&lt;/li&gt;
+&lt;li&gt;SCTP: &lt;a href="../07-data-communication/#stream-control-transmission-protocol"&gt;Akış Kontrol İletim Protokolü&lt;/a&gt; &lt;a href="https://datatracker.ietf.org/doc/html/rfc4960"&gt;RFC 4960&lt;/a&gt;&amp;rsquo;ta tanımlanmıştır&lt;/li&gt;
+&lt;li&gt;SDP: &lt;a href="../02-signaling/#what-is-the-session-description-protocol-sdp"&gt;Oturum Tanımlama Protokolü&lt;/a&gt; &lt;a href="https://datatracker.ietf.org/doc/html/rfc8866"&gt;RFC 8866&lt;/a&gt;&amp;lsquo;da tanımlanmıştır&lt;/li&gt;
+&lt;li&gt;SFU: &lt;a href="../08-applied-webrtc/#selective-forwarding-unit"&gt;Seçici Yönlendirme Birimi&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SR: Gönderen Raporu (Sender Report)&lt;/li&gt;
+&lt;li&gt;SRTP: &lt;a href="../04-securing/#srtp"&gt;Güvenli Gerçek zamanlı Aktarım Protokolü&lt;/a&gt; &lt;a href="https://datatracker.ietf.org/doc/html/rfc3711"&gt;RFC 3711&lt;/a&gt;&amp;lsquo;de tanımlanmıştır&lt;/li&gt;
+&lt;li&gt;SSRC: Senkronizasyon Kaynağı (Synchronization Source)&lt;/li&gt;
+&lt;li&gt;STUN: &lt;a href="../03-connecting/#stun"&gt;NAT için Oturum Geçiş Yardımcı Programları&lt;/a&gt; &lt;a href="https://datatracker.ietf.org/doc/html/rfc8489"&gt;RFC 8489&lt;/a&gt;&amp;lsquo;da tanımlanmıştır&lt;/li&gt;
+&lt;li&gt;TCP: İletim Kontrol Protokolü (Transmission Control Protocol)&lt;/li&gt;
+&lt;li&gt;TLS: &lt;a href="https://datatracker.ietf.org/doc/html/rfc8446"&gt;RFC 8446&lt;/a&gt;&amp;lsquo;da tanımlanan Aktarım Katmanı Güvenliği&lt;/li&gt;
+&lt;li&gt;TMMBN: &lt;a href="../06-media-communication/#tmmbr-tmmbn-and-remb"&gt;Geçici Maksimum Medya Akışı Bit Hızı Bildirimi&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TMMBR: &lt;a href="../06-media-communication/#tmmbr-tmmbn-and-remb"&gt;Geçici Maksimum Medya Akışı Bit Hızı İsteği&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TSN: &lt;a href="../07-data-communication/#transmission-sequence-number"&gt;İletim Sıra Numarası&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TURN: &lt;a href="../03-connecting/#turn"&gt;NAT Etrafında Röle Kullanarak Geçiş&lt;/a&gt; &lt;a href="https://datatracker.ietf.org/doc/html/rfc8656"&gt;RFC 8656&lt;/a&gt;&amp;lsquo;da tanımlanmıştır&lt;/li&gt;
+&lt;li&gt;TWCC: &lt;a href="../06-media-communication/#transport-wide-congestion-control"&gt;Aktarım Genişliği Tıkanıklık Kontrolü&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;UDP: Kullanıcı Datagram Protokolü (User Datagram Protocol)&lt;/li&gt;
+&lt;li&gt;VP8, VP9: WebM Projesi tarafından geliştirilen son derece verimli video sıkıştırma teknolojileri (video &amp;ldquo;codec&amp;rsquo;leri&amp;rdquo;). Herkes bu codec&amp;rsquo;leri telif hakkı ücreti ödemeden kullanabilir.&lt;/li&gt;
+&lt;li&gt;WebM: Web için tasarlanmış açık medya dosya formatı.&lt;/li&gt;
+&lt;li&gt;WebRTC: Web Gerçek Zamanlı İletişimleri. &lt;a href="https://www.w3.org/TR/webrtc/"&gt;W3C WebRTC 1.0: Tarayıcılar Arası Gerçek Zamanlı İletişim&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Referans</title><link>https://webrtcforthecurious.com/tr/docs/13-reference/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/tr/docs/13-reference/</guid><description>&lt;h1 id="referans"&gt;
+ Referans
+ &lt;a class="anchor" href="#referans"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="webrtcw3c"&gt;
+ WebRTC(W3C)
+ &lt;a class="anchor" href="#webrtcw3c"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.w3.org/TR/webrtc/"&gt;WebRTC 1.0: Tarayıcılar Arası Gerçek Zamanlı İletişim&lt;/a&gt; [26 Ocak 2021] (Durum: Öneri)&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.w3.org/groups/wg/webrtc/publications"&gt;Web Gerçek Zamanlı İletişim Çalışma Grubu - Yayınlar&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="webrtcrfc"&gt;
+ WebRTC(RFC)
+ &lt;a class="anchor" href="#webrtcrfc"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8825"&gt;RFC8825&lt;/a&gt;: Genel Bakış: Tarayıcı Tabanlı Uygulamalar için Gerçek Zamanlı Protokoller H. Alvestrand [Ocak 2021] (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8826"&gt;RFC8826&lt;/a&gt;: WebRTC için Güvenlik Değerlendirmeleri E. Rescorla [Ocak 2021] (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8836"&gt;RFC8836&lt;/a&gt;: Etkileşimli Gerçek Zamanlı Medya için Tıkanıklık Kontrol Gereksinimleri R. Jesup, Z. Sarker [Ocak 2021] (Durum: BİLGİLENDİRME)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8854"&gt;RFC8854&lt;/a&gt;: WebRTC İleri Hata Düzeltme Gereksinimleri J. Uberti [Ocak 2021] (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="dtls"&gt;
+ DTLS
+ &lt;a class="anchor" href="#dtls"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc6347"&gt;RFC6347&lt;/a&gt;: Datagram Aktarım Katmanı Güvenliği Sürüm 1.2 E. Rescorla, N. Modadugu [Ocak 2012] (Eskitilenler &lt;a href="http://www.rfc-editor.org/info/rfc4347"&gt;RFC4347&lt;/a&gt;) (Eskiten &lt;a href="http://www.rfc-editor.org/info/rfc9147"&gt;RFC9147&lt;/a&gt;) (Güncelleyenler &lt;a href="http://www.rfc-editor.org/info/rfc7507"&gt;RFC7507&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc7905"&gt;RFC7905&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8996"&gt;RFC8996&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc9146"&gt;RFC9146&lt;/a&gt;) (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc9147"&gt;RFC9147&lt;/a&gt;: Datagram Aktarım Katmanı Güvenliği (DTLS) Protokolü Sürüm 1.3 E. Rescorla, H. Tschofenig, N. Modadugu [Nisan 2022] (Eskitilenler &lt;a href="http://www.rfc-editor.org/info/rfc6347"&gt;RFC6347&lt;/a&gt;) (Durum: ÖNERİLEN STANDART) (Ayrıca bakınız: &lt;a href="https://github.com/openssl/openssl/issues/13900"&gt;OpenSSL DTLS 1.3 durumu&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="veri-kanalı"&gt;
+ Veri Kanalı
+ &lt;a class="anchor" href="#veri-kanal%c4%b1"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8831"&gt;RFC8831&lt;/a&gt;: WebRTC Veri Kanalları R. Jesup, S. Loreto, M. Tüxen [Ocak 2021] (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8832"&gt;RFC8832&lt;/a&gt;: WebRTC Veri Kanalı Kurma Protokolü R. Jesup, S. Loreto, M. Tüxen [Ocak 2021] (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8864"&gt;RFC8864&lt;/a&gt;: Oturum Tanımlama Protokolü (SDP) Kullanarak Veri Kanalları Müzakeresi K. Drage, M. Makaraju, R. Ejzak, J. Marcon, R. Even [Ocak 2021] (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="medya-aktarımı"&gt;
+ Medya Aktarımı
+ &lt;a class="anchor" href="#medya-aktar%c4%b1m%c4%b1"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8834"&gt;RFC8834&lt;/a&gt;: WebRTC&amp;rsquo;de Medya Aktarımı ve RTP Kullanımı C. Perkins, M. Westerlund, J. Ott [Ocak 2021] (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8837"&gt;RFC8837&lt;/a&gt;: WebRTC QoS için Farklılaştırılmış Hizmetler Kod Noktası (DSCP) Paket İşaretlemeleri P. Jones, S. Dhesikan, C. Jennings, D. Druta [Ocak 2021] (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="sctp"&gt;
+ SCTP
+ &lt;a class="anchor" href="#sctp"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc3758"&gt;RFC3758&lt;/a&gt;: Akış Kontrol İletim Protokolü (SCTP) Kısmi Güvenilirlik Uzantısı R. Stewart, M. Ramalho, Q. Xie, M. Tuexen, P. Conrad [Mayıs 2004] (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc5061"&gt;RFC5061&lt;/a&gt;: Akış Kontrol İletim Protokolü (SCTP) Dinamik Adres Yeniden Yapılandırması R. Stewart, Q. Xie, M. Tuexen, S. Maruyama, M. Kozuka [Eylül 2007] (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc5827"&gt;RFC5827&lt;/a&gt;: TCP ve Akış Kontrol İletim Protokolü (SCTP) için Erken Yeniden İletim M. Allman, K. Avrachenkov, U. Ayesta, J. Blanton, P. Hurtig [Mayıs 2010] (Durum: DENEYSEL)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc6083"&gt;RFC6083&lt;/a&gt;: Akış Kontrol İletim Protokolü (SCTP) için Datagram Aktarım Katmanı Güvenliği (DTLS) M. Tuexen, R. Seggelmann, E. Rescorla [Ocak 2011] (Güncelleyenler &lt;a href="http://www.rfc-editor.org/info/rfc8996"&gt;RFC8996&lt;/a&gt;) (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc6525"&gt;RFC6525&lt;/a&gt;: Akış Kontrol İletim Protokolü (SCTP) Akış Yeniden Yapılandırması R. Stewart, M. Tuexen, P. Lei [Şubat 2012] (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc6951"&gt;RFC6951&lt;/a&gt;: Uç-Nokta&amp;rsquo;dan Uç-Nokta&amp;rsquo;ya İletişim için Akış Kontrol İletim Protokolü (SCTP) Paketlerinin UDP Kapsüllenmesi M. Tuexen, R. Stewart [Mayıs 2013] (Güncelleyenler &lt;a href="http://www.rfc-editor.org/info/rfc8899"&gt;RFC8899&lt;/a&gt;) (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc7765"&gt;RFC7765&lt;/a&gt;: TCP ve Akış Kontrol İletim Protokolü (SCTP) RTO Yeniden Başlatma P. Hurtig, A. Brunstrom, A. Petlund, M. Welzl [Şubat 2016] (Durum: DENEYSEL)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8260"&gt;RFC8260&lt;/a&gt;: Akış Kontrol İletim Protokolü için Akış Zamanlayıcıları ve Kullanıcı Mesajı Ara Yerleştirme R. Stewart, M. Tuexen, S. Loreto, R. Seggelmann [Kasım 2017] (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8261"&gt;RFC8261&lt;/a&gt;: SCTP Paketlerinin Datagram Aktarım Katmanı Güvenliği (DTLS) Kapsüllenmesi M. Tuexen, R. Stewart, R. Jesup, S. Loreto [Kasım 2017] (Güncelleyenler &lt;a href="http://www.rfc-editor.org/info/rfc8899"&gt;RFC8899&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8996"&gt;RFC8996&lt;/a&gt;) (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8841"&gt;RFC8841&lt;/a&gt;: Datagram Aktarım Katmanı Güvenliği (DTLS) Aktarımı Üzerinden Akış Kontrol İletim Protokolü (SCTP) için Oturum Tanımlama Protokolü (SDP) Teklif/Yanıt Prosedürleri C. Holmberg, R. Shpount, S. Loreto, G. Camarillo [Ocak 2021] (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8899"&gt;RFC8899&lt;/a&gt;: Datagram Aktarımları için Paketleme Katmanı Yol MTU Keşfi G. Fairhurst, T. Jones, M. Tüxen, I. Rüngeler, T. Völker [Eylül 2020] (Güncelleyenler &lt;a href="http://www.rfc-editor.org/info/rfc4821"&gt;RFC4821&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc4960"&gt;RFC4960&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc6951"&gt;RFC6951&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8085"&gt;RFC8085&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8261"&gt;RFC8261&lt;/a&gt;) (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc9260"&gt;RFC9260&lt;/a&gt;: Akış Kontrol İletim Protokolü R. Stewart, M. Tüxen, K. Nielsen [Haziran 2022] (Eskitilenler &lt;a href="http://www.rfc-editor.org/info/rfc4460"&gt;RFC4460&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc4960"&gt;RFC4960&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc6096"&gt;RFC6096&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc7053"&gt;RFC7053&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8540"&gt;RFC8540&lt;/a&gt;) (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="sdp"&gt;
+ SDP
+ &lt;a class="anchor" href="#sdp"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8829"&gt;RFC8829&lt;/a&gt;: JavaScript Oturum Kurma Protokolü (JSEP) J. Uberti, C. Jennings, E. Rescorla [Ocak 2021] (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8830"&gt;RFC8830&lt;/a&gt;: WebRTC MediaStream Oturum Tanımlama Protokolünde Tanımlama H. Alvestrand [Ocak 2021] (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8839"&gt;RFC8839&lt;/a&gt;: Etkileşimli Bağlantı Kurma (ICE) için Oturum Tanımlama Protokolü (SDP) Teklif/Yanıt Prosedürleri M. Petit-Huguenin, S. Nandakumar, C. Holmberg, A. Keränen, R. Shpount [Ocak 2021] (Eskitilenler &lt;a href="http://www.rfc-editor.org/info/rfc5245"&gt;RFC5245&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc6336"&gt;RFC6336&lt;/a&gt;) (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8841"&gt;RFC8841&lt;/a&gt;: Datagram Aktarım Katmanı Güvenliği (DTLS) Aktarımı Üzerinden Akış Kontrol İletim Protokolü (SCTP) için Oturum Tanımlama Protokolü (SDP) Teklif/Yanıt Prosedürleri C. Holmberg, R. Shpount, S. Loreto, G. Camarillo [Ocak 2021] (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8843"&gt;RFC8843&lt;/a&gt;: Oturum Tanımlama Protokolü (SDP) Kullanarak Medya Çoğullama Müzakeresi C. Holmberg, H. Alvestrand, C. Jennings [Ocak 2021] (Eskiten &lt;a href="http://www.rfc-editor.org/info/rfc9143"&gt;RFC9143&lt;/a&gt;) (Güncelleyenler &lt;a href="http://www.rfc-editor.org/info/rfc3264"&gt;RFC3264&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc5888"&gt;RFC5888&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc7941"&gt;RFC7941&lt;/a&gt;) (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8844"&gt;RFC8844&lt;/a&gt;: Oturum Tanımlama Protokolü (SDP) ile TLS Kullanımlarında Bilinmeyen Anahtar-Paylaşım Saldırıları M. Thomson, E. Rescorla [Ocak 2021] (Güncelleyenler &lt;a href="http://www.rfc-editor.org/info/rfc8122"&gt;RFC8122&lt;/a&gt;) (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8851"&gt;RFC8851&lt;/a&gt;: RTP Yük Formatı Kısıtlamaları A.B. Roach [Ocak 2021] (Güncelleyenler &lt;a href="http://www.rfc-editor.org/info/rfc4855"&gt;RFC4855&lt;/a&gt;) (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8852"&gt;RFC8852&lt;/a&gt;: RTP Akış Tanımlayıcısı Kaynak Tanımlama (SDES) A.B. Roach, S. Nandakumar, P. Thatcher [Ocak 2021] (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8853"&gt;RFC8853&lt;/a&gt;: Oturum Tanımlama Protokolü (SDP) ve RTP Oturumlarında Simulcast Kullanımı B. Burman, M. Westerlund, S. Nandakumar, M. Zanaty [Ocak 2021] (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8866"&gt;RFC8866&lt;/a&gt;: SDP: Oturum Tanımlama Protokolü A. Begen, P. Kyzivat, C. Perkins, M. Handley [Ocak 2021] (Eskitilenler &lt;a href="http://www.rfc-editor.org/info/rfc4566"&gt;RFC4566&lt;/a&gt;) (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="rtp"&gt;
+ RTP
+ &lt;a class="anchor" href="#rtp"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc3550"&gt;RFC3550&lt;/a&gt;: RTP: Gerçek Zamanlı Uygulamalar için Aktarım Protokolü H. Schulzrinne, S. Casner, R. Frederick, V. Jacobson [Temmuz 2003] (Eskitilenler &lt;a href="http://www.rfc-editor.org/info/rfc1889"&gt;RFC1889&lt;/a&gt;) (Güncelleyenler &lt;a href="http://www.rfc-editor.org/info/rfc5506"&gt;RFC5506&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc5761"&gt;RFC5761&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc6051"&gt;RFC6051&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc6222"&gt;RFC6222&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc7022"&gt;RFC7022&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc7160"&gt;RFC7160&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc7164"&gt;RFC7164&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8083"&gt;RFC8083&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8108"&gt;RFC8108&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8860"&gt;RFC8860&lt;/a&gt;) (Ayrıca &lt;a href="http://www.rfc-editor.org/info/std0064"&gt;STD0064&lt;/a&gt;) (Durum: İNTERNET STANDARDI)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc3611"&gt;RFC3611&lt;/a&gt;: RTP Kontrol Protokolü Genişletilmiş Raporları (RTCP XR) T. Friedman, R. Caceres, A. Clark [Kasım 2003] (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc3711"&gt;RFC3711&lt;/a&gt;: Güvenli Gerçek zamanlı Aktarım Protokolü (SRTP) M. Baugher, D. McGrew, M. Naslund, E. Carrara, K. Norrman [Mart 2004] (Güncelleyenler &lt;a href="http://www.rfc-editor.org/info/rfc5506"&gt;RFC5506&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc6904"&gt;RFC6904&lt;/a&gt;) (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc4585"&gt;RFC4585&lt;/a&gt;: Gerçek zamanlı Aktarım Kontrol Protokolü (RTCP) Tabanlı Geri Bildirim için Genişletilmiş RTP Profili (RTP/AVPF) J. Ott, S. Wenger, N. Sato, C. Burmeister, J. Rey [Temmuz 2006] (Güncelleyenler &lt;a href="http://www.rfc-editor.org/info/rfc5506"&gt;RFC5506&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8108"&gt;RFC8108&lt;/a&gt;) (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc5104"&gt;RFC5104&lt;/a&gt;: Geri Bildirimli RTP Ses-Görüntü Profilinde (AVPF) Codec Kontrol Mesajları S. Wenger, U. Chandra, M. Westerlund, B. Burman [Şubat 2008] (Güncelleyenler &lt;a href="http://www.rfc-editor.org/info/rfc7728"&gt;RFC7728&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8082"&gt;RFC8082&lt;/a&gt;) (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc5764"&gt;RFC5764&lt;/a&gt;: Güvenli Gerçek zamanlı Aktarım Protokolü (SRTP) için Anahtarları Kurmak İçin Datagram Aktarım Katmanı Güvenliği (DTLS) Uzantısı D. McGrew, E. Rescorla [Mayıs 2010] (Güncelleyenler &lt;a href="http://www.rfc-editor.org/info/rfc7983"&gt;RFC7983&lt;/a&gt;) (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc6904"&gt;RFC6904&lt;/a&gt;: Güvenli Gerçek zamanlı Aktarım Protokolünde (SRTP) Başlık Uzantılarının Şifrelemesi J. Lennox [Nisan 2013] (Güncelleyenler &lt;a href="http://www.rfc-editor.org/info/rfc3711"&gt;RFC3711&lt;/a&gt;) (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc7741"&gt;RFC7741&lt;/a&gt;: VP8 Video için RTP Yük Formatı P. Westin, H. Lundin, M. Glover, J. Uberti, F. Galligan [Mart 2016] (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8285"&gt;RFC8285&lt;/a&gt;: RTP Başlık Uzantıları için Genel Mekanizma D. Singer, H. Desineni, R. Even [Ekim 2017] (Eskitilenler &lt;a href="http://www.rfc-editor.org/info/rfc5285"&gt;RFC5285&lt;/a&gt;) (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8852"&gt;RFC8852&lt;/a&gt;: RTP Akış Tanımlayıcısı Kaynak Tanımlama (SDES) A.B. Roach, S. Nandakumar, P. Thatcher [Ocak 2021] (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8858"&gt;RFC8858&lt;/a&gt;: Oturum Tanımlama Protokolü (SDP) Kullanarak RTP ve RTP Kontrol Protokolü (RTCP) Çoğullamanın Özel Desteğini Belirtme C. Holmberg [Ocak 2021] (Güncelleyenler &lt;a href="http://www.rfc-editor.org/info/rfc5761"&gt;RFC5761&lt;/a&gt;) (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8860"&gt;RFC8860&lt;/a&gt;: Tek RTP Oturumunda Birden Fazla Medya Türü Gönderme M. Westerlund, C. Perkins, J. Lennox [Ocak 2021] (Güncelleyenler &lt;a href="http://www.rfc-editor.org/info/rfc3550"&gt;RFC3550&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc3551"&gt;RFC3551&lt;/a&gt;) (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8867"&gt;RFC8867&lt;/a&gt;: Etkileşimli Gerçek Zamanlı Medya için Tıkanıklık Kontrolünü Değerlendirme Test Durumları Z. Sarker, V. Singh, X. Zhu, M. Ramalho [Ocak 2021] (Durum: BİLGİLENDİRME)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8868"&gt;RFC8868&lt;/a&gt;: Etkileşimli Gerçek Zamanlı Medya için Tıkanıklık Kontrolünü Değerlendirme V. Singh, J. Ott, S. Holmer [Ocak 2021] (Durum: BİLGİLENDİRME)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8869"&gt;RFC8869&lt;/a&gt;: Kablosuz Ağlar Üzerinde Etkileşimli Gerçek Zamanlı Medya için Değerlendirme Test Durumları Z. Sarker, X. Zhu, J. Fu [Ocak 2021] (Durum: BİLGİLENDİRME)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8872"&gt;RFC8872&lt;/a&gt;: Birden Fazla Medya Akışını Desteklemek için RTP&amp;rsquo;nin Çoğullama Özelliklerini Kullanma Kılavuzu M. Westerlund, B. Burman, C. Perkins, H. Alvestrand, R. Even [Ocak 2021] (Durum: BİLGİLENDİRME)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8888"&gt;RFC8888&lt;/a&gt;: Tıkanıklık Kontrolü için RTP Kontrol Protokolü (RTCP) Geri Bildirimi Z. Sarker, C. Perkins, V. Singh, M. Ramalho [Ocak 2021] (Durum: ÖNERİLEN STANDART)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="ice-turn-ve-stun"&gt;
+ ICE, TURN ve STUN
+ &lt;a class="anchor" href="#ice-turn-ve-stun"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="http://www.rfc-editor.org/info/rfc5780"&gt;RFC5780&lt;/a&gt;: NAT için Oturum Geçiş Yardımcıları (STUN) Kullanarak NAT Davranış Keşfi D. MacDonald, B. Lowekamp [Mayıs 2010] (Güncelleyenler &lt;a href="http://www.rfc-editor.org/info/rfc8553"&gt;RFC8553&lt;/a&gt;) (Durum: DENEYSEL)&lt;/p&gt;</description></item></channel></rss>

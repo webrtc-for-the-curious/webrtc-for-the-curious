@@ -1,12 +1,303 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Docs on WebRTC для любопытных</title><link>https://webrtcforthecurious.com/ru/docs/</link><description>Recent content in Docs on WebRTC для любопытных</description><generator>Hugo</generator><language>ru</language><atom:link href="https://webrtcforthecurious.com/ru/docs/index.xml" rel="self" type="application/rss+xml"/><item><title>Что, Зачем и Как</title><link>https://webrtcforthecurious.com/ru/docs/01-what-why-and-how/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/01-what-why-and-how/</guid><description>Что, Зачем и Как # Что такое WebRTC? # WebRTC, сокращение от Web Real-Time Communication, это одновременно и API, и Протокол. Протокол WebRTC - это набор правил для двух агентов WebRTC для согласования двунаправленной безопасной связи в реальном времени. API WebRTC позволяет разработчикам использовать протокол WebRTC. API WebRTC определен только для JavaScript.
-Похожие отношения можно провести между HTTP и Fetch API. WebRTC как протокол будет HTTP, а WebRTC как API будет Fetch API.</description></item><item><title>Сигнализация</title><link>https://webrtcforthecurious.com/ru/docs/02-signaling/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/02-signaling/</guid><description>Сигнализация # Что такое сигнализация WebRTC? # Когда вы создаете агента WebRTC, он ничего не знает о другом пире. У него нет представления, с кем он будет подключаться или что будет отправляться! Сигнализация - это начальная загрузка, которая делает вызов возможным. После обмена этими значениями WebRTC-агенты могут напрямую общаться друг с другом.
-Сигнальные сообщения - это просто текст. WebRTC-агенты не заботятся о том, как они передаются. Обычно они передаются через Websockets, но это не является обязательным требованием.</description></item><item><title>Подключение</title><link>https://webrtcforthecurious.com/ru/docs/03-connecting/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/03-connecting/</guid><description>Подключение # Почему WebRTC нужна выделенная подсистема для подключения? # Большинство приложений, развернутых сегодня, устанавливают клиент-серверные соединения. Клиент-серверное соединение требует, чтобы сервер имел стабильный, известный транспортный адрес. Клиент связывается с сервером, и сервер отвечает.
-WebRTC не использует клиент-серверную модель, а устанавливает одноранговые (P2P) соединения. В P2P-соединении задача создания соединения равномерно распределена между обоими пирами. Это связано с тем, что транспортный адрес (IP и порт) в WebRTC не может быть предположен и может даже измениться во время сеанса.</description></item><item><title>Защита</title><link>https://webrtcforthecurious.com/ru/docs/04-securing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/04-securing/</guid><description>Защита # Какую безопасность имеет WebRTC? # Каждое WebRTC-соединение аутентифицировано и зашифровано. Вы можете быть уверены, что третья сторона не может видеть, что вы отправляете, или вставлять поддельные сообщения. Вы также можете быть уверены, что WebRTC-агент, который сгенерировал Session Description, - тот, с кем вы общаетесь.
-Очень важно, чтобы никто не изменял эти сообщения. Нормально, если третья сторона читает Session Description в транзите. Однако WebRTC не защищает от его изменения.</description></item><item><title>Сетевое взаимодействие в реальном времени</title><link>https://webrtcforthecurious.com/ru/docs/05-real-time-networking/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/05-real-time-networking/</guid><description>Сетевое взаимодействие в реальном времени # Почему сетевое взаимодействие так важно в коммуникации в реальном времени? # Сети являются ограничивающим фактором в коммуникации в реальном времени. В идеальном мире у нас была бы неограниченная пропускная способность, и пакеты прибывали бы мгновенно. Но это не так. Сети ограничены, и условия могут измениться в любой момент. Измерение и наблюдение сетевых условий также является сложной проблемой. Вы можете получить разное поведение в зависимости от оборудования, программного обеспечения и его конфигурации.</description></item><item><title>Медиа-коммуникация</title><link>https://webrtcforthecurious.com/ru/docs/06-media-communication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/06-media-communication/</guid><description>Медиа-коммуникация # Что я получаю от медиа-коммуникации WebRTC? # WebRTC позволяет отправлять и получать неограниченное количество аудио- и видеопотоков. Вы можете добавлять и удалять эти потоки в любой момент во время вызова. Эти потоки могут быть полностью независимыми или объединенными! Вы можете отправлять видеопоток рабочего стола и одновременно включать аудио и видео с веб-камеры.
-Протокол WebRTC не зависит от кодека. Базовый транспорт поддерживает все, даже то, что еще не существует!</description></item><item><title>Коммуникация данных</title><link>https://webrtcforthecurious.com/ru/docs/07-data-communication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/07-data-communication/</guid><description>Коммуникация данных # Что я получаю от коммуникации данных WebRTC? # WebRTC предоставляет каналы данных для обмена данными. Между двумя пирами вы можете открыть 65 534 канала данных. Канал данных основан на датаграммах, и у каждого есть свои настройки надежности. По умолчанию каждый канал данных имеет гарантированную упорядоченную доставку.
-Если вы подходите к WebRTC с точки зрения медиа, каналы данных могут показаться бесполезными. Зачем вам вся эта подсистема, когда вы могли бы просто использовать HTTP или WebSocket?</description></item><item><title>Прикладной WebRTC</title><link>https://webrtcforthecurious.com/ru/docs/08-applied-webrtc/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/08-applied-webrtc/</guid><description>Прикладной WebRTC # Теперь, когда вы знаете, как работает WebRTC, пришло время строить с его помощью! Эта глава исследует, что люди создают с помощью WebRTC, и как они это делают. Вы узнаете все интересные вещи, происходящие с WebRTC. Мощь WebRTC дается ценой. Создание производственных сервисов WebRTC - это сложная задача. Эта глава попытается объяснить эти сложности, прежде чем вы с ними столкнетесь.
-По случаям использования # Многие думают, что WebRTC - это просто технология для видеоконференций в веб-браузере.</description></item><item><title>Отладка</title><link>https://webrtcforthecurious.com/ru/docs/09-debugging/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/09-debugging/</guid><description>Отладка # Отладка WebRTC может быть сложной задачей. Существует много подвижных частей, и они могут ломаться независимо. Если вы не будете осторожны, вы можете потерять недели, глядя не на те вещи. Когда вы наконец найдете сломанную часть, вам придется кое-что изучить, чтобы понять почему.
-Эта глава поможет вам настроиться на отладку WebRTC. Она покажет, как разбить проблему на составляющие. После того, как мы поймем проблему, мы быстро обзорно рассмотрим популярные инструменты отладки.</description></item><item><title>История</title><link>https://webrtcforthecurious.com/ru/docs/10-history-of-webrtc/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/10-history-of-webrtc/</guid><description>История # При изучении WebRTC разработчики часто чувствуют разочарование из-за сложности. Они видят функции WebRTC, не относящиеся к их текущему проекту, и хотят, чтобы WebRTC был проще. Проблема заключается в том, что у каждого свой набор вариантов использования. Коммуникации в реальном времени имеют богатую историю с множеством людей, создающих различные вещи.
-Эта глава содержит интервью с авторами протоколов, составляющих WebRTC. Она дает представление о проектных решениях при создании каждого протокола и заканчивается интервью о самом WebRTC.</description></item><item><title>Часто задаваемые вопросы</title><link>https://webrtcforthecurious.com/ru/docs/11-faq/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/11-faq/</guid><description>Часто задаваемые вопросы # Почему WebRTC использует UDP? Обход NAT требует использования UDP. Без обхода NAT установление однорангового P2P-соединения было бы невозможно. UDP не обеспечивает &amp;ldquo;гарантированную доставку&amp;rdquo;, как TCP, поэтому WebRTC реализует её на уровне пользователя.
-Подробнее смотрите в разделе Подключение.
-Сколько каналов данных я могу иметь? 65534 канала, так как идентификатор потока имеет 16 бит. Вы можете закрывать и открывать новые каналы в любое время. Налагает ли WebRTC ограничения пропускной способности?</description></item><item><title>Глоссарий</title><link>https://webrtcforthecurious.com/ru/docs/12-glossary/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/12-glossary/</guid><description>Глоссарий # ACK: Подтверждение AVP: Профиль аудио и видео B-кадр: Двунаправленный предсказанный кадр. Частичное изображение, являющееся модификацией предыдущих и будущих изображений. DCEP: Протокол установления канала данных, определен в RFC 8832 DeMux: Демультиплексор DLSR: Задержка с момента последнего отчета отправителя DTLS: Безопасность транспортного уровня для датаграмм, определен в RFC 6347 E2E: От конца до конца FEC: Упреждающая коррекция ошибок FIR: Запрос полного внутрикадрового обновления G.711: Узкополосный аудиокодек GCC: Контроль перегрузки Google, определен в draft-ietf-rmcat-gcc-02 H.</description></item><item><title>Справочник</title><link>https://webrtcforthecurious.com/ru/docs/13-reference/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/13-reference/</guid><description>Справочник # WebRTC (W3C) # WebRTC 1.0: Коммуникации в реальном времени между браузерами [26 января 2021] (Статус: Рекомендация) Рабочая группа по веб-коммуникациям в реальном времени - Публикации WebRTC (RFC) # RFC8825: Обзор: Протоколы реального времени для браузерных приложений Х. Альвестранд [Январь 2021] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ) RFC8826: Соображения безопасности для WebRTC Э. Решкорла [Январь 2021] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ) RFC8836: Требования к контролю перегрузки для интерактивных мультимедиа в реальном времени Р. Джесуп, З.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Docs on WebRTC для любопытных</title><link>https://webrtcforthecurious.com/ru/docs/</link><description>Recent content in Docs on WebRTC для любопытных</description><generator>Hugo</generator><language>ru</language><atom:link href="https://webrtcforthecurious.com/ru/docs/index.xml" rel="self" type="application/rss+xml"/><item><title>Что, Зачем и Как</title><link>https://webrtcforthecurious.com/ru/docs/01-what-why-and-how/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/01-what-why-and-how/</guid><description>&lt;h1 id="что-зачем-и-как"&gt;
+ Что, Зачем и Как
+ &lt;a class="anchor" href="#%d1%87%d1%82%d0%be-%d0%b7%d0%b0%d1%87%d0%b5%d0%bc-%d0%b8-%d0%ba%d0%b0%d0%ba"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="что-такое-webrtc"&gt;
+ Что такое WebRTC?
+ &lt;a class="anchor" href="#%d1%87%d1%82%d0%be-%d1%82%d0%b0%d0%ba%d0%be%d0%b5-webrtc"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;WebRTC, сокращение от Web Real-Time Communication, это одновременно и API, и Протокол. Протокол WebRTC - это набор правил для двух агентов WebRTC для согласования двунаправленной безопасной связи в реальном времени. API WebRTC позволяет разработчикам использовать протокол WebRTC. API WebRTC определен только для JavaScript.&lt;/p&gt;
+&lt;p&gt;Похожие отношения можно провести между HTTP и Fetch API. WebRTC как протокол будет HTTP, а WebRTC как API будет Fetch API.&lt;/p&gt;</description></item><item><title>Сигнализация</title><link>https://webrtcforthecurious.com/ru/docs/02-signaling/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/02-signaling/</guid><description>&lt;h1 id="сигнализация"&gt;
+ Сигнализация
+ &lt;a class="anchor" href="#%d1%81%d0%b8%d0%b3%d0%bd%d0%b0%d0%bb%d0%b8%d0%b7%d0%b0%d1%86%d0%b8%d1%8f"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="что-такое-сигнализация-webrtc"&gt;
+ Что такое сигнализация WebRTC?
+ &lt;a class="anchor" href="#%d1%87%d1%82%d0%be-%d1%82%d0%b0%d0%ba%d0%be%d0%b5-%d1%81%d0%b8%d0%b3%d0%bd%d0%b0%d0%bb%d0%b8%d0%b7%d0%b0%d1%86%d0%b8%d1%8f-webrtc"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;Когда вы создаете агента WebRTC, он ничего не знает о другом пире. У него нет представления, с кем он будет подключаться или что будет отправляться!
+Сигнализация - это начальная загрузка, которая делает вызов возможным. После обмена этими значениями WebRTC-агенты могут напрямую общаться друг с другом.&lt;/p&gt;
+&lt;p&gt;Сигнальные сообщения - это просто текст. WebRTC-агенты не заботятся о том, как они передаются. Обычно они передаются через Websockets, но это не является обязательным требованием.&lt;/p&gt;</description></item><item><title>Подключение</title><link>https://webrtcforthecurious.com/ru/docs/03-connecting/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/03-connecting/</guid><description>&lt;h1 id="подключение"&gt;
+ Подключение
+ &lt;a class="anchor" href="#%d0%bf%d0%be%d0%b4%d0%ba%d0%bb%d1%8e%d1%87%d0%b5%d0%bd%d0%b8%d0%b5"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="почему-webrtc-нужна-выделенная-подсистема-для-подключения"&gt;
+ Почему WebRTC нужна выделенная подсистема для подключения?
+ &lt;a class="anchor" href="#%d0%bf%d0%be%d1%87%d0%b5%d0%bc%d1%83-webrtc-%d0%bd%d1%83%d0%b6%d0%bd%d0%b0-%d0%b2%d1%8b%d0%b4%d0%b5%d0%bb%d0%b5%d0%bd%d0%bd%d0%b0%d1%8f-%d0%bf%d0%be%d0%b4%d1%81%d0%b8%d1%81%d1%82%d0%b5%d0%bc%d0%b0-%d0%b4%d0%bb%d1%8f-%d0%bf%d0%be%d0%b4%d0%ba%d0%bb%d1%8e%d1%87%d0%b5%d0%bd%d0%b8%d1%8f"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;Большинство приложений, развернутых сегодня, устанавливают клиент-серверные соединения. Клиент-серверное соединение требует, чтобы сервер имел стабильный, известный транспортный адрес. Клиент связывается с сервером, и сервер отвечает.&lt;/p&gt;
+&lt;p&gt;WebRTC не использует клиент-серверную модель, а устанавливает одноранговые (P2P) соединения. В P2P-соединении задача создания соединения равномерно распределена между обоими пирами. Это связано с тем, что транспортный адрес (IP и порт) в WebRTC не может быть предположен и может даже измениться во время сеанса. WebRTC соберет всю доступную информацию и приложит все усилия для достижения двунаправленной связи между двумя WebRTC-агентами.&lt;/p&gt;</description></item><item><title>Защита</title><link>https://webrtcforthecurious.com/ru/docs/04-securing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/04-securing/</guid><description>&lt;h1 id="защита"&gt;
+ Защита
+ &lt;a class="anchor" href="#%d0%b7%d0%b0%d1%89%d0%b8%d1%82%d0%b0"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="какую-безопасность-имеет-webrtc"&gt;
+ Какую безопасность имеет WebRTC?
+ &lt;a class="anchor" href="#%d0%ba%d0%b0%d0%ba%d1%83%d1%8e-%d0%b1%d0%b5%d0%b7%d0%be%d0%bf%d0%b0%d1%81%d0%bd%d0%be%d1%81%d1%82%d1%8c-%d0%b8%d0%bc%d0%b5%d0%b5%d1%82-webrtc"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;Каждое WebRTC-соединение аутентифицировано и зашифровано. Вы можете быть уверены, что третья сторона не может видеть, что вы отправляете, или вставлять поддельные сообщения. Вы также можете быть уверены, что WebRTC-агент, который сгенерировал Session Description, - тот, с кем вы общаетесь.&lt;/p&gt;
+&lt;p&gt;Очень важно, чтобы никто не изменял эти сообщения. Нормально, если третья сторона читает Session Description в транзите. Однако WebRTC не защищает от его изменения. Злоумышленник может выполнить атаку &amp;ldquo;человек посередине&amp;rdquo;, изменив ICE-кандидаты и обновив отпечаток сертификата.&lt;/p&gt;</description></item><item><title>Сетевое взаимодействие в реальном времени</title><link>https://webrtcforthecurious.com/ru/docs/05-real-time-networking/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/05-real-time-networking/</guid><description>&lt;h1 id="сетевое-взаимодействие-в-реальном-времени"&gt;
+ Сетевое взаимодействие в реальном времени
+ &lt;a class="anchor" href="#%d1%81%d0%b5%d1%82%d0%b5%d0%b2%d0%be%d0%b5-%d0%b2%d0%b7%d0%b0%d0%b8%d0%bc%d0%be%d0%b4%d0%b5%d0%b9%d1%81%d1%82%d0%b2%d0%b8%d0%b5-%d0%b2-%d1%80%d0%b5%d0%b0%d0%bb%d1%8c%d0%bd%d0%be%d0%bc-%d0%b2%d1%80%d0%b5%d0%bc%d0%b5%d0%bd%d0%b8"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="почему-сетевое-взаимодействие-так-важно-в-коммуникации-в-реальном-времени"&gt;
+ Почему сетевое взаимодействие так важно в коммуникации в реальном времени?
+ &lt;a class="anchor" href="#%d0%bf%d0%be%d1%87%d0%b5%d0%bc%d1%83-%d1%81%d0%b5%d1%82%d0%b5%d0%b2%d0%be%d0%b5-%d0%b2%d0%b7%d0%b0%d0%b8%d0%bc%d0%be%d0%b4%d0%b5%d0%b9%d1%81%d1%82%d0%b2%d0%b8%d0%b5-%d1%82%d0%b0%d0%ba-%d0%b2%d0%b0%d0%b6%d0%bd%d0%be-%d0%b2-%d0%ba%d0%be%d0%bc%d0%bc%d1%83%d0%bd%d0%b8%d0%ba%d0%b0%d1%86%d0%b8%d0%b8-%d0%b2-%d1%80%d0%b5%d0%b0%d0%bb%d1%8c%d0%bd%d0%be%d0%bc-%d0%b2%d1%80%d0%b5%d0%bc%d0%b5%d0%bd%d0%b8"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;Сети являются ограничивающим фактором в коммуникации в реальном времени. В идеальном мире у нас была бы неограниченная пропускная способность, и пакеты прибывали бы мгновенно. Но это не так. Сети ограничены, и условия могут измениться в любой момент. Измерение и наблюдение сетевых условий также является сложной проблемой. Вы можете получить разное поведение в зависимости от оборудования, программного обеспечения и его конфигурации.&lt;/p&gt;</description></item><item><title>Медиа-коммуникация</title><link>https://webrtcforthecurious.com/ru/docs/06-media-communication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/06-media-communication/</guid><description>&lt;h1 id="медиа-коммуникация"&gt;
+ Медиа-коммуникация
+ &lt;a class="anchor" href="#%d0%bc%d0%b5%d0%b4%d0%b8%d0%b0-%d0%ba%d0%be%d0%bc%d0%bc%d1%83%d0%bd%d0%b8%d0%ba%d0%b0%d1%86%d0%b8%d1%8f"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="что-я-получаю-от-медиа-коммуникации-webrtc"&gt;
+ Что я получаю от медиа-коммуникации WebRTC?
+ &lt;a class="anchor" href="#%d1%87%d1%82%d0%be-%d1%8f-%d0%bf%d0%be%d0%bb%d1%83%d1%87%d0%b0%d1%8e-%d0%be%d1%82-%d0%bc%d0%b5%d0%b4%d0%b8%d0%b0-%d0%ba%d0%be%d0%bc%d0%bc%d1%83%d0%bd%d0%b8%d0%ba%d0%b0%d1%86%d0%b8%d0%b8-webrtc"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;WebRTC позволяет отправлять и получать неограниченное количество аудио- и видеопотоков. Вы можете добавлять и удалять эти потоки в любой момент во время вызова. Эти потоки могут быть полностью независимыми или объединенными! Вы можете отправлять видеопоток рабочего стола и одновременно включать аудио и видео с веб-камеры.&lt;/p&gt;
+&lt;p&gt;Протокол WebRTC не зависит от кодека. Базовый транспорт поддерживает все, даже то, что еще не существует! Однако WebRTC-агент, с которым вы общаетесь, может не иметь необходимых инструментов для его принятия.&lt;/p&gt;</description></item><item><title>Коммуникация данных</title><link>https://webrtcforthecurious.com/ru/docs/07-data-communication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/07-data-communication/</guid><description>&lt;h1 id="коммуникация-данных"&gt;
+ Коммуникация данных
+ &lt;a class="anchor" href="#%d0%ba%d0%be%d0%bc%d0%bc%d1%83%d0%bd%d0%b8%d0%ba%d0%b0%d1%86%d0%b8%d1%8f-%d0%b4%d0%b0%d0%bd%d0%bd%d1%8b%d1%85"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="что-я-получаю-от-коммуникации-данных-webrtc"&gt;
+ Что я получаю от коммуникации данных WebRTC?
+ &lt;a class="anchor" href="#%d1%87%d1%82%d0%be-%d1%8f-%d0%bf%d0%be%d0%bb%d1%83%d1%87%d0%b0%d1%8e-%d0%be%d1%82-%d0%ba%d0%be%d0%bc%d0%bc%d1%83%d0%bd%d0%b8%d0%ba%d0%b0%d1%86%d0%b8%d0%b8-%d0%b4%d0%b0%d0%bd%d0%bd%d1%8b%d1%85-webrtc"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;WebRTC предоставляет каналы данных для обмена данными. Между двумя пирами вы можете открыть 65 534 канала данных.
+Канал данных основан на датаграммах, и у каждого есть свои настройки надежности. По умолчанию каждый канал данных имеет гарантированную упорядоченную доставку.&lt;/p&gt;
+&lt;p&gt;Если вы подходите к WebRTC с точки зрения медиа, каналы данных могут показаться бесполезными. Зачем вам вся эта подсистема, когда вы могли бы просто использовать HTTP или WebSocket?&lt;/p&gt;</description></item><item><title>Прикладной WebRTC</title><link>https://webrtcforthecurious.com/ru/docs/08-applied-webrtc/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/08-applied-webrtc/</guid><description>&lt;h1 id="прикладной-webrtc"&gt;
+ Прикладной WebRTC
+ &lt;a class="anchor" href="#%d0%bf%d1%80%d0%b8%d0%ba%d0%bb%d0%b0%d0%b4%d0%bd%d0%be%d0%b9-webrtc"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;p&gt;Теперь, когда вы знаете, как работает WebRTC, пришло время строить с его помощью! Эта глава исследует, что люди создают с помощью WebRTC, и как они это делают. Вы узнаете все интересные вещи, происходящие с WebRTC. Мощь WebRTC дается ценой. Создание производственных сервисов WebRTC - это сложная задача. Эта глава попытается объяснить эти сложности, прежде чем вы с ними столкнетесь.&lt;/p&gt;
+&lt;h2 id="по-случаям-использования"&gt;
+ По случаям использования
+ &lt;a class="anchor" href="#%d0%bf%d0%be-%d1%81%d0%bb%d1%83%d1%87%d0%b0%d1%8f%d0%bc-%d0%b8%d1%81%d0%bf%d0%be%d0%bb%d1%8c%d0%b7%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d1%8f"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;Многие думают, что WebRTC - это просто технология для видеоконференций в веб-браузере. Но это гораздо больше! WebRTC используется в широком спектре приложений. Новые случаи использования появляются постоянно. В этой главе мы перечислим некоторые распространенные и то, как WebRTC революционизирует их.&lt;/p&gt;</description></item><item><title>Отладка</title><link>https://webrtcforthecurious.com/ru/docs/09-debugging/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/09-debugging/</guid><description>&lt;h1 id="отладка"&gt;
+ Отладка
+ &lt;a class="anchor" href="#%d0%be%d1%82%d0%bb%d0%b0%d0%b4%d0%ba%d0%b0"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;p&gt;Отладка WebRTC может быть сложной задачей. Существует много подвижных частей, и они могут ломаться независимо. Если вы не будете осторожны, вы можете потерять недели, глядя не на те вещи. Когда вы наконец найдете сломанную часть, вам придется кое-что изучить, чтобы понять почему.&lt;/p&gt;
+&lt;p&gt;Эта глава поможет вам настроиться на отладку WebRTC. Она покажет, как разбить проблему на составляющие. После того, как мы поймем проблему, мы быстро обзорно рассмотрим популярные инструменты отладки.&lt;/p&gt;</description></item><item><title>История</title><link>https://webrtcforthecurious.com/ru/docs/10-history-of-webrtc/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/10-history-of-webrtc/</guid><description>&lt;h1 id="история"&gt;
+ История
+ &lt;a class="anchor" href="#%d0%b8%d1%81%d1%82%d0%be%d1%80%d0%b8%d1%8f"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;p&gt;При изучении WebRTC разработчики часто чувствуют разочарование из-за сложности. Они видят функции WebRTC, не относящиеся к их текущему проекту, и хотят, чтобы WebRTC был проще. Проблема заключается в том, что у каждого свой набор вариантов использования. Коммуникации в реальном времени имеют богатую историю с множеством людей, создающих различные вещи.&lt;/p&gt;
+&lt;p&gt;Эта глава содержит интервью с авторами протоколов, составляющих WebRTC. Она дает представление о проектных решениях при создании каждого протокола и заканчивается интервью о самом WebRTC. Если вы понимаете намерения и проектные решения программного обеспечения, вы можете создавать более эффективные системы.&lt;/p&gt;</description></item><item><title>Часто задаваемые вопросы</title><link>https://webrtcforthecurious.com/ru/docs/11-faq/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/11-faq/</guid><description>&lt;h1 id="часто-задаваемые-вопросы"&gt;
+ Часто задаваемые вопросы
+ &lt;a class="anchor" href="#%d1%87%d0%b0%d1%81%d1%82%d0%be-%d0%b7%d0%b0%d0%b4%d0%b0%d0%b2%d0%b0%d0%b5%d0%bc%d1%8b%d0%b5-%d0%b2%d0%be%d0%bf%d1%80%d0%be%d1%81%d1%8b"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;details &gt;&lt;summary&gt;Почему WebRTC использует UDP?&lt;/summary&gt;
+ &lt;div class="markdown-inner"&gt;
+ &lt;p&gt;Обход NAT требует использования UDP. Без обхода NAT установление однорангового P2P-соединения было бы невозможно. UDP не обеспечивает &amp;ldquo;гарантированную доставку&amp;rdquo;, как TCP, поэтому WebRTC реализует её на уровне пользователя.&lt;/p&gt;
+&lt;p&gt;Подробнее смотрите в разделе &lt;a href="https://webrtcforthecurious.com/ru/docs/03-connecting/"&gt;Подключение&lt;/a&gt;.&lt;/p&gt;
+
+ &lt;/div&gt;
+&lt;/details&gt;
+
+&lt;details &gt;&lt;summary&gt;Сколько каналов данных я могу иметь?&lt;/summary&gt;
+ &lt;div class="markdown-inner"&gt;
+ 65534 канала, так как идентификатор потока имеет 16 бит. Вы можете закрывать и открывать новые каналы в любое время.
+ &lt;/div&gt;
+&lt;/details&gt;
+
+&lt;details &gt;&lt;summary&gt;Налагает ли WebRTC ограничения пропускной способности?&lt;/summary&gt;
+ &lt;div class="markdown-inner"&gt;
+ Как каналы данных, так и RTP используют контроль перегрузки. Это означает, что WebRTC активно измеряет вашу пропускную способность и пытается использовать оптимальное количество. Это баланс между отправкой максимально возможного объема данных без перегрузки соединения.
+ &lt;/div&gt;
+&lt;/details&gt;
+
+&lt;details &gt;&lt;summary&gt;Могу ли я отправлять бинарные данные?&lt;/summary&gt;
+ &lt;div class="markdown-inner"&gt;
+ Да, вы можете отправлять как текстовые, так и бинарные данные через каналы данных.
+ &lt;/div&gt;
+&lt;/details&gt;
+
+&lt;details &gt;&lt;summary&gt;Какую задержку можно ожидать с WebRTC?&lt;/summary&gt;
+ &lt;div class="markdown-inner"&gt;
+ &lt;p&gt;Для немного настроенных медиа можно ожидать задержку менее 500 миллисекунд. Если вы готовы настраивать или жертвовать качеством ради задержки, разработчики добивались задержки менее 100 миллисекунд.&lt;/p&gt;</description></item><item><title>Глоссарий</title><link>https://webrtcforthecurious.com/ru/docs/12-glossary/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/12-glossary/</guid><description>&lt;h1 id="глоссарий"&gt;
+ Глоссарий
+ &lt;a class="anchor" href="#%d0%b3%d0%bb%d0%be%d1%81%d1%81%d0%b0%d1%80%d0%b8%d0%b9"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;ACK: Подтверждение&lt;/li&gt;
+&lt;li&gt;AVP: Профиль аудио и видео&lt;/li&gt;
+&lt;li&gt;B-кадр: &lt;a href="../06-media-communication/#intra-and-inter-frame-compression"&gt;Двунаправленный предсказанный кадр&lt;/a&gt;. Частичное изображение, являющееся модификацией предыдущих и будущих изображений.&lt;/li&gt;
+&lt;li&gt;DCEP: &lt;a href="../07-data-communication/#dcep"&gt;Протокол установления канала данных&lt;/a&gt;, определен в &lt;a href="https://datatracker.ietf.org/doc/html/rfc8832"&gt;RFC 8832&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;DeMux: Демультиплексор&lt;/li&gt;
+&lt;li&gt;DLSR: Задержка с момента последнего отчета отправителя&lt;/li&gt;
+&lt;li&gt;DTLS: &lt;a href="../04-securing/#dtls"&gt;Безопасность транспортного уровня для датаграмм&lt;/a&gt;, определен в &lt;a href="https://datatracker.ietf.org/doc/html/rfc6347"&gt;RFC 6347&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;E2E: От конца до конца&lt;/li&gt;
+&lt;li&gt;FEC: &lt;a href="../06-media-communication/#forward-error-correction"&gt;Упреждающая коррекция ошибок&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;FIR: &lt;a href="../06-media-communication/#full-intra-frame-request-fir-and-picture-loss-indication-pli"&gt;Запрос полного внутрикадрового обновления&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;G.711: Узкополосный аудиокодек&lt;/li&gt;
+&lt;li&gt;GCC: &lt;a href="../06-media-communication/#google-congestion-control-gcc"&gt;Контроль перегрузки Google&lt;/a&gt;, определен в &lt;a href="https://datatracker.ietf.org/doc/html/draft-ietf-rmcat-gcc-02"&gt;draft-ietf-rmcat-gcc-02&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;H.264: Расширенное видеокодирование для универсальных аудиовизуальных служб&lt;/li&gt;
+&lt;li&gt;H.265: Спецификация соответствия для высокоэффективного видеокодирования ITU-T H.265&lt;/li&gt;
+&lt;li&gt;HEVC: Высокоэффективное видеокодирование&lt;/li&gt;
+&lt;li&gt;HTTP: Протокол передачи гипертекста&lt;/li&gt;
+&lt;li&gt;HTTPS: HTTP поверх TLS, определен в &lt;a href="https://datatracker.ietf.org/doc/html/rfc2818"&gt;RFC 2818&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;I-кадр: &lt;a href="../06-media-communication/#intra-and-inter-frame-compression"&gt;Внутрикадрово закодированный кадр&lt;/a&gt;. Полное изображение, которое может быть декодировано без чего-либо другого.&lt;/li&gt;
+&lt;li&gt;ICE: &lt;a href="../03-connecting/#ice"&gt;Установление связности&lt;/a&gt;, определен в &lt;a href="https://datatracker.ietf.org/doc/html/rfc8445"&gt;RFC 8445&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;INIT: Инициализация&lt;/li&gt;
+&lt;li&gt;IoT: Интернет вещей&lt;/li&gt;
+&lt;li&gt;IPv4: Интернет-протокол, версия 4&lt;/li&gt;
+&lt;li&gt;IPv6: Интернет-протокол, версия 6&lt;/li&gt;
+&lt;li&gt;ITU-T: Сектор стандартизации телекоммуникаций Международного союза электросвязи&lt;/li&gt;
+&lt;li&gt;JSEP: &lt;a href="../02-signaling/#what-is-the-session-description-protocol-sdp"&gt;Протокол установления сеанса JavaScript&lt;/a&gt;, определен в &lt;a href="https://datatracker.ietf.org/doc/html/rfc8829"&gt;RFC 8829&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;MCU: &lt;a href="../08-applied-webrtc/#mcu"&gt;Многоточечный конференц-блок&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;mDNS: &lt;a href="../03-connecting/#mdns"&gt;Многоадресный DNS&lt;/a&gt;, определен в &lt;a href="https://datatracker.ietf.org/doc/html/rfc6762"&gt;RFC 6762&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;MITM: Атака &amp;ldquo;человек посередине&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;MTU: Максимальный размер передаваемого блока данных&lt;/li&gt;
+&lt;li&gt;MUX: Мультиплексирование&lt;/li&gt;
+&lt;li&gt;NACK: Отрицательное подтверждение&lt;/li&gt;
+&lt;li&gt;NADA: &lt;a href="../06-media-communication/#bandwidth-estimation-alternatives"&gt;Динамическая адаптация, поддерживаемая сетью&lt;/a&gt;, определен в &lt;a href="https://tools.ietf.org/html/draft-zhu-rmcat-nada-04"&gt;draft-zhu-rmcat-nada-04&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;NAT: &lt;a href="../03-connecting/#nat-mapping"&gt;Преобразование сетевых адресов&lt;/a&gt;, определен в &lt;a href="https://datatracker.ietf.org/doc/html/rfc4787"&gt;RFC 4787&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Opus: Полностью открытый, свободный от роялти, высокоуниверсальный аудиокодек&lt;/li&gt;
+&lt;li&gt;P-кадр: &lt;a href="../06-media-communication/#intra-and-inter-frame-compression"&gt;Предсказанный кадр&lt;/a&gt;. Частичное изображение, содержащее только изменения по сравнению с предыдущим изображением.&lt;/li&gt;
+&lt;li&gt;P2P: Одноранговый&lt;/li&gt;
+&lt;li&gt;PLI: &lt;a href="../06-media-communication/#full-intra-frame-request-fir-and-picture-loss-indication-pli"&gt;Индикация потери изображения&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;PPID: &lt;a href="../07-data-communication/#payload-protocol-identifier"&gt;Идентификатор протокола полезной нагрузки&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;REMB: &lt;a href="../06-media-communication/#tmmbr-tmmbn-and-remb"&gt;Оценка максимальной скорости передачи получателем&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;RFC: Запрос комментариев&lt;/li&gt;
+&lt;li&gt;RMCAT: &lt;a href="../06-media-communication/#generating-a-bandwidth-estimate"&gt;Методы избегания перегрузки медиа RTP&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;RR: Отчет получателя&lt;/li&gt;
+&lt;li&gt;RTCP: &lt;a href="../10-history-of-webrtc/#rtp"&gt;Протокол управления RTP&lt;/a&gt;, определен в &lt;a href="https://datatracker.ietf.org/doc/html/rfc3550"&gt;RFC 3550&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;RTP: &lt;a href="../10-history-of-webrtc/#rtp"&gt;Протокол передачи в реальном времени&lt;/a&gt;, определен в &lt;a href="https://datatracker.ietf.org/doc/html/rfc3550"&gt;RFC 3550&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;RTT: Время кругового обхода&lt;/li&gt;
+&lt;li&gt;SACK: Избирательное подтверждение&lt;/li&gt;
+&lt;li&gt;SCReAM: &lt;a href="../06-media-communication/#bandwidth-estimation-alternatives"&gt;Самосинхронизирующаяся адаптация скорости для мультимедиа&lt;/a&gt;, определен в &lt;a href="https://tools.ietf.org/html/draft-johansson-rmcat-scream-cc-05"&gt;draft-johansson-rmcat-scream-cc-05&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SCTP: &lt;a href="../07-data-communication/#stream-control-transmission-protocol"&gt;Протокол управления потоком передачи&lt;/a&gt;, определен в &lt;a href="https://datatracker.ietf.org/doc/html/rfc4960"&gt;RFC 4960&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SDP: &lt;a href="../02-signaling/#what-is-the-session-description-protocol-sdp"&gt;Протокол описания сеанса&lt;/a&gt;, определен в &lt;a href="https://datatracker.ietf.org/doc/html/rfc8866"&gt;RFC 8866&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SFU: &lt;a href="../08-applied-webrtc/#selective-forwarding-unit"&gt;Блок селективной пересылки&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SR: Отчет отправителя&lt;/li&gt;
+&lt;li&gt;SRTP: &lt;a href="../04-securing/#srtp"&gt;Защищенный протокол передачи в реальном времени&lt;/a&gt;, определен в &lt;a href="https://datatracker.ietf.org/doc/html/rfc3711"&gt;RFC 3711&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SSRC: Источник синхронизации&lt;/li&gt;
+&lt;li&gt;STUN: &lt;a href="../03-connecting/#stun"&gt;Утилиты обхода сеансов для NAT&lt;/a&gt;, определен в &lt;a href="https://datatracker.ietf.org/doc/html/rfc8489"&gt;RFC 8489&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TCP: Протокол управления передачей&lt;/li&gt;
+&lt;li&gt;TLS: Безопасность транспортного уровня, определена в &lt;a href="https://datatracker.ietf.org/doc/html/rfc8446"&gt;RFC 8446&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TMMBN: &lt;a href="../06-media-communication/#tmmbr-tmmbn-and-remb"&gt;Уведомление о временном максимальном битрейте медиапотока&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TMMBR: &lt;a href="../06-media-communication/#tmmbr-tmmbn-and-remb"&gt;Запрос временного максимального битрейта медиапотока&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TSN: &lt;a href="../07-data-communication/#transmission-sequence-number"&gt;Номер последовательности передачи&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TURN: &lt;a href="../03-connecting/#turn"&gt;Обход с использованием ретрансляторов вокруг NAT&lt;/a&gt;, определен в &lt;a href="https://datatracker.ietf.org/doc/html/rfc8656"&gt;RFC 8656&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TWCC: &lt;a href="../06-media-communication/#transport-wide-congestion-control"&gt;Контроль перегрузки по всей транспортной сети&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;UDP: Протокол пользовательских датаграмм&lt;/li&gt;
+&lt;li&gt;VP8, VP9: Высокоэффективные технологии сжатия видео (видеокодеки), разработанные проектом WebM. Любой может использовать эти кодеки без роялти.&lt;/li&gt;
+&lt;li&gt;WebM: Открытый формат медиафайлов, разработанный для веба.&lt;/li&gt;
+&lt;li&gt;WebRTC: Веб-коммуникации в реальном времени. &lt;a href="https://www.w3.org/TR/webrtc/"&gt;Стандарт W3C WebRTC 1.0: Коммуникации в реальном времени между браузерами&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Справочник</title><link>https://webrtcforthecurious.com/ru/docs/13-reference/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ru/docs/13-reference/</guid><description>&lt;h1 id="справочник"&gt;
+ Справочник
+ &lt;a class="anchor" href="#%d1%81%d0%bf%d1%80%d0%b0%d0%b2%d0%be%d1%87%d0%bd%d0%b8%d0%ba"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="webrtc-w3c"&gt;
+ WebRTC (W3C)
+ &lt;a class="anchor" href="#webrtc-w3c"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.w3.org/TR/webrtc/"&gt;WebRTC 1.0: Коммуникации в реальном времени между браузерами&lt;/a&gt; [26 января 2021] (Статус: Рекомендация)&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.w3.org/groups/wg/webrtc/publications"&gt;Рабочая группа по веб-коммуникациям в реальном времени - Публикации&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="webrtc-rfc"&gt;
+ WebRTC (RFC)
+ &lt;a class="anchor" href="#webrtc-rfc"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8825"&gt;RFC8825&lt;/a&gt;: Обзор: Протоколы реального времени для браузерных приложений Х. Альвестранд [Январь 2021] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8826"&gt;RFC8826&lt;/a&gt;: Соображения безопасности для WebRTC Э. Решкорла [Январь 2021] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8836"&gt;RFC8836&lt;/a&gt;: Требования к контролю перегрузки для интерактивных мультимедиа в реальном времени Р. Джесуп, З. Саркер [Январь 2021] (Статус: ИНФОРМАЦИОННЫЙ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8854"&gt;RFC8854&lt;/a&gt;: Требования к упреждающей коррекции ошибок в WebRTC Дж. Убертти [Январь 2021] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="dtls"&gt;
+ DTLS
+ &lt;a class="anchor" href="#dtls"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc6347"&gt;RFC6347&lt;/a&gt;: Безопасность транспортного уровня для датаграмм, версия 1.2 Э. Решкорла, Н. Модадугу [Январь 2012] (Устарел &lt;a href="http://www.rfc-editor.org/info/rfc4347"&gt;RFC4347&lt;/a&gt;) (Устарел &lt;a href="http://www.rfc-editor.org/info/rfc9147"&gt;RFC9147&lt;/a&gt;) (Обновлен &lt;a href="http://www.rfc-editor.org/info/rfc7507"&gt;RFC7507&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc7905"&gt;RFC7905&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8996"&gt;RFC8996&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc9146"&gt;RFC9146&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc9147"&gt;RFC9147&lt;/a&gt;: Протокол безопасности транспортного уровня для датаграмм (DTLS), версия 1.3 Э. Решкорла, Х. Тшофениг, Н. Модадугу [Апрель 2022] (Устарел &lt;a href="http://www.rfc-editor.org/info/rfc6347"&gt;RFC6347&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ) (Смотрите также: &lt;a href="https://github.com/openssl/openssl/issues/13900"&gt;Статус DTLS 1.3 в OpenSSL&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="канал-данных"&gt;
+ Канал данных
+ &lt;a class="anchor" href="#%d0%ba%d0%b0%d0%bd%d0%b0%d0%bb-%d0%b4%d0%b0%d0%bd%d0%bd%d1%8b%d1%85"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8831"&gt;RFC8831&lt;/a&gt;: Каналы данных WebRTC Р. Джесуп, С. Лорето, М. Тюксен [Январь 2021] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8832"&gt;RFC8832&lt;/a&gt;: Протокол установления канала данных WebRTC Р. Джесуп, С. Лорето, М. Тюксен [Январь 2021] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8864"&gt;RFC8864&lt;/a&gt;: Согласование каналов данных с использованием протокола описания сеанса (SDP) К. Драге, М. Макараджу, Р. Эйзак, Дж. Маркон, Р. Эвен [Январь 2021] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="медиатранспорт"&gt;
+ Медиатранспорт
+ &lt;a class="anchor" href="#%d0%bc%d0%b5%d0%b4%d0%b8%d0%b0%d1%82%d1%80%d0%b0%d0%bd%d1%81%d0%bf%d0%be%d1%80%d1%82"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8834"&gt;RFC8834&lt;/a&gt;: Медиатранспорт и использование RTP в WebRTC К. Перкинс, М. Вестерлунд, Дж. Отт [Январь 2021] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8837"&gt;RFC8837&lt;/a&gt;: Маркировка пакетов кодом дифференцированного обслуживания (DSCP) для качества обслуживания WebRTC П. Джонс, С. Дхесикан, К. Дженнингс, Д. Друта [Январь 2021] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="sctp"&gt;
+ SCTP
+ &lt;a class="anchor" href="#sctp"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc3758"&gt;RFC3758&lt;/a&gt;: Протокол управления потоком передачи (SCTP) с расширением частичной надежности Р. Стюарт, М. Рамалхо, К. Сие, М. Тюксен, П. Конрад [Май 2004] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc5061"&gt;RFC5061&lt;/a&gt;: Протокол управления потоком передачи (SCTP) с динамической реконфигурацией адресов Р. Стюарт, К. Сие, М. Тюксен, С. Марушама, М. Кодзука [Сентябрь 2007] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc5827"&gt;RFC5827&lt;/a&gt;: Ранняя повторная передача для TCP и протокола управления потоком передачи (SCTP) М. Оллман, К. Аврашенков, У. Аиеста, Дж. Блэнтон, П. Хуртиг [Май 2010] (Статус: ЭКСПЕРИМЕНТАЛЬНЫЙ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc6083"&gt;RFC6083&lt;/a&gt;: Безопасность транспортного уровня для датаграмм (DTLS) для протокола управления потоком передачи (SCTP) М. Тюксен, Р. Сеггельман, Э. Решкорла [Январь 2011] (Обновлен &lt;a href="http://www.rfc-editor.org/info/rfc8996"&gt;RFC8996&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc6525"&gt;RFC6525&lt;/a&gt;: Протокол управления потоком передачи (SCTP) с реконфигурацией потока Р. Стюарт, М. Тюксен, П. Лей [Февраль 2012] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc6951"&gt;RFC6951&lt;/a&gt;: Инкапсуляция пакетов протокола управления потоком передачи (SCTP) в UDP для связи между конечными хостами М. Тюксен, Р. Стюарт [Май 2013] (Обновлен &lt;a href="http://www.rfc-editor.org/info/rfc8899"&gt;RFC8899&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc7765"&gt;RFC7765&lt;/a&gt;: Перезапуск RTO для TCP и протокола управления потоком передачи (SCTP) П. Хуртиг, А. Брунстром, А. Петлунд, М. Вельзл [Февраль 2016] (Статус: ЭКСПЕРИМЕНТАЛЬНЫЙ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8260"&gt;RFC8260&lt;/a&gt;: Планировщики потоков и чередование пользовательских сообщений для протокола управления потоком передачи Р. Стюарт, М. Тюксен, С. Лорето, Р. Сеггельман [Ноябрь 2017] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8261"&gt;RFC8261&lt;/a&gt;: Инкапсуляция пакетов SCTP в безопасность транспортного уровня для датаграмм (DTLS) М. Тюксен, Р. Стюарт, Р. Джесуп, С. Лорето [Ноябрь 2017] (Обновлен &lt;a href="http://www.rfc-editor.org/info/rfc8899"&gt;RFC8899&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8996"&gt;RFC8996&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8841"&gt;RFC8841&lt;/a&gt;: Процедуры предложения/ответа протокола описания сеанса (SDP) для протокола управления потоком передачи (SCTP) поверх безопасности транспортного уровня для датаграмм (DTLS) К. Холмберг, Р. Шпоунт, С. Лорето, Г. Камарилло [Январь 2021] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8899"&gt;RFC8899&lt;/a&gt;: Обнаружение максимального размера блока передачи на уровне пакетизации для транспортных датаграмм Г. Фэрхерст, Т. Джонс, М. Тюксен, И. Рюнгелер, Т. Фолькер [Сентябрь 2020] (Обновляет &lt;a href="http://www.rfc-editor.org/info/rfc4821"&gt;RFC4821&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc4960"&gt;RFC4960&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc6951"&gt;RFC6951&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8085"&gt;RFC8085&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8261"&gt;RFC8261&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc9260"&gt;RFC9260&lt;/a&gt;: Протокол управления потоком передачи Р. Стюарт, М. Тюксен, К. Нильсен [Июнь 2022] (Устарел &lt;a href="http://www.rfc-editor.org/info/rfc4460"&gt;RFC4460&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc4960"&gt;RFC4960&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc6096"&gt;RFC6096&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc7053"&gt;RFC7053&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8540"&gt;RFC8540&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="sdp"&gt;
+ SDP
+ &lt;a class="anchor" href="#sdp"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8829"&gt;RFC8829&lt;/a&gt;: Протокол установления сеанса JavaScript (JSEP) Дж. Убертти, К. Дженнингс, Э. Решкорла [Январь 2021] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8830"&gt;RFC8830&lt;/a&gt;: Идентификация медиапотока WebRTC в протоколе описания сеанса Х. Альвестранд [Январь 2021] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8839"&gt;RFC8839&lt;/a&gt;: Процедуры предложения/ответа протокола описания сеанса (SDP) для установления связности (ICE) М. Пти-Хюгенен, С. Нандакумар, К. Холмберг, А. Кераннен, Р. Шпоунт [Январь 2021] (Устарел &lt;a href="http://www.rfc-editor.org/info/rfc5245"&gt;RFC5245&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc6336"&gt;RFC6336&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8841"&gt;RFC8841&lt;/a&gt;: Процедуры предложения/ответа протокола описания сеанса (SDP) для протокола управления потоком передачи (SCTP) поверх безопасности транспортного уровня для датаграмм (DTLS) К. Холмберг, Р. Шпоунт, С. Лорето, Г. Камарилло [Январь 2021] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8843"&gt;RFC8843&lt;/a&gt;: Согласование мультиплексирования медиа с использованием протокола описания сеанса (SDP) К. Холмберг, Х. Альвестранд, К. Дженнингс [Январь 2021] (Устарел &lt;a href="http://www.rfc-editor.org/info/rfc9143"&gt;RFC9143&lt;/a&gt;) (Обновляет &lt;a href="http://www.rfc-editor.org/info/rfc3264"&gt;RFC3264&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc5888"&gt;RFC5888&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc7941"&gt;RFC7941&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8844"&gt;RFC8844&lt;/a&gt;: Атаки с неизвестным обменом ключами при использовании TLS с протоколом описания сеанса (SDP) М. Томсон, Э. Решкорла [Январь 2021] (Обновляет &lt;a href="http://www.rfc-editor.org/info/rfc8122"&gt;RFC8122&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8851"&gt;RFC8851&lt;/a&gt;: Ограничения формата полезной нагрузки RTP А.Б. Роуч [Январь 2021] (Обновляет &lt;a href="http://www.rfc-editor.org/info/rfc4855"&gt;RFC4855&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8852"&gt;RFC8852&lt;/a&gt;: Описание источника идентификатора потока RTP А.Б. Роуч, С. Нандакумар, П. Тэтчер [Январь 2021] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8853"&gt;RFC8853&lt;/a&gt;: Использование симультивещания в протоколе описания сеанса (SDP) и сеансах RTP Б. Бурман, М. Вестерлунд, С. Нандакумар, М. Занати [Январь 2021] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8866"&gt;RFC8866&lt;/a&gt;: SDP: Протокол описания сеанса А. Беген, П. Кызиват, К. Перкинс, М. Хэндли [Январь 2021] (Устарел &lt;a href="http://www.rfc-editor.org/info/rfc4566"&gt;RFC4566&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="rtp"&gt;
+ RTP
+ &lt;a class="anchor" href="#rtp"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc3550"&gt;RFC3550&lt;/a&gt;: RTP: Транспортный протокол для приложений реального времени Х. Шульцринне, С. Каснер, Р. Фредерик, В. Джейкобсон [Июль 2003] (Устарел &lt;a href="http://www.rfc-editor.org/info/rfc1889"&gt;RFC1889&lt;/a&gt;) (Обновлен &lt;a href="http://www.rfc-editor.org/info/rfc5506"&gt;RFC5506&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc5761"&gt;RFC5761&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc6051"&gt;RFC6051&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc6222"&gt;RFC6222&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc7022"&gt;RFC7022&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc7160"&gt;RFC7160&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc7164"&gt;RFC7164&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8083"&gt;RFC8083&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8108"&gt;RFC8108&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8860"&gt;RFC8860&lt;/a&gt;) (Также &lt;a href="http://www.rfc-editor.org/info/std0064"&gt;STD0064&lt;/a&gt;) (Статус: ИНТЕРНЕТ-СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc3611"&gt;RFC3611&lt;/a&gt;: Расширенные отчеты протокола управления RTP (RTCP XR) Т. Фридман, Р. Касерес, А. Кларк [Ноябрь 2003] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc3711"&gt;RFC3711&lt;/a&gt;: Защищенный протокол передачи в реальном времени (SRTP) М. Баугер, Д. Макгрю, М. Наслунд, Э. Каррара, К. Норрман [Март 2004] (Обновлен &lt;a href="http://www.rfc-editor.org/info/rfc5506"&gt;RFC5506&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc6904"&gt;RFC6904&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc4585"&gt;RFC4585&lt;/a&gt;: Расширенный профиль RTP для обратной связи на основе протокола управления RTP (RTP/AVPF) Дж. Отт, С. Вингер, Н. Сато, К. Бурмейстер, Дж. Рей [Июль 2006] (Обновлен &lt;a href="http://www.rfc-editor.org/info/rfc5506"&gt;RFC5506&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8108"&gt;RFC8108&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc5104"&gt;RFC5104&lt;/a&gt;: Сообщения управления кодеком в аудиовизуальном профиле RTP с обратной связью (AVPF) С. Вингер, У. Чандра, М. Вестерлунд, Б. Бурман [Февраль 2008] (Обновлен &lt;a href="http://www.rfc-editor.org/info/rfc7728"&gt;RFC7728&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8082"&gt;RFC8082&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc5764"&gt;RFC5764&lt;/a&gt;: Расширение безопасности транспортного уровня для датаграмм (DTLS) для установления ключей для защищенного протокола передачи в реальном времени (SRTP) Д. Макгрю, Э. Решкорла [Май 2010] (Обновлен &lt;a href="http://www.rfc-editor.org/info/rfc7983"&gt;RFC7983&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc6904"&gt;RFC6904&lt;/a&gt;: Шифрование расширений заголовков в защищенном протоколе передачи в реальном времени (SRTP) Дж. Леннокс [Апрель 2013] (Обновляет &lt;a href="http://www.rfc-editor.org/info/rfc3711"&gt;RFC3711&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc7741"&gt;RFC7741&lt;/a&gt;: Формат полезной нагрузки RTP для видео VP8 П. Вестин, Х. Лундин, М. Гловер, Дж. Убертти, Ф. Галлиган [Март 2016] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8285"&gt;RFC8285&lt;/a&gt;: Общий механизм расширений заголовков RTP Д. Сингер, Х. Десинени, Р. Эвен [Октябрь 2017] (Устарел &lt;a href="http://www.rfc-editor.org/info/rfc5285"&gt;RFC5285&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8852"&gt;RFC8852&lt;/a&gt;: Описание источника идентификатора потока RTP А.Б. Роуч, С. Нандакумар, П. Тэтчер [Январь 2021] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8858"&gt;RFC8858&lt;/a&gt;: Указание эксклюзивной поддержки мультиплексирования RTP и протокола управления RTP (RTCP) с использованием протокола описания сеанса (SDP) К. Холмберг [Январь 2021] (Обновляет &lt;a href="http://www.rfc-editor.org/info/rfc5761"&gt;RFC5761&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8860"&gt;RFC8860&lt;/a&gt;: Отправка нескольких типов медиа в одной сессии RTP М. Вестерлунд, К. Перкинс, Дж. Леннокс [Январь 2021] (Обновляет &lt;a href="http://www.rfc-editor.org/info/rfc3550"&gt;RFC3550&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc3551"&gt;RFC3551&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8867"&gt;RFC8867&lt;/a&gt;: Тестовые случаи для оценки контроля перегрузки для интерактивных мультимедиа в реальном времени З. Саркер, В. Сингх, Х. Чжу, М. Рамалхо [Январь 2021] (Статус: ИНФОРМАЦИОННЫЙ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8868"&gt;RFC8868&lt;/a&gt;: Оценка контроля перегрузки для интерактивных мультимедиа в реальном времени В. Сингх, Дж. Отт, С. Холмер [Январь 2021] (Статус: ИНФОРМАЦИОННЫЙ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8869"&gt;RFC8869&lt;/a&gt;: Тестовые случаи оценки интерактивных мультимедиа в реальном времени по беспроводным сетям З. Саркер, Х. Чжу, Дж. Фу [Январь 2021] (Статус: ИНФОРМАЦИОННЫЙ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8872"&gt;RFC8872&lt;/a&gt;: Руководство по использованию функций мультиплексирования RTP для поддержки нескольких медиапотоков М. Вестерлунд, Б. Бурман, К. Перкинс, Х. Альвестранд, Р. Эвен [Январь 2021] (Статус: ИНФОРМАЦИОННЫЙ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8888"&gt;RFC8888&lt;/a&gt;: Обратная связь протокола управления RTP (RTCP) для контроля перегрузки З. Саркер, К. Перкинс, В. Сингх, М. Рамалхо [Январь 2021] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="ice-turn-и-stun"&gt;
+ ICE, TURN и STUN
+ &lt;a class="anchor" href="#ice-turn-%d0%b8-stun"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc5780"&gt;RFC5780&lt;/a&gt;: Обнаружение поведения NAT с использованием утилит обхода сеансов для NAT (STUN) Д. Макдональд, Б. Лоуекамп [Май 2010] (Обновлен &lt;a href="http://www.rfc-editor.org/info/rfc8553"&gt;RFC8553&lt;/a&gt;) (Статус: ЭКСПЕРИМЕНТАЛЬНЫЙ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8445"&gt;RFC8445&lt;/a&gt;: Установление связности (ICE): Протокол обхода преобразователей сетевых адресов (NAT) А. Кераннен, К. Холмберг, Дж. Розенберг [Июль 2018] (Устарел &lt;a href="http://www.rfc-editor.org/info/rfc5245"&gt;RFC5245&lt;/a&gt;) (Обновлен &lt;a href="http://www.rfc-editor.org/info/rfc8863"&gt;RFC8863&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8489"&gt;RFC8489&lt;/a&gt;: Утилиты обхода сеансов для NAT (STUN) М. Пти-Хюгенен, Г. Салгейро, Дж. Розенберг, Д. Уинг, Р. Мэхи, П. Мэттьюз [Февраль 2020] (Устарел &lt;a href="http://www.rfc-editor.org/info/rfc5389"&gt;RFC5389&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8656"&gt;RFC8656&lt;/a&gt;: Обход с использованием ретрансляторов вокруг NAT (TURN): Расширения ретрансляции для утилит обхода сеансов NAT (STUN) Т. Редди, А. Джонстон, П. Мэттьюз, Дж. Розенберг [Февраль 2020] (Устарел &lt;a href="http://www.rfc-editor.org/info/rfc5766"&gt;RFC5766&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc6156"&gt;RFC6156&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8835"&gt;RFC8835&lt;/a&gt;: Транспорты для WebRTC Х. Альвестранд [Январь 2021] (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8838"&gt;RFC8838&lt;/a&gt;: Trickle ICE: Постепенное предоставление кандидатов для протокола установления связности (ICE) Э. Ивов, Дж. Убертти, П. Сент-Андре [Январь 2021] (Обновлен &lt;a href="http://www.rfc-editor.org/info/rfc8863"&gt;RFC8863&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8839"&gt;RFC8839&lt;/a&gt;: Процедуры предложения/ответа протокола описания сеанса (SDP) для установления связности (ICE) М. Пти-Хюгенен, С. Нандакумар, К. Холмберг, А. Кераннен, Р. Шпоунт [Январь 2021] (Устарел &lt;a href="http://www.rfc-editor.org/info/rfc5245"&gt;RFC5245&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc6336"&gt;RFC6336&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8863"&gt;RFC8863&lt;/a&gt;: Установление связности с терпеливым ожиданием связности (ICE PAC) К. Холмберг, Дж. Убертти [Январь 2021] (Обновляет &lt;a href="http://www.rfc-editor.org/info/rfc8445"&gt;RFC8445&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8838"&gt;RFC8838&lt;/a&gt;) (Статус: ПРЕДЛАГАЕМЫЙ СТАНДАРТ)&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

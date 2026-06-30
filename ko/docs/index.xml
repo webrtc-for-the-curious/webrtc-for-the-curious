@@ -1,19 +1,314 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Docs on 호기심 많은 이를 위한 WebRTC</title><link>https://webrtcforthecurious.com/ko/docs/</link><description>Recent content in Docs on 호기심 많은 이를 위한 WebRTC</description><generator>Hugo</generator><language>ko</language><atom:link href="https://webrtcforthecurious.com/ko/docs/index.xml" rel="self" type="application/rss+xml"/><item><title>무엇, 왜, 어떻게?</title><link>https://webrtcforthecurious.com/ko/docs/01-what-why-and-how/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/01-what-why-and-how/</guid><description>무엇, 왜, 어떻게? # WebRTC란 무엇인가? # WebRTC(Web Real-Time Communication)는 API이자 프로토콜입니다. WebRTC 프로토콜은 두 WebRTC 에이전트가 실시간 양방향 안전 통신을 협상하기 위한 규칙 집합입니다. WebRTC API는 개발자가 이 WebRTC 프로토콜을 사용할 수 있게 합니다. WebRTC API는 JavaScript를 대상으로 합니다.
-HTTP와 Fetch API의 관계에 비유할 수 있습니다. WebRTC 프로토콜이 HTTP라면, WebRTC API는 Fetch API에 해당합니다.
-WebRTC 프로토콜은 JavaScript 외의 언어로도 구현되어 있습니다. 서버와 도메인 특화 도구들도 존재합니다. 이 모든 구현은 WebRTC 프로토콜을 사용하므로 상호 운용이 가능합니다.</description></item><item><title>시그널링</title><link>https://webrtcforthecurious.com/ko/docs/02-signaling/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/02-signaling/</guid><description>시그널링 # WebRTC 시그널링이란? # WebRTC 에이전트를 생성했을 때, 상대 피어에 대해 아는 것은 없습니다. 누구와 연결할지, 무엇을 보낼지 전혀 모릅니다! 시그널링은 통화를 가능하게 만드는 초기 부트스트랩 단계입니다. 이 값들을 교환한 뒤에는 WebRTC 에이전트끼리 직접 통신할 수 있습니다.
-시그널링 메시지는 단지 텍스트일 뿐입니다. WebRTC 에이전트는 어떤 전송 수단을 쓰는지 신경 쓰지 않습니다. 보통 WebSocket으로 주고받지만, 필수는 아닙니다.
-WebRTC 시그널링은 어떻게 동작하나? # WebRTC는 Session Description Protocol(SDP)이라는 기존 프로토콜을 사용합니다. 이 프로토콜을 통해 두 WebRTC 에이전트는 연결 수립에 필요한 모든 상태를 공유합니다.</description></item><item><title>연결</title><link>https://webrtcforthecurious.com/ko/docs/03-connecting/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/03-connecting/</guid><description>연결 # 왜 WebRTC에는 전용 ‘연결’ 하위 시스템이 필요한가요? # 대부분의 애플리케이션은 클라이언트/서버 연결을 사용합니다. 이 모델에서는 서버가 안정적인 전송 주소(IP/포트)를 가져야 하며, 클라이언트가 서버에 요청하면 서버가 응답합니다.
-WebRTC는 클라이언트/서버 모델이 아니라 P2P(Peer-to-Peer) 연결을 수립합니다. P2P에서는 연결 수립의 책임이 양쪽 피어에 균등하게 분산됩니다. 이는 WebRTC에서의 전송 주소(IP/포트)를 미리 가정할 수 없고, 심지어 세션 중에도 바뀔 수 있기 때문입니다. WebRTC는 가능한 모든 정보를 수집해 두 WebRTC 에이전트 간 양방향 통신을 성사시키기 위해 많은 과정을 수행합니다.</description></item><item><title>보안</title><link>https://webrtcforthecurious.com/ko/docs/04-securing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/04-securing/</guid><description>보안 # WebRTC는 어떤 보안을 제공하나요? # 모든 WebRTC 연결은 인증되고 암호화됩니다. 제3자가 당신이 보내는 내용을 엿보거나 가짜 메시지를 삽입할 수 없습니다. 또한 세션 설명(Session Description)을 생성한 바로 그 WebRTC 에이전트와 통신하고 있음을 보장할 수 있습니다.
-이 메시지들이 변조되지 않는 것이 매우 중요합니다. 전송 중 세션 설명을 제3자가 읽는 것은 괜찮지만, WebRTC는 그 내용이 수정되는 것에 대해 자체 보호 장치가 없습니다. 공격자는 ICE 후보를 바꾸고 인증서 지문을 바꿔 중간자 공격을 시도할 수 있습니다.</description></item><item><title>실시간 네트워킹</title><link>https://webrtcforthecurious.com/ko/docs/05-real-time-networking/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/05-real-time-networking/</guid><description>실시간 네트워킹 # 왜 실시간 통신에서 네트워킹이 중요한가요? # 네트워크는 실시간 통신의 한계 요소입니다. 이상적으로는 무한 대역폭과 즉시 도착하는 패킷이 있으면 좋겠지만, 현실은 다릅니다. 네트워크는 제한적이며 언제든 조건이 변할 수 있습니다. 네트워크 상태를 측정/관찰하는 일도 어렵습니다. 하드웨어, 소프트웨어, 설정에 따라 행동이 달라질 수 있습니다.
-실시간 통신에는 다른 영역에 없는 문제가 있습니다. 웹사이트가 어떤 네트워크에서 좀 느려도, 데이터만 모두 도착하면 사용자는 괜찮습니다. 하지만 WebRTC에서는 데이터가 늦으면 무용지물입니다. 5초 전에 회의에서 한 말을 지금 받는 건 의미가 없습니다.</description></item><item><title>미디어 통신</title><link>https://webrtcforthecurious.com/ko/docs/06-media-communication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/06-media-communication/</guid><description>미디어 통신 # WebRTC 미디어 통신으로 무엇을 할 수 있나요? # WebRTC는 무제한의 오디오/비디오 트랙을 보낼 수 있고 받을 수 있습니다. 통화 중에도 언제든 스트림을 추가/제거할 수 있으며, 서로 독립적으로 보낼 수도, 하나의 연결로 번들링할 수도 있습니다. 예를 들어 데스크톱 화면 비디오에 웹캠의 오디오/비디오를 함께 보낼 수 있습니다.
-WebRTC 프로토콜은 코덱에 중립적입니다. 기저 전송은 존재하지 않는 형식까지도 이론상 지원할 수 있습니다. 다만 상대 에이전트가 해당 코덱을 처리할 수 있어야 합니다.</description></item><item><title>데이터 통신</title><link>https://webrtcforthecurious.com/ko/docs/07-data-communication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/07-data-communication/</guid><description>데이터 통신 # WebRTC 데이터 통신으로 무엇을 할 수 있나요? # WebRTC는 데이터 채널을 제공합니다. 두 피어 사이에 최대 65,534개의 채널을 열 수 있습니다. 데이터 채널은 데이터그램 기반이며, 채널마다 내구성(재전송/시간 제한/순서 보장)을 독립적으로 설정할 수 있습니다. 기본은 보장된 순서 전달입니다.
-미디어 관점에서 보면 데이터 채널은 과해 보일 수 있습니다. HTTP/WebSocket으로도 보낼 수 있지 않나? 하지만 데이터 채널의 힘은 무질서/손실 허용(UDP 유사) 동작으로 구성할 수 있다는 데 있습니다. 낮은 지연/고성능에 필수적이며, 백프레셔를 측정해 네트워크 용량을 넘지 않도록 보낼 수 있습니다.</description></item><item><title>적용 WebRTC</title><link>https://webrtcforthecurious.com/ko/docs/08-applied-webrtc/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/08-applied-webrtc/</guid><description>적용 WebRTC # 이제 WebRTC가 어떻게 동작하는지 알았으니, 실제로 만들어볼 차례입니다! 이 장에서는 사람들이 WebRTC로 무엇을 만들고, 어떻게 만들고 있는지 살펴봅니다. WebRTC로 벌어지는 흥미로운 일들을 배우게 될 것입니다. 다만 강력함에는 대가가 있습니다. 프로덕션급 WebRTC 서비스를 구축하는 일은 도전적입니다. 이 장에서는 여러분이 마주치기 전에 그런 도전 과제를 미리 설명합니다.
-사용 사례별 # 많은 이들이 WebRTC를 브라우저 화상회의 기술로만 생각하지만, 그 이상입니다! WebRTC는 매우 다양한 애플리케이션에 쓰입니다. 새로운 사용 사례도 계속 등장하고 있습니다.</description></item><item><title>디버깅</title><link>https://webrtcforthecurious.com/ko/docs/09-debugging/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/09-debugging/</guid><description>디버깅 # WebRTC 디버깅은 만만치 않습니다. 구성요소가 많고, 각자 독립적으로 실패할 수 있습니다. 잘못된 부분을 오래 들여다보느라 시간을 낭비하기 쉽습니다. 이 장은 문제를 분해하고, 인기 있는 도구로 진단하는 방법을 안내합니다.
-문제를 격리하라 # 어디에서 문제가 비롯되는지 초기에 구분하세요.
-시그널링 실패 # 시그널링 채널이 연결되고, SDP/ICE 후보가 정상적으로 교환되는지부터 확인합니다.
-네트워킹 실패 # STUN 서버를 netcat으로 점검할 수 있습니다.
-20바이트 바인딩 요청 패킷 준비 echo -ne &amp;#34;\x00\x01\x00\x00\x21\x12\xA4\x42TESTTESTTEST&amp;#34; | hexdump -C 요청 전송 후 32바이트 응답 확인 stunserver=stun1.</description></item><item><title>역사</title><link>https://webrtcforthecurious.com/ko/docs/10-history-of-webrtc/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/10-history-of-webrtc/</guid><description>역사 # WebRTC는 기능이 많고 복잡해 보일 수 있습니다. 그러나 이런 복잡성은 다양한 실시간 통신 요구를 포괄하려는 과정에서 생겨났습니다. 이 장은 WebRTC를 구성하는 주요 프로토콜들의 역사와 설계 의도를 간략히 소개합니다. 배경을 이해하면 더 효과적인 시스템을 설계할 수 있습니다.
-RTP # RTP/RTCP는 WebRTC의 미디어 전송을 담당하며, 1996년 RFC 1889로 공개되었습니다. 초기 인터넷 멀티캐스트 실험과 화상회의 도구에서 출발해, 오늘날까지도 실시간 미디어 전송의 표준으로 자리 잡았습니다.
-맥락과 의도 # 당시 목표는 제한된 대역폭(예: ISDN 128kbps)에서도 수용 가능한 화질을 제공하는 것이었습니다.</description></item><item><title>자주 묻는 질문(FAQ)</title><link>https://webrtcforthecurious.com/ko/docs/11-faq/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/11-faq/</guid><description>FAQ # 왜 WebRTC는 UDP를 쓰나요? NAT 우회에는 UDP가 필요합니다. NAT 우회가 없다면 P2P 연결을 수립할 수 없습니다. UDP는 TCP처럼 “보장 전달”이 없으므로, WebRTC가 상위 레이어에서 이를 처리합니다.
-연결 장을 참고하세요.
-DataChannel은 몇 개까지 만들 수 있나요? 식별자(스트림 ID)가 16비트이므로 최대 65,534개입니다. 필요할 때 닫았다가 새로 열 수 있습니다. WebRTC에 대역폭 제한이 있나요? DataChannel과 RTP 모두 혼잡 제어를 사용합니다. 즉, WebRTC가 대역폭을 지속적으로 측정해 최적 사용량을 시도합니다. 가능한 많이 보내되, 연결을 과부하시키지 않는 선에서 균형을 맞춥니다.</description></item><item><title>용어집</title><link>https://webrtcforthecurious.com/ko/docs/12-glossary/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/12-glossary/</guid><description>용어집 # ACK: Acknowledgment(확인 응답) AVP: Audio and Video profile B-Frame: 양방향 예측 프레임. 이전/이후 그림을 참고해 부분만 담는 프레임 DCEP: Data Channel Establishment Protocol, RFC 8832 DeMux: Demultiplexer(역다중화) DLSR: Delay since last sender report DTLS: Datagram Transport Layer Security, RFC 6347 E2E: End-to-End(종단 간) FEC: Forward Error Correction FIR: Full INTRA-frame Request G.711: 협대역 오디오 코덱 GCC: Google Congestion Control, draft-ietf-rmcat-gcc-02 H.264: 범용 오디오비주얼 인코딩 규격 H.265: ITU-T H.</description></item><item><title>참고 자료</title><link>https://webrtcforthecurious.com/ko/docs/13-reference/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/13-reference/</guid><description>참고 자료 # WebRTC(W3C) # WebRTC 1.0: Real-Time Communication Between Browsers [2021-01-26] (Status: Recommendation) Web Real-Time Communications Working Group - Publications WebRTC(RFC) # RFC8825: Overview: Real-Time Protocols for Browser-Based Applications H. Alvestrand [2021-01] (Status: PROPOSED STANDARD) RFC8826: Security Considerations for WebRTC E. Rescorla [2021-01] (Status: PROPOSED STANDARD) RFC8836: Congestion Control Requirements for Interactive Real-Time Media R. Jesup, Z. Sarker [2021-01] (Status: INFORMATIONAL) RFC8854: WebRTC Forward Error Correction Requirements J. Uberti [2021-01] (Status: PROPOSED STANDARD) DTLS # RFC6347: Datagram Transport Layer Security Version 1.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Docs on 호기심 많은 이를 위한 WebRTC</title><link>https://webrtcforthecurious.com/ko/docs/</link><description>Recent content in Docs on 호기심 많은 이를 위한 WebRTC</description><generator>Hugo</generator><language>ko</language><atom:link href="https://webrtcforthecurious.com/ko/docs/index.xml" rel="self" type="application/rss+xml"/><item><title>무엇, 왜, 어떻게?</title><link>https://webrtcforthecurious.com/ko/docs/01-what-why-and-how/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/01-what-why-and-how/</guid><description>&lt;h1 id="무엇-왜-어떻게"&gt;
+ 무엇, 왜, 어떻게?
+ &lt;a class="anchor" href="#%eb%ac%b4%ec%97%87-%ec%99%9c-%ec%96%b4%eb%96%bb%ea%b2%8c"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="webrtc란-무엇인가"&gt;
+ WebRTC란 무엇인가?
+ &lt;a class="anchor" href="#webrtc%eb%9e%80-%eb%ac%b4%ec%97%87%ec%9d%b8%ea%b0%80"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;WebRTC(Web Real-Time Communication)는 API이자 프로토콜입니다. WebRTC 프로토콜은 두 WebRTC 에이전트가
+실시간 양방향 안전 통신을 협상하기 위한 규칙 집합입니다. WebRTC API는 개발자가 이 WebRTC 프로토콜을 사용할 수 있게 합니다.
+WebRTC API는 JavaScript를 대상으로 합니다.&lt;/p&gt;
+&lt;p&gt;HTTP와 Fetch API의 관계에 비유할 수 있습니다. WebRTC 프로토콜이 HTTP라면, WebRTC API는 Fetch API에 해당합니다.&lt;/p&gt;
+&lt;p&gt;WebRTC 프로토콜은 JavaScript 외의 언어로도 구현되어 있습니다. 서버와 도메인 특화 도구들도 존재합니다.
+이 모든 구현은 WebRTC 프로토콜을 사용하므로 상호 운용이 가능합니다.&lt;/p&gt;</description></item><item><title>시그널링</title><link>https://webrtcforthecurious.com/ko/docs/02-signaling/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/02-signaling/</guid><description>&lt;h1 id="시그널링"&gt;
+ 시그널링
+ &lt;a class="anchor" href="#%ec%8b%9c%ea%b7%b8%eb%84%90%eb%a7%81"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="webrtc-시그널링이란"&gt;
+ WebRTC 시그널링이란?
+ &lt;a class="anchor" href="#webrtc-%ec%8b%9c%ea%b7%b8%eb%84%90%eb%a7%81%ec%9d%b4%eb%9e%80"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;WebRTC 에이전트를 생성했을 때, 상대 피어에 대해 아는 것은 없습니다. 누구와 연결할지, 무엇을 보낼지 전혀 모릅니다!
+시그널링은 통화를 가능하게 만드는 초기 부트스트랩 단계입니다. 이 값들을 교환한 뒤에는 WebRTC 에이전트끼리 직접 통신할 수 있습니다.&lt;/p&gt;
+&lt;p&gt;시그널링 메시지는 단지 텍스트일 뿐입니다. WebRTC 에이전트는 어떤 전송 수단을 쓰는지 신경 쓰지 않습니다. 보통 WebSocket으로 주고받지만, 필수는 아닙니다.&lt;/p&gt;
+&lt;h2 id="webrtc-시그널링은-어떻게-동작하나"&gt;
+ WebRTC 시그널링은 어떻게 동작하나?
+ &lt;a class="anchor" href="#webrtc-%ec%8b%9c%ea%b7%b8%eb%84%90%eb%a7%81%ec%9d%80-%ec%96%b4%eb%96%bb%ea%b2%8c-%eb%8f%99%ec%9e%91%ed%95%98%eb%82%98"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;WebRTC는 Session Description Protocol(SDP)이라는 기존 프로토콜을 사용합니다. 이 프로토콜을 통해 두 WebRTC 에이전트는
+연결 수립에 필요한 모든 상태를 공유합니다. 프로토콜 자체는 읽고 이해하기 쉽습니다. 복잡함은 WebRTC가 채워 넣는 값들을 이해하는 데서 옵니다.&lt;/p&gt;</description></item><item><title>연결</title><link>https://webrtcforthecurious.com/ko/docs/03-connecting/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/03-connecting/</guid><description>&lt;h1 id="연결"&gt;
+ 연결
+ &lt;a class="anchor" href="#%ec%97%b0%ea%b2%b0"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="왜-webrtc에는-전용-연결-하위-시스템이-필요한가요"&gt;
+ 왜 WebRTC에는 전용 ‘연결’ 하위 시스템이 필요한가요?
+ &lt;a class="anchor" href="#%ec%99%9c-webrtc%ec%97%90%eb%8a%94-%ec%a0%84%ec%9a%a9-%ec%97%b0%ea%b2%b0-%ed%95%98%ec%9c%84-%ec%8b%9c%ec%8a%a4%ed%85%9c%ec%9d%b4-%ed%95%84%ec%9a%94%ed%95%9c%ea%b0%80%ec%9a%94"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;대부분의 애플리케이션은 클라이언트/서버 연결을 사용합니다. 이 모델에서는 서버가 안정적인 전송 주소(IP/포트)를 가져야 하며,
+클라이언트가 서버에 요청하면 서버가 응답합니다.&lt;/p&gt;
+&lt;p&gt;WebRTC는 클라이언트/서버 모델이 아니라 P2P(Peer-to-Peer) 연결을 수립합니다. P2P에서는 연결 수립의 책임이 양쪽 피어에 균등하게 분산됩니다.
+이는 WebRTC에서의 전송 주소(IP/포트)를 미리 가정할 수 없고, 심지어 세션 중에도 바뀔 수 있기 때문입니다. WebRTC는 가능한 모든 정보를 수집해
+두 WebRTC 에이전트 간 양방향 통신을 성사시키기 위해 많은 과정을 수행합니다.&lt;/p&gt;</description></item><item><title>보안</title><link>https://webrtcforthecurious.com/ko/docs/04-securing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/04-securing/</guid><description>&lt;h1 id="보안"&gt;
+ 보안
+ &lt;a class="anchor" href="#%eb%b3%b4%ec%95%88"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="webrtc는-어떤-보안을-제공하나요"&gt;
+ WebRTC는 어떤 보안을 제공하나요?
+ &lt;a class="anchor" href="#webrtc%eb%8a%94-%ec%96%b4%eb%96%a4-%eb%b3%b4%ec%95%88%ec%9d%84-%ec%a0%9c%ea%b3%b5%ed%95%98%eb%82%98%ec%9a%94"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;모든 WebRTC 연결은 인증되고 암호화됩니다. 제3자가 당신이 보내는 내용을 엿보거나 가짜 메시지를 삽입할 수 없습니다.
+또한 세션 설명(Session Description)을 생성한 바로 그 WebRTC 에이전트와 통신하고 있음을 보장할 수 있습니다.&lt;/p&gt;
+&lt;p&gt;이 메시지들이 변조되지 않는 것이 매우 중요합니다. 전송 중 세션 설명을 제3자가 읽는 것은 괜찮지만,
+WebRTC는 그 내용이 수정되는 것에 대해 자체 보호 장치가 없습니다. 공격자는 ICE 후보를 바꾸고 인증서 지문을 바꿔
+중간자 공격을 시도할 수 있습니다.&lt;/p&gt;</description></item><item><title>실시간 네트워킹</title><link>https://webrtcforthecurious.com/ko/docs/05-real-time-networking/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/05-real-time-networking/</guid><description>&lt;h1 id="실시간-네트워킹"&gt;
+ 실시간 네트워킹
+ &lt;a class="anchor" href="#%ec%8b%a4%ec%8b%9c%ea%b0%84-%eb%84%a4%ed%8a%b8%ec%9b%8c%ed%82%b9"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="왜-실시간-통신에서-네트워킹이-중요한가요"&gt;
+ 왜 실시간 통신에서 네트워킹이 중요한가요?
+ &lt;a class="anchor" href="#%ec%99%9c-%ec%8b%a4%ec%8b%9c%ea%b0%84-%ed%86%b5%ec%8b%a0%ec%97%90%ec%84%9c-%eb%84%a4%ed%8a%b8%ec%9b%8c%ed%82%b9%ec%9d%b4-%ec%a4%91%ec%9a%94%ed%95%9c%ea%b0%80%ec%9a%94"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;네트워크는 실시간 통신의 한계 요소입니다. 이상적으로는 무한 대역폭과 즉시 도착하는 패킷이 있으면 좋겠지만, 현실은 다릅니다.
+네트워크는 제한적이며 언제든 조건이 변할 수 있습니다. 네트워크 상태를 측정/관찰하는 일도 어렵습니다. 하드웨어, 소프트웨어, 설정에 따라
+행동이 달라질 수 있습니다.&lt;/p&gt;
+&lt;p&gt;실시간 통신에는 다른 영역에 없는 문제가 있습니다. 웹사이트가 어떤 네트워크에서 좀 느려도, 데이터만 모두 도착하면 사용자는 괜찮습니다.
+하지만 WebRTC에서는 데이터가 늦으면 무용지물입니다. 5초 전에 회의에서 한 말을 지금 받는 건 의미가 없습니다. 따라서 실시간 시스템을 만들 때는
+타협이 필요합니다. 시간 제한은 얼마이며, 그 안에 얼마나 보낼 수 있을까요?&lt;/p&gt;</description></item><item><title>미디어 통신</title><link>https://webrtcforthecurious.com/ko/docs/06-media-communication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/06-media-communication/</guid><description>&lt;h1 id="미디어-통신"&gt;
+ 미디어 통신
+ &lt;a class="anchor" href="#%eb%af%b8%eb%94%94%ec%96%b4-%ed%86%b5%ec%8b%a0"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="webrtc-미디어-통신으로-무엇을-할-수-있나요"&gt;
+ WebRTC 미디어 통신으로 무엇을 할 수 있나요?
+ &lt;a class="anchor" href="#webrtc-%eb%af%b8%eb%94%94%ec%96%b4-%ed%86%b5%ec%8b%a0%ec%9c%bc%eb%a1%9c-%eb%ac%b4%ec%97%87%ec%9d%84-%ed%95%a0-%ec%88%98-%ec%9e%88%eb%82%98%ec%9a%94"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;WebRTC는 무제한의 오디오/비디오 트랙을 보낼 수 있고 받을 수 있습니다. 통화 중에도 언제든 스트림을 추가/제거할 수 있으며,
+서로 독립적으로 보낼 수도, 하나의 연결로 번들링할 수도 있습니다. 예를 들어 데스크톱 화면 비디오에 웹캠의 오디오/비디오를 함께 보낼 수 있습니다.&lt;/p&gt;
+&lt;p&gt;WebRTC 프로토콜은 코덱에 중립적입니다. 기저 전송은 존재하지 않는 형식까지도 이론상 지원할 수 있습니다. 다만 상대 에이전트가 해당 코덱을
+처리할 수 있어야 합니다.&lt;/p&gt;</description></item><item><title>데이터 통신</title><link>https://webrtcforthecurious.com/ko/docs/07-data-communication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/07-data-communication/</guid><description>&lt;h1 id="데이터-통신"&gt;
+ 데이터 통신
+ &lt;a class="anchor" href="#%eb%8d%b0%ec%9d%b4%ed%84%b0-%ed%86%b5%ec%8b%a0"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="webrtc-데이터-통신으로-무엇을-할-수-있나요"&gt;
+ WebRTC 데이터 통신으로 무엇을 할 수 있나요?
+ &lt;a class="anchor" href="#webrtc-%eb%8d%b0%ec%9d%b4%ed%84%b0-%ed%86%b5%ec%8b%a0%ec%9c%bc%eb%a1%9c-%eb%ac%b4%ec%97%87%ec%9d%84-%ed%95%a0-%ec%88%98-%ec%9e%88%eb%82%98%ec%9a%94"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;WebRTC는 데이터 채널을 제공합니다. 두 피어 사이에 최대 65,534개의 채널을 열 수 있습니다. 데이터 채널은 데이터그램 기반이며,
+채널마다 내구성(재전송/시간 제한/순서 보장)을 독립적으로 설정할 수 있습니다. 기본은 보장된 순서 전달입니다.&lt;/p&gt;
+&lt;p&gt;미디어 관점에서 보면 데이터 채널은 과해 보일 수 있습니다. HTTP/WebSocket으로도 보낼 수 있지 않나? 하지만 데이터 채널의 힘은
+무질서/손실 허용(UDP 유사) 동작으로 구성할 수 있다는 데 있습니다. 낮은 지연/고성능에 필수적이며, 백프레셔를 측정해 네트워크 용량을
+넘지 않도록 보낼 수 있습니다.&lt;/p&gt;</description></item><item><title>적용 WebRTC</title><link>https://webrtcforthecurious.com/ko/docs/08-applied-webrtc/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/08-applied-webrtc/</guid><description>&lt;h1 id="적용-webrtc"&gt;
+ 적용 WebRTC
+ &lt;a class="anchor" href="#%ec%a0%81%ec%9a%a9-webrtc"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;p&gt;이제 WebRTC가 어떻게 동작하는지 알았으니, 실제로 만들어볼 차례입니다! 이 장에서는 사람들이 WebRTC로 무엇을 만들고,
+어떻게 만들고 있는지 살펴봅니다. WebRTC로 벌어지는 흥미로운 일들을 배우게 될 것입니다. 다만 강력함에는 대가가 있습니다.
+프로덕션급 WebRTC 서비스를 구축하는 일은 도전적입니다. 이 장에서는 여러분이 마주치기 전에 그런 도전 과제를 미리 설명합니다.&lt;/p&gt;
+&lt;h2 id="사용-사례별"&gt;
+ 사용 사례별
+ &lt;a class="anchor" href="#%ec%82%ac%ec%9a%a9-%ec%82%ac%eb%a1%80%eb%b3%84"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;많은 이들이 WebRTC를 브라우저 화상회의 기술로만 생각하지만, 그 이상입니다! WebRTC는 매우 다양한 애플리케이션에 쓰입니다.
+새로운 사용 사례도 계속 등장하고 있습니다. 여기서는 대표적인 사례와, WebRTC가 어떻게 변화를 이끄는지 소개합니다.&lt;/p&gt;</description></item><item><title>디버깅</title><link>https://webrtcforthecurious.com/ko/docs/09-debugging/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/09-debugging/</guid><description>&lt;h1 id="디버깅"&gt;
+ 디버깅
+ &lt;a class="anchor" href="#%eb%94%94%eb%b2%84%ea%b9%85"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;p&gt;WebRTC 디버깅은 만만치 않습니다. 구성요소가 많고, 각자 독립적으로 실패할 수 있습니다. 잘못된 부분을 오래 들여다보느라 시간을 낭비하기 쉽습니다.
+이 장은 문제를 분해하고, 인기 있는 도구로 진단하는 방법을 안내합니다.&lt;/p&gt;
+&lt;h2 id="문제를-격리하라"&gt;
+ 문제를 격리하라
+ &lt;a class="anchor" href="#%eb%ac%b8%ec%a0%9c%eb%a5%bc-%ea%b2%a9%eb%a6%ac%ed%95%98%eb%9d%bc"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;어디에서 문제가 비롯되는지 초기에 구분하세요.&lt;/p&gt;
+&lt;h3 id="시그널링-실패"&gt;
+ 시그널링 실패
+ &lt;a class="anchor" href="#%ec%8b%9c%ea%b7%b8%eb%84%90%eb%a7%81-%ec%8b%a4%ed%8c%a8"&gt;#&lt;/a&gt;
+&lt;/h3&gt;
+&lt;p&gt;시그널링 채널이 연결되고, SDP/ICE 후보가 정상적으로 교환되는지부터 확인합니다.&lt;/p&gt;
+&lt;h3 id="네트워킹-실패"&gt;
+ 네트워킹 실패
+ &lt;a class="anchor" href="#%eb%84%a4%ed%8a%b8%ec%9b%8c%ed%82%b9-%ec%8b%a4%ed%8c%a8"&gt;#&lt;/a&gt;
+&lt;/h3&gt;
+&lt;p&gt;STUN 서버를 &lt;code&gt;netcat&lt;/code&gt;으로 점검할 수 있습니다.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;20바이트 바인딩 요청 패킷 준비&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;echo -ne &amp;#34;\x00\x01\x00\x00\x21\x12\xA4\x42TESTTESTTEST&amp;#34; | hexdump -C
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start="2"&gt;
+&lt;li&gt;요청 전송 후 32바이트 응답 확인&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;stunserver=stun1.l.google.com;stunport=19302;listenport=20000;echo -ne &amp;#34;\x00\x01\x00\x00\x21\x12\xA4\x42TESTTESTTEST&amp;#34; | nc -u -p $listenport $stunserver $stunport -w 1 | hexdump -C
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;XOR 계산을 단순화하려면 매직 쿠키를 0으로 둔 더미 요청을 보낼 수 있습니다.&lt;/p&gt;</description></item><item><title>역사</title><link>https://webrtcforthecurious.com/ko/docs/10-history-of-webrtc/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/10-history-of-webrtc/</guid><description>&lt;h1 id="역사"&gt;
+ 역사
+ &lt;a class="anchor" href="#%ec%97%ad%ec%82%ac"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;p&gt;WebRTC는 기능이 많고 복잡해 보일 수 있습니다. 그러나 이런 복잡성은 다양한 실시간 통신 요구를 포괄하려는 과정에서 생겨났습니다.
+이 장은 WebRTC를 구성하는 주요 프로토콜들의 역사와 설계 의도를 간략히 소개합니다. 배경을 이해하면 더 효과적인 시스템을 설계할 수 있습니다.&lt;/p&gt;
+&lt;h2 id="rtp"&gt;
+ RTP
+ &lt;a class="anchor" href="#rtp"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;RTP/RTCP는 WebRTC의 미디어 전송을 담당하며, 1996년 &lt;a href="https://tools.ietf.org/html/rfc1889"&gt;RFC 1889&lt;/a&gt;로 공개되었습니다. 초기 인터넷 멀티캐스트 실험과
+화상회의 도구에서 출발해, 오늘날까지도 실시간 미디어 전송의 표준으로 자리 잡았습니다.&lt;/p&gt;
+&lt;h3 id="맥락과-의도"&gt;
+ 맥락과 의도
+ &lt;a class="anchor" href="#%eb%a7%a5%eb%9d%bd%ea%b3%bc-%ec%9d%98%eb%8f%84"&gt;#&lt;/a&gt;
+&lt;/h3&gt;
+&lt;p&gt;당시 목표는 제한된 대역폭(예: ISDN 128kbps)에서도 수용 가능한 화질을 제공하는 것이었습니다. 이를 위해 소프트웨어 기반 비디오 압축과 멀티캐스트 전송이
+탐구되었고, 경험이 RTP 설계로 이어졌습니다. RTCP의 통계/제어 채널은 혼잡과 품질 문제를 다루기 위한 도구로 도입되었습니다.&lt;/p&gt;</description></item><item><title>자주 묻는 질문(FAQ)</title><link>https://webrtcforthecurious.com/ko/docs/11-faq/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/11-faq/</guid><description>&lt;h1 id="faq"&gt;
+ FAQ
+ &lt;a class="anchor" href="#faq"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;details &gt;&lt;summary&gt;왜 WebRTC는 UDP를 쓰나요?&lt;/summary&gt;
+ &lt;div class="markdown-inner"&gt;
+ &lt;p&gt;NAT 우회에는 UDP가 필요합니다. NAT 우회가 없다면 P2P 연결을 수립할 수 없습니다. UDP는 TCP처럼 “보장 전달”이 없으므로,
+WebRTC가 상위 레이어에서 이를 처리합니다.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://webrtcforthecurious.com/ko/docs/03-connecting/"&gt;연결&lt;/a&gt; 장을 참고하세요.&lt;/p&gt;
+
+ &lt;/div&gt;
+&lt;/details&gt;
+
+&lt;details &gt;&lt;summary&gt;DataChannel은 몇 개까지 만들 수 있나요?&lt;/summary&gt;
+ &lt;div class="markdown-inner"&gt;
+ 식별자(스트림 ID)가 16비트이므로 최대 65,534개입니다. 필요할 때 닫았다가 새로 열 수 있습니다.
+ &lt;/div&gt;
+&lt;/details&gt;
+
+&lt;details &gt;&lt;summary&gt;WebRTC에 대역폭 제한이 있나요?&lt;/summary&gt;
+ &lt;div class="markdown-inner"&gt;
+ DataChannel과 RTP 모두 혼잡 제어를 사용합니다. 즉, WebRTC가 대역폭을 지속적으로 측정해 최적 사용량을 시도합니다.
+가능한 많이 보내되, 연결을 과부하시키지 않는 선에서 균형을 맞춥니다.
+ &lt;/div&gt;
+&lt;/details&gt;
+
+&lt;details &gt;&lt;summary&gt;바이너리 데이터를 보낼 수 있나요?&lt;/summary&gt;
+ &lt;div class="markdown-inner"&gt;
+ 네, DataChannel을 통해 텍스트와 바이너리 모두 보낼 수 있습니다.
+ &lt;/div&gt;
+&lt;/details&gt;
+
+&lt;details &gt;&lt;summary&gt;WebRTC의 지연은 어느 정도 기대할 수 있나요?&lt;/summary&gt;
+ &lt;div class="markdown-inner"&gt;
+ &lt;p&gt;튜닝하지 않은 미디어의 경우 500ms 미만을 기대할 수 있습니다. 튜닝을 하거나 품질을 희생해 지연을 더 낮추면 100ms 미만도 가능합니다.&lt;/p&gt;</description></item><item><title>용어집</title><link>https://webrtcforthecurious.com/ko/docs/12-glossary/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/12-glossary/</guid><description>&lt;h1 id="용어집"&gt;
+ 용어집
+ &lt;a class="anchor" href="#%ec%9a%a9%ec%96%b4%ec%a7%91"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;ACK: Acknowledgment(확인 응답)&lt;/li&gt;
+&lt;li&gt;AVP: Audio and Video profile&lt;/li&gt;
+&lt;li&gt;B-Frame: &lt;a href="../06-media-communication/#intra-and-inter-frame-compression"&gt;양방향 예측 프레임&lt;/a&gt;. 이전/이후 그림을 참고해 부분만 담는 프레임&lt;/li&gt;
+&lt;li&gt;DCEP: &lt;a href="../07-data-communication/#dcep"&gt;Data Channel Establishment Protocol&lt;/a&gt;, &lt;a href="https://datatracker.ietf.org/doc/html/rfc8832"&gt;RFC 8832&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;DeMux: Demultiplexer(역다중화)&lt;/li&gt;
+&lt;li&gt;DLSR: Delay since last sender report&lt;/li&gt;
+&lt;li&gt;DTLS: &lt;a href="../04-securing/#dtls"&gt;Datagram Transport Layer Security&lt;/a&gt;, &lt;a href="https://datatracker.ietf.org/doc/html/rfc6347"&gt;RFC 6347&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;E2E: End-to-End(종단 간)&lt;/li&gt;
+&lt;li&gt;FEC: &lt;a href="../06-media-communication/#forward-error-correction"&gt;Forward Error Correction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;FIR: &lt;a href="../06-media-communication/#full-intra-frame-request-fir-and-picture-loss-indication-pli"&gt;Full INTRA-frame Request&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;G.711: 협대역 오디오 코덱&lt;/li&gt;
+&lt;li&gt;GCC: &lt;a href="../06-media-communication/#google-congestion-control-gcc"&gt;Google Congestion Control&lt;/a&gt;, &lt;a href="https://datatracker.ietf.org/doc/html/draft-ietf-rmcat-gcc-02"&gt;draft-ietf-rmcat-gcc-02&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;H.264: 범용 오디오비주얼 인코딩 규격&lt;/li&gt;
+&lt;li&gt;H.265: ITU-T H.265 고효율 비디오 코딩 적합성 규격&lt;/li&gt;
+&lt;li&gt;HEVC: High Efficiency Video Coding&lt;/li&gt;
+&lt;li&gt;HTTP: Hypertext Transfer Protocol&lt;/li&gt;
+&lt;li&gt;HTTPS: TLS 위의 HTTP, &lt;a href="https://datatracker.ietf.org/doc/html/rfc2818"&gt;RFC 2818&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;I-Frame: &lt;a href="../06-media-communication/#intra-and-inter-frame-compression"&gt;인트라 프레임&lt;/a&gt;. 완전한 그림으로 단독 디코딩 가능&lt;/li&gt;
+&lt;li&gt;ICE: &lt;a href="../03-connecting/#ice"&gt;Interactive Connectivity Establishment&lt;/a&gt;, &lt;a href="https://datatracker.ietf.org/doc/html/rfc8445"&gt;RFC 8445&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;INIT: Initiate&lt;/li&gt;
+&lt;li&gt;IoT: Internet of Things(사물인터넷)&lt;/li&gt;
+&lt;li&gt;IPv4: Internet Protocol, Version 4&lt;/li&gt;
+&lt;li&gt;IPv6: Internet Protocol, Version 6&lt;/li&gt;
+&lt;li&gt;ITU-T: International Telecommunication Union Telecommunication Standardization Sector&lt;/li&gt;
+&lt;li&gt;JSEP: &lt;a href="../02-signaling/#what-is-the-session-description-protocol-sdp"&gt;JavaScript Session Establishment Protocol&lt;/a&gt;, &lt;a href="https://datatracker.ietf.org/doc/html/rfc8829"&gt;RFC 8829&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;MCU: &lt;a href="../08-applied-webrtc/#mcu"&gt;Multi-point Conferencing Unit&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;mDNS: &lt;a href="../03-connecting/#mdns"&gt;Multicast DNS&lt;/a&gt;, &lt;a href="https://datatracker.ietf.org/doc/html/rfc6762"&gt;RFC 6762&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;MITM: Man-In-The-Middle(중간자)&lt;/li&gt;
+&lt;li&gt;MTU: Maximum Transmission Unit, 패킷 최대 크기&lt;/li&gt;
+&lt;li&gt;MUX: Multiplexing(다중화)&lt;/li&gt;
+&lt;li&gt;NACK: Negative Acknowledgment&lt;/li&gt;
+&lt;li&gt;NADA: &lt;a href="../06-media-communication/#bandwidth-estimation-alternatives"&gt;network-assisted dynamic adaptation&lt;/a&gt;, &lt;a href="https://tools.ietf.org/html/draft-zhu-rmcat-nada-04"&gt;draft-zhu-rmcat-nada-04&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;NAT: &lt;a href="../03-connecting/#nat-mapping"&gt;Network Address Translation&lt;/a&gt;, &lt;a href="https://datatracker.ietf.org/doc/html/rfc4787"&gt;RFC 4787&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Opus: 완전 개방형, 로열티 프리, 다목적 오디오 코덱&lt;/li&gt;
+&lt;li&gt;P-Frame: &lt;a href="../06-media-communication/#intra-and-inter-frame-compression"&gt;예측 프레임&lt;/a&gt;. 이전 그림 대비 변경분만 포함&lt;/li&gt;
+&lt;li&gt;P2P: Peer-to-Peer&lt;/li&gt;
+&lt;li&gt;PLI: &lt;a href="../06-media-communication/#full-intra-frame-request-fir-and-picture-loss-indication-pli"&gt;Picture Loss Indication&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;PPID: &lt;a href="../07-data-communication/#payload-protocol-identifier"&gt;Payload Protocol Identifier&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;REMB: &lt;a href="../06-media-communication/#tmmbr-tmmbn-and-remb"&gt;Receiver Estimated Maximum Bitrate&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;RFC: Request for Comments&lt;/li&gt;
+&lt;li&gt;RMCAT: &lt;a href="../06-media-communication/#generating-a-bandwidth-estimate"&gt;RTP Media Congestion Avoidance Techniques&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;RR: Receiver Report&lt;/li&gt;
+&lt;li&gt;RTCP: &lt;a href="../10-history-of-webrtc/#rtp"&gt;RTP Control Protocol&lt;/a&gt;, &lt;a href="https://datatracker.ietf.org/doc/html/rfc3550"&gt;RFC 3550&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;RTP: &lt;a href="../10-history-of-webrtc/#rtp"&gt;Real-time transport protocol&lt;/a&gt;, &lt;a href="https://datatracker.ietf.org/doc/html/rfc3550"&gt;RFC 3550&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;RTT: Round-Trip Time(왕복 시간)&lt;/li&gt;
+&lt;li&gt;SACK: Selective Acknowledgment&lt;/li&gt;
+&lt;li&gt;SCReAM: &lt;a href="../06-media-communication/#bandwidth-estimation-alternatives"&gt;Self-Clocked Rate Adaptation for Multimedia&lt;/a&gt;, &lt;a href="https://tools.ietf.org/html/draft-johansson-rmcat-scream-cc-05"&gt;draft-johansson-rmcat-scream-cc-05&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SCTP: &lt;a href="../07-data-communication/#stream-control-transmission-protocol"&gt;Stream Control Transmission Protocol&lt;/a&gt;, &lt;a href="https://datatracker.ietf.org/doc/html/rfc4960"&gt;RFC 4960&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SDP: &lt;a href="../02-signaling/#what-is-the-session-description-protocol-sdp"&gt;Session Description Protocol&lt;/a&gt;, &lt;a href="https://datatracker.ietf.org/doc/html/rfc8866"&gt;RFC 8866&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SFU: &lt;a href="../08-applied-webrtc/#selective-forwarding-unit"&gt;Selective Forwarding Unit&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SR: Sender Report&lt;/li&gt;
+&lt;li&gt;SRTP: &lt;a href="../04-securing/#srtp"&gt;Secure Real-time Transport Protocol&lt;/a&gt;, &lt;a href="https://datatracker.ietf.org/doc/html/rfc3711"&gt;RFC 3711&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SSRC: Synchronization Source&lt;/li&gt;
+&lt;li&gt;STUN: &lt;a href="../03-connecting/#stun"&gt;Session Traversal Utilities for NAT&lt;/a&gt;, &lt;a href="https://datatracker.ietf.org/doc/html/rfc8489"&gt;RFC 8489&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TCP: Transmission Control Protocol&lt;/li&gt;
+&lt;li&gt;TLS: Transport Layer Security, &lt;a href="https://datatracker.ietf.org/doc/html/rfc8446"&gt;RFC 8446&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TMMBN: &lt;a href="../06-media-communication/#tmmbr-tmmbn-and-remb"&gt;Temporary Maximum Media Stream Bit Rate Notification&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TMMBR: &lt;a href="../06-media-communication/#tmmbr-tmmbn-and-remb"&gt;Temporary Maximum Media Stream Bit Rate Request&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TSN: &lt;a href="../07-data-communication/#transmission-sequence-number"&gt;Transmission Sequence Number&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TURN: &lt;a href="../03-connecting/#turn"&gt;Traversal Using Relays around NAT&lt;/a&gt;, &lt;a href="https://datatracker.ietf.org/doc/html/rfc8656"&gt;RFC 8656&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TWCC: &lt;a href="../06-media-communication/#transport-wide-congestion-control"&gt;Transport Wide Congestion Control&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;UDP: User Datagram Protocol&lt;/li&gt;
+&lt;li&gt;VP8, VP9: WebM 프로젝트에서 개발한 고효율 비디오 코덱. 누구나 로열티 없이 사용 가능&lt;/li&gt;
+&lt;li&gt;WebM: 웹을 위한 개방형 미디어 파일 포맷&lt;/li&gt;
+&lt;li&gt;WebRTC: Web Real-Time Communications. &lt;a href="https://www.w3.org/TR/webrtc/"&gt;W3C WebRTC 1.0: Real-Time Communication Between Browsers&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>참고 자료</title><link>https://webrtcforthecurious.com/ko/docs/13-reference/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://webrtcforthecurious.com/ko/docs/13-reference/</guid><description>&lt;h1 id="참고-자료"&gt;
+ 참고 자료
+ &lt;a class="anchor" href="#%ec%b0%b8%ea%b3%a0-%ec%9e%90%eb%a3%8c"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
+&lt;h2 id="webrtcw3c"&gt;
+ WebRTC(W3C)
+ &lt;a class="anchor" href="#webrtcw3c"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.w3.org/TR/webrtc/"&gt;WebRTC 1.0: Real-Time Communication Between Browsers&lt;/a&gt; [2021-01-26] (Status: Recommendation)&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.w3.org/groups/wg/webrtc/publications"&gt;Web Real-Time Communications Working Group - Publications&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="webrtcrfc"&gt;
+ WebRTC(RFC)
+ &lt;a class="anchor" href="#webrtcrfc"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8825"&gt;RFC8825&lt;/a&gt;: Overview: Real-Time Protocols for Browser-Based Applications H. Alvestrand [2021-01] (Status: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8826"&gt;RFC8826&lt;/a&gt;: Security Considerations for WebRTC E. Rescorla [2021-01] (Status: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8836"&gt;RFC8836&lt;/a&gt;: Congestion Control Requirements for Interactive Real-Time Media R. Jesup, Z. Sarker [2021-01] (Status: INFORMATIONAL)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8854"&gt;RFC8854&lt;/a&gt;: WebRTC Forward Error Correction Requirements J. Uberti [2021-01] (Status: PROPOSED STANDARD)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="dtls"&gt;
+ DTLS
+ &lt;a class="anchor" href="#dtls"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc6347"&gt;RFC6347&lt;/a&gt;: Datagram Transport Layer Security Version 1.2 E. Rescorla, N. Modadugu [2012-01] (Obsoletes &lt;a href="http://www.rfc-editor.org/info/rfc4347"&gt;RFC4347&lt;/a&gt;) (Obsoleted-By &lt;a href="http://www.rfc-editor.org/info/rfc9147"&gt;RFC9147&lt;/a&gt;) (Updated-By &lt;a href="http://www.rfc-editor.org/info/rfc7507"&gt;RFC7507&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc7905"&gt;RFC7905&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8996"&gt;RFC8996&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc9146"&gt;RFC9146&lt;/a&gt;) (Status: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc9147"&gt;RFC9147&lt;/a&gt;: The Datagram Transport Layer Security (DTLS) Protocol Version 1.3 E. Rescorla, H. Tschofenig, N. Modadugu [2022-04] (Obsoletes &lt;a href="http://www.rfc-editor.org/info/rfc6347"&gt;RFC6347&lt;/a&gt;) (Status: PROPOSED STANDARD) (See also: &lt;a href="https://github.com/openssl/openssl/issues/13900"&gt;OpenSSL DTLS 1.3 status&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="datachannel"&gt;
+ DataChannel
+ &lt;a class="anchor" href="#datachannel"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8831"&gt;RFC8831&lt;/a&gt;: WebRTC Data Channels R. Jesup, S. Loreto, M. Tüxen [2021-01] (Status: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8832"&gt;RFC8832&lt;/a&gt;: WebRTC Data Channel Establishment Protocol R. Jesup, S. Loreto, M. Tüxen [2021-01] (Status: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8864"&gt;RFC8864&lt;/a&gt;: Negotiation Data Channels Using the Session Description Protocol (SDP) K. Drage, M. Makaraju, R. Ejzak, J. Marcon, R. Even [2021-01] (Status: PROPOSED STANDARD)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="mediatransport"&gt;
+ MediaTransport
+ &lt;a class="anchor" href="#mediatransport"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8834"&gt;RFC8834&lt;/a&gt;: Media Transport and Use of RTP in WebRTC C. Perkins, M. Westerlund, J. Ott [2021-01] (Status: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8837"&gt;RFC8837&lt;/a&gt;: Differentiated Services Code Point (DSCP) Packet Markings for WebRTC QoS P. Jones, S. Dhesikan, C. Jennings, D. Druta [2021-01] (Status: PROPOSED STANDARD)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="sctp"&gt;
+ SCTP
+ &lt;a class="anchor" href="#sctp"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc3758"&gt;RFC3758&lt;/a&gt;: Stream Control Transmission Protocol (SCTP) Partial Reliability Extension R. Stewart, M. Ramalho, Q. Xie, M. Tuexen, P. Conrad [2004-05] (Status: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc5061"&gt;RFC5061&lt;/a&gt;: Stream Control Transmission Protocol (SCTP) Dynamic Address Reconfiguration R. Stewart, Q. Xie, M. Tuexen, S. Maruyama, M. Kozuka [2007-09] (Status: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc5827"&gt;RFC5827&lt;/a&gt;: Early Retransmit for TCP and Stream Control Transmission Protocol (SCTP) M. Allman, K. Avrachenkov, U. Ayesta, J. Blanton, P. Hurtig [2010-05] (Status: EXPERIMENTAL)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc6083"&gt;RFC6083&lt;/a&gt;: Datagram Transport Layer Security (DTLS) for Stream Control Transmission Protocol (SCTP) M. Tuexen, R. Seggelmann, E. Rescorla [2011-01] (Updated-By &lt;a href="http://www.rfc-editor.org/info/rfc8996"&gt;RFC8996&lt;/a&gt;) (Status: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc6525"&gt;RFC6525&lt;/a&gt;: Stream Control Transmission Protocol (SCTP) Stream Reconfiguration R. Stewart, M. Tuexen, P. Lei [2012-02] (Status: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc6951"&gt;RFC6951&lt;/a&gt;: UDP Encapsulation of Stream Control Transmission Protocol (SCTP) Packets for End-Host to End-Host Communication M. Tuexen, R. Stewart [2013-05] (Updated-By &lt;a href="http://www.rfc-editor.org/info/rfc8899"&gt;RFC8899&lt;/a&gt;) (Status: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc7765"&gt;RFC7765&lt;/a&gt;: TCP and Stream Control Transmission Protocol (SCTP) RTO Restart P. Hurtig, A. Brunstrom, A. Petlund, M. Welzl [2016-02] (Status: EXPERIMENTAL)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8260"&gt;RFC8260&lt;/a&gt;: Stream Schedulers and User Message Interleaving for the Stream Control Transmission Protocol R. Stewart, M. Tuexen, S. Loreto, R. Seggelmann [2017-11] (Status: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8261"&gt;RFC8261&lt;/a&gt;: Datagram Transport Layer Security (DTLS) Encapsulation of SCTP Packets M. Tuexen, R. Stewart, R. Jesup, S. Loreto [2017-11] (Updated-By &lt;a href="http://www.rfc-editor.org/info/rfc8899"&gt;RFC8899&lt;/a&gt;, &lt;a href="http://www.rfc-editor.org/info/rfc8996"&gt;RFC8996&lt;/a&gt;) (Status: PROPOSED STANDARD)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.rfc-editor.org/info/rfc8841"&gt;RFC8841&lt;/a&gt;: Session Description Protocol (SDP) Offer/Answer&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>
