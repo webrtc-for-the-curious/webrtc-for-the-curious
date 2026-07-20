@@ -95,7 +95,7 @@ ICE는 직접 연결을 가능하게 하지만, 진정한 마법은 ‘NAT 우�
 보안 채널이 준비되면 실제 통신이 시작됩니다. 미디어는 RTP/SRTP로, 데이터는 SCTP(DataChannel)로 전송됩니다.
 코덱, 전송률 제어, 패킷 손실 대응, 지터 버퍼 등 실시간 전송 품질을 좌우하는 요소들이 여기에 포함됩니다.
 
-![WebRTC 에이전트](../images/01-webrtc-agent.png "Diagrama de Agente WebRTC")
+![WebRTC 에이전트](../../images/01-webrtc-agent.png "Diagrama de Agente WebRTC")
 
 ## WebRTC API는 어떻게 동작하나?
 

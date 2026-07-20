@@ -51,7 +51,7 @@ RTP에서는 보통 손실 압축을 사용합니다.
 * P-프레임: 이전 그림 대비 변경분만 포함
 * B-프레임: 이전/이후 그림을 모두 참조해 변경분만 포함
 
-![Frame types](../images/06-frame-types.png "Frame types")
+![Frame types](../../images/06-frame-types.png "Frame types")
 
 ### 비디오는 섬세하다
 비디오 압축은 강한 상태성을 갖습니다. I-프레임의 일부를 잃으면? P-프레임은 무엇을 수정해야 하는지 어떻게 알까요? 복잡해질수록 문제는 커집니다.
@@ -88,7 +88,7 @@ RTT 계산은 다음과 같습니다.
 
 `rtt = sendertime2 - sendertime1 - DLSR`
 
-![Round-trip time](../images/06-rtt.png "Round-trip time")
+![Round-trip time](../../images/06-rtt.png "Round-trip time")
 
 ## 함께 문제를 푸는 방식
 
@@ -114,12 +114,12 @@ WebRTC는 양방향으로 대역폭, RTT, 지터, 손실을 관측/전달해야 
 
 #### TMMBR/TMMBN, REMB
 수신측이 허용 비트레이트를 알려 송신자가 인코더 비트레이트를 조정합니다. 인코더 편차, 규격화 미흡 등 한계가 있어 실무에서는 세심한 튜닝이 필요합니다.
-![REMB](../images/06-remb.png "REMB")
+![REMB](../../images/06-remb.png "REMB")
 
 #### TWCC(Transport-Wide Congestion Control)
 패킷 도착 시간을 송신자에 상세히 제공해, 송신자가 직접 지연 변동/손실을 추정하고 빠르게 조정합니다. SR/RR의 송신자 중심성과 REMB의 정밀 측정을
 절충한 방식입니다.
-![TWCC](../images/06-twcc-idea.png "TWCC")
+![TWCC](../../images/06-twcc-idea.png "TWCC")
 
 송신자는 보낸 패킷의 크기/타임스탬프/시퀀스를 추적하고, 수신 리포트의 도착 간격과 비교해 혼잡을 감지합니다.
 

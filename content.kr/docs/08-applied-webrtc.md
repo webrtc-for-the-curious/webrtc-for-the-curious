@@ -68,7 +68,7 @@ WebRTC 애플리케이션을 설계할 때 사용할 수 있는 대표적인 연
 
 연결 형태는 다음과 같습니다.
 
-![One-to-One](../images/08-one-to-one.png "One-to-One")
+![One-to-One](../../images/08-one-to-one.png "One-to-One")
 
 ### 풀 메시(Full Mesh)
 소규모 회의나 멀티플레이어 게임에 적합합니다. 모든 사용자가 서로에게 직접 연결합니다. 애플리케이션을 구축할 수 있지만 단점도 있습니다.
@@ -78,7 +78,7 @@ WebRTC 애플리케이션을 설계할 때 사용할 수 있는 대표적인 연
 
 이런 이유로 풀 메시 토폴로지는 소규모 그룹에 적합하며, 더 큰 규모에는 클라이언트/서버 토폴로지가 좋습니다.
 
-![Full mesh](../images/08-full-mesh.png "Full mesh")
+![Full mesh](../../images/08-full-mesh.png "Full mesh")
 
 ### 하이브리드 메시
 풀 메시의 문제를 일부 완화하는 대안입니다. 모든 사용자 사이에 직접 연결을 만들지 않고, 네트워크 내 다른 피어를 통해 미디어를 릴레이합니다.
@@ -86,7 +86,7 @@ WebRTC 애플리케이션을 설계할 때 사용할 수 있는 대표적인 연
 
 다만 단점도 있습니다. 원본 발행자는 자신의 비디오가 누구에게 전달되는지, 성공적으로 도착했는지 알기 어렵습니다. 또한 홉이 늘어날수록 지연이 증가합니다.
 
-![Hybrid mesh](../images/08-hybrid-mesh.png "Hybrid mesh")
+![Hybrid mesh](../../images/08-hybrid-mesh.png "Hybrid mesh")
 
 ### SFU(Selective Forwarding Unit)
 SFU는 풀 메시의 문제를 전혀 다른 방식으로 해결합니다. P2P 대신 클라이언트/서버 토폴로지를 구현합니다. 각 WebRTC 피어는 SFU에 연결해
@@ -98,11 +98,11 @@ SFU는 풀 메시의 문제를 전혀 다른 방식으로 해결합니다. P2P �
 간단한 SFU는 주말 동안에도 만들 수 있지만, 모든 유형의 클라이언트를 잘 다루는 ‘좋은’ SFU를 만드는 일은 끝이 없습니다. 혼잡 제어, 오류 정정,
 성능 튜닝은 지속적인 과제입니다.
 
-![Selective Forwarding Unit](../images/08-sfu.png "Selective Forwarding Unit")
+![Selective Forwarding Unit](../../images/08-sfu.png "Selective Forwarding Unit")
 
 ### MCU
 MCU(Multi-point Conferencing Unit)는 SFU처럼 클라이언트/서버 토폴로지이지만, 출력 스트림을 합성합니다. 개별 스트림을 그대로 배포하는 대신
 하나의 피드로 다시 인코딩해 전달합니다.
 
-![Multi-point Conferencing Unit](../images/08-mcu.png "Multi-point Conferencing Unit")
+![Multi-point Conferencing Unit](../../images/08-mcu.png "Multi-point Conferencing Unit")
 
