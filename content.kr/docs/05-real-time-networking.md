@@ -84,7 +84,7 @@ time=1.80 ms
 
 ### 지터 버퍼 동작
 
-![JitterBuffer](../images/05-jitterbuffer.png "JitterBuffer")
+![JitterBuffer](../../images/05-jitterbuffer.png "JitterBuffer")
 
 모든 패킷은 수신 즉시 지터 버퍼에 추가됩니다. 프레임을 재구성하기 충분한 패킷이 모이면 해당 패킷들이 버퍼에서 방출되어 디코더로 전달됩니다.
 디코더는 이를 디코드해 화면에 표시합니다. 버퍼 용량은 한정되어 있으므로, 너무 오래 머무는 패킷은 폐기됩니다.

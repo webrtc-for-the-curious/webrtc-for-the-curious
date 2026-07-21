@@ -51,7 +51,7 @@ ICE는 현실 세계 네트워크의 제약을 극복하는 데 초점을 둡니
 
 아래는 공용 인터넷으로 연결된 두 개의 서로 다른 네트워크를 보여줍니다. 각 네트워크에는 두 개의 호스트가 있습니다.
 
-![Two networks](../images/03-two-networks.png "Two networks")
+![Two networks](../../images/03-two-networks.png "Two networks")
 
 같은 네트워크 내 호스트끼리는 연결이 쉽습니다. `192.168.0.1 -> 192.168.0.2` 간 통신은 어렵지 않습니다! 외부 도움 없이도 가능합니다.
 
@@ -73,7 +73,7 @@ NAT(Network Address Translation) 매핑은 WebRTC 연결을 가능케 하는 핵
 
 릴레이나 프록시, 서버를 사용하지 않습니다. `Agent 1`과 `Agent 2`가 서로 다른 네트워크에 있지만, 트래픽은 완전히 통과합니다. 시각화하면 다음과 같습니다.
 
-![NAT mapping](../images/03-nat-mapping.png "NAT mapping")
+![NAT mapping](../../images/03-nat-mapping.png "NAT mapping")
 
 이 통신을 가능하게 하려면 NAT 매핑을 수립합니다. Agent 1이 포트 7000을 사용해 Agent 2와 WebRTC 연결을 수립하면,
 `192.168.0.1:7000` ↔ `5.0.0.1:7000` 바인딩이 생성됩니다. 이렇게 되면 Agent 2는 이 매핑으로 Agent 1에 트래픽을 보낼 수 있습니다. NAT의 동작은
@@ -158,7 +158,7 @@ TURN 서버에서 핸드셰이크 후 부여되는 `RELAYED-ADDRESS`로 생성�
 
 시각화하면 다음과 같습니다.
 
-![Connectivity checks](../images/03-connectivity-checks.png "Connectivity checks")
+![Connectivity checks](../../images/03-connectivity-checks.png "Connectivity checks")
 
 ### 후보 선택
 Controlling/Controlled 에이전트는 모든 후보쌍에 트래픽을 시도합니다. 한 에이전트가 주소 의존 매핑 뒤에 있는 경우, 이 과정에서 Peer Reflexive 후보가

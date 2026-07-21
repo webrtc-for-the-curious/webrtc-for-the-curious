@@ -70,13 +70,13 @@ Chrome의 통계 페이지: `chrome://webrtc-internals`
 - 휴대폰으로 시계와 수신 화면을 동시에 찍습니다.
 - 두 시각의 차이를 구합니다.
 
-![DIY Latency](../images/09-diy-latency.png "DIY Latency Measurement").
-![DIY Latency Example](../images/09-diy-latency-happen-observe.png "DIY Latency Measurement Example")
+![DIY Latency](../../images/09-diy-latency.png "DIY Latency Measurement").
+![DIY Latency Example](../../images/09-diy-latency-happen-observe.png "DIY Latency Measurement Example")
 
 ### 자동 측정(호환 방식)
 NTP 스타일로 DataChannel을 이용해 송신자/수신자 단조 시계를 동기화하고, 비디오 트랙 시간과 대조해 지연을 추정합니다.
 
-![NTP Style Latency Measurement](../images/09-ntp-latency.png "NTP Style Latency Measurement")
+![NTP Style Latency Measurement](../../images/09-ntp-latency.png "NTP Style Latency Measurement")
 
 핵심 개념:
 

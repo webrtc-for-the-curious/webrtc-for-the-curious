@@ -79,7 +79,7 @@ DCEP에는 `DATA_CHANNEL_OPEN`과 `DATA_CHANNEL_ACK` 두 메시지만 있습니�
 `INIT`/`INIT ACK`로 능력/설정을 교환합니다. SCTP는 핸드셰이크 중 쿠키를 사용해 상대를 검증하고(DOS/MITM 방지), `COOKIE ECHO`/`COOKIE ACK`로
 완료합니다. 이후 DATA 교환이 시작됩니다.
 
-![Connection establishment](../images/07-connection-establishment.png "Connection establishment")
+![Connection establishment](../../images/07-connection-establishment.png "Connection establishment")
 
 ### 연결 종료 흐름
 `SHUTDOWN`으로 우아한 종료를 시작합니다. 각 측은 마지막 전송 TSN을 공유해 데이터 손실 없이 종료합니다.
